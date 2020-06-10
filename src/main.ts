@@ -6,6 +6,12 @@ import { upperFirst, camelCase } from 'lodash';
 import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
+import {
+  formatBalance,
+  formatCurrency,
+  formatPercentage,
+  shorten
+} from '@/helpers/utils';
 import messages from '@/helpers/messages.json';
 import numberFormats from '@/helpers/number.json';
 import '@/style.scss';
@@ -23,6 +29,11 @@ requireComponent.keys().forEach(fileName => {
   );
   Vue.component(componentName, componentConfig.default || componentConfig);
 });
+
+Vue.filter('currency', value => formatCurrency(value));
+Vue.filter('percentage', value => formatPercentage(value, 2));
+Vue.filter('balance', value => formatBalance(value, 18, 6));
+Vue.filter('shorten', value => shorten(value));
 
 Vue.config.productionTip = false;
 
