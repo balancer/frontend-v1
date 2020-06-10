@@ -1,10 +1,10 @@
 <template>
-  <span class="d-inline-block">
+  <span class="d-inline-block" style="line-height: 0;">
     <img
       v-if="trustwalletIcon"
       :src="trustwalletIcon"
-      width="32"
-      height="32"
+      :width="size || 32"
+      :height="size || 32"
       class="circle bg-white"
       :title="symbol"
     />
@@ -21,22 +21,20 @@
 import { mapState } from 'vuex';
 import trustwalletMap from '@/helpers/trustwallet.json';
 import { getAddress } from 'ethers/utils';
+import { mainnet } from '@/constants.json';
 
 export default {
-  props: ['address', 'symbol'],
+  props: ['address', 'symbol', 'size'],
   computed: {
     ...mapState(['settings']),
     trustwalletIcon() {
+      const checksum =
+        this.address === 'ether' ? mainnet.weth : getAddress(this.address);
+      if (checksum === mainnet.weth && this.address !== 'ether')
+        return 'https://www.zapper.fi/images/ETH-icon.png';
       let path;
-      if (trustwalletMap.includes(getAddress(this.address)))
-        path = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${getAddress(
-          this.address
-        )}/logo.png`;
-      if (
-        getAddress(this.address) ===
-        '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
-      )
-        path = 'https://www.zapper.fi/images/ETH-icon.png';
+      if (trustwalletMap.includes(checksum))
+        path = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${checksum}/logo.png`;
       return path;
     }
   }

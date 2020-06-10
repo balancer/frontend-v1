@@ -1,13 +1,13 @@
 <template>
   <div>
     <Filters v-model="filters" />
-    <div
+    <Container
       v-infinite-scroll="() => (page += 1)"
       infinite-scroll-distance="10"
-      class="overflow-hidden container-lg p-responsive"
+      class="overflow-hidden"
     >
       <Pool v-for="pool in poolsWithFilters" :key="pool.id" :pool="pool" />
-    </div>
+    </Container>
   </div>
 </template>
 

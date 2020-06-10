@@ -1,5 +1,5 @@
 <template>
-  <span class="d-inline-block circle" :style="style" />
+  <span class="d-inline-block circle" :style="style" v-if="tokens" />
 </template>
 
 <script>

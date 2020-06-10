@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Menu />
     <Pools :pools="pools" />
   </div>
 </template>

@@ -1,6 +1,9 @@
 <template>
   <div>
-    <a @click="modalPoolOpen = true" class="py-3 border-bottom d-flex">
+    <router-link
+      :to="{ name: 'pool', params: { id: pool.id } }"
+      class="py-3 border-bottom d-flex"
+    >
       <div class="flex-auto">
         <div>
           <Pie
@@ -26,43 +29,24 @@
           </div>
         </div>
       </div>
-      <div
-        class="text-gray text-center mt-3 hide-sm hide-md"
-        style="width: 120px;"
-      >
+      <div class="text-gray text-center mt-3 hide-sm hide-md column">
         ${{ $n(pool.marketcap.toFixed()) }}
       </div>
-      <div
-        class="text-gray text-center mt-3 hide-sm hide-md"
-        style="width: 120px;"
-      >
+      <div class="text-gray text-center mt-3 hide-sm hide-md column">
         ${{ $n(pool.volume1Day.toFixed()) }}
       </div>
-      <div class="text-gray text-center mt-3" style="width: 120px;">
+      <div class="text-gray text-center mt-3 column">
         {{ $n(pool.swapFee * 100) }}%
       </div>
-      <div
-        class="text-gray text-center mt-3 hide-sm hide-md"
-        style="width: 120px;"
-      >
+      <div class="text-gray text-center mt-3 hide-sm hide-md column">
         {{ pool.holders }}
       </div>
-    </a>
-    <ModalPool
-      :open="modalPoolOpen"
-      @close="modalPoolOpen = false"
-      :pool="pool"
-    />
+    </router-link>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['pool'],
-  data() {
-    return {
-      modalPoolOpen: false
-    };
-  }
+  props: ['pool']
 };
 </script>

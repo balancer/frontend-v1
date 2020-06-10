@@ -1,6 +1,6 @@
 <template>
   <Sticky class="bg-gray">
-    <div class="container-lg p-responsive d-flex">
+    <Container class="d-flex">
       <span class="iconfont iconsearch h3 pt-3 mt-1" />
       <input
         class="input h3 py-3 px-2 flex-auto"
@@ -10,32 +10,26 @@
       />
       <a
         @click="handleChangeOrder('marketcap')"
-        class="py-4 text-center hide-sm hide-md"
-        style="width: 120px;"
+        class="py-4 text-center hide-sm hide-md column"
       >
         Marketcap
       </a>
       <a
         @click="handleChangeOrder('volume1Day')"
-        class="py-4 text-center hide-sm hide-md"
-        style="width: 120px;"
+        class="py-4 text-center hide-sm hide-md column"
       >
         Vol. 24h
       </a>
-      <a
-        @click="handleChangeOrder('swapFee')"
-        class="py-4 text-center"
-        style="width: 120px;"
+      <a @click="handleChangeOrder('swapFee')" class="py-4 text-center column"
         >Swap fee</a
       >
       <a
         @click="handleChangeOrder('holders')"
-        class="py-4 text-center hide-sm hide-md"
-        style="width: 120px;"
+        class="py-4 text-center hide-sm hide-md column"
       >
         Holders
       </a>
-    </div>
+    </Container>
   </Sticky>
 </template>
 
