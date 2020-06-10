@@ -1,7 +1,7 @@
 {
   "name": "smartpool",
   "version": "0.1.0",
-  "description": "This is a simple project using Balancer subgraph and Vue.js",
+  "description": "This is a sample project using Balancer subgraph, Ethers.js and Vue.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -10,6 +10,7 @@
   "dependencies": {
     "@primer/css": "^14.4.0",
     "@vue/ui": "^0.11.6",
+    "bignumber.js": "^9.0.0",
     "core-js": "^3.6.5",
     "ethers": "^4.0.47",
     "install": "^0.13.0",
