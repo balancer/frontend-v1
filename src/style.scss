@@ -7,6 +7,7 @@ $bg-blue: #384AFF;
 $bg-blue-light: #F7F8FC;
 $bg-gray: #DDDFE8;
 $text-blue: #384AFF;
+$text-red: #ff3856;
 $blue-100: #DCE2FF;
 $body-font-size: 17px;
 $body-line-height: 1.4;
@@ -47,7 +48,7 @@ a {
   color: $gray;
 }
 
-#nav {
+#nav, #menu {
   background-color: $white;
 
   ul > li > a {
@@ -125,6 +126,17 @@ a {
   }
 }
 
+.btn-green {
+  @extend .btn-mktg;
+  background-color: $green-100;
+  color: $bg-green;
+
+  &:hover {
+    background-color: $green-100;
+    color: $bg-green;
+  }
+}
+
 .modal {
   .backdrop {
     background: transparentize(black, 0.2) !important;
@@ -150,5 +162,21 @@ a {
 }
 
 label {
-  color: $black;
+  font-size: 18px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.column {
+  width: 140px;
+}
+
+.form-control {
+  padding: 8px 0;
+  border: 0;
+  box-shadow: none !important;
+  background-color: transparent;
 }
