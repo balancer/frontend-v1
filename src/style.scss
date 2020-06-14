@@ -285,7 +285,7 @@ label {
   &:hover {
     .token-selectable {
       img {
-        opacity: 0.6
+        opacity: 0.4
       }
     }
   }
@@ -307,4 +307,8 @@ label {
       }
     }
   }
+}
+
+.line-height-0 {
+  line-height: 0;
 }

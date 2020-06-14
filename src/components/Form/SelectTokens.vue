@@ -1,6 +1,31 @@
 <template>
   <div>
     <h2 class="mb-4">Select tokens</h2>
+    <div
+      v-if="selectedTokens.length"
+      class="tokens-selectable d-inline-block mx-auto mb-4"
+    >
+      <div
+        class="token-selectable line-height-0 bg-white circle d-inline-block mr-n2 ml-n2 position-relative anim-pulse-in"
+        v-for="selectedToken in selectedTokens"
+        :key="selectedToken"
+      >
+        <a @click="removeToken(selectedToken)">
+          <Icon
+            name="close"
+            class="close position-absolute top-0 right-0 circle bg-blue text-white p-1"
+            size="14"
+          />
+        </a>
+        <Token
+          :key="selectedToken"
+          :address="selectedToken"
+          size="58"
+          class="circle"
+          style="border: 2px solid white !important;"
+        />
+      </div>
+    </div>
     <Search
       v-model="query"
       placeholder="Search name, symbol or address"
@@ -31,31 +56,6 @@
           {{ settings.balances[token.address] | balance }}
         </div>
       </a>
-    </div>
-    <div
-      v-if="selectedTokens.length"
-      class="tokens-selectable d-inline-block mx-auto mb-4"
-    >
-      <div
-        class="token-selectable bg-white circle d-inline-block mr-n2 ml-n2 position-relative anim-pulse-in"
-        v-for="selectedToken in selectedTokens"
-        :key="selectedToken"
-      >
-        <a @click="removeToken(selectedToken)">
-          <Icon
-            name="close"
-            class="close position-absolute top-0 right-0 circle bg-blue text-white p-1"
-            size="14"
-          />
-        </a>
-        <Token
-          :key="selectedToken"
-          :address="selectedToken"
-          size="58"
-          class="circle"
-          style="border: 2px solid white !important;"
-        />
-      </div>
     </div>
   </div>
 </template>

@@ -19,7 +19,7 @@
         <template v-if="settings.address && !wrongNetwork">
           <span class="btn-outline ml-2">
             <span
-              class="circle bg-blue mr-2 d-inline-block"
+              class="circle bg-blue ml-n1 mr-2 d-inline-block"
               style="width: 10px; height: 10px;"
             />
             <span v-if="settings.name" v-text="settings.name" />
@@ -35,7 +35,7 @@
         <span v-if="settings.hasProvider && wrongNetwork" class="btn-red">
           <Icon
             name="warning"
-            class="mr-1 v-align-middle"
+            class="ml-n2 mr-1 v-align-middle"
             :title="network.chainId"
           />
           Wrong network
