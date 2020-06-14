@@ -13,6 +13,10 @@
   },
   "dependencies": {
     "@primer/css": "^14.4.0",
+    "@vue/cli-plugin-babel": "^4.4.0",
+    "@vue/cli-plugin-eslint": "^4.4.0",
+    "@vue/cli-plugin-typescript": "^4.4.0",
+    "@vue/cli-service": "^4.4.0",
     "@vue/ui": "^0.11.6",
     "bignumber.js": "^9.0.0",
     "body-parser": "^1.19.0",
@@ -32,12 +36,8 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
-    "@vue/cli-plugin-babel": "^4.4.0",
-    "@vue/cli-plugin-eslint": "^4.4.0",
     "@vue/cli-plugin-router": "^4.4.0",
-    "@vue/cli-plugin-typescript": "^4.4.0",
     "@vue/cli-plugin-vuex": "^4.4.0",
-    "@vue/cli-service": "^4.4.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^5.0.2",
     "eslint": "^6.7.2",
@@ -53,7 +53,7 @@
   "bugs": {
     "url": "https://github.com/bonustrack/smartpool/issues"
   },
-  "homepage": "https://smartpool.bonustrack.io",
+  "homepage": "https://smartpool.dev",
   "license": "MIT",
   "repository": "bonustrack/smartpool"
 }
