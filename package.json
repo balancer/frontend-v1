@@ -2,15 +2,19 @@
   "name": "smartpool",
   "version": "0.1.0",
   "description": "Your portfolio yielder",
+  "author": "Bonustrack",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "express": "vue-cli-service express:watch",
+    "express:run": "vue-cli-service express:run"
   },
   "dependencies": {
     "@primer/css": "^14.4.0",
     "@vue/ui": "^0.11.6",
     "bignumber.js": "^9.0.0",
+    "body-parser": "^1.19.0",
     "core-js": "^3.6.5",
     "ethers": "^4.0.47",
     "install": "^0.13.0",
@@ -42,13 +46,13 @@
     "prettier": "^1.19.1",
     "sass-loader": "^8.0.2",
     "typescript": "~3.9.3",
+    "vue-cli-plugin-express": "^1.0.2",
     "vue-template-compiler": "^2.6.11"
   },
-  "repository": "bonustrack/smartpool",
-  "author": "Bonustrack",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/bonustrack/smartpool/issues"
   },
-  "homepage": "https://smartpool.bonustrack.io"
+  "homepage": "https://smartpool.bonustrack.io",
+  "license": "MIT",
+  "repository": "bonustrack/smartpool"
 }

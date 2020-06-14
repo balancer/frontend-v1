@@ -1,3 +1,8 @@
 module.exports = {
-  outputDir: './docs'
+  pluginOptions: {
+    express: {
+      shouldServeApp: true,
+      serverDir: '.'
+    }
+  }
 };
