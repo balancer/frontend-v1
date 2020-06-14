@@ -272,3 +272,39 @@ label {
   animation-iteration-count: infinite;
   animation-fill-mode: forwards;
 }
+
+.check {
+  color: $gray-200;
+
+  .active {
+    color: $bg-blue;
+  }
+}
+
+.tokens-selectable {
+  &:hover {
+    .token-selectable {
+      img {
+        opacity: 0.6
+      }
+    }
+  }
+
+  .token-selectable {
+    .close {
+      display: none;
+    }
+
+    &:hover {
+      z-index: 9;
+
+      img {
+        opacity: 1
+      }
+
+      .close {
+        display: inherit;
+      }
+    }
+  }
+}

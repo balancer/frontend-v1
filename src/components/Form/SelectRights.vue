@@ -15,7 +15,7 @@
       >
         <Icon
           name="check"
-          class="v-align-middle mr-2"
+          class="check v-align-middle mr-2"
           :class="{ 'text-blue': rights[i] }"
           size="28"
         />

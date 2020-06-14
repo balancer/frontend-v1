@@ -12,7 +12,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .iconfont {
   font-size: 22px;
   line-height: 22px;
