@@ -12,6 +12,7 @@ import {
   formatPercentage,
   shorten
 } from '@/helpers/utils';
+import mixins from '@/mixins';
 import messages from '@/helpers/messages.json';
 import numberFormats from '@/helpers/number.json';
 import '@/style.scss';
@@ -34,6 +35,8 @@ Vue.filter('currency', value => formatCurrency(value));
 Vue.filter('percentage', value => formatPercentage(value, 2));
 Vue.filter('balance', value => formatBalance(value, 18, 6));
 Vue.filter('shorten', value => shorten(value));
+
+Vue.mixin(mixins);
 
 Vue.config.productionTip = false;
 

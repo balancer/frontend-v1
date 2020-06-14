@@ -6,6 +6,7 @@
 $bg-blue: #384AFF;
 $bg-blue-light: #F7F8FC;
 $bg-gray: #DDDFE8;
+$bg-green: #21b66f;
 $text-blue: #384AFF;
 $text-red: #ff3856;
 $blue-100: #DCE2FF;
@@ -16,6 +17,7 @@ $h2-size: 26px;
 $border: 1px solid $bg-gray;
 $font-mktg: 'HarmoniaSansProCyrBold', Helvetica, Arial, sans-serif;
 $font-weight-bold: 'HarmoniaSansProCyrBold', Helvetica, Arial, sans-serif;
+$font-weight-normal: 'HarmoniaSansProCyrSemiBd', Helvetica, Arial, sans-serif;
 
 @import '~@primer/css/index.scss';
 
@@ -29,6 +31,10 @@ html, body, #app {
 h1, h2, h3 {
   color: $black;
   font-family: $font-weight-bold;
+}
+
+p {
+  font-family: $font-weight-normal;
 }
 
 #app {
@@ -126,20 +132,53 @@ a {
   }
 }
 
-.btn-green {
+.btn-red {
   @extend .btn-mktg;
-  background-color: $green-100;
-  color: $bg-green;
+  background-color: $bg-red;
+  color: $white;
 
   &:hover {
-    background-color: $green-100;
-    color: $bg-green;
+    background-color: $bg-red;
+    color: $white;
+  }
+}
+
+.btn-outline-red {
+  @extend .btn-mktg;
+  background-color: $red-100;
+  color: $bg-red;
+
+  &:hover {
+    background-color: $red-100;
+    color: $bg-red;
+  }
+}
+
+.btn-green {
+  @extend .btn-mktg;
+  background-color: $bg-green;
+  color: $white;
+
+  &:hover {
+    background-color: $bg-green;
+    color: $white;
+  }
+}
+
+.btn-white {
+  @extend .btn-mktg;
+  background-color: $white;
+  color: $bg-blue;
+
+  &:hover {
+    background-color: $white;
+    color: $bg-blue;
   }
 }
 
 .modal {
   .backdrop {
-    background: transparentize(black, 0.2) !important;
+    background: transparentize(#0e113b, 0.2) !important;
   }
 
   .shell {
@@ -148,7 +187,7 @@ a {
     background-color: $white;
     padding-left: 0 !important;
     padding-right: 0 !important;
-    max-width: 420px;
+    max-width: 440px;
   }
 
   .button {
@@ -171,7 +210,11 @@ label {
 }
 
 .column {
-  width: 140px;
+  width: 160px;
+}
+
+.column-sm {
+  width: 90px;
 }
 
 .form-control {
@@ -179,4 +222,53 @@ label {
   border: 0;
   box-shadow: none !important;
   background-color: transparent;
+}
+
+.highlight:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.anim-fade-in {
+  animation-duration: 0.6s !important;
+}
+
+.text-normal {
+  font-family: $font-weight-normal;
+}
+
+
+
+
+@keyframes float {
+  0% { transform: translatey(0px); }
+  50% { transform: translatey(-20px); }
+  100% { transform: translatey(0px); }
+}
+
+@keyframes scroll {
+  from { background-position: 0 0; }
+  to { background-position: 0 -120px; }
+}
+
+.anim {
+  animation-duration: 6s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+}
+
+.anim-scroll {
+  animation-name: scroll;
+  animation-duration: 6s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+}
+
+.anim-float {
+  animation-name: float;
+  animation-duration: 3s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
 }
