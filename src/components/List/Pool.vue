@@ -6,11 +6,7 @@
     >
       <div class="flex-auto">
         <div>
-          <Pie
-            :tokens="pool.tokens"
-            :totalWeight="pool.totalWeight"
-            class="mr-2"
-          />
+          <Pie :tokens="pool.tokens" class="mr-2" />
           <div
             v-for="token in pool.tokens"
             :key="token.address"
@@ -22,24 +18,19 @@
               class="mx-1"
             />
             <div style="font-size: 11px;" class="mt-n1">
-              {{
-                $n(((100 / pool.totalWeight) * token.denormWeight).toFixed())
-              }}%
+              {{ $n(token.weightPercent.toFixed()) }}%
             </div>
           </div>
         </div>
       </div>
-      <div class="text-gray text-center mt-3 hide-sm hide-md column">
-        ${{ $n(pool.marketcap.toFixed()) }}
-      </div>
-      <div class="text-gray text-center mt-3 hide-sm hide-md column">
-        ${{ $n(pool.volume1Day.toFixed()) }}
-      </div>
       <div class="text-gray text-center mt-3 column">
-        {{ $n(pool.swapFee * 100) }}%
+        {{ $n(pool.swapFeePercent) }}%
       </div>
       <div class="text-gray text-center mt-3 hide-sm hide-md column">
-        {{ pool.holders }}
+        <Price :amount="0" />
+      </div>
+      <div class="text-gray text-center mt-3 hide-sm hide-md column">
+        <Price :amount="0" :precision="0" />
       </div>
     </router-link>
   </div>

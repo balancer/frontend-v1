@@ -1,16 +1,15 @@
 <template>
   <span class="d-inline-block" style="line-height: 0;">
     <img
-      v-if="trustwalletIcon"
-      :src="trustwalletIcon"
-      :width="size || 32"
-      :height="size || 32"
+      v-if="imageUrl"
+      :src="imageUrl"
+      :style="style"
       class="circle bg-white"
       :title="symbol"
     />
     <span
-      style="width: 32px; height: 32px; line-height: 32px; font-size: 12px;"
-      class="circle mr-n1 d-block text-white bg-gray text-center overflow-hidden"
+      :style="style"
+      class="circle d-block bg-gray text-center overflow-hidden"
       v-text="symbol"
       v-else
     />
@@ -18,24 +17,35 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import trustwalletMap from '@/helpers/trustwallet.json';
 import { getAddress } from 'ethers/utils';
-import { mainnet } from '@/constants.json';
+import config from '@/helpers/config';
 
 export default {
   props: ['address', 'symbol', 'size'],
   computed: {
-    ...mapState(['settings']),
-    trustwalletIcon() {
-      const checksum =
-        this.address === 'ether' ? mainnet.weth : getAddress(this.address);
-      if (checksum === mainnet.weth && this.address !== 'ether')
+    style() {
+      const size = this.size || 32;
+      return {
+        width: `${size}px`,
+        height: `${size}px`,
+        lineHeight: `${size + 2}px`,
+        fontSize: `${(size / 3.2).toFixed()}px`
+      };
+    },
+    token() {
+      return config.tokens[getAddress(this.address)] || {};
+    },
+    imageUrl() {
+      if (this.address === 'ether')
+        return 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png';
+      const checksum = getAddress(this.address);
+      if (checksum === getAddress(config.addresses.weth))
         return 'https://www.zapper.fi/images/ETH-icon.png';
-      let path;
-      if (trustwalletMap.includes(checksum))
-        path = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${checksum}/logo.png`;
-      return path;
+      if (this.token.iconAddress)
+        return `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${getAddress(
+          this.token.iconAddress
+        )}/logo.png`;
+      return '';
     }
   }
 };

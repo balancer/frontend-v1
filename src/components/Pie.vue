@@ -6,14 +6,14 @@
 import { getAddress } from 'ethers/utils';
 
 const unknownColors = [
-  '#bbc0d9',
-  '#b0c8cb',
-  '#aac7b8',
-  '#c7c5ab',
-  '#c4a9a9',
-  '#bca1bd',
-  '#9a9a9a',
-  '#494949'
+  '#6f6776',
+  '#9a9a97',
+  '#c5ccb8',
+  '#c38890',
+  '#a593a5',
+  '#666092',
+  '#9a4f50',
+  '#c28d75'
 ];
 
 const tokenColors = {
@@ -36,7 +36,7 @@ const tokenColors = {
 };
 
 export default {
-  props: ['tokens', 'totalWeight', 'size'],
+  props: ['tokens', 'size'],
   computed: {
     style() {
       let acum = 0;
@@ -44,8 +44,7 @@ export default {
         const color = tokenColors[getAddress(token.address)]
           ? tokenColors[getAddress(token.address)]
           : unknownColors[i];
-        const percent = (100 / this.totalWeight) * token.denormWeight;
-        return `${color} 0 ${(acum += percent)}%`;
+        return `${color} 0 ${(acum += token.weightPercent)}%`;
       });
       return {
         background: `radial-gradient(white 25%, transparent 26%), conic-gradient( ${styles.join(

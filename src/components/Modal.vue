@@ -3,6 +3,7 @@
     <div class="backdrop" @click="$emit('close')" />
     <div class="shell overflow-hidden anim-scale-in position-relative">
       <a
+        v-if="closeButton"
         @click="$emit('close')"
         class="position-absolute iconfont iconclose right-3 top-3 p-2"
       />
@@ -13,7 +14,7 @@
 
 <script>
 export default {
-  props: ['open']
+  props: ['open', 'closeButton']
 };
 </script>
 

@@ -1,38 +1,40 @@
 <template>
   <div>
-    <Menu />
-    <Filters v-model="filters" />
+    <Filters :options="options" v-model="filters" />
     <Container>
-      <Pool v-for="pool in pools" :key="pool.id" :pool="pool" />
-      <div v-if="settings.balances">
-        <div
-          v-for="(balance, tokenAddress) in balances"
-          :key="tokenAddress"
-          class="border-bottom py-3 d-flex"
-        >
-          <div class="flex-auto">
-            <Token :address="tokenAddress" :size="44" />
-          </div>
-          <div class="text-gray text-center mt-3 hide-sm hide-md column">
-            {{ balance | balance }}
-          </div>
+      <ListPlaceholderPool v-if="pools.length === 0" />
+      <template v-else>
+        <ListPool v-for="pool in pools" :key="pool.id" :pool="pool" />
+        <div v-if="settings.balances">
+          <ListBalance
+            v-for="(balance, tokenAddress) in balances"
+            :key="tokenAddress"
+            :balance="balance"
+            :tokenAddress="tokenAddress"
+          />
         </div>
-      </div>
+      </template>
     </Container>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions } from 'vuex';
+
+const options = [
+  { key: 'price', name: 'Price' },
+  { key: 'value', name: 'Holding' }
+];
 
 export default {
   data() {
     return {
+      options,
+      loading: false,
       filters: {}
     };
   },
   computed: {
-    ...mapState(['settings']),
     pools() {
       if (!this.settings.sharesOwned.length) return [];
       return this.settings.sharesOwned.map(share => share.poolId);

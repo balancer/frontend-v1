@@ -3,12 +3,7 @@
     <div class="modal-body my-5 px-4 text-center">
       <h2 class="mb-4" v-text="shorten(pool.id)" />
       <div class="overflow-hidden text-center mb-4">
-        <Pie
-          :tokens="pool.tokens"
-          :totalWeight="pool.totalWeight"
-          :size="120"
-          class="mb-2"
-        />
+        <Pie :tokens="pool.tokens" :size="120" class="mb-2" />
         <div>
           <div
             v-for="token in pool.tokens"
@@ -21,9 +16,7 @@
               class="mx-1"
             />
             <div style="font-size: 11px;" class="mt-n1">
-              {{
-                $n(((100 / pool.totalWeight) * token.denormWeight).toFixed())
-              }}%
+              {{ $n(token.weightPercent.toFixed()) }}%
             </div>
           </div>
         </div>

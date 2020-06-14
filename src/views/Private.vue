@@ -1,19 +1,6 @@
 <template>
   <div>
     <Menu />
-    <Pools :pools="pools" />
+    <ListPools :query="{ where: { finalized: 'false' } }" />
   </div>
 </template>
-
-<script>
-import { mapState } from 'vuex';
-
-export default {
-  computed: {
-    ...mapState(['settings']),
-    pools() {
-      return this.settings.pools.filter(pool => !pool.finalized);
-    }
-  }
-};
-</script>

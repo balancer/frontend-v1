@@ -1,6 +1,6 @@
 <template>
   <Modal :open="open" @close="$emit('close')">
-    <div class="modal-body my-7 px-5 text-left" v-if="pool.id">
+    <div class="modal-body p-7 text-left" v-if="pool.id">
       <h2 class="mb-6 text-center">Add liquidity</h2>
       <form @submit.prevent="handleSubmit">
         <div class="mb-4">
@@ -35,7 +35,7 @@
           <div class="d-flex">
             <div class="h2 my-2 flex-auto">{{ $n(poolTokens) }}</div>
             <div class="d-flex mt-1">
-              <Token :address="pool.id" class="mr-2" />
+              <Token :address="poolAddress" symbol="BPT" class="mr-2" />
               <span class="my-2">BPT</span>
             </div>
           </div>
@@ -60,7 +60,8 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions } from 'vuex';
+import { getAddress } from 'ethers/utils';
 import { MAX_UINT } from '@/helpers/utils';
 
 export default {
@@ -72,7 +73,9 @@ export default {
     };
   },
   computed: {
-    ...mapState(['settings'])
+    poolAddress() {
+      return getAddress(this.pool.id);
+    }
   },
   methods: {
     ...mapActions(['joinPool']),

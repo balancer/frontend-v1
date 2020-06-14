@@ -1,6 +1,6 @@
 <template>
   <Modal :open="open" @close="$emit('close')">
-    <div class="modal-body my-7 px-5 text-left" v-if="pool.id">
+    <div class="modal-body p-7 text-left" v-if="pool.id">
       <h2 class="mb-6 text-center">Remove liquidity</h2>
       <form @submit.prevent="handleSubmit">
         <div class="mb-4">
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
   props: ['open', 'pool'],
@@ -76,9 +76,6 @@ export default {
       );
       this.poolTokenBalance = myShares[0] ? myShares[0].balance : 0;
     }
-  },
-  computed: {
-    ...mapState(['settings'])
   },
   methods: {
     ...mapActions(['exitPool']),
