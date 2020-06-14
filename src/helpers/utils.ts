@@ -1,5 +1,6 @@
 import { ethers, utils } from 'ethers';
 import BigNumber from '@/helpers/bignumber';
+import config from '@/helpers/config';
 
 export const MAX_GAS = utils.bigNumberify('0xffffffff');
 export const MAX_UINT = utils.bigNumberify(ethers.constants.MaxUint256);
@@ -75,10 +76,8 @@ export function denormalizeBalance(
   amount: BigNumber,
   tokenAddress: string
 ): BigNumber {
-  return scale(
-    bnum(amount),
-    18 // @TODO change to asset decimals
-  );
+  const token = config.tokens[tokenAddress];
+  return scale(bnum(amount), token.decimals);
 }
 
 export function formatPool(pool) {

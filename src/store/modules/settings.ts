@@ -50,7 +50,8 @@ const actions = {
         const signer = provider.getSigner();
         const address = await signer.getAddress();
         const network = await dispatch('getNetwork');
-        const name = network.chainId === 1 ? await provider.lookupAddress(address) : '';
+        const name =
+          network.chainId === 1 ? await provider.lookupAddress(address) : '';
         await dispatch('getBalances', address);
         await dispatch('getProxies', address);
         commit('set', {
