@@ -1,18 +1,6 @@
 import Vue from 'vue';
-import { ethers } from 'ethers';
-import store from '@/store';
 import provider from '@/helpers/provider';
 import { getBalances, getSharesOwned, proxies } from '@/helpers/api';
-
-const ethereum = window['ethereum'];
-if (ethereum) {
-  ethereum.on('accountsChanged', () => store.dispatch('init'));
-  ethereum.on('networkChanged', network => {
-    store.commit('set', {
-      network: ethers.utils.getNetwork(parseInt(network))
-    });
-  });
-}
 
 const state = {
   init: false,
@@ -20,7 +8,6 @@ const state = {
   address: '',
   name: '',
   balances: {},
-  network: {},
   pools: [],
   totalMarketcap: 0,
   totalVolume1Day: 0,
@@ -39,8 +26,10 @@ const mutations = {
 
 const actions = {
   init: async ({ commit, dispatch }) => {
+    let hasProvider = false;
     commit('set', { loading: true });
     if (provider) {
+      hasProvider = true;
       try {
         const signer = provider.getSigner();
         const address = await signer.getAddress();
@@ -51,23 +40,22 @@ const actions = {
         console.log(e);
       }
     }
-    commit('set', { loading: false, init: true });
+    commit('set', { loading: false, init: true, hasProvider });
   },
   login: async ({ commit, dispatch }) => {
     if (provider) {
       try {
+        const ethereum = window['ethereum'];
         await ethereum.enable();
         const signer = provider.getSigner();
         const address = await signer.getAddress();
-        const network = await provider.getNetwork();
-        const name =
-          network.chainId === 1 ? await provider.lookupAddress(address) : '';
+        const network = await dispatch('getNetwork');
+        const name = network.chainId === 1 ? await provider.lookupAddress(address) : '';
         await dispatch('getBalances', address);
         await dispatch('getProxies', address);
         commit('set', {
           name,
           address,
-          network,
           loading: false
         });
       } catch (error) {
