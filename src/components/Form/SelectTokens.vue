@@ -1,0 +1,79 @@
+<template>
+  <div>
+    <h2 class="mb-4">Select tokens</h2>
+    <Search
+      v-model="query"
+      placeholder="Search name, symbol or address"
+      class="bg-gray px-4"
+    />
+    <div class="text-left overflow-y-scroll mb-4" style="height: 260px;">
+      <p
+        class="px-4 py-3 mt-1 text-center"
+        v-if="query && Object.keys(tokens).length === 0"
+      >
+        No token found for this search
+      </p>
+      <a
+        v-for="token in tokens"
+        :key="token.address"
+        class="d-flex px-4 py-3 border-bottom"
+        @click="selectToken(token.address)"
+      >
+        <Token :address="token.address" class="mr-2" />
+        <div class="flex-auto mt-1 ml-1">
+          <span class="text-gray mr-2">{{ token.name }}</span>
+          <span class="text-normal">{{ token.symbol }}</span>
+        </div>
+        <div
+          class="mt-1 text-normal"
+          v-if="settings.balances[token.address] > 0"
+        >
+          {{ settings.balances[token.address] | balance }}
+        </div>
+      </a>
+    </div>
+    <div v-if="selectedTokens.length" class="mb-4">
+      <Token
+        v-for="selectedToken in selectedTokens"
+        :key="selectedToken"
+        :address="selectedToken"
+        size="58"
+        class="mr-n2 ml-n2 border circle"
+        style="border: 2px solid white !important;"
+      />
+    </div>
+  </div>
+</template>
+
+<script>
+import config from '@/helpers/config';
+
+export default {
+  data() {
+    return {
+      query: '',
+      selectedTokens: []
+    };
+  },
+  computed: {
+    tokens() {
+      return Object.fromEntries(
+        Object.entries(config.tokens).filter(token => {
+          const str = `${token[1].address} ${token[1].symbol} ${token[1].name}`.toLowerCase();
+          return (
+            str.includes(this.query.toLowerCase()) &&
+            !this.selectedTokens.includes(token[1].address)
+          );
+        })
+      );
+    }
+  },
+  methods: {
+    selectToken(tokenAddress) {
+      if (this.selectedTokens.length < 8)
+        this.selectedTokens.push(tokenAddress);
+      this.$emit('input', this.selectedTokens);
+    }
+  }
+};
+</script>
