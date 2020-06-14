@@ -55,6 +55,10 @@ export function scale(input: BigNumber, decimalPlaces: number): BigNumber {
   return input.times(scaleMul);
 }
 
+export function toWei(val: string | utils.BigNumber | BigNumber): BigNumber {
+  return scale(bnum(val.toString()), 18).integerValue();
+}
+
 export function formatBalance(
   balance: BigNumber,
   decimals: number,
@@ -65,4 +69,24 @@ export function formatBalance(
     .decimalPlaces(precision, BigNumber.ROUND_DOWN)
     .toString();
   return padToDecimalPlaces(result, 2);
+}
+
+export function denormalizeBalance(
+  amount: BigNumber,
+  tokenAddress: string
+): BigNumber {
+  return scale(
+    bnum(amount),
+    18 // @TODO change to asset decimals
+  );
+}
+
+export function formatPool(pool) {
+  pool.swapFeePercent = pool.swapFee * 100;
+  pool.holders = pool.shares.length;
+  pool.tokens = pool.tokens.map(token => {
+    token.weightPercent = (100 / pool.totalWeight) * token.denormWeight;
+    return token;
+  });
+  return pool;
 }
