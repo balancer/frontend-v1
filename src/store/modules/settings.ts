@@ -2,12 +2,7 @@ import Vue from 'vue';
 import { ethers } from 'ethers';
 import store from '@/store';
 import provider from '@/helpers/provider';
-import {
-  getBalances,
-  getPool,
-  getPoolsWithMarket,
-  getSharesOwned
-} from '@/helpers/api';
+import { getBalances, getSharesOwned, proxies } from '@/helpers/api';
 
 const ethereum = window['ethereum'];
 if (ethereum) {
@@ -20,6 +15,7 @@ if (ethereum) {
 }
 
 const state = {
+  init: false,
   loading: false,
   address: '',
   name: '',
@@ -29,7 +25,8 @@ const state = {
   totalMarketcap: 0,
   totalVolume1Day: 0,
   sharesOwned: [],
-  poolsById: {}
+  poolsById: {},
+  proxy: ''
 };
 
 const mutations = {
@@ -43,20 +40,18 @@ const mutations = {
 const actions = {
   init: async ({ commit, dispatch }) => {
     commit('set', { loading: true });
-    const pools = await getPoolsWithMarket();
-    const totalMarketcap = pools.reduce((a, b) => a + b.marketcap, 0);
-    const totalVolume1Day = pools.reduce((a, b) => a + b.volume1Day, 0);
     if (provider) {
       try {
         const signer = provider.getSigner();
         const address = await signer.getAddress();
+        dispatch('getBalancer');
+        dispatch('getExchangeRatesFromCoinGecko');
         if (address) await dispatch('login');
       } catch (e) {
         console.log(e);
       }
     }
-    commit('set', { loading: false });
-    commit('set', { pools, totalMarketcap, totalVolume1Day, loading: false });
+    commit('set', { loading: false, init: true });
   },
   login: async ({ commit, dispatch }) => {
     if (provider) {
@@ -64,14 +59,14 @@ const actions = {
         await ethereum.enable();
         const signer = provider.getSigner();
         const address = await signer.getAddress();
-        const name = await provider.lookupAddress(address);
-        // const balance = await provider.getBalance(address);
-        await dispatch('getBalances', address);
         const network = await provider.getNetwork();
+        const name =
+          network.chainId === 1 ? await provider.lookupAddress(address) : '';
+        await dispatch('getBalances', address);
+        await dispatch('getProxies', address);
         commit('set', {
           name,
           address,
-          // balance: ethers.utils.formatEther(balance),
           network,
           loading: false
         });
@@ -79,14 +74,8 @@ const actions = {
         console.error(error);
       }
     } else {
-      console.error('This website require MetaMask');
+      dispatch('notify', ['red', 'This website require MetaMask']);
     }
-  },
-  getPool: async ({ commit }, payload) => {
-    const pool = await getPool(payload);
-    const poolsById = state.poolsById;
-    poolsById[pool.id] = pool;
-    commit('set', { poolsById });
   },
   getSharesOwned: async ({ commit }, payload) => {
     const sharesOwned = await getSharesOwned(payload || state.address);
@@ -95,6 +84,10 @@ const actions = {
   getBalances: async ({ commit }, payload) => {
     const balances = await getBalances(payload || state.address);
     commit('set', { balances });
+  },
+  getProxies: async ({ commit }, payload) => {
+    const proxy = await proxies(payload || state.address);
+    commit('set', { proxy });
   },
   loading: ({ commit }, payload) => {
     commit('set', { loading: payload });
