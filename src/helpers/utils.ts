@@ -87,5 +87,5 @@ export function formatPool(pool) {
     token.weightPercent = (100 / pool.totalWeight) * token.denormWeight;
     return token;
   });
-  return  pool;
+  return pool;
 }
