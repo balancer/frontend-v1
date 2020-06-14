@@ -8,7 +8,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "express": "vue-cli-service express:watch",
-    "express:run": "vue-cli-service express:run"
+    "express:run": "vue-cli-service express:run",
+    "start": "vue-cli-service express:run"
   },
   "dependencies": {
     "@primer/css": "^14.4.0",
