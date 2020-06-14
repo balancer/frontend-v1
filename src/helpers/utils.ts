@@ -72,8 +72,8 @@ export function formatBalance(
 }
 
 export function denormalizeBalance(
-  amount: BigNumber,
-  tokenAddress: string
+  amount: BigNumber
+  // tokenAddress: string
 ): BigNumber {
   return scale(
     bnum(amount),

@@ -41,7 +41,10 @@
           Wrong network
         </span>
         <a
-          v-if="(!settings.address && !settings.hasProvider) || (!settings.address && !wrongNetwork)"
+          v-if="
+            (!settings.address && !settings.hasProvider) ||
+              (!settings.address && !wrongNetwork)
+          "
           class="btn-mktg mr-2"
           v-text="'Connect wallet'"
           @click="login"

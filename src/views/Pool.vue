@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import { createChart } from 'lightweight-charts';
+// import { createChart } from 'lightweight-charts';
 import { mapActions } from 'vuex';
 
 const options = [
