@@ -19,7 +19,7 @@
           :class="{ 'text-blue': rights[i] }"
           size="28"
         />
-        <span class="text-gray">{{ makeTitle(i) }}</span>
+        <span :class="{ 'text-gray': rights[i] }">{{ makeTitle(i) }}</span>
       </a>
     </div>
   </div>

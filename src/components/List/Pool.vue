@@ -27,7 +27,7 @@
         {{ $n(pool.swapFeePercent) }}%
       </div>
       <div class="text-gray text-center mt-3 hide-sm hide-md column">
-        <Price :amount="0" />
+        <Price :amount="pool.totalEthValue" />
       </div>
       <div class="text-gray text-center mt-3 hide-sm hide-md column">
         <Price :amount="0" :precision="0" />
