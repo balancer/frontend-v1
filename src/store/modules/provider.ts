@@ -11,14 +11,7 @@ const backupUrls = {
   42: `https://kovan.infura.io/v3/${infuraId}`
 };
 
-const providerOptions = {
-  walletconnect: {
-    package: WalletConnectProvider,
-    options: {
-      infuraId
-    }
-  }
-};
+const providerOptions = {};
 
 const theme = {
   background: '#ffffff',
