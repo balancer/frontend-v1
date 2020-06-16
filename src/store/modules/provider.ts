@@ -25,7 +25,7 @@ const theme = {
   main: '#586069',
   secondary: '#d0d4dc',
   border: '#DDDFE8',
-  hover: '#ffffff',
+  hover: '#ffffff'
 };
 
 export const web3Modal = new Web3Modal({
