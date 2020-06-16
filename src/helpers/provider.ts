@@ -3,9 +3,11 @@ import abi from '@/helpers/abi';
 
 let provider;
 
-// @ts-ignore
+
 if (
+  // @ts-ignore
   typeof window.ethereum !== 'undefined' ||
+  // @ts-ignore
   typeof window.web3 !== 'undefined'
 ) {
   const ethereum = window['ethereum'] || window['web3'];
