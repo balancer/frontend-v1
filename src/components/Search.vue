@@ -4,7 +4,6 @@
     <input
       class="input h3 py-3 px-2 flex-auto"
       style="height: 68px;"
-      :value="value"
       :placeholder="placeholder || 'Search'"
       @input="handleInput"
       type="text"

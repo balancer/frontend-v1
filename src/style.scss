@@ -59,7 +59,7 @@ a {
 
   ul > li > a {
     @extend .d-inline-block;
-    @extend .py-3;
+    padding: 20px 0;
     color: $gray;
 
     .counter {
@@ -69,7 +69,6 @@ a {
 
     &.router-link-exact-active {
       color: $text-blue;
-      border-bottom: 1px solid $text-blue;
 
       .counter {
         color: $text-blue;
@@ -236,43 +235,6 @@ label {
   font-family: $font-weight-normal;
 }
 
-
-
-
-@keyframes float {
-  0% { transform: translatey(0px); }
-  50% { transform: translatey(-20px); }
-  100% { transform: translatey(0px); }
-}
-
-@keyframes scroll {
-  from { background-position: 0 0; }
-  to { background-position: 0 -120px; }
-}
-
-.anim {
-  animation-duration: 6s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-fill-mode: forwards;
-}
-
-.anim-scroll {
-  animation-name: scroll;
-  animation-duration: 6s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-fill-mode: forwards;
-}
-
-.anim-float {
-  animation-name: float;
-  animation-duration: 3s;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-  animation-fill-mode: forwards;
-}
-
 .check {
   color: $gray-200;
 
@@ -311,4 +273,22 @@ label {
 
 .line-height-0 {
   line-height: 0;
+}
+
+.mosaic {
+  background-image: url("~@/assets/bg.svg");
+  background-position: top;
+}
+
+@keyframes scroll {
+  from { background-position: 0 0; }
+  to { background-position: -260px -300px; }
+}
+
+.anim-scroll {
+  animation-name: scroll;
+  animation-duration: 24s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
 }

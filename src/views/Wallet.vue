@@ -1,19 +1,15 @@
 <template>
-  <div>
+  <div class="border-top">
     <Filters :options="options" v-model="filters" />
     <Container>
-      <ListPlaceholderPool v-if="pools.length === 0" />
-      <template v-else>
-        <ListPool v-for="pool in pools" :key="pool.id" :pool="pool" />
-        <div v-if="settings.balances">
-          <ListBalance
-            v-for="(balance, tokenAddress) in balances"
-            :key="tokenAddress"
-            :balance="balance"
-            :tokenAddress="tokenAddress"
-          />
-        </div>
-      </template>
+      <div v-if="settings.balances">
+        <ListBalance
+          v-for="(balance, tokenAddress) in balances"
+          :key="tokenAddress"
+          :balance="balance"
+          :tokenAddress="tokenAddress"
+        />
+      </div>
     </Container>
   </div>
 </template>
@@ -31,14 +27,11 @@ export default {
     return {
       options,
       loading: false,
-      filters: {}
+      filters: {},
+      sharesOwned: []
     };
   },
   computed: {
-    pools() {
-      if (!this.settings.sharesOwned.length) return [];
-      return this.settings.sharesOwned.map(share => share.poolId);
-    },
     balances() {
       const balancesArr = Object.entries(this.settings.balances).filter(
         balance => balance[1].toFixed(3) > 0
@@ -49,8 +42,9 @@ export default {
   methods: {
     ...mapActions(['getSharesOwned'])
   },
-  created() {
-    if (!this.settings.sharesOwned.length) this.getSharesOwned();
+  async created() {
+    const sharesOwned = await this.getSharesOwned();
+    console.log('Shares owned', sharesOwned);
   }
 };
 </script>

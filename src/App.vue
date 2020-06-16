@@ -1,8 +1,8 @@
 <template>
-  <div id="app" class="overflow-hidden pb-6 bg-blue-light">
+  <div id="app" class="overflow-hidden pb-6">
     <VueLoadingIndicator
       v-if="settings.loading || !settings.init"
-      class="overlay big bg-blue-light"
+      class="overlay big"
     />
     <div v-else>
       <Nav />
