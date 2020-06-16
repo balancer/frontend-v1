@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Filters :options="options" v-model="filters" />
+    <Filters :isSticky="true" :options="options" v-model="filters" />
     <Container
       v-infinite-scroll="loadMore"
       infinite-scroll-distance="5"

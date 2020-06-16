@@ -1,22 +1,35 @@
 <template>
-  <Sticky class="bg-white">
-    <Container class="d-flex">
+  <div>
+    <Sticky v-if="isSticky" class="bg-white">
+      <Container class="d-flex">
+        <Search class="flex-auto" />
+        <a
+          v-for="option in options"
+          :key="option.key"
+          @click="handleChangeOrder(option.key)"
+          class="py-4 text-right column"
+        >
+          {{ option.name }}
+        </a>
+      </Container>
+    </Sticky>
+    <Container class="d-flex" v-else>
       <Search class="flex-auto" />
       <a
         v-for="option in options"
         :key="option.key"
         @click="handleChangeOrder(option.key)"
-        class="py-4 text-center column"
+        class="py-4 text-right column"
       >
         {{ option.name }}
       </a>
     </Container>
-  </Sticky>
+  </div>
 </template>
 
 <script>
 export default {
-  props: ['options'],
+  props: ['options', 'isSticky'],
   data() {
     return {
       query: '',

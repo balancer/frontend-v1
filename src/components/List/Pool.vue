@@ -23,13 +23,13 @@
           </div>
         </div>
       </div>
-      <div class="text-gray text-center mt-3 column">
+      <div class="text-gray text-right mt-3 column">
         {{ $n(pool.swapFeePercent) }}%
       </div>
-      <div class="text-gray text-center mt-3 hide-sm hide-md column">
+      <div class="text-gray text-right mt-3 hide-sm hide-md column">
         <Price :amount="pool.totalEthValue" />
       </div>
-      <div class="text-gray text-center mt-3 hide-sm hide-md column">
+      <div class="text-gray text-right mt-3 hide-sm hide-md column">
         <Price :amount="pool.totalVolume1Day" />
       </div>
     </router-link>

@@ -1,8 +1,8 @@
 import Vue from 'vue';
+import provider, { connectToInjected } from '@/helpers/provider';
+import web3 from '@/helpers/web3';
 import { ethers } from 'ethers';
-import Web3Modal from 'web3modal';
-// import WalletConnectProvider from '@walletconnect/web3-provider';
-// import abi from '@/helpers/abi';
+import abi from '@/helpers/abi';
 
 const supportedChainId = 1;
 const infuraId = '8b8aadcdedf14ddeaa449f33b1c24953';
@@ -10,21 +10,6 @@ const backupUrls = {
   1: `https://mainnet.infura.io/v3/${infuraId}`,
   42: `https://kovan.infura.io/v3/${infuraId}`
 };
-
-const providerOptions = {};
-
-const theme = {
-  background: '#ffffff',
-  main: '#586069',
-  secondary: '#d0d4dc',
-  border: '#DDDFE8',
-  hover: '#ffffff'
-};
-
-export const web3Modal = new Web3Modal({
-  providerOptions,
-  theme
-});
 
 const state = {
   injectedLoaded: false,
@@ -108,21 +93,14 @@ const mutations = {
 
 const actions = {
   loadWeb3Modal: async ({ dispatch }) => {
-    const provider = await web3Modal.connect();
-    if (provider) await dispatch('loadWeb3', provider);
-    await dispatch('getBalances', state.account);
-    await dispatch('getProxies', state.account);
+    await connectToInjected();
+    if (provider) await dispatch('loadWeb3');
   },
-  loadWeb3: async ({ commit, dispatch }, provider = null) => {
+  loadWeb3: async ({ commit, dispatch }) => {
     commit('LOAD_WEB3_REQUEST');
     try {
-      if (provider === null && window.ethereum) {
-        await dispatch('loadProvider', window.ethereum);
-        commit('LOAD_WEB3_SUCCESS');
-      } else if (provider) {
-        await dispatch('loadProvider', provider);
-        commit('LOAD_WEB3_SUCCESS');
-      }
+      await dispatch('loadProvider');
+      commit('LOAD_WEB3_SUCCESS');
       if (!state.injectedLoaded || state.injectedChainId !== supportedChainId) {
         await dispatch('loadBackupProvider');
       } else {
@@ -139,28 +117,25 @@ const actions = {
       commit('LOAD_WEB3_FAILURE', e);
     }
   },
-  loadProvider: async ({ commit, dispatch }, provider) => {
+  loadProvider: async ({ commit, dispatch }) => {
     commit('LOAD_PROVIDER_REQUEST');
     try {
       // @TODO Remove any old listeners
-      const web3 = new ethers.providers.Web3Provider(provider);
-      if ((provider as any).isMetaMask) {
-        console.log(`[Provider] MetaMask auto refresh off`);
-        (provider as any).autoRefreshOnNetworkChange = false;
-      }
       if (provider.on) {
         provider.on('chainChanged', async () => {
           commit('HANDLE_CHAIN_CHANGED');
           if (state.active) {
             await dispatch('loadWeb3');
-            // @TODO Loads pool & balance data for account
+            await dispatch('getBalances', state.account);
+            await dispatch('getProxies', state.account);
           }
         });
         provider.on('accountsChanged', async accounts => {
           if (accounts.length === 0) {
             if (state.active) await dispatch('loadWeb3');
           } else {
-            // @TODO Loads pool & balance data for account
+            await dispatch('getBalances', state.account);
+            await dispatch('getProxies', state.account);
             commit('HANDLE_ACCOUNTS_CHANGED', accounts[0]);
           }
         });
@@ -172,7 +147,8 @@ const actions = {
           commit('HANDLE_NETWORK_CHANGED');
           if (state.active) {
             await dispatch('loadWeb3');
-            // @TODO Loads pool & balance data for account
+            await dispatch('getBalances', state.account);
+            await dispatch('getProxies', state.account);
           }
         });
       }
@@ -209,12 +185,12 @@ const actions = {
       commit('LOAD_BACKUP_PROVIDER_FAILURE', e);
     }
   },
-  sendTransaction: async ({ commit }) =>
-    // [contractType, contractAddress, action, params]
-    {
-      commit('SEND_TRANSACTION_REQUEST');
-      try {
-        /*
+  sendTransaction: async (
+    { commit },
+    [contractType, contractAddress, action, params]
+  ) => {
+    commit('SEND_TRANSACTION_REQUEST');
+    try {
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
         contractAddress,
@@ -225,11 +201,10 @@ const actions = {
       const tx = await contractWithSigner[action](...params);
       await tx.wait();
       commit('SEND_TRANSACTION_SUCCESS');
-      */
-      } catch (e) {
-        commit('SEND_TRANSACTION_FAILURE', e);
-      }
+    } catch (e) {
+      commit('SEND_TRANSACTION_FAILURE', e);
     }
+  }
 };
 
 export default {

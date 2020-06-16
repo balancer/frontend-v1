@@ -60,10 +60,12 @@
           </div>
         </div>
       </Container>
-      <Filters :options="options" />
-      <Container>
-        <ListTokens :pool="pool" />
-      </Container>
+      <div class="overflow-hidden clearfix">
+        <Filters class="overflow-hidden" :options="options" />
+        <Container>
+          <ListTokens :pool="pool" />
+        </Container>
+      </div>
     </div>
     <ModalAddLiquidity
       :pool="pool"
