@@ -5,16 +5,18 @@
 
 $bg-blue: #384AFF;
 $bg-blue-light: #F7F8FC;
-$bg-gray: #DDDFE8;
+// $bg-gray: #DDDFE8;
+$bg-gray: #d0d4dc;
 $bg-green: #21b66f;
 $text-blue: #384AFF;
 $text-red: #ff3856;
 $blue-100: #DCE2FF;
 $body-font-size: 17px;
 $body-line-height: 1.4;
-$gray: #9fa5af;
+// $gray: #9fa5af;
+$gray: $bg-gray;
 $h2-size: 26px;
-$border: 1px solid $bg-gray;
+$border: 1px solid #e6e8ee;
 $font-mktg: 'HarmoniaSansProCyrBold', Helvetica, Arial, sans-serif;
 $font-weight-bold: 'HarmoniaSansProCyrBold', Helvetica, Arial, sans-serif;
 $font-weight-normal: 'HarmoniaSansProCyrSemiBd', Helvetica, Arial, sans-serif;
@@ -59,16 +61,24 @@ a {
 
   ul > li > a {
     @extend .d-inline-block;
-    padding: 20px 0;
-    color: $gray;
+    padding: 24px 0 0;
+    color: $bg-gray;
+
+    .blob {
+      display: none;
+    }
 
     .counter {
-      color: $gray;
+      color: white;
       background-color: $bg-gray !important;
     }
 
     &.router-link-exact-active {
       color: $text-blue;
+
+      .blob {
+        display: block;
+      }
 
       .counter {
         color: $text-blue;
@@ -174,6 +184,54 @@ a {
     color: $bg-blue;
   }
 }
+
+.web3modal-modal-lightbox {
+  background: transparentize(#0e113b, 0.2) !important;
+
+  .web3modal-modal-card {
+    @extend .px-4;
+    @extend .py-6;
+    max-width: 440px;
+
+    .web3modal-provider-wrapper {
+      @extend .rounded-md-2;
+      @extend .rounded-lg-2;
+      @extend .py-3;
+      @extend .my-2;
+      background-color: $white;
+
+      .web3modal-provider-container {
+        padding: 0;
+        width: auto;
+        text-align: left;
+        flex-direction: row !important;
+
+        .web3modal-provider-icon {
+          @extend .mr-3;
+          width: 45px;
+
+          img {
+            width: 32px;
+            height: 32px;
+          }
+        }
+
+        .web3modal-provider-name {
+          @extend .flex-auto;
+          font-size: 20px;
+          margin-top: 4px;
+        }
+
+        .web3modal-provider-description {
+          display: none;
+        }
+      }
+
+    }
+  }
+}
+
+
 
 .modal {
   .backdrop {
@@ -291,4 +349,14 @@ label {
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   animation-fill-mode: forwards;
+}
+
+.blob {
+  display: block;
+  background-color: $bg-blue;
+  border-radius: 6px;
+  height: 6px;
+  max-width: 32px;
+  animation-duration: 0.6s;
+  animation-delay: 0s;
 }

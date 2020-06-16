@@ -60,7 +60,7 @@
           </div>
         </div>
       </Container>
-      <Filters :options="options" class="border-top" />
+      <Filters :options="options" />
       <Container>
         <ListTokens :pool="pool" />
       </Container>
