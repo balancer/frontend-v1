@@ -7,7 +7,7 @@
     <div class="px-4">
       <div class="d-flex text-right mb-3">
         <label class="flex-auto text-left">Tokens</label>
-        <label class="column-sm">Weight</label>
+        <label class="column-sm">Weights</label>
       </div>
       <div class="mb-6 text-left">
         <div v-for="(token, i) in tokens" :key="token" class="border-top">
@@ -18,7 +18,7 @@
             </div>
             <div class="flex-auto">
               <p class="my-2 py-1" v-if="weightRatio * weights[i]">
-                {{ $n(weightRatio * weights[i]) }}%
+                {{ $n((weightRatio * weights[i]).toFixed(2)) }}%
               </p>
             </div>
             <input

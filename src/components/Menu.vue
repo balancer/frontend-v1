@@ -1,8 +1,8 @@
 <template>
   <nav id="menu" class="border-bottom">
-    <div class="bg-blue rounded-lg-2 mx-lg-4 py-8 mb-2">
-      <Container>
-        <h1 class="text-white">
+    <div class="bg-blue-1 mosaic rounded-lg-2 mx-lg-4 py-8">
+      <Container class="d-flex">
+        <h1 class="text-blue flex-auto">
           Your portfolio yielder
         </h1>
       </Container>
@@ -13,9 +13,9 @@
           <router-link :to="{ name: 'home' }">
             Shared pools
             <span
-              v-if="explore.balancer.poolCount"
+              v-if="explore.balancer.finalizedPoolCount"
               class="counter ml-2"
-              v-text="explore.balancer.poolCount"
+              v-text="$n(explore.balancer.finalizedPoolCount)"
             />
           </router-link>
         </li>
@@ -23,11 +23,9 @@
           <router-link :to="{ name: 'private' }">
             Private pools
             <span
-              v-if="explore.balancer.poolCount"
+              v-if="explore.balancer.privatePoolCount"
               class="counter ml-2"
-              v-text="
-                explore.balancer.poolCount - explore.balancer.finalizedPoolCount
-              "
+              v-text="$n(explore.balancer.privatePoolCount)"
             />
           </router-link>
         </li>
@@ -40,13 +38,3 @@
     </Container>
   </nav>
 </template>
-
-<script>
-export default {
-  computed: {
-    privatePoolCount() {
-      return this.settings.pools.filter(pool => !pool.finalized).length;
-    }
-  }
-};
-</script>

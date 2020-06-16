@@ -52,6 +52,8 @@ const actions = {
     commit('GET_BALANCER_REQUEST');
     try {
       const { balancer } = await query(config.subgraphUrl, q);
+      balancer.privatePoolCount =
+        balancer.poolCount - balancer.finalizedPoolCount;
       commit('GET_BALANCER_SUCCESS', balancer);
     } catch (e) {
       commit('GET_BALANCER_FAILURE', e);

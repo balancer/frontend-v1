@@ -8,9 +8,9 @@
         >
           <img
             src="~/@/assets/logo.svg"
-            class="mr-2 v-align-middle"
-            width="28"
-            height="28"
+            class="mr-2 v-align-middle anim-pulse-in"
+            width="32"
+            height="32"
           />
           <div class="h2 d-inline-block v-align-middle">smartpool</div>
         </router-link>

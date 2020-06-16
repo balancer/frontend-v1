@@ -9,9 +9,7 @@
       <div>+1%</div>
     </div>
     <div class="column text-center">
-      <div class="mb-1 text-gray">
-        {{ balance | balance }} {{ token.symbol }}
-      </div>
+      <div class="mb-1 text-gray">{{ $n(balance) }} {{ token.symbol }}</div>
       <Price :tokenAddress="token.address" :amount="1" />
     </div>
   </div>

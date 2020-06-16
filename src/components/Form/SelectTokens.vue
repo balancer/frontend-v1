@@ -29,7 +29,7 @@
     <Search
       v-model="query"
       placeholder="Search name, symbol or address"
-      class="bg-gray px-4"
+      class="bg-blue-light px-4"
     />
     <div class="text-left overflow-y-scroll mb-4" style="height: 260px;">
       <p
@@ -49,11 +49,8 @@
           <span class="text-gray mr-2">{{ token.name }}</span>
           <span class="text-normal">{{ token.symbol }}</span>
         </div>
-        <div
-          class="mt-1 text-normal"
-          v-if="settings.balances[token.address] > 0"
-        >
-          {{ settings.balances[token.address] | balance }}
+        <div class="mt-1 text-normal" v-if="token.balance >= 0.001">
+          {{ $n(token.balance) }}
         </div>
       </a>
     </div>
@@ -61,6 +58,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import config from '@/helpers/config';
 
 export default {
@@ -71,15 +69,26 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(['getPrice']),
     tokens() {
       return Object.fromEntries(
-        Object.entries(config.tokens).filter(token => {
-          const str = `${token[1].address} ${token[1].symbol} ${token[1].name}`.toLowerCase();
-          return (
-            str.includes(this.query.toLowerCase()) &&
-            !this.selectedTokens.includes(token[1].address)
-          );
-        })
+        Object.entries(config.tokens)
+          .map(token => {
+            token[1].balance = this.settings.balances[token[1].address];
+            token[1].usdValue = this.getPrice(
+              token[1].address,
+              this.settings.balances[token[1].address]
+            );
+            return token;
+          })
+          .filter(token => {
+            const str = `${token[1].address} ${token[1].symbol} ${token[1].name}`.toLowerCase();
+            return (
+              str.includes(this.query.toLowerCase()) &&
+              !this.selectedTokens.includes(token[1].address)
+            );
+          })
+          .sort((a, b) => b[1].usdValue - a[1].usdValue)
       );
     }
   },
@@ -93,6 +102,7 @@ export default {
       this.selectedTokens = this.selectedTokens.filter(
         token => token !== tokenAddress
       );
+      this.$emit('input', this.selectedTokens);
     }
   }
 };

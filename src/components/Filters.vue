@@ -1,5 +1,5 @@
 <template>
-  <Sticky class="bg-gray">
+  <Sticky class="bg-blue-light">
     <Container class="d-flex">
       <Search class="flex-auto" />
       <a

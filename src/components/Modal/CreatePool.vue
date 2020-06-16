@@ -1,10 +1,13 @@
 <template>
   <Modal :open="open" @close="$emit('close')">
-    <div class="modal-body py-6 text-center" :class="{ 'bg-blue': step === 0 }">
+    <div
+      class="modal-body py-6 text-center"
+      :class="{ 'bg-blue-1 mosaic anim-scroll': step === 0 }"
+    >
       <Progress :step="step" :stepCount="lastStep" />
       <div v-if="!step">
-        <h2 class="text-white">smartpool</h2>
-        <h2 class="my-8 text-white anim-fade-in col-10 mx-auto">
+        <img src="~/@/assets/logo.svg" width="50" height="50" />
+        <h2 class="mt-7 mb-8 text-blue anim-fade-in col-10 mx-auto">
           Welcome on the smart pool creation wizard
         </h2>
       </div>
@@ -23,6 +26,7 @@
         />
         <FormSelectSwapFee v-if="step === 4" />
         <FormSelectRights v-if="step === 5" />
+        <FormPreview v-if="step === 6" />
         <div class="mx-3 overflow-hidden">
           <button
             type="button"
@@ -33,11 +37,11 @@
             Back
           </button>
           <button
+            :disabled="step !== 0 && tokens.length < 2"
             type="submit"
             class="btn-mktg d-inline-block column mx-1"
-            :class="{ 'btn-white': step === 0 }"
           >
-            {{ step === lastStep ? 'Preview' : 'Next' }}
+            {{ step === lastStep - 1 ? 'Preview' : 'Next' }}
           </button>
         </div>
       </form>
@@ -53,10 +57,12 @@ export default {
   data() {
     return {
       step: 0,
-      lastStep: 5,
+      lastStep: 6,
       tokens: [],
       weights: [],
-      balances: []
+      balances: [],
+      swapFee: '0.15',
+      rights: []
     };
   },
   watch: {
