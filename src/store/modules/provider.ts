@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { ethers } from 'ethers';
 import Web3Modal from 'web3modal';
-import WalletConnectProvider from '@walletconnect/web3-provider';
+// import WalletConnectProvider from '@walletconnect/web3-provider';
 // import abi from '@/helpers/abi';
 
 const supportedChainId = 1;
