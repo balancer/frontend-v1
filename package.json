@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@primer/css": "^14.4.0",
+    "@types/react": "^16.9.36",
     "@vue/cli-plugin-babel": "^4.4.0",
     "@vue/cli-plugin-eslint": "^4.4.0",
     "@vue/cli-plugin-typescript": "^4.4.0",
