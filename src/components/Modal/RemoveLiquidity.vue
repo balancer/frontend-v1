@@ -70,9 +70,9 @@ export default {
   },
   watch: {
     pool() {
-      if (!this.settings.address) return;
+      if (!this.provider.account) return;
       const myShares = this.pool.shares.filter(
-        share => share.userAddress.id === this.settings.address.toLowerCase()
+        share => share.userAddress.id === this.provider.account.toLowerCase()
       );
       this.poolTokenBalance = myShares[0] ? myShares[0].balance : 0;
     }

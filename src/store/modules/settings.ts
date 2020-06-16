@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import provider from '@/helpers/provider';
+// import provider from '@/helpers/provider';
 import { getBalances, getSharesOwned, proxies } from '@/helpers/api';
 
 const state = {
@@ -26,45 +26,13 @@ const mutations = {
 
 const actions = {
   init: async ({ commit, dispatch }) => {
-    let hasProvider = false;
     commit('set', { loading: true });
-    if (provider) {
-      hasProvider = true;
-      try {
-        const signer = provider.getSigner();
-        const address = await signer.getAddress();
-        dispatch('getBalancer');
-        dispatch('getExchangeRatesFromCoinGecko');
-        if (address) await dispatch('login');
-      } catch (e) {
-        console.log(e);
-      }
-    }
-    commit('set', { loading: false, init: true, hasProvider });
+    await dispatch('getBalancer');
+    await dispatch('getExchangeRatesFromCoinGecko');
+    commit('set', { loading: false, init: true });
   },
-  login: async ({ commit, dispatch }) => {
-    if (provider) {
-      try {
-        const ethereum = window['ethereum'];
-        await ethereum.enable();
-        const signer = provider.getSigner();
-        const address = await signer.getAddress();
-        const network = await dispatch('getNetwork');
-        const name =
-          network.chainId === 1 ? await provider.lookupAddress(address) : '';
-        await dispatch('getBalances', address);
-        await dispatch('getProxies', address);
-        commit('set', {
-          name,
-          address,
-          loading: false
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      dispatch('notify', ['red', 'This website require MetaMask']);
-    }
+  login: async ({ dispatch }) => {
+    await dispatch('loadWeb3Modal');
   },
   getSharesOwned: async ({ commit }, payload) => {
     const sharesOwned = await getSharesOwned(payload || state.address);

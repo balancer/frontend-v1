@@ -28,7 +28,7 @@ const mutations = {
 const actions = {
   getAllowance: async ({ commit }, { tokenAddress, spender }) => {
     // @ts-ignore
-    const owner = store.state.settings.address;
+    const owner = store.state.provider.account;
     const tokenContract = provider.getContract('TestToken', tokenAddress);
     const approval = formatEther(await tokenContract.allowance(owner, spender));
     commit('SET_APPROVAL', { tokenAddress, spender, approval });
