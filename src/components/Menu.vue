@@ -1,8 +1,8 @@
 <template>
   <nav id="menu" class="mb-3">
-    <div class="bg-blue-1 mosaic rounded-lg-2 mx-lg-4 py-8">
+    <div class="bg-black mosaic rounded-lg-2 mx-lg-4 py-8">
       <Container>
-        <h1 class="text-blue text-center text-md-left flex-auto">
+        <h1 class="text-white text-center text-md-left flex-auto">
           Your portfolio yielder
         </h1>
       </Container>

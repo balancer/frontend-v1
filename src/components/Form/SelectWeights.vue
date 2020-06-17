@@ -17,18 +17,18 @@
               {{ config.tokens[token].symbol }}
             </div>
             <div class="flex-auto">
-              <p class="my-2 py-1" v-if="weightRatio * weights[i]">
-                {{ $n((weightRatio * weights[i]).toFixed(2)) }}%
+              <p class="my-2 py-1" v-if="weightRatio * startWeights[i]">
+                {{ $n((weightRatio * startWeights[i]).toFixed(2)) }}%
               </p>
             </div>
             <input
-              v-model="weights[i]"
+              v-model="startWeights[i]"
               type="number"
               class="h2 border-0 form-control text-right ml-3 column"
               placeholder="0.0"
               min="2"
               max="98"
-              @input="$emit('input', weights)"
+              @input="$emit('input', startWeights)"
             />
           </div>
         </div>
@@ -41,31 +41,33 @@
 import config from '@/helpers/config';
 
 export default {
-  props: ['tokens'],
+  props: ['value', 'tokens'],
   data() {
     return {
       config,
-      weights: []
+      startWeights: []
     };
   },
   computed: {
     weightRatio() {
-      return 100 / this.weights.reduce((a, b) => a + parseFloat(b), 0);
+      return 100 / this.startWeights.reduce((a, b) => a + parseFloat(b), 0);
     },
     tokensForPie() {
       return this.tokens.map((token, i) => {
         return {
           address: token,
-          weightPercent: this.weightRatio * this.weights[i]
+          weightPercent: this.weightRatio * this.startWeights[i]
         };
       });
     }
   },
   created() {
-    this.tokens.forEach(() => {
-      this.weights.push((100 / this.tokens.length).toFixed());
-    });
-    this.$emit('input', this.weights);
+    if (this.value.length === this.tokens.length)
+      return (this.startWeights = this.value);
+    this.tokens.forEach(() =>
+      this.startWeights.push((100 / this.tokens.length).toFixed())
+    );
+    this.$emit('input', this.startWeights);
   }
 };
 </script>

@@ -341,12 +341,12 @@ label {
 
 @keyframes scroll {
   from { background-position: 0 0; }
-  to { background-position: -260px -600px; }
+  to { background-position: 600px -260px; }
 }
 
 .anim-scroll {
   animation-name: scroll;
-  animation-duration: 24s;
+  animation-duration: 16s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   animation-fill-mode: forwards;
@@ -368,4 +368,9 @@ label {
 
 .text-black {
   color: $black;
+}
+
+.Progress {
+  height: 6px;
+  overflow: hidden;
 }

@@ -16,11 +16,23 @@
         step="0.0001"
         min="0.0001"
         max="10"
+        @input="$emit('input', swapFee)"
+        v-model="swapFee"
       />
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  props: ['value'],
+  data() {
+    return {
+      swapFee: ''
+    };
+  },
+  created() {
+    this.swapFee = this.value;
+  }
+};
 </script>
