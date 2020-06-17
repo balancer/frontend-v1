@@ -132,7 +132,8 @@ export default {
       height: 300,
       priceScale: {
         position: 'right',
-        borderVisible: false
+        borderVisible: false,
+        mode: 2
       },
       timeScale: {
         barSpacing: 30,
