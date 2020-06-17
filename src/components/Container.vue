@@ -1,5 +1,5 @@
 <template>
-  <div class="container-lg p-responsive">
+  <div class="container-lg px-4">
     <slot />
   </div>
 </template>
