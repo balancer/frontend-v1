@@ -29,14 +29,10 @@
 import { capitalize, startCase } from 'lodash';
 
 export default {
+  props: ['value'],
   data() {
     return {
-      rights: {
-        pausableSwap: true,
-        configurableSwapFee: true,
-        configurableWeights: true,
-        configurableAddRemoveTokens: true
-      }
+      rights: {}
     };
   },
   methods: {
@@ -45,7 +41,11 @@ export default {
     },
     switchRight(right) {
       this.rights[right] = !this.rights[right];
+      this.$emit('input', this.rights);
     }
+  },
+  created() {
+    this.rights = this.value;
   }
 };
 </script>

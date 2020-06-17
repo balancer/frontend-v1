@@ -2,31 +2,44 @@
   <Modal :open="open" @close="$emit('close')">
     <div
       class="modal-body py-6 text-center"
-      :class="{ 'bg-blue-1 mosaic anim-scroll': step === 0 }"
+      :class="{ 'bg-blue mosaic anim-scroll': step === 0 }"
     >
       <Progress :step="step" :stepCount="lastStep" />
       <div v-if="!step">
-        <img src="~/@/assets/logo.svg" width="50" height="50" />
-        <h2 class="mt-7 mb-8 text-blue anim-fade-in col-10 mx-auto">
+        <img src="~/@/assets/logo-white.svg" width="50" height="50" />
+        <h2 class="mt-7 mb-8 text-white anim-fade-in col-10 mx-auto">
           Welcome on the smart pool creation wizard
         </h2>
       </div>
       <form @submit.prevent="handleSubmit">
-        <FormSelectTokens v-if="step === 1" v-model="tokens" />
+        <FormSelectTokens v-if="step === 1" v-model="tokens" :value="tokens" />
         <FormSelectWeights
           v-if="step === 2"
-          v-model="weights"
+          v-model="startWeights"
+          :value="startWeights"
           :tokens="tokens"
         />
         <FormSelectBalances
           v-if="step === 3"
-          v-model="balances"
+          v-model="startBalances"
+          :value="startBalances"
           :tokens="tokens"
-          :weights="weights"
+          :startWeights="startWeights"
         />
-        <FormSelectSwapFee v-if="step === 4" />
-        <FormSelectRights v-if="step === 5" />
-        <FormPreview v-if="step === 6" />
+        <FormSelectSwapFee
+          v-if="step === 4"
+          v-model="swapFee"
+          :value="swapFee"
+        />
+        <FormSelectRights v-if="step === 5" v-model="rights" :value="rights" />
+        <FormPreview
+          v-if="step === 6"
+          :tokens="tokens"
+          :startWeights="startWeights"
+          :startBalances="startBalances"
+          :swapFee="swapFee"
+          :rights="rights"
+        />
         <div class="mx-3 overflow-hidden">
           <button
             type="button"
@@ -40,8 +53,11 @@
             :disabled="step !== 0 && tokens.length < 2"
             type="submit"
             class="btn-mktg d-inline-block column mx-1"
+            :class="{ 'btn-white': step === 0 }"
           >
-            {{ step === lastStep - 1 ? 'Preview' : 'Next' }}
+            <template v-if="step === lastStep - 1">Preview</template>
+            <template v-else-if="step === lastStep">Confirm</template>
+            <template v-else>Next</template>
           </button>
         </div>
       </form>
@@ -59,18 +75,23 @@ export default {
       step: 0,
       lastStep: 6,
       tokens: [],
-      weights: [],
-      balances: [],
+      startWeights: [],
+      startBalances: [],
       swapFee: '0.15',
-      rights: []
+      rights: {
+        pausableSwap: true,
+        configurableSwapFee: true,
+        configurableWeights: true,
+        configurableAddRemoveTokens: true
+      }
     };
   },
   watch: {
     open() {
       this.step = 0;
       this.tokens = [];
-      this.weights = [];
-      this.balances = [];
+      this.startWeights = [];
+      this.startBalances = [];
     }
   },
   methods: {
@@ -79,10 +100,10 @@ export default {
       if (this.step === this.lastStep) {
         const tokens = this.tokens.map(token => token.address);
         const amounts = this.tokens.map(token => token.amount);
-        const weights = this.tokens.map(token => token.weight);
+        const startWeights = this.tokens.map(token => token.weight);
         const fee = '0.1';
         const proxyAddress = this.settings.proxy;
-        this.createPool({ proxyAddress, tokens, amounts, weights, fee });
+        this.createPool({ proxyAddress, tokens, amounts, startWeights, fee });
       } else {
         this.step++;
       }

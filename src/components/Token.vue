@@ -9,7 +9,7 @@
     />
     <span
       :style="style"
-      class="circle d-block bg-gray text-center overflow-hidden"
+      class="circle d-block bg-gray text-white overflow-hidden"
       v-text="symbol"
       v-else
     />

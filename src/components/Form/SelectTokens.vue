@@ -62,6 +62,7 @@ import { mapGetters } from 'vuex';
 import config from '@/helpers/config';
 
 export default {
+  props: ['value'],
   data() {
     return {
       query: '',
@@ -104,6 +105,9 @@ export default {
       );
       this.$emit('input', this.selectedTokens);
     }
+  },
+  created() {
+    this.selectedTokens = this.value;
   }
 };
 </script>
