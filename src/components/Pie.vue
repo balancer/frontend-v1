@@ -23,7 +23,7 @@ export default {
     style() {
       let acum = 0;
       let nextColor = 0;
-      const styles = this.tokens.map((token, i) => {
+      const styles = this.tokens.map(token => {
         const tokenConfig = config.tokens[getAddress(token.address)];
         let chartColor = unknownColors[nextColor];
         if (tokenConfig && tokenConfig.chartColor) {
