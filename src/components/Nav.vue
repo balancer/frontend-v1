@@ -42,7 +42,7 @@
             (!provider.account && !provider.injectedLoaded) ||
               (!provider.account && !wrongNetwork)
           "
-          class="btn-mktg mr-2"
+          class="btn-mktg"
           v-text="'Connect wallet'"
           @click="login"
         />

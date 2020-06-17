@@ -51,3 +51,16 @@ export function formatPool(pool) {
   }, 0);
   return pool;
 }
+
+export async function getMarketChartFromCoinGecko(address) {
+  const ratePerDay = {};
+  const uri = `https://api.coingecko.com/api/v3/coins/ethereum/contract/${address}/market_chart?vs_currency=usd&days=60`;
+  const marketChart = await fetch(uri).then(res => res.json());
+  marketChart.prices.forEach(p => {
+    const date = new Date();
+    date.setTime(p[0]);
+    const day = date.toISOString();
+    ratePerDay[day] = p[1];
+  });
+  return ratePerDay;
+}

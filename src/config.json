@@ -125,7 +125,7 @@
         "iconAddress": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
         "coingeckoAddress": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
         "precision": 4,
-        "chartColor": "#433455"
+        "chartColor": "#627eea"
       },
       "0x6B175474E89094C44Da98b954EedeAC495271d0F": {
         "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
@@ -135,7 +135,7 @@
         "iconAddress": "0x6b175474e89094c44da98b954eedeac495271d0f",
         "coingeckoAddress": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
         "precision": 2,
-        "chartColor": "#5d6872"
+        "chartColor": "#fab830"
       },
       "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2": {
         "address": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
@@ -145,7 +145,7 @@
         "iconAddress": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
         "coingeckoAddress": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
         "precision": 4,
-        "chartColor": "#7e9e99"
+        "chartColor": "#5dbdac"
       },
       "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48": {
         "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
@@ -155,7 +155,7 @@
         "iconAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
         "coingeckoAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
         "precision": 2,
-        "chartColor": "#9d9f7f"
+        "chartColor": "#2874ca"
       },
       "0x0327112423F3A68efdF1fcF402F6c5CB9f7C33fd": {
         "address": "0x0327112423F3A68efdF1fcF402F6c5CB9f7C33fd",
@@ -165,7 +165,7 @@
         "iconAddress": "0x0327112423F3A68efdF1fcF402F6c5CB9f7C33fd",
         "coingeckoAddress": "0x0327112423F3A68efdF1fcF402F6c5CB9f7C33fd",
         "precision": 6,
-        "chartColor": "#557064"
+        "chartColor": "#fc02a7"
       },
       "0x39AA39c021dfbaE8faC545936693aC917d5E7563": {
         "address": "0x39AA39c021dfbaE8faC545936693aC917d5E7563",
@@ -195,7 +195,7 @@
         "iconAddress": "0x1985365e9f78359a9B6AD760e32412f4a445E862",
         "coingeckoAddress": "0x1985365e9f78359a9B6AD760e32412f4a445E862",
         "precision": 4,
-        "chartColor": "#6e6962"
+        "chartColor": "#543480"
       },
       "0x514910771AF9Ca656af840dff83E8264EcF986CA": {
         "address": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
@@ -205,7 +205,7 @@
         "iconAddress": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
         "coingeckoAddress": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
         "precision": 2,
-        "chartColor": "#387080"
+        "chartColor": "#2959da"
       },
       "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599": {
         "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
@@ -215,7 +215,7 @@
         "iconAddress": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
         "coingeckoAddress": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
         "precision": 4,
-        "chartColor": "#68aca9"
+        "chartColor": "#f08e19"
       },
       "0x0D8775F648430679A709E98d2b0Cb6250d2887EF": {
         "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
@@ -225,7 +225,7 @@
         "iconAddress": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
         "coingeckoAddress": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
         "precision": 2,
-        "chartColor": "#be955c"
+        "chartColor": "#ff5703"
       },
       "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F": {
         "address": "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
@@ -235,7 +235,7 @@
         "iconAddress": "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
         "coingeckoAddress": "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
         "precision": 2,
-        "chartColor": "#8d6268"
+        "chartColor": "#908d9a"
       },
       "0x57Ab1ec28D129707052df4dF418D58a2D46d5f51": {
         "address": "0x57Ab1ec28D129707052df4dF418D58a2D46d5f51",
@@ -245,7 +245,7 @@
         "iconAddress": "0x57Ab1ec28D129707052df4dF418D58a2D46d5f51",
         "coingeckoAddress": "0x57Ab1ec28D129707052df4dF418D58a2D46d5f51",
         "precision": 2,
-        "chartColor": "#416aa3"
+        "chartColor": "#1e1b31"
       },
       "0x960b236A07cf122663c4303350609A66A7B288C0": {
         "address": "0x960b236A07cf122663c4303350609A66A7B288C0",
@@ -255,7 +255,7 @@
         "iconAddress": "0x960b236A07cf122663c4303350609A66A7B288C0",
         "coingeckoAddress": "0x960b236A07cf122663c4303350609A66A7B288C0",
         "precision": 2,
-        "chartColor": "#c28d75"
+        "chartColor": "#2bd4e0"
       },
       "0xE41d2489571d322189246DaFA5ebDe1F4699F498": {
         "address": "0xE41d2489571d322189246DaFA5ebDe1F4699F498",
@@ -305,7 +305,7 @@
         "iconAddress": "0x9Cb2f26A23b8d89973F08c957C4d7cdf75CD341c",
         "coingeckoAddress": "0x9Cb2f26A23b8d89973F08c957C4d7cdf75CD341c",
         "precision": 2,
-        "chartColor": "#666092"
+        "chartColor": "#0ba3ef"
       },
       "0x04Fa0d235C4abf4BcF4787aF4CF447DE572eF828": {
         "address": "0x04Fa0d235C4abf4BcF4787aF4CF447DE572eF828",
@@ -315,7 +315,7 @@
         "iconAddress": "0x04Fa0d235C4abf4BcF4787aF4CF447DE572eF828",
         "coingeckoAddress": "0x04Fa0d235C4abf4BcF4787aF4CF447DE572eF828",
         "precision": 2,
-        "chartColor": "#a593a5"
+        "chartColor": "#ff4948"
       },
       "0xfC1E690f61EFd961294b3e1Ce3313fBD8aa4f85d": {
         "address": "0xfC1E690f61EFd961294b3e1Ce3313fBD8aa4f85d",
@@ -435,7 +435,7 @@
         "iconAddress": "0xdd974D5C2e2928deA5F71b9825b8b646686BD200",
         "coingeckoAddress": "0xdd974D5C2e2928deA5F71b9825b8b646686BD200",
         "precision": 2,
-        "chartColor": "#557064"
+        "chartColor": "#01b693"
       },
       "0xBBbbCA6A901c926F240b89EacB641d8Aec7AEafD": {
         "address": "0xBBbbCA6A901c926F240b89EacB641d8Aec7AEafD",
@@ -485,7 +485,7 @@
         "iconAddress": "0xB4EFd85c19999D84251304bDA99E90B92300Bd93",
         "coingeckoAddress": "0xB4EFd85c19999D84251304bDA99E90B92300Bd93",
         "precision": 2,
-        "chartColor": "#a593a5"
+        "chartColor": "#ff915a"
       },
       "0x31Bb711de2e457066c6281f231fb473FC5c2afd3": {
         "address": "0x31Bb711de2e457066c6281f231fb473FC5c2afd3",
@@ -555,7 +555,7 @@
         "iconAddress": "0x06AF07097C9Eeb7fD685c692751D5C66dB49c215",
         "coingeckoAddress": "0x06AF07097C9Eeb7fD685c692751D5C66dB49c215",
         "precision": 2,
-        "chartColor": "#9a9a97"
+        "chartColor": "#de3443"
       },
       "0x1776e1F26f98b1A5dF9cD347953a26dd3Cb46671": {
         "address": "0x1776e1F26f98b1A5dF9cD347953a26dd3Cb46671",

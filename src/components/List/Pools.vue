@@ -18,7 +18,7 @@
 import { mapActions } from 'vuex';
 
 const options = [
-  { key: 'swapFee', name: 'Swap fee (%)' },
+  { key: 'swapFee', name: 'Swap fee' },
   { key: 'marketcap', name: 'Marketcap' },
   { key: 'volume1Day', name: 'Vol. 24h' }
 ];
