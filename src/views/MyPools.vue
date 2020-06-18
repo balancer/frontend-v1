@@ -1,6 +1,7 @@
 <template>
   <div>
-    <Menu />
+    <Hero />
+    <NavMain />
     <Container>
       <div class="float-left col-12 col-md-4 pr-3 mb-3">
         <div
@@ -13,7 +14,12 @@
               Enim eu turpis egestas pretium aenean pharetra magna. Facilisis
               gravida neque convallis a.
             </p>
-            <p class="mb-3"><a>Learn more</a></p>
+            <p class="mb-3">
+              <a target="_blank">
+                Learn more
+                <Icon name="external-link" size="16" class="ml-1" />
+              </a>
+            </p>
           </div>
           <div>
             <a class="btn-white text-black">Create shared pool</a>
@@ -31,7 +37,12 @@
               Morbi tristique senectus et netus et malesuada fames. Erat nam at
               lectus urna.
             </p>
-            <p class="mb-3"><a>Learn more</a></p>
+            <p class="mb-3">
+              <a target="_blank">
+                Learn more
+                <Icon name="external-link" size="16" class="ml-1" />
+              </a>
+            </p>
           </div>
           <div>
             <a @click="modalOpen = true" class="btn-white">Create smart pool</a>

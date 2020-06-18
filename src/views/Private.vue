@@ -1,6 +1,7 @@
 <template>
   <div>
-    <Menu />
+    <Hero />
+    <NavMain />
     <ListPools :query="{ where: { finalized: 'false' } }" />
   </div>
 </template>

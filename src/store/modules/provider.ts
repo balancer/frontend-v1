@@ -15,6 +15,7 @@ const state = {
   injectedLoaded: false,
   injectedChainId: null,
   account: null,
+  name: null,
   backUpWeb3: null,
   library: null,
   active: false,
@@ -38,6 +39,7 @@ const mutations = {
     Vue.set(_state, 'injectedLoaded', payload.injectedLoaded);
     Vue.set(_state, 'injectedChainId', payload.injectedChainId);
     Vue.set(_state, 'account', payload.account);
+    Vue.set(_state, 'name', payload.name);
     console.log('LOAD_PROVIDER_SUCCESS');
   },
   LOAD_PROVIDER_FAILURE(_state, payload) {
@@ -155,10 +157,12 @@ const actions = {
       const network = await web3.getNetwork();
       const accounts = await web3.listAccounts();
       const account = accounts.length > 0 ? accounts[0] : null;
+      const name = await web3.lookupAddress(account);
       commit('LOAD_PROVIDER_SUCCESS', {
         injectedLoaded: true,
         injectedChainId: network.chainId,
-        account
+        account,
+        name
         // injectedWeb3: web3,
         // activeProvider: provider
       });
