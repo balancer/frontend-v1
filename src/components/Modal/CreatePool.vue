@@ -2,7 +2,7 @@
   <Modal :open="open" @close="$emit('close')">
     <div
       class="modal-body py-6 text-center"
-      :class="{ 'bg-blue mosaic anim-scroll': step === 0 }"
+      :class="{ 'bg-blue mosaic anim-scroll': step === 0 || step > lastStep }"
     >
       <Progress :step="step" :stepCount="lastStep" />
       <div v-if="!step">
@@ -40,7 +40,8 @@
           :swapFee="swapFee"
           :rights="rights"
         />
-        <div class="mx-3 overflow-hidden">
+        <FormBroadcast v-if="step === 7" />
+        <div class="mx-3 overflow-hidden" v-if="step <= lastStep">
           <button
             type="button"
             v-if="step !== 0"
@@ -50,7 +51,7 @@
             Back
           </button>
           <button
-            :disabled="step !== 0 && tokens.length < 2"
+            :disabled="(step !== 0 && tokens.length < 2) || loading"
             type="submit"
             class="btn-mktg d-inline-block column mx-1"
             :class="{ 'btn-white': step === 0 }"
@@ -67,11 +68,13 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { delay } from '@/helpers/utils';
 
 export default {
   props: ['open'],
   data() {
     return {
+      loading: false,
       step: 0,
       lastStep: 6,
       tokens: [],
@@ -83,7 +86,8 @@ export default {
         configurableSwapFee: true,
         configurableWeights: true,
         configurableAddRemoveTokens: true
-      }
+      },
+      tx: {}
     };
   },
   watch: {
@@ -96,14 +100,22 @@ export default {
   },
   methods: {
     ...mapActions(['createPool']),
-    handleSubmit() {
+    async handleSubmit() {
       if (this.step === this.lastStep) {
-        const tokens = this.tokens.map(token => token.address);
-        const amounts = this.tokens.map(token => token.amount);
-        const startWeights = this.tokens.map(token => token.weight);
-        const fee = '0.1';
-        const proxyAddress = this.settings.proxy;
-        this.createPool({ proxyAddress, tokens, amounts, startWeights, fee });
+        this.loading = true;
+        await delay(3e3);
+        /*
+        this.createSmartPool({
+          proxyAddress: this.settings.proxy,
+          tokens: this.tokens,
+          startBalances: this.startBalances,
+          startWeights: this.startWeights,
+          swapFee: this.swapFee,
+          rights: this.rights
+        });
+        */
+        this.loading = false;
+        this.step++;
       } else {
         this.step++;
       }
