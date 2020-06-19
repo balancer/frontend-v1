@@ -14,11 +14,16 @@ requireView.keys().forEach(fileName => {
     fileName.replace(/^\.\//, '').replace(/\.\w+$/, '')
   );
   const { path, name, beforeEnter } = component;
-  routes.push({
-    path: path || `/${viewName}`,
-    name: name || viewName,
-    component,
-    beforeEnter
+  const paths = Array.isArray(path) ? path : [path];
+  paths.forEach((path, i) => {
+    let pathName = name || viewName;
+    if (i > 0) pathName += `-${i}`;
+    routes.push({
+      path: path || `/${viewName}`,
+      name: pathName,
+      component,
+      beforeEnter
+    });
   });
 });
 

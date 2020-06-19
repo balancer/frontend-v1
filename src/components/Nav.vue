@@ -1,5 +1,5 @@
 <template>
-  <nav id="menu" class="mb-3">
+  <nav class="nav mb-3">
     <ul class="list-style-none">
       <li v-for="(item, i) in items" :key="i" class="d-inline-block mr-4">
         <router-link :to="item.to">

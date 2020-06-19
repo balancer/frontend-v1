@@ -20,9 +20,9 @@ export default {
   computed: {
     items() {
       const items = JSON.parse(JSON.stringify(startItems));
-      items[0].count = this.explore.balancer.finalizedPoolCount;
-      items[1].count = this.explore.balancer.privatePoolCount;
-      if (this.provider.account)
+      items[0].count = this.subgraph.balancer.finalizedPoolCount;
+      items[1].count = this.subgraph.balancer.privatePoolCount;
+      if (this.web3.account)
         items.push({
           name: 'My pools',
           to: { name: 'my-pools' }

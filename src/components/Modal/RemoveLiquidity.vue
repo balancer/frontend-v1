@@ -70,9 +70,9 @@ export default {
   },
   watch: {
     pool() {
-      if (!this.provider.account) return;
+      if (!this.web3.account) return;
       const myShares = this.pool.shares.filter(
-        share => share.userAddress.id === this.provider.account.toLowerCase()
+        share => share.userAddress.id === this.web3.account.toLowerCase()
       );
       this.poolTokenBalance = myShares[0] ? myShares[0].balance : 0;
     }

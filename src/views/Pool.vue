@@ -112,8 +112,7 @@ export default {
   computed: {
     hasShares() {
       return this.pool.shares.reduce(
-        (a, b) =>
-          a === true ? true : b.userAddress.id === this.provider.account,
+        (a, b) => (a === true ? true : b.userAddress.id === this.web3.account),
         false
       );
     }

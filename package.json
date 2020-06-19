@@ -24,6 +24,7 @@
     "body-parser": "^1.19.0",
     "core-js": "^3.6.5",
     "eslint": "^6.7.2",
+    "ethereum-blockies-base64": "^1.0.2",
     "ethers": "^4.0.47",
     "install": "^0.13.0",
     "lightweight-charts": "^3.0.0",
@@ -51,6 +52,7 @@
     "node-sass": "^4.12.0",
     "prettier": "^1.19.1",
     "sass-loader": "^8.0.2",
+    "vue-cli-plugin-webpack-bundle-analyzer": "^2.0.0",
     "vue-template-compiler": "^2.6.11"
   },
   "bugs": {
