@@ -186,54 +186,6 @@ a {
   }
 }
 
-.web3modal-modal-lightbox {
-  background: transparentize(#0e113b, 0.2) !important;
-
-  .web3modal-modal-card {
-    @extend .px-4;
-    @extend .py-6;
-    max-width: 440px;
-
-    .web3modal-provider-wrapper {
-      @extend .rounded-md-2;
-      @extend .rounded-lg-2;
-      @extend .py-3;
-      @extend .my-2;
-      background-color: $white;
-
-      .web3modal-provider-container {
-        padding: 0;
-        width: auto;
-        text-align: left;
-        flex-direction: row !important;
-
-        .web3modal-provider-icon {
-          @extend .mr-3;
-          width: 45px;
-
-          img {
-            width: 32px;
-            height: 32px;
-          }
-        }
-
-        .web3modal-provider-name {
-          @extend .flex-auto;
-          font-size: 20px;
-          margin-top: 4px;
-        }
-
-        .web3modal-provider-description {
-          display: none;
-        }
-      }
-
-    }
-  }
-}
-
-
-
 .modal {
   .backdrop {
     background: transparentize(#0e113b, 0.2) !important;
@@ -246,6 +198,10 @@ a {
     padding-left: 0 !important;
     padding-right: 0 !important;
     max-width: 440px;
+  }
+
+  .modal-body {
+    flex: auto;
   }
 
   .button {
@@ -373,4 +329,14 @@ label {
 .Progress {
   height: 6px;
   overflow: hidden;
+}
+
+.loading-xl {
+  .animation {
+    border-color: transparentize(white, 0.8);
+    border-width: 6px;
+    width: 64px;
+    height: 64px;
+    border-right-color: white;
+  }
 }

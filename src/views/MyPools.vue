@@ -3,7 +3,7 @@
     <Hero />
     <NavMain />
     <Container>
-      <div class="float-left col-12 col-md-4 pr-3 mb-3">
+      <div class="float-left col-12 col-md-6 col-lg-4 pr-md-3 mb-3">
         <div
           class="p-4 bg-black rounded-2 d-flex flex-column"
           style="height: 300px;"
@@ -26,7 +26,7 @@
           </div>
         </div>
       </div>
-      <div class="float-left col-12 col-md-4 pr-3 mb-2">
+      <div class="float-left col-12 col-md-6 col-lg-4 pr-md-3 mb-2">
         <div
           class="p-4 bg-blue rounded-2 d-flex flex-column"
           style="height: 300px;"

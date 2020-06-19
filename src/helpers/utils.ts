@@ -74,3 +74,7 @@ export function isValidAddress(str) {
   }
   return true;
 }
+
+export function delay(ms) {
+  return new Promise(resolve => setTimeout(() => resolve(), ms));
+}
