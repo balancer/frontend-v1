@@ -18,7 +18,7 @@
       </div>
       <div class="py-4">
         <template v-if="web3.account && !wrongNetwork">
-          <router-link
+          <span
             :to="{
               name: 'user',
               params: { id: web3.name || web3.account }
@@ -31,7 +31,7 @@
             />
             <span v-if="web3.name" v-text="web3.name" />
             <span v-else>{{ web3.account | shorten }}</span>
-          </router-link>
+          </span>
           <router-link
             :to="{ name: 'wallet' }"
             class="btn-mktg ml-2 d-inline-block"

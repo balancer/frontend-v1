@@ -12,7 +12,6 @@
     "start": "vue-cli-service express:run"
   },
   "dependencies": {
-    "3box": "^1.20.0",
     "@primer/css": "^14.4.0",
     "@types/react": "^16.9.36",
     "@vue/cli-plugin-babel": "^4.4.0",
@@ -52,6 +51,7 @@
     "node-sass": "^4.12.0",
     "prettier": "^1.19.1",
     "sass-loader": "^8.0.2",
+    "vue-cli-plugin-webpack-bundle-analyzer": "^2.0.0",
     "vue-template-compiler": "^2.6.11"
   },
   "bugs": {
