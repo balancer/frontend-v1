@@ -7,6 +7,18 @@
       <form @submit.prevent="handleSubmit">
         <div v-if="step === 0">
           <FormSelectTokens v-model="tokens" :value="tokens" />
+          <div class="text-left mx-4 mb-4">
+            <label class="d-block text-center"
+              >Time lock to add token (in block)</label
+            >
+            <input
+              v-model="addTokenTimeLockInBlocks"
+              type="number"
+              class="h2 border-0 form-control text-center width-full"
+              placeholder="1"
+              min="1"
+            />
+          </div>
           <div class="mx-3 overflow-hidden">
             <button
               type="button"
@@ -44,7 +56,8 @@ export default {
       loading: false,
       step: 0,
       lastStep: 0,
-      tokens: []
+      tokens: [],
+      addTokenTimeLockInBlocks: 64
     };
   },
   watch: {

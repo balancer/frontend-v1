@@ -11,6 +11,18 @@
             v-model="weights"
             :value="value"
           />
+          <div class="text-left mx-4 mb-4">
+            <label class="d-block text-center"
+              >Min. weight change block period</label
+            >
+            <input
+              v-model="minimumWeightChangeBlockPeriod"
+              type="number"
+              class="h2 border-0 form-control text-center width-full"
+              placeholder="1"
+              min="1"
+            />
+          </div>
           <div class="mx-3 overflow-hidden">
             <button
               type="button"
@@ -48,7 +60,8 @@ export default {
       loading: false,
       step: 0,
       lastStep: 0,
-      weights: []
+      weights: [],
+      minimumWeightChangeBlockPeriod: 64
     };
   },
   computed: {
@@ -59,7 +72,6 @@ export default {
     tokens() {
       const tokensList = clone(this.pool.tokensList);
       return tokensList.map(token => {
-        console.log(token);
         return getAddress(token);
       });
     }

@@ -74,6 +74,7 @@ const actions = {
   },
   getPool: async ({ commit }, payload) => {
     const q = queries['getPool'];
+    // @ts-ignore
     q.pool.__args = { id: payload };
     const gqlQuery = jsonToGraphQLQuery({ query: q }, { pretty: true });
     commit('GET_POOL_REQUEST');
