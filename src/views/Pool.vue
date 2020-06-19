@@ -27,6 +27,7 @@
           <div ref="chartContainer" class="width-full mt-4" />
         </div>
       </div>
+      <NavPool :pool="pool" />
       <Container>
         <div v-if="1 === 2" class="d-flex flex-row">
           <div class="d-flex">
@@ -63,12 +64,7 @@
           </div>
         </div>
       </Container>
-      <div class="overflow-hidden clearfix">
-        <Filters class="overflow-hidden" :options="options" />
-        <Container>
-          <ListTokens :pool="pool" />
-        </Container>
-      </div>
+      <router-view :key="$route.path" :pool="pool" />
     </div>
     <ModalAddLiquidity
       :pool="pool"
@@ -97,9 +93,9 @@ const options = [
 ];
 
 export default {
-  path: '/pool/:id',
   data() {
     return {
+      count: 0,
       options,
       id: this.$route.params.id,
       pool: {},
@@ -122,6 +118,7 @@ export default {
   },
   async updated() {
     if (this.chartInit) return;
+    this.chartInit = true;
     const promises = this.pool.tokens.map(token =>
       getMarketChartFromCoinGecko(token.address)
     );
@@ -193,12 +190,14 @@ export default {
       }));
       series.setData(data);
     });
-    this.chartInit = true;
   },
   async created() {
-    this.loading = true;
-    this.pool = await this.getPool(this.id);
-    this.loading = false;
+    if (this.count === 0) {
+      this.count++;
+      this.loading = true;
+      this.pool = await this.getPool(this.id);
+      this.loading = false;
+    }
   }
 };
 </script>

@@ -12,6 +12,7 @@
 
 <script>
 export default {
+  props: ['isSticky'],
   data() {
     return {
       isFixed: false,
@@ -20,16 +21,19 @@ export default {
     };
   },
   mounted() {
+    if (this.isSticky === false) return;
     window.addEventListener('scroll', this.onScroll);
     const el = document.getElementById('sticky');
     this.offsetTop = el.offsetTop;
     this.offsetHeight = el.offsetHeight;
   },
   beforeDestroy() {
+    if (this.isSticky === false) return;
     window.removeEventListener('scroll', this.onScroll);
   },
   methods: {
     onScroll(e) {
+      if (this.isSticky === false) return;
       const windowTop = e.target.documentElement.scrollTop;
       this.isFixed = windowTop >= this.offsetTop;
     }

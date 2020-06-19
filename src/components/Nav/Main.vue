@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import { clone } from '@/helpers/utils';
+
 const startItems = [
   {
     name: 'Shared pools',
@@ -19,14 +21,20 @@ const startItems = [
 export default {
   computed: {
     items() {
-      const items = JSON.parse(JSON.stringify(startItems));
+      const items = clone(startItems);
       items[0].count = this.subgraph.balancer.finalizedPoolCount;
       items[1].count = this.subgraph.balancer.privatePoolCount;
-      if (this.web3.account)
+      if (this.web3.account) {
         items.push({
           name: 'My pools',
-          to: { name: 'my-pools' }
+          to: { name: 'my-pools' },
+          count: this.subgraph.myPools.length
         });
+        items.push({
+          name: 'Create a pool',
+          to: { name: 'create' }
+        });
+      }
       return items;
     }
   }

@@ -6,7 +6,7 @@
     />
     <div v-else>
       <NavTop />
-      <router-view :key="$route.path" />
+      <router-view />
     </div>
     <Notifications />
   </div>

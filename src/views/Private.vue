@@ -2,6 +2,6 @@
   <div>
     <Hero />
     <NavMain />
-    <ListPools :query="{ where: { finalized: 'false' } }" />
+    <ListPools :query="{ where: { finalized: false } }" />
   </div>
 </template>

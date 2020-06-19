@@ -40,7 +40,7 @@
           :swapFee="swapFee"
           :rights="rights"
         />
-        <FormBroadcast v-if="step === 7" />
+        <FormBroadcast v-if="step === 7" @close="$emit('close')" />
         <div class="mx-3 overflow-hidden" v-if="step <= lastStep">
           <button
             type="button"
@@ -103,7 +103,7 @@ export default {
     async handleSubmit() {
       if (this.step === this.lastStep) {
         this.loading = true;
-        await delay(3e3);
+        await delay(1e3);
         /*
         this.createSmartPool({
           proxyAddress: this.settings.proxy,

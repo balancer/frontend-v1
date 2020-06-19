@@ -1,10 +1,13 @@
 import Vue from 'vue';
+import { jsonToGraphQLQuery } from 'json-to-graphql-query';
 import { query } from '@/helpers/subgraph';
 import { formatPool } from '@/helpers/utils';
 import config from '@/helpers/config';
+import queries from '@/helpers/queries.json';
 
 const state = {
-  balancer: {}
+  balancer: {},
+  myPools: []
 };
 
 const mutations = {
@@ -35,6 +38,16 @@ const mutations = {
   },
   GET_POOLS_FAILURE(_state, payload) {
     console.log('GET_POOLS_FAILURE', payload);
+  },
+  GET_MY_POOLS_REQUEST() {
+    console.log('GET_MY_POOLS_REQUEST');
+  },
+  GET_MY_POOLS_SUCCESS(_state, payload) {
+    Vue.set(_state, 'myPools', payload);
+    console.log('GET_MY_POOLS_SUCCESS');
+  },
+  GET_MY_POOLS_FAILURE(_state, payload) {
+    console.log('GET_MY_POOLS_FAILURE', payload);
   }
 };
 
@@ -60,49 +73,13 @@ const actions = {
     }
   },
   getPool: async ({ commit }, payload) => {
-    const ts = Math.round(new Date().getTime() / 1000);
-    const tsYesterday = ts - 24 * 3600;
-    const q = `{
-      pool (id: "${payload}") {
-        id
-        publicSwap
-        finalized
-        swapFee
-        totalWeight
-        totalShares
-        tokensList
-        tokens (orderBy: denormWeight, orderDirection: desc) {
-          id
-          name
-          address
-          balance
-          decimals
-          symbol
-          denormWeight
-        }
-        shares (where: { balance_gt: 0 }) {
-          id
-          poolId {
-            id
-          }
-          userAddress {
-            id
-          }
-          balance
-        }
-        swaps (where: { timestamp_gt: ${tsYesterday} }) {
-          tokenIn
-          tokenInSym
-          tokenAmountIn
-          tokenOut
-          tokenOutSym
-          tokenAmountOut
-        }
-      }
-    }`;
+    const q = queries['getPool'];
+    // @ts-ignore
+    q.pool.__args = { id: payload };
+    const gqlQuery = jsonToGraphQLQuery({ query: q }, { pretty: true });
     commit('GET_POOL_REQUEST');
     try {
-      let { pool } = await query(config.subgraphUrl, q);
+      let { pool } = await query(config.subgraphUrl, gqlQuery);
       pool = formatPool(pool);
       commit('GET_POOL_SUCCESS');
       return pool;
@@ -118,66 +95,54 @@ const actions = {
       orderDirection = 'desc',
       where = {}
     } = payload;
-    let whereStr = 'tokensList_not: []';
-    if (Object.keys(where).length > 0)
-      Object.entries(where).forEach(
-        row => (whereStr += `, ${row[0]}: ${row[1]}`)
-      );
     const skip = (page - 1) * first;
     const ts = Math.round(new Date().getTime() / 1000);
     const tsYesterday = ts - 24 * 3600;
-    const q = `{
-      pools (
-        first: ${first}, 
-        skip: ${skip},
-        where: { ${whereStr} },
-        orderBy: ${orderBy}, 
-        orderDirection: ${orderDirection}
-      ) {
-        id
-        publicSwap
-        finalized
-        swapFee
-        totalWeight
-        totalShares
-        totalEthValue
-        tokensList
-        tokens (orderBy: denormWeight, orderDirection: desc) {
-          id
-          address
-          balance
-          decimals
-          symbol
-          denormWeight
-        }
-        shares (where: { balance_gt: 0 }) {
-          id
-          poolId {
-            id
-          }
-          userAddress {
-            id
-          }
-          balance
-        }
-        swaps (where: { timestamp_gt: ${tsYesterday} }) {
-          tokenIn
-          tokenInSym
-          tokenAmountIn
-          tokenOut
-          tokenOutSym
-          tokenAmountOut
-        }
+    const q = queries['getPools'];
+    where.tokensList_not = [];
+    // @ts-ignore
+    q.pools.__args = {
+      where,
+      first,
+      skip,
+      orderBy,
+      orderDirection
+    };
+    // @ts-ignore
+    q.pools.swaps.__args = {
+      where: {
+        timestamp_gt: tsYesterday
       }
-    }`;
+    };
+    const gqlQuery = jsonToGraphQLQuery({ query: q }, { pretty: true });
     commit('GET_POOLS_REQUEST');
     try {
-      let { pools } = await query(config.subgraphUrl, q);
+      let { pools } = await query(config.subgraphUrl, gqlQuery);
       pools = pools.map(pool => formatPool(pool));
       commit('GET_POOLS_SUCCESS');
       return pools;
     } catch (e) {
       commit('GET_POOLS_FAILURE', e);
+    }
+  },
+  getMyPools: async ({ commit, dispatch }) => {
+    commit('GET_MY_POOLS_REQUEST');
+    try {
+      const query = {
+        first: 3,
+        where: {
+          id_in: [
+            '0xbe6daaf4ab70a1690759331aec740881620856f0',
+            '0xe3bdae21c5afc2dd0d58bdc2324e5ac3c8801f40',
+            '0x456a6019e548700f3ebd7d2afa5e2cca44e7c3c8'
+          ]
+        }
+      };
+      const myPools = await dispatch('getPools', query);
+      commit('GET_MY_POOLS_SUCCESS', myPools);
+      return myPools;
+    } catch (e) {
+      commit('GET_MY_POOLS_FAILURE', e);
     }
   }
 };

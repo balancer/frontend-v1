@@ -3,6 +3,9 @@ module.exports = {
     express: {
       shouldServeApp: true,
       serverDir: '.'
+    },
+    webpackBundleAnalyzer: {
+      openAnalyzer: false
     }
   }
 };

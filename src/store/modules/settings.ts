@@ -1,5 +1,4 @@
 import Vue from 'vue';
-// import provider from '@/helpers/provider';
 import { getBalances, getSharesOwned, proxies } from '@/helpers/api';
 
 const state = {
@@ -17,7 +16,7 @@ const state = {
 };
 
 const mutations = {
-  set(_state, payload) {
+  SET(_state, payload) {
     Object.keys(payload).forEach(key => {
       Vue.set(_state, key, payload[key]);
     });
@@ -26,28 +25,28 @@ const mutations = {
 
 const actions = {
   init: async ({ commit, dispatch }) => {
-    commit('set', { loading: true });
+    commit('SET', { loading: true });
     await dispatch('getBalancer');
     await dispatch('getExchangeRatesFromCoinGecko');
-    commit('set', { loading: false, init: true });
+    commit('SET', { loading: false, init: true });
   },
   login: async ({ dispatch }) => {
     await dispatch('loadWeb3Modal');
   },
   getSharesOwned: async ({ commit }, payload) => {
     const sharesOwned = await getSharesOwned(payload || state.address);
-    commit('set', { sharesOwned });
+    commit('SET', { sharesOwned });
   },
   getBalances: async ({ commit }, payload) => {
     const balances = await getBalances(payload || state.address);
-    commit('set', { balances });
+    commit('SET', { balances });
   },
   getProxies: async ({ commit }, payload) => {
     const proxy = await proxies(payload || state.address);
-    commit('set', { proxy });
+    commit('SET', { proxy });
   },
   loading: ({ commit }, payload) => {
-    commit('set', { loading: payload });
+    commit('SET', { loading: payload });
   }
 };
 

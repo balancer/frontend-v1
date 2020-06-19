@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Filters :isSticky="true" :options="options" v-model="filters" />
+    <Filters :options="options" v-model="filters" />
     <Container
       v-infinite-scroll="loadMore"
       infinite-scroll-distance="5"
@@ -19,8 +19,8 @@ import { mapActions } from 'vuex';
 
 const options = [
   { key: 'swapFee', name: 'Swap fee' },
-  { key: 'marketcap', name: 'Marketcap' },
-  { key: 'volume1Day', name: 'Vol. 24h' }
+  { key: 'marketcap', name: 'Marketcap', hideMobile: true },
+  { key: 'volume1Day', name: 'Vol. 24h', hideMobile: true }
 ];
 
 export default {
