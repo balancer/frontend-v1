@@ -15,6 +15,7 @@ const state = {
   injectedLoaded: false,
   injectedChainId: null,
   account: null,
+  name: null,
   backUpWeb3: null,
   library: null,
   active: false,
@@ -38,6 +39,7 @@ const mutations = {
     Vue.set(_state, 'injectedLoaded', payload.injectedLoaded);
     Vue.set(_state, 'injectedChainId', payload.injectedChainId);
     Vue.set(_state, 'account', payload.account);
+    Vue.set(_state, 'name', payload.name);
     console.log('LOAD_PROVIDER_SUCCESS');
   },
   LOAD_PROVIDER_FAILURE(_state, payload) {
@@ -79,6 +81,24 @@ const mutations = {
   },
   HANDLE_NETWORK_CHANGED() {
     console.log('HANDLE_NETWORK_CHANGED');
+  },
+  LOOKUP_ADDRESS_REQUEST() {
+    console.log('LOOKUP_ADDRESS_REQUEST');
+  },
+  LOOKUP_ADDRESS_SUCCESS() {
+    console.log('LOOKUP_ADDRESS_SUCCESS');
+  },
+  LOOKUP_ADDRESS_FAILURE(_state, payload) {
+    console.log('LOOKUP_ADDRESS_FAILURE', payload);
+  },
+  RESOLVE_NAME_REQUEST() {
+    console.log('RESOLVE_NAME_REQUEST');
+  },
+  RESOLVE_NAME_SUCCESS() {
+    console.log('RESOLVE_NAME_SUCCESS');
+  },
+  RESOLVE_NAME_FAILURE(_state, payload) {
+    console.log('RESOLVE_NAME_FAILURE', payload);
   },
   SEND_TRANSACTION_REQUEST() {
     console.log('SEND_TRANSACTION_REQUEST');
@@ -155,10 +175,12 @@ const actions = {
       const network = await web3.getNetwork();
       const accounts = await web3.listAccounts();
       const account = accounts.length > 0 ? accounts[0] : null;
+      const name = await dispatch('lookupAddress', account);
       commit('LOAD_PROVIDER_SUCCESS', {
         injectedLoaded: true,
         injectedChainId: network.chainId,
-        account
+        account,
+        name
         // injectedWeb3: web3,
         // activeProvider: provider
       });
@@ -183,6 +205,26 @@ const actions = {
       });
     } catch (e) {
       commit('LOAD_BACKUP_PROVIDER_FAILURE', e);
+    }
+  },
+  lookupAddress: async ({ commit }, payload) => {
+    commit('LOOKUP_ADDRESS_REQUEST');
+    try {
+      const address = await web3.lookupAddress(payload);
+      commit('LOOKUP_ADDRESS_SUCCESS');
+      return address;
+    } catch (e) {
+      commit('LOOKUP_ADDRESS_FAILURE', e);
+    }
+  },
+  resolveName: async ({ commit }, payload) => {
+    commit('RESOLVE_NAME_REQUEST');
+    try {
+      const name = await web3.resolveName(payload);
+      commit('RESOLVE_NAME_SUCCESS');
+      return name;
+    } catch (e) {
+      commit('RESOLVE_NAME_FAILURE', e);
     }
   },
   sendTransaction: async (

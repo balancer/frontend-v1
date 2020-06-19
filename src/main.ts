@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueUi from '@vue/ui';
 import VueI18n from 'vue-i18n';
 import infiniteScroll from 'vue-infinite-scroll';
+import makeBlockie from 'ethereum-blockies-base64';
 import { upperFirst, camelCase } from 'lodash';
 import App from '@/App.vue';
 import router from '@/router';
@@ -28,6 +29,7 @@ requireComponent.keys().forEach(fileName => {
 });
 
 Vue.filter('shorten', value => shorten(value));
+Vue.filter('blockie', value => makeBlockie(value));
 
 Vue.mixin(mixins);
 

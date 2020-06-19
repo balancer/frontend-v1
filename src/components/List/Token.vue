@@ -29,9 +29,9 @@ export default {
   props: ['pool', 'token'],
   computed: {
     myShares() {
-      if (!this.provider.account) return 0;
+      if (!this.web3.account) return 0;
       const [myShares] = this.pool.shares.filter(
-        share => share.userAddress.id === this.provider.account.toLowerCase()
+        share => share.userAddress.id === this.web3.account.toLowerCase()
       );
       return myShares;
     },

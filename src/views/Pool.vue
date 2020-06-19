@@ -87,7 +87,7 @@
 import * as TV from 'lightweight-charts';
 import { mapActions } from 'vuex';
 import { getAddress } from 'ethers/utils';
-import { getMarketChartFromCoinGecko } from '@/helpers/utils';
+import { getMarketChartFromCoinGecko, shorten } from '@/helpers/utils';
 import config from '@/helpers/config';
 
 const options = [
@@ -112,8 +112,7 @@ export default {
   computed: {
     hasShares() {
       return this.pool.shares.reduce(
-        (a, b) =>
-          a === true ? true : b.userAddress.id === this.provider.account,
+        (a, b) => (a === true ? true : b.userAddress.id === this.web3.account),
         false
       );
     }
@@ -133,10 +132,12 @@ export default {
       priceScale: {
         position: 'right',
         borderVisible: false,
+        drawTicks: false,
         mode: 2
       },
       timeScale: {
         barSpacing: 30,
+        drawTicks: false,
         borderVisible: false,
         fixLeftEdge: true,
         fixRightEdge: true
@@ -154,18 +155,38 @@ export default {
       }
     };
     const chart = TV.createChart(chartContainer.parentElement, options);
+    const lineColor = '#384AFF';
+    const lineWidth = 3;
+    const series = chart.addAreaSeries({
+      title: 'BPT',
+      topColor: `${lineColor}00`,
+      bottomColor: `${lineColor}00`,
+      lineColor,
+      lineWidth,
+      priceLineVisible: false
+    });
+    series.applyOptions({ baseLineVisible: true });
+    const data = Object.entries(marketCharts[0]).map(row => ({
+      time: row[0],
+      value: row[1] + 100
+    }));
+    series.setData(data);
     marketCharts.forEach((marketChart, i) => {
       const tokenAddress = getAddress(this.pool.tokens[i].address);
+      const title = config.tokens[tokenAddress].symbol || shorten(tokenAddress);
       const lineColor =
         config.tokens[tokenAddress] && config.tokens[tokenAddress].chartColor
           ? config.tokens[tokenAddress].chartColor
           : 'black';
       const series = chart.addAreaSeries({
-        topColor: `${lineColor}1a`,
+        title,
+        topColor: `${lineColor}00`,
         bottomColor: `${lineColor}00`,
         lineColor,
-        lineWidth: 3
+        lineWidth,
+        priceLineVisible: false
       });
+      series.applyOptions({ baseLineVisible: true });
       const data = Object.entries(marketChart).map(row => ({
         time: row[0],
         value: row[1]

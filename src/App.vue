@@ -5,7 +5,7 @@
       class="overlay big"
     />
     <div v-else>
-      <Nav />
+      <NavTop />
       <router-view :key="$route.path" />
     </div>
     <Notifications />

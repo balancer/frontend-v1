@@ -1,6 +1,7 @@
 import { ethers, utils } from 'ethers';
 import BigNumber from '@/helpers/bignumber';
 import config from '@/helpers/config';
+import { getAddress } from 'ethers/utils';
 
 export const MAX_GAS = utils.bigNumberify('0xffffffff');
 export const MAX_UINT = utils.bigNumberify(ethers.constants.MaxUint256);
@@ -63,4 +64,13 @@ export async function getMarketChartFromCoinGecko(address) {
     ratePerDay[day] = p[1];
   });
   return ratePerDay;
+}
+
+export function isValidAddress(str) {
+  try {
+    getAddress(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
 }
