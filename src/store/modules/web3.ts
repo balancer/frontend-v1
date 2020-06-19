@@ -146,16 +146,14 @@ const actions = {
           commit('HANDLE_CHAIN_CHANGED');
           if (state.active) {
             await dispatch('loadWeb3');
-            await dispatch('getBalances', state.account);
-            await dispatch('getProxies', state.account);
+            await dispatch('loadAccount');
           }
         });
         provider.on('accountsChanged', async accounts => {
           if (accounts.length === 0) {
             if (state.active) await dispatch('loadWeb3');
           } else {
-            await dispatch('getBalances', state.account);
-            await dispatch('getProxies', state.account);
+            await dispatch('loadAccount');
             commit('HANDLE_ACCOUNTS_CHANGED', accounts[0]);
           }
         });
@@ -167,8 +165,7 @@ const actions = {
           commit('HANDLE_NETWORK_CHANGED');
           if (state.active) {
             await dispatch('loadWeb3');
-            await dispatch('getBalances', state.account);
-            await dispatch('getProxies', state.account);
+            await dispatch('loadAccount');
           }
         });
       }
@@ -176,6 +173,7 @@ const actions = {
       const accounts = await web3.listAccounts();
       const account = accounts.length > 0 ? accounts[0] : null;
       const name = await dispatch('lookupAddress', account);
+      await dispatch('loadAccount');
       commit('LOAD_PROVIDER_SUCCESS', {
         injectedLoaded: true,
         injectedChainId: network.chainId,
@@ -246,6 +244,11 @@ const actions = {
     } catch (e) {
       commit('SEND_TRANSACTION_FAILURE', e);
     }
+  },
+  loadAccount: async ({ dispatch }) => {
+    await dispatch('getMyPools');
+    // await dispatch('getBalances', state.account);
+    // await dispatch('getProxies', state.account);
   }
 };
 

@@ -1,7 +1,7 @@
 import { ethers, utils } from 'ethers';
+import { getAddress } from 'ethers/utils';
 import BigNumber from '@/helpers/bignumber';
 import config from '@/helpers/config';
-import { getAddress } from 'ethers/utils';
 
 export const MAX_GAS = utils.bigNumberify('0xffffffff');
 export const MAX_UINT = utils.bigNumberify(ethers.constants.MaxUint256);
@@ -42,14 +42,17 @@ export function formatPool(pool) {
   });
   pool.swapFeePercent = pool.swapFee * 100;
   pool.holders = pool.shares.length;
-  pool.totalVolume1Day = pool.swaps.reduce((a, b) => {
-    const tokenOut = pool.tokens.find(token => token.address === b.tokenOut);
-    const tokenOutValue =
-      (((parseFloat(pool.totalEthValue) / 100) * tokenOut.weightPercent) /
-        parseFloat(tokenOut.balance)) *
-      parseFloat(b.tokenAmountOut);
-    return a + tokenOutValue;
-  }, 0);
+  pool.tokensList = pool.tokensList.map(token => getAddress(token));
+  if (pool.swaps) {
+    pool.totalVolume1Day = pool.swaps.reduce((a, b) => {
+      const tokenOut = pool.tokens.find(token => token.address === b.tokenOut);
+      const tokenOutValue =
+        (((parseFloat(pool.totalEthValue) / 100) * tokenOut.weightPercent) /
+          parseFloat(tokenOut.balance)) *
+        parseFloat(b.tokenAmountOut);
+      return a + tokenOutValue;
+    }, 0);
+  }
   return pool;
 }
 
@@ -77,4 +80,8 @@ export function isValidAddress(str) {
 
 export function delay(ms) {
   return new Promise(resolve => setTimeout(() => resolve(), ms));
+}
+
+export function clone(item) {
+  return JSON.parse(JSON.stringify(item));
 }

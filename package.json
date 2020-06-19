@@ -26,6 +26,7 @@
     "ethereum-blockies-base64": "^1.0.2",
     "ethers": "^4.0.47",
     "install": "^0.13.0",
+    "json-to-graphql-query": "^2.0.0",
     "lightweight-charts": "^3.0.0",
     "lodash": "^4.17.15",
     "npm": "^6.14.5",

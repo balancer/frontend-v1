@@ -29,9 +29,13 @@
           <Icon name="external-link" size="16" class="ml-1" />
         </a>
       </div>
-      <router-link to="/" class="btn-white d-inline-block column mx-1">
+      <a
+        @click="$emit('close')"
+        to="/"
+        class="btn-white d-inline-block column mx-1"
+      >
         Close
-      </router-link>
+      </a>
     </template>
   </div>
 </template>
@@ -48,7 +52,7 @@ export default {
     };
   },
   async created() {
-    await delay(3e3);
+    await delay(5e3);
     this.confirmed = true;
   }
 };

@@ -1,0 +1,94 @@
+{
+  "getPool": {
+    "pool": {
+      "id": true,
+      "publicSwap": true,
+      "finalized": true,
+      "swapFee": true,
+      "totalWeight": true,
+      "totalShares": true,
+      "totalEthValue": true,
+      "tokensList": true,
+      "swapsCount": true,
+      "tokens": {
+        "__args": {
+          "orderBy": "denormWeight",
+          "orderDirection": "desc"
+        },
+        "id": true,
+        "address": true,
+        "balance": true,
+        "decimals": true,
+        "symbol": true,
+        "denormWeight": true
+      },
+      "shares": {
+        "__args": {
+          "orderBy": "balance",
+          "orderDirection": "desc",
+          "where": {
+            "balance_gt": 0
+          }
+        },
+        "id": true,
+        "poolId": {
+          "id": true
+        },
+        "userAddress": {
+          "id": true
+        },
+        "balance": true
+      }
+    }
+  },
+  "getPools": {
+    "pools": {
+      "id": true,
+      "publicSwap": true,
+      "finalized": true,
+      "swapFee": true,
+      "totalWeight": true,
+      "totalShares": true,
+      "totalEthValue": true,
+      "tokensList": true,
+      "swapsCount": true,
+      "tokens": {
+        "__args": {
+          "orderBy": "denormWeight",
+          "orderDirection": "desc"
+        },
+        "id": true,
+        "address": true,
+        "balance": true,
+        "decimals": true,
+        "symbol": true,
+        "denormWeight": true
+      },
+      "shares": {
+        "__args": {
+          "orderBy": "balance",
+          "orderDirection": "desc",
+          "where": {
+            "balance_gt": 0
+          }
+        },
+        "id": true,
+        "poolId": {
+          "id": true
+        },
+        "userAddress": {
+          "id": true
+        },
+        "balance": true
+      },
+      "swaps": {
+        "tokenIn": true,
+        "tokenInSym": true,
+        "tokenAmountIn": true,
+        "tokenOut": true,
+        "tokenOutSym": true,
+        "tokenAmountOut": true
+      }
+    }
+  }
+}

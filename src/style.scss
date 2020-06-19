@@ -340,3 +340,30 @@ label {
     border-right-color: white;
   }
 }
+
+.vue-ui-switch {
+  .wrapper {
+    margin-left: 0 !important;
+    width: 64px !important;
+    height: 32px !important;
+    border-radius: 16px !important;
+    background-color: $gray-200 !important;
+
+    .bullet {
+      width: 30px !important;
+      height: 30px !important;
+      border-radius: 15px !important;
+      background-color: $gray-400 !important;
+    }
+  }
+
+  &.selected {
+    .wrapper {
+      background-color: $blue-100 !important;
+      .bullet {
+        margin-left: 34px !important;
+        background-color: $bg-blue !important;
+      }
+    }
+  }
+}

@@ -1,15 +1,21 @@
 <template>
   <div class="border-bottom d-flex text-right">
-    <Token
-      :address="token.address"
-      size="44"
-      :symbol="token.symbol"
-      class="mr-2 py-3"
-    />
-    <div class="flex-auto text-left text-gray py-4">
-      {{ token.name }} ({{ token.symbol }})
-      <a :href="`https://etherscan.io/token/${token.address}`" target="_blank">
-        <Icon name="external-link" class="ml-1" size="18" />
+    <div class="flex-auto text-left">
+      <a
+        :href="`https://etherscan.io/token/${token.address}`"
+        class="text-gray d-flex"
+        target="_blank"
+      >
+        <Token
+          :address="token.address"
+          size="44"
+          :symbol="token.symbol"
+          class="mr-2 py-3"
+        />
+        <div class="py-4">
+          {{ token.symbol }}
+          <Icon name="external-link" class="ml-1" size="18" />
+        </div>
       </a>
     </div>
     <div class="text-gray column py-4">
