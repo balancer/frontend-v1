@@ -2,34 +2,38 @@
   <div>
     <router-link
       :to="{ name: 'pool', params: { id: pool.id } }"
-      class="py-3 border-bottom d-flex"
+      class="d-flex flex-items-center border-top text-white px-4 py-3 highlight"
     >
+      <div class="column-sm mr-4">
+        {{ pool.id | shorten }}
+      </div>
+      <div>
+        <Pie :tokens="pool.tokens" class="mr-4" size="40" />
+      </div>
       <div class="flex-auto">
-        <div>
-          <Pie :tokens="pool.tokens" class="mr-2" />
+        <div class="d-flex flex-wrap overflow-hidden" style="max-width: 320px;">
           <div
             v-for="token in pool.tokens"
             :key="token.address"
-            class="text-center d-inline-block"
+            class="d-flex flex-items-center mr-2"
+            style="font-size: 12px; font-weight: 500"
           >
-            <Token
-              :address="token.address"
-              :symbol="token.symbol"
-              class="mx-1"
+            <Icon
+              name="bullet"
+              size="4"
+              class="mr-1"
+              :style="`color: ${token.chartColor}`"
             />
-            <div style="font-size: 11px;" class="mt-n1">
-              {{ $n(token.weightPercent.toFixed()) }}%
-            </div>
+            {{ $n(token.weightPercent.toFixed()) }}%
+            {{ token.symbol }}
           </div>
         </div>
       </div>
-      <div class="text-gray text-right mt-3 column">
-        {{ $n(pool.swapFeePercent) }}%
-      </div>
-      <div class="text-gray text-right mt-3 hide-sm hide-md column">
+      <div class="text-right column">{{ $n(pool.swapFeePercent) }}%</div>
+      <div class="text-right hide-sm hide-md column">
         <Price :amount="pool.totalEthValue" />
       </div>
-      <div class="text-gray text-right mt-3 hide-sm hide-md column">
+      <div class="text-right hide-sm hide-md column">
         <Price :amount="pool.totalVolume1Day" />
       </div>
     </router-link>
@@ -37,7 +41,9 @@
 </template>
 
 <script>
+import Icon from '../Icon';
 export default {
+  components: { Icon },
   props: ['pool']
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-white">
     <ListToken
       v-for="token in pool.tokens"
       :key="token.address"

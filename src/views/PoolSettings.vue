@@ -1,15 +1,17 @@
 <template>
-  <Container>
+  <div class="border rounded-1 panel-background p-4 text-white">
     <div class="border-bottom mb-4 pb-3">
       <div class="float-right">
-        <a @click="modalEditPublicSwapOpen = true" class="btn-outline">Edit</a>
+        <Button click="modalEditPublicSwapOpen = true" type="outline"
+          >Edit</Button
+        >
       </div>
       <label class="d-block mb-2">Public swap</label>
       <p class="text-gray">{{ pool.publicSwap ? 'Active' : 'Paused' }}</p>
     </div>
     <div class="border-bottom mb-4 pb-3">
       <div class="float-right">
-        <a @click="modalEditTokensOpen = true" class="btn-outline">Edit</a>
+        <Button @click="modalEditTokensOpen = true" type="outline">Edit</Button>
       </div>
       <label class="d-block mb-2">Tokens</label>
       <div v-if="pool.tokens.length" class="mb-2">
@@ -31,14 +33,18 @@
     </div>
     <div class="border-bottom mb-4 pb-3">
       <div class="float-right">
-        <a @click="modalEditWeightsOpen = true" class="btn-outline">Edit</a>
+        <Button @click="modalEditWeightsOpen = true" type="outline"
+          >Edit</Button
+        >
       </div>
       <label class="d-block mb-2">Weights</label>
       <Pie :tokens="pool.tokens" size="64" class="mr-2" />
     </div>
-    <div class="border-bottom mb-4 pb-3">
+    <div class="pb-3">
       <div class="float-right">
-        <a @click="modalEditSwapFeeOpen = true" class="btn-outline">Edit</a>
+        <Button @click="modalEditSwapFeeOpen = true" type="outline"
+          >Edit</Button
+        >
       </div>
       <label class="d-block mb-2">Swap fee</label>
       <p class="text-gray">{{ pool.swapFee }}%</p>
@@ -63,7 +69,7 @@
       :open="modalEditSwapFeeOpen"
       @close="modalEditSwapFeeOpen = false"
     />
-  </Container>
+  </div>
 </template>
 
 <script>

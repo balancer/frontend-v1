@@ -25,7 +25,7 @@
               />
               <h1 v-else>
                 <span
-                  class="bg-gray d-inline-block rounded-2 anim-pulse mb-3"
+                  class="bg-gray d-inline-block rounded-1 anim-pulse mb-3"
                   style="height: 37px; width: 120px;"
                 />
               </h1>

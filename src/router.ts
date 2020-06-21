@@ -9,7 +9,6 @@ import PoolTokens from '@/views/PoolTokens.vue';
 import PoolSwaps from '@/views/PoolSwaps.vue';
 import PoolHolders from '@/views/PoolHolders.vue';
 import PoolSettings from '@/views/PoolSettings.vue';
-import Wallet from '@/views/Wallet.vue';
 
 Vue.use(VueRouter);
 
@@ -27,8 +26,7 @@ const routes: Array<RouteConfig> = [
       { path: 'holders', name: 'pool-holders', component: PoolHolders },
       { path: 'settings', name: 'pool-settings', component: PoolSettings }
     ]
-  },
-  { path: '/wallet', name: 'wallet', component: Wallet }
+  }
 ];
 
 const router = new VueRouter({

@@ -1,35 +1,44 @@
 <template>
-  <Container>
-    <div>
-      <div
-        v-for="(share, i) in pool.shares"
-        :key="i"
-        class="d-flex border-bottom text-right"
-      >
+  <div class="border rounded-1 panel-background">
+    <Filters class="overflow-hidden" :options="options" />
+    <div
+      v-for="(share, i) in pool.shares"
+      :key="i"
+      class="border-top d-flex flex-items-center p-4 text-white text-right"
+    >
+      <div class="text-left flex-auto">
         <a
           :href="`https://etherscan.io/address/${share.userAddress.id}`"
           target="_blank"
-          class="d-flex flex-auto text-left text-gray"
+          class="d-flex d-block text-white"
         >
-          <div class="py-3">
-            <Avatar :address="share.userAddress.id" size="32" class="mr-2" />
-          </div>
-          <div class="py-4">
+          <Avatar :address="share.userAddress.id" size="16" class="mr-3" />
+          <div>
             {{ share.userAddress.id | shorten }}
             <Icon name="external-link" size="16" class="ml-1" />
           </div>
         </a>
-        <div class="column py-4 text-gray">{{ $n(share.balance) }} BPT</div>
-        <div class="column py-4 text-gray">
-          {{ $n((100 / pool.totalShares) * share.balance) }}%
-        </div>
+      </div>
+      <div class="column">{{ $n(share.balance) }} BPT</div>
+      <div class="column">
+        {{ $n((100 / pool.totalShares) * share.balance) }}%
       </div>
     </div>
-  </Container>
+  </div>
 </template>
 
 <script>
+const options = [
+  { key: 'balance', name: 'Balance' },
+  { key: 'myPoolValue', name: 'Shares' }
+];
+
 export default {
-  props: ['pool']
+  props: ['pool'],
+  data() {
+    return {
+      options
+    };
+  }
 };
 </script>

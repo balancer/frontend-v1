@@ -1,19 +1,15 @@
 <template>
-  <div>
-    <Sticky :isSticky="isSticky" class="bg-white">
-      <Container class="d-flex">
-        <Search class="flex-auto" />
-        <a
-          v-for="option in options"
-          :key="option.key"
-          @click="handleChangeOrder(option.key)"
-          class="py-4 text-right column"
-          :class="{ 'hide-sm hide-md': option.hideMobile }"
-        >
-          {{ option.name }}
-        </a>
-      </Container>
-    </Sticky>
+  <div class="d-flex px-4">
+    <div class="flex-auto" />
+    <a
+      v-for="option in options"
+      :key="option.key"
+      @click="handleChangeOrder(option.key)"
+      class="py-3 my-1 text-right column"
+      :class="{ 'hide-sm hide-md': option.hideMobile }"
+    >
+      {{ option.name }}
+    </a>
   </div>
 </template>
 

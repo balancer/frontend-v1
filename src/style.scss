@@ -1,39 +1,31 @@
 @import '~@vue/ui/dist/vue-ui.css';
-@import '~primer-support';
 @import './fonts';
-@import './assets/fonts/iconfont.css';
+@import './vars';
+@import "~@primer/css/core/index.scss";
+@import "~@primer/css/marketing/index.scss";
 
-$bg-blue: #384AFF;
-$bg-blue-light: #F7F8FC;
-// $bg-gray: #DDDFE8;
-$bg-gray: #d0d4dc;
-$bg-green: #21b66f;
-$text-blue: #384AFF;
-$text-red: #ff3856;
-$blue-100: #DCE2FF;
-$body-font-size: 17px;
-$body-line-height: 1.4;
-$h2-size-mobile: 26px;
-// $gray: #9fa5af;
-$gray: $bg-gray;
-$h2-size: 26px;
-$border: 1px solid #e6e8ee;
-$font-mktg: 'HarmoniaSansProCyrBold', Helvetica, Arial, sans-serif;
-$font-weight-bold: 'HarmoniaSansProCyrBold', Helvetica, Arial, sans-serif;
-$font-weight-normal: 'HarmoniaSansProCyrSemiBd', Helvetica, Arial, sans-serif;
-
-@import '~@primer/css/index.scss';
-
-html, body, #app {
-  color: $gray;
-  font-family: $font-mktg;
+body {
+  font-family: $font-weight-normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+html, body, #app {
+  background-color: $black;
+  color: $gray;
+}
+
 h1, h2, h3 {
-  color: $black;
-  font-family: $font-weight-bold;
+  color: $white;
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+h3 {
+  font-size: 18px;
 }
 
 p {
@@ -55,38 +47,6 @@ a {
 
 ::placeholder {
   color: $gray;
-}
-
-.nav {
-  background-color: $white;
-
-  ul > li > a {
-    @extend .d-inline-block;
-    padding: 24px 0 0;
-    color: $bg-gray;
-
-    .blob {
-      display: none;
-    }
-
-    .counter {
-      color: white;
-      background-color: $bg-gray !important;
-    }
-
-    &.router-link-exact-active {
-      color: $text-blue;
-
-      .blob {
-        display: block;
-      }
-
-      .counter {
-        color: $text-blue;
-        background-color: $blue-100 !important;
-      }
-    }
-  }
 }
 
 .counter {
@@ -121,7 +81,6 @@ a {
   padding: 0 26px;
   font-size: 15px;
   border: 0;
-  border-radius: 22px;
   background-color: $bg-blue;
   color: $white;
   box-shadow: none !important;
@@ -187,14 +146,11 @@ a {
 }
 
 .modal {
-  .backdrop {
-    background: transparentize(#0e113b, 0.2) !important;
-  }
-
   .shell {
-    @extend .rounded-md-2;
-    @extend .rounded-lg-2;
-    background-color: $white;
+    @extend .border;
+    @extend .rounded-md-1;
+    @extend .rounded-lg-1;
+    background-color: $background;
     padding-left: 0 !important;
     padding-right: 0 !important;
     max-width: 440px;
@@ -202,15 +158,6 @@ a {
 
   .modal-body {
     flex: auto;
-  }
-
-  .button {
-    width: 100%;
-    min-width: auto;
-  }
-
-  .button-outline {
-    max-width: 50%;
   }
 }
 
@@ -220,7 +167,9 @@ label {
 
 .eyebrow {
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .column {
@@ -239,7 +188,7 @@ label {
 }
 
 .highlight:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: $panel-border;
 }
 
 .anim-fade-in {
@@ -295,29 +244,6 @@ label {
   background-position: top;
 }
 
-@keyframes scroll {
-  from { background-position: 0 0; }
-  to { background-position: 600px -260px; }
-}
-
-.anim-scroll {
-  animation-name: scroll;
-  animation-duration: 16s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-fill-mode: forwards;
-}
-
-.blob {
-  display: block;
-  background-color: $bg-blue;
-  border-radius: 6px;
-  height: 6px;
-  max-width: 32px;
-  animation-duration: 0.6s;
-  animation-delay: 0s;
-}
-
 .bg-black {
   background-color: $black;
 }
@@ -331,13 +257,22 @@ label {
   overflow: hidden;
 }
 
-.loading-xl {
+.vue-ui-loading-indicator {
+  &.overlay {
+    background-color: transparent !important;
+  }
+
   .animation {
-    border-color: transparentize(white, 0.8);
-    border-width: 6px;
-    width: 64px;
-    height: 64px;
-    border-right-color: white;
+    border-color: transparentize($white, 0.8);
+    border-right-color: $white;
+  }
+
+  .loading-xl {
+    .animation {
+      border-width: 6px;
+      width: 64px;
+      height: 64px;
+    }
   }
 }
 
@@ -366,4 +301,8 @@ label {
       }
     }
   }
+}
+
+.panel-background {
+  background-color: $panel-background;
 }

@@ -1,5 +1,5 @@
 <template>
-  <span class="d-inline-block circle" :style="style" v-if="tokens" />
+  <span class="d-inline-block circle border" :style="style" v-if="tokens" />
 </template>
 
 <script>
@@ -34,11 +34,10 @@ export default {
         return `${chartColor} 0 ${(acum += token.weightPercent)}%`;
       });
       return {
-        background: `radial-gradient(white 20%, transparent 21%), conic-gradient( ${styles.join(
-          ','
-        )} )`,
+        background: `conic-gradient( ${styles.join(',')} )`,
         width: `${this.size || 44}px`,
-        height: `${this.size || 44}px`
+        height: `${this.size || 44}px`,
+        borderColor: '#21222c !important'
       };
     }
   }

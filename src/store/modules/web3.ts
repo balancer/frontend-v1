@@ -1,8 +1,10 @@
 import Vue from 'vue';
+import { formatEther, getAddress, Interface } from 'ethers/utils';
 import provider, { connectToInjected } from '@/helpers/provider';
 import web3 from '@/helpers/web3';
 import { ethers } from 'ethers';
 import abi from '@/helpers/abi';
+import config from '@/helpers/config';
 
 const supportedChainId = 1;
 const infuraId = '8b8aadcdedf14ddeaa449f33b1c24953';
@@ -19,7 +21,8 @@ const state = {
   backUpWeb3: null,
   library: null,
   active: false,
-  activeProvider: null
+  activeProvider: null,
+  balances: {}
 };
 
 const mutations = {
@@ -51,7 +54,6 @@ const mutations = {
     Vue.set(_state, 'activeProvider', null);
     console.log('LOAD_PROVIDER_FAILURE', payload);
   },
-
   LOAD_BACKUP_PROVIDER_REQUEST() {
     console.log('LOAD_BACKUP_PROVIDER_REQUEST');
   },
@@ -108,11 +110,21 @@ const mutations = {
   },
   SEND_TRANSACTION_FAILURE(_state, payload) {
     console.log('SEND_TRANSACTION_FAILURE', payload);
+  },
+  GET_BALANCES_REQUEST() {
+    console.log('GET_BALANCES_REQUEST');
+  },
+  GET_BALANCES_SUCCESS(_state, payload) {
+    Vue.set(_state, 'balances', payload);
+    console.log('GET_BALANCES_SUCCESS');
+  },
+  GET_BALANCES_FAILURE(_state, payload) {
+    console.log('GET_BALANCES_FAILURE', payload);
   }
 };
 
 const actions = {
-  loadWeb3Modal: async ({ dispatch }) => {
+  login: async ({ dispatch }) => {
     await connectToInjected();
     if (provider) await dispatch('loadWeb3');
   },
@@ -120,6 +132,7 @@ const actions = {
     commit('LOAD_WEB3_REQUEST');
     try {
       await dispatch('loadProvider');
+      await dispatch('loadAccount');
       commit('LOAD_WEB3_SUCCESS');
       if (!state.injectedLoaded || state.injectedChainId !== supportedChainId) {
         await dispatch('loadBackupProvider');
@@ -146,15 +159,14 @@ const actions = {
           commit('HANDLE_CHAIN_CHANGED');
           if (state.active) {
             await dispatch('loadWeb3');
-            await dispatch('loadAccount');
           }
         });
         provider.on('accountsChanged', async accounts => {
           if (accounts.length === 0) {
             if (state.active) await dispatch('loadWeb3');
           } else {
-            await dispatch('loadAccount');
             commit('HANDLE_ACCOUNTS_CHANGED', accounts[0]);
+            await dispatch('loadAccount');
           }
         });
         provider.on('close', async () => {
@@ -165,7 +177,6 @@ const actions = {
           commit('HANDLE_NETWORK_CHANGED');
           if (state.active) {
             await dispatch('loadWeb3');
-            await dispatch('loadAccount');
           }
         });
       }
@@ -173,7 +184,6 @@ const actions = {
       const accounts = await web3.listAccounts();
       const account = accounts.length > 0 ? accounts[0] : null;
       const name = await dispatch('lookupAddress', account);
-      await dispatch('loadAccount');
       commit('LOAD_PROVIDER_SUCCESS', {
         injectedLoaded: true,
         injectedChainId: network.chainId,
@@ -246,9 +256,49 @@ const actions = {
     }
   },
   loadAccount: async ({ dispatch }) => {
+    await dispatch('getBalances');
     await dispatch('getMyPools');
-    // await dispatch('getBalances', state.account);
     // await dispatch('getProxies', state.account);
+  },
+  getBalances: async ({ commit }) => {
+    commit('GET_BALANCES_REQUEST');
+    const address = state.account;
+    // @ts-ignore
+    const tokens = Object.entries(config.tokens).map(token => token[1].address);
+    const promises: any = [];
+    const multi = new ethers.Contract(
+      config.addresses.multicall,
+      abi['Multicall'],
+      web3
+    );
+    const calls = [];
+    const testToken = new Interface(abi.TestToken);
+    tokens.forEach(token => {
+      // @ts-ignore
+      calls.push([token, testToken.functions.balanceOf.encode([address])]);
+    });
+    promises.push(multi.aggregate(calls));
+    promises.push(multi.getEthBalance(address));
+    const balances: any = {};
+    try {
+      // @ts-ignore
+      const [[, response], ethBalance] = await Promise.all(promises);
+      balances.ether = parseFloat(formatEther(ethBalance as any));
+      let i = 0;
+      response.forEach(value => {
+        if (tokens && tokens[i]) {
+          const tokenBalance = testToken.functions.balanceOf.decode(value);
+          balances[getAddress(tokens[i])] = parseFloat(
+            formatEther(tokenBalance.toString())
+          );
+        }
+        i++;
+      });
+      commit('GET_BALANCES_SUCCESS', balances);
+      return balances;
+    } catch (e) {
+      commit('GET_BALANCES_FAILURE', e);
+    }
   }
 };
 

@@ -1,69 +1,93 @@
 <template>
   <div>
-    <VueLoadingIndicator v-if="loading" class="big py-4" />
+    <VueLoadingIndicator v-if="loading" class="big" />
     <div v-else>
-      <div class="border rounded-lg-2 mx-lg-4 mb-4 pt-3 position-relative">
+      <h3 class="flex-auto mb-4">Pool {{ pool.id | shorten }}</h3>
+      <div
+        class="border rounded-lg-2 mb-4 pt-3 position-relative panel-background"
+      >
         <div class="position-absolute top-4 left-0 right-0" style="z-index: 9;">
-          <Container class="d-flex">
-            <h2 class="flex-auto mt-1">Pool {{ pool.id | shorten }}</h2>
+          <div class="d-flex px-4">
             <div class="d-flex">
-              <button
-                class="btn-outline ml-2"
-                @click="modalAddLiquidityOpen = true"
-              >
+              <Button class="ml-2" @click="modalAddLiquidityOpen = true">
                 Add liquidity
-              </button>
-              <button
+              </Button>
+              <Button
                 v-if="hasShares"
-                class="btn-outline ml-2"
+                class="ml-2"
                 @click="modalRemoveLiquidityOpen = true"
               >
                 Remove liquidity
-              </button>
-            </div>
-          </Container>
-        </div>
-        <div style="min-height: 300px;">
-          <div ref="chartContainer" class="width-full mt-4" />
-        </div>
-      </div>
-      <NavPool :pool="pool" />
-      <Container>
-        <div v-if="1 === 2" class="d-flex flex-row">
-          <div class="d-flex">
-            <Pie
-              :tokens="pool.tokens"
-              :totalWeight="pool.totalWeight"
-              :size="120"
-              class="mr-4"
-            />
-            <div class="flex-auto">
-              <p>
-                <label class="d-block text-gray-dark">Swap fee</label>
-                {{ $n(pool.swapFeePercent) }}%
-              </p>
-              <div>
-                <a
-                  :href="`https://pools.balancer.exchange/#/pool/${pool.id}`"
-                  target="_blank"
-                >
-                  See on Balancer
-                  <Icon name="external-link" class="ml-1" size="18" />
-                </a>
-              </div>
-              <div>
-                <a
-                  :href="`https://etherscan.io/address/${pool.id}`"
-                  target="_blank"
-                >
-                  See on Etherscan
-                  <Icon name="external-link" class="ml-1" size="18" />
-                </a>
-              </div>
+              </Button>
             </div>
           </div>
         </div>
-      </Container>
+        <div style="min-height: 300px;">
+          <div ref="chartContainer" class="width-full" />
+        </div>
+      </div>
+      <div class="overflow-hidden mb-4 ml-n2 mr-n2 text-center">
+        <div class="col-3 float-left">
+          <div class="border panel-background rounded-1 p-4 mx-2">
+            <h2 class="mb-2"><Price :amount="pool.totalEthValue" /></h2>
+            <h4>Liquidity</h4>
+          </div>
+        </div>
+        <div class="col-3 float-left">
+          <div class="border panel-background rounded-1 p-4 mx-2">
+            <h2 class="mb-2"><Price :amount="pool.totalVolume1Day" /></h2>
+            <h4>Trade volume (24hr)</h4>
+          </div>
+        </div>
+        <div class="col-3 float-left">
+          <div class="border panel-background rounded-1 p-4 mx-2">
+            <h2 class="mb-2">{{ $n(pool.swapFeePercent) }}%</h2>
+            <h4>Pool swap fee</h4>
+          </div>
+        </div>
+        <div class="col-3 float-left">
+          <div class="border panel-background rounded-1 p-4 mx-2">
+            <h2 class="mb-2">0%</h2>
+            <h4>My pool share</h4>
+          </div>
+        </div>
+      </div>
+
+      <Tabs :pool="pool" />
+      <div v-if="1 === 2" class="d-flex flex-row">
+        <div class="d-flex">
+          <Pie
+            :tokens="pool.tokens"
+            :totalWeight="pool.totalWeight"
+            :size="120"
+            class="mr-4"
+          />
+          <div class="flex-auto">
+            <p>
+              <label class="d-block">Swap fee</label>
+              {{ $n(pool.swapFeePercent) }}%
+            </p>
+            <div>
+              <a
+                :href="`https://pools.balancer.exchange/#/pool/${pool.id}`"
+                target="_blank"
+              >
+                See on Balancer
+                <Icon name="external-link" class="ml-1" size="18" />
+              </a>
+            </div>
+            <div>
+              <a
+                :href="`https://etherscan.io/address/${pool.id}`"
+                target="_blank"
+              >
+                See on Etherscan
+                <Icon name="external-link" class="ml-1" size="18" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
       <router-view :key="$route.path" :pool="pool" />
     </div>
     <ModalAddLiquidity
@@ -86,17 +110,10 @@ import { getAddress } from 'ethers/utils';
 import { getMarketChartFromCoinGecko, shorten } from '@/helpers/utils';
 import config from '@/helpers/config';
 
-const options = [
-  { key: 'weight', name: 'Weight' },
-  { key: 'poolBalance', name: 'Pool balance' },
-  { key: 'myPoolValue', name: 'My pool balance' }
-];
-
 export default {
   data() {
     return {
       count: 0,
-      options,
       id: this.$route.params.id,
       pool: {},
       loading: false,
@@ -148,11 +165,12 @@ export default {
         }
       },
       layout: {
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
+        textColor: 'white'
       }
     };
     const chart = TV.createChart(chartContainer.parentElement, options);
-    const lineColor = '#384AFF';
+    const lineColor = '#FFFFFF';
     const lineWidth = 3;
     const series = chart.addAreaSeries({
       title: 'BPT',

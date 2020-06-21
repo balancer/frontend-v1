@@ -38,6 +38,14 @@
           "id": true
         },
         "balance": true
+      },
+      "swaps": {
+        "tokenIn": true,
+        "tokenInSym": true,
+        "tokenAmountIn": true,
+        "tokenOut": true,
+        "tokenOutSym": true,
+        "tokenAmountOut": true
       }
     }
   },

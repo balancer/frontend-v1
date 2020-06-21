@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="border rounded-1 panel-background">
     <Filters :options="options" v-model="filters" />
-    <Container
+    <div
       v-infinite-scroll="loadMore"
       infinite-scroll-distance="5"
       class="overflow-hidden"
@@ -9,8 +9,8 @@
       <div v-if="pools.length > 0">
         <ListPool v-for="(pool, i) in pools" :key="i" :pool="pool" />
       </div>
-      <ListPlaceholderPool v-if="loading" />
-    </Container>
+      <ListLoadingPool v-if="loading" />
+    </div>
   </div>
 </template>
 
@@ -19,8 +19,8 @@ import { mapActions } from 'vuex';
 
 const options = [
   { key: 'swapFee', name: 'Swap fee' },
-  { key: 'marketcap', name: 'Marketcap', hideMobile: true },
-  { key: 'volume1Day', name: 'Vol. 24h', hideMobile: true }
+  { key: 'marketcap', name: 'Liquidity', hideMobile: true },
+  { key: 'volume1Day', name: 'Trade volume (24h)', hideMobile: true }
 ];
 
 export default {

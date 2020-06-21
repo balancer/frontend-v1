@@ -1,10 +1,8 @@
 <template>
-  <img
-    class="avatar circle"
-    style="vertical-align: middle;"
-    :width="size || 64"
-    :height="size || 64"
-    :src="address | blockie"
+  <jazzicon
+    :address="address"
+    :diameter="parseInt(size) || 64"
+    class="d-inline-block v-align-middle"
   />
 </template>
 
