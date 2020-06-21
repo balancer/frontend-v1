@@ -5,7 +5,7 @@
       <p class="mb-3">Venenatis urna cursus eget nunc scelerisque viverra.</p>
     </div>
     <div
-      class="text-left mb-7 mx-6 overflow-hidden border border-bottom-0 rounded-2"
+      class="text-left mb-7 mx-6 overflow-hidden border border-bottom-0 rounded-1"
     >
       <a
         v-for="(right, i) in rights"

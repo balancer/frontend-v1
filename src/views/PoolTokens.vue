@@ -1,11 +1,15 @@
 <template>
   <div>
     <VueLoadingIndicator v-if="!pool.id" class="big py-4" />
-    <div v-else class="overflow-hidden clearfix">
+    <div
+      v-else
+      class="border rounded-1 panel-background"
+      style="border-top-left-radius: 0 !important;"
+    >
       <Filters class="overflow-hidden" :options="options" />
-      <Container>
+      <div>
         <ListTokens :pool="pool" />
-      </Container>
+      </div>
     </div>
   </div>
 </template>

@@ -1,30 +1,26 @@
 <template>
-  <div class="border-bottom d-flex text-right">
+  <div class="border-top d-flex flex-items-center p-4 text-right">
     <div class="flex-auto text-left">
       <a
         :href="`https://etherscan.io/token/${token.address}`"
-        class="text-gray d-flex"
+        class="text-white d-flex"
         target="_blank"
       >
         <Token
           :address="token.address"
-          size="44"
+          size="20"
           :symbol="token.symbol"
-          class="mr-2 py-3"
+          class="mr-3"
         />
-        <div class="py-4">
-          {{ token.symbol }}
-          <Icon name="external-link" class="ml-1" size="18" />
-        </div>
+        {{ token.symbol }}
+        <Icon name="external-link ml-2" size="16" />
       </a>
     </div>
-    <div class="text-gray column py-4">
-      {{ $n(token.weightPercent.toFixed(2)) }}%
-    </div>
-    <div class="text-gray column py-4">
+    <div class="column">{{ $n(token.weightPercent.toFixed(2)) }}%</div>
+    <div class="column">
       {{ $n(parseFloat(token.balance).toFixed()) }} {{ token.symbol }}
     </div>
-    <div class="text-gray column py-4">
+    <div class="column">
       {{ $n(parseFloat(myPoolBalance.toFixed())) }} {{ token.symbol }}
     </div>
   </div>

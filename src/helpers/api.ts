@@ -1,8 +1,6 @@
-import { formatEther, Interface } from 'ethers/utils';
 import { query } from '@/helpers/subgraph';
 import provider from '@/helpers/provider';
 import config from '@/helpers/config';
-import abi from '@/helpers/abi';
 
 export async function getSharesOwned(address: string) {
   const ts = Math.round(new Date().getTime() / 1000);
@@ -63,39 +61,6 @@ export async function getSharesOwned(address: string) {
     return share;
   });
   return poolShares;
-}
-
-export async function getBalances(address: string, tokens?: string[]) {
-  if (!tokens || !tokens.length) {
-    // @ts-ignore
-    tokens = Object.entries(config.tokens).map(token => token[1].address);
-  }
-  const promises: Promise<any>[] = [];
-  const multi = provider.getContract('Multicall', config.addresses.multicall);
-  const calls = [];
-  const testToken = new Interface(abi.TestToken);
-  tokens.forEach(token => {
-    // @ts-ignore
-    calls.push([token, testToken.functions.balanceOf.encode([address])]);
-  });
-  promises.push(multi.aggregate(calls));
-  promises.push(multi.getEthBalance(address));
-  const balances: any = {};
-  try {
-    const [[, response], ethBalance] = await Promise.all(promises);
-    balances.ether = parseFloat(formatEther(ethBalance));
-    let i = 0;
-    response.forEach(value => {
-      if (tokens && tokens[i]) {
-        const tokenBalance = testToken.functions.balanceOf.decode(value);
-        balances[tokens[i]] = parseFloat(formatEther(tokenBalance.toString()));
-      }
-      i++;
-    });
-  } catch (e) {
-    console.error(e);
-  }
-  return balances;
 }
 
 export async function proxies(address: string) {

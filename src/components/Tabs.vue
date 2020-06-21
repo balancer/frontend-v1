@@ -1,7 +1,5 @@
 <template>
-  <Container>
-    <Nav :items="items" />
-  </Container>
+  <Nav :items="items" id="tabs" />
 </template>
 
 <script>
@@ -9,7 +7,7 @@ import { clone } from '@/helpers/utils';
 
 const startItems = [
   {
-    name: 'Tokens',
+    name: 'Balances',
     to: { name: 'pool' }
   },
   {
@@ -29,7 +27,11 @@ export default {
       const items = clone(startItems);
       items[0].count = this.pool.tokens.length;
       items[1].count = this.pool.swapsCount;
-      items[2].count = this.pool.holders;
+      if (this.pool.holders > 0) {
+        items[2].count = this.pool.holders;
+      } else {
+        items.splice(2);
+      }
       if (
         this.subgraph.myPools.map(myPool => myPool.id).includes(this.pool.id)
       ) {
@@ -43,3 +45,23 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+@import '../vars';
+
+#tabs {
+  ul > li {
+    display: inline-block;
+    font-size: 16px;
+
+    a {
+      padding: 10px 14px;
+      border-radius: $border-radius $border-radius 0 0;
+
+      &.router-link-exact-active {
+        background-color: $blue-900;
+      }
+    }
+  }
+}
+</style>

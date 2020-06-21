@@ -73,9 +73,17 @@ const actions = {
     }
   },
   getPool: async ({ commit }, payload) => {
+    const ts = Math.round(new Date().getTime() / 1000);
+    const tsYesterday = ts - 24 * 3600;
     const q = queries['getPool'];
     // @ts-ignore
     q.pool.__args = { id: payload };
+    // @ts-ignore
+    q.pool.swaps.__args = {
+      where: {
+        timestamp_gt: tsYesterday
+      }
+    };
     const gqlQuery = jsonToGraphQLQuery({ query: q }, { pretty: true });
     commit('GET_POOL_REQUEST');
     try {

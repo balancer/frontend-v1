@@ -7,6 +7,17 @@ export const MAX_GAS = utils.bigNumberify('0xffffffff');
 export const MAX_UINT = utils.bigNumberify(ethers.constants.MaxUint256);
 export const POOL_TOKENS_DECIMALS = 18;
 
+export const unknownColors = [
+  '#6f6776',
+  '#9a9a97',
+  '#c5ccb8',
+  '#c38890',
+  '#a593a5',
+  '#666092',
+  '#9a4f50',
+  '#c28d75'
+];
+
 export function shorten(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
 }
@@ -36,8 +47,16 @@ export function denormalizeBalance(
 }
 
 export function formatPool(pool) {
+  let colorIndex = 0;
   pool.tokens = pool.tokens.map(token => {
+    const configToken = config.tokens[getAddress(token.address)];
     token.weightPercent = (100 / pool.totalWeight) * token.denormWeight;
+    if (configToken) {
+      token.chartColor = configToken.chartColor;
+    } else {
+      token.chartColor = unknownColors[colorIndex];
+      colorIndex++;
+    }
     return token;
   });
   pool.swapFeePercent = pool.swapFee * 100;

@@ -1,10 +1,9 @@
 <template>
   <div>
-    <Hero />
-    <NavMain />
-    <div>
+    <h3 class="mb-4">My pools</h3>
+    <div class="border rounded-1 panel-background">
       <Filters :options="options" v-model="filters" />
-      <Container class="overflow-hidden">
+      <div class="overflow-hidden">
         <div v-if="subgraph.myPools.length > 0">
           <ListPool
             v-for="(pool, i) in subgraph.myPools"
@@ -12,7 +11,8 @@
             :pool="pool"
           />
         </div>
-      </Container>
+        <ListLoadingPool v-if="loading" />
+      </div>
     </div>
   </div>
 </template>

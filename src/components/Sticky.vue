@@ -3,7 +3,7 @@
     <div v-if="isFixed" :style="`height: ${offsetHeight}px;`" />
     <div
       id="sticky"
-      :class="{ 'position-fixed width-full top-0 bg-blue-light': isFixed }"
+      :class="{ 'position-fixed width-full top-0 bg-gray-dark': isFixed }"
     >
       <slot />
     </div>
