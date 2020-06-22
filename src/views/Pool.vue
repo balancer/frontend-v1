@@ -37,7 +37,7 @@
         <div class="col-3 float-left">
           <div class="border panel-background rounded-1 p-4 mx-2">
             <h2 class="mb-2"><Price :amount="pool.totalVolume1Day" /></h2>
-            <h4>Trade volume (24hr)</h4>
+            <h4>Trade vol. (24hr)</h4>
           </div>
         </div>
         <div class="col-3 float-left">

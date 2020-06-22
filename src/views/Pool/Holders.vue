@@ -29,8 +29,9 @@
 
 <script>
 const options = [
-  { key: 'balance', name: 'Balance' },
-  { key: 'myPoolValue', name: 'Shares' }
+  { name: 'Holder', class: 'flex-auto text-left' },
+  { name: 'Balance', class: 'column' },
+  { name: 'Shares', class: 'column' }
 ];
 
 export default {
