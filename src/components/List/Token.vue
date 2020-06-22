@@ -23,6 +23,7 @@
     <div class="column">
       {{ $n(parseFloat(myPoolBalance.toFixed())) }} {{ token.symbol }}
     </div>
+    <div class="column">${{ $n(0) }}</div>
   </div>
 </template>
 

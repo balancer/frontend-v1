@@ -1,15 +1,8 @@
 <template>
-  <div class="d-flex px-4">
-    <div class="flex-auto" />
-    <a
-      v-for="option in options"
-      :key="option.key"
-      @click="handleChangeOrder(option.key)"
-      class="py-3 my-1 text-right column"
-      :class="{ 'hide-sm hide-md': option.hideMobile }"
-    >
+  <div class="d-flex flex-justify-center px-4 py-3 text-right">
+    <div v-for="(option, i) in options" :key="i" :class="option.class">
       {{ option.name }}
-    </a>
+    </div>
   </div>
 </template>
 

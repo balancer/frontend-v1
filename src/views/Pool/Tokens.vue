@@ -16,9 +16,11 @@
 
 <script>
 const options = [
-  { key: 'weight', name: 'Weight' },
-  { key: 'poolBalance', name: 'Pool balance' },
-  { key: 'myPoolValue', name: 'My pool balance' }
+  { name: 'Token', class: 'flex-auto text-left' },
+  { name: 'Weight', class: 'column' },
+  { name: 'Pool balance', class: 'column' },
+  { name: 'My pool balance', class: 'column' },
+  { name: 'My Asset Value', class: 'column' }
 ];
 
 export default {

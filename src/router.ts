@@ -5,10 +5,10 @@ import Private from '@/views/Private.vue';
 import MyPools from '@/views/MyPools.vue';
 import Create from '@/views/Create.vue';
 import Pool from '@/views/Pool.vue';
-import PoolTokens from '@/views/PoolTokens.vue';
-import PoolSwaps from '@/views/PoolSwaps.vue';
-import PoolHolders from '@/views/PoolHolders.vue';
-import PoolSettings from '@/views/PoolSettings.vue';
+import PoolTokens from '@/views/Pool/Tokens.vue';
+import PoolSwaps from '@/views/Pool/Swaps.vue';
+import PoolHolders from '@/views/Pool/Holders.vue';
+import PoolSettings from '@/views/Pool/Settings.vue';
 
 Vue.use(VueRouter);
 

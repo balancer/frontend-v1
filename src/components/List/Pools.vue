@@ -18,9 +18,12 @@
 import { mapActions } from 'vuex';
 
 const options = [
-  { key: 'swapFee', name: 'Swap fee' },
-  { key: 'marketcap', name: 'Liquidity', hideMobile: true },
-  { key: 'volume1Day', name: 'Trade volume (24h)', hideMobile: true }
+  { name: 'Pool address', class: 'column-sm text-left' },
+  { name: 'Assets', class: 'flex-auto text-left' },
+  { name: 'Swap fee', class: 'column' },
+  { name: 'Liquidity', class: 'column' },
+  { name: 'My liquidity', class: 'column' },
+  { name: 'Trade vol. (24h)', class: 'column' }
 ];
 
 export default {
@@ -33,6 +36,13 @@ export default {
       pools: [],
       filters: {}
     };
+  },
+  watch: {
+    query() {
+      this.page = 0;
+      this.loading = true;
+      this.loadMore();
+    }
   },
   methods: {
     ...mapActions(['getPools']),
@@ -47,11 +57,6 @@ export default {
       this.pools = this.pools.concat(pools);
       this.loading = false;
     }
-  },
-  mounted() {
-    this.page = 0;
-    this.loading = true;
-    this.loadMore();
   }
 };
 </script>

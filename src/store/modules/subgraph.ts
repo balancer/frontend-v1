@@ -7,6 +7,7 @@ import queries from '@/helpers/queries.json';
 
 const state = {
   balancer: {},
+  poolShares: {},
   myPools: []
 };
 
@@ -48,6 +49,16 @@ const mutations = {
   },
   GET_MY_POOLS_FAILURE(_state, payload) {
     console.log('GET_MY_POOLS_FAILURE', payload);
+  },
+  GET_POOLS_SHARES_REQUEST() {
+    console.log('GET_POOLS_SHARES_REQUEST');
+  },
+  GET_POOLS_SHARES_SUCCESS(_state, payload) {
+    Vue.set(_state, 'poolShares', payload);
+    console.log('GET_POOLS_SHARES_SUCCESS');
+  },
+  GET_POOLS_SHARES_FAILURE(_state, payload) {
+    console.log('GET_POOLS_SHARES_FAILURE', payload);
   }
 };
 
@@ -133,24 +144,38 @@ const actions = {
       commit('GET_POOLS_FAILURE', e);
     }
   },
-  getMyPools: async ({ commit, dispatch }) => {
+  getMyPools: async ({ commit }) => {
     commit('GET_MY_POOLS_REQUEST');
     try {
-      const query = {
-        first: 3,
-        where: {
-          id_in: [
-            '0xbe6daaf4ab70a1690759331aec740881620856f0',
-            '0xe3bdae21c5afc2dd0d58bdc2324e5ac3c8801f40',
-            '0x456a6019e548700f3ebd7d2afa5e2cca44e7c3c8'
-          ]
-        }
-      };
-      const myPools = await dispatch('getPools', query);
+      const myPools = [
+        '0xbe6daaf4ab70a1690759331aec740881620856f0',
+        '0xe3bdae21c5afc2dd0d58bdc2324e5ac3c8801f40',
+        '0x456a6019e548700f3ebd7d2afa5e2cca44e7c3c8'
+      ];
       commit('GET_MY_POOLS_SUCCESS', myPools);
       return myPools;
     } catch (e) {
       commit('GET_MY_POOLS_FAILURE', e);
+    }
+  },
+  getPoolShares: async ({ commit }, address) => {
+    commit('GET_POOLS_SHARES_REQUEST');
+    try {
+      const q = queries['getPoolShares'];
+      // @ts-ignore
+      q.poolShares.__args = {
+        where: {
+          userAddress: address.toLowerCase()
+        }
+      };
+      const gqlQuery = jsonToGraphQLQuery({ query: q }, { pretty: true });
+      const { poolShares } = await query(config.subgraphUrl, gqlQuery);
+      const balances: any = {};
+      poolShares.forEach(share => (balances[share.poolId.id] = share.balance));
+      commit('GET_POOLS_SHARES_SUCCESS', balances);
+      return poolShares;
+    } catch (e) {
+      commit('GET_POOLS_SHARES_FAILURE', e);
     }
   }
 };

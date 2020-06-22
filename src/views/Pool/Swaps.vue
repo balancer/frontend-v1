@@ -9,10 +9,10 @@
 
 <script>
 const options = [
-  // { key: 'Time', name: 'Time' },
-  { key: 'tradeIn', name: 'Trade in' },
-  { key: 'tradeOut', name: 'Trade out' },
-  { key: 'txDetails', name: 'Tx details' }
+  { name: 'Time', class: 'flex-auto text-left' },
+  { name: 'Trade in', class: 'column' },
+  { name: 'Trade out', class: 'column' },
+  { name: 'Tx details', class: 'column' }
 ];
 
 export default {

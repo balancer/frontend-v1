@@ -2,6 +2,7 @@ import { ethers, utils } from 'ethers';
 import { getAddress } from 'ethers/utils';
 import BigNumber from '@/helpers/bignumber';
 import config from '@/helpers/config';
+import provider from '@/helpers/provider';
 
 export const MAX_GAS = utils.bigNumberify('0xffffffff');
 export const MAX_UINT = utils.bigNumberify(ethers.constants.MaxUint256);
@@ -103,4 +104,12 @@ export function delay(ms) {
 
 export function clone(item) {
   return JSON.parse(JSON.stringify(item));
+}
+
+export async function proxies(address: string) {
+  const dsProxyRegistryContract = provider.getContract(
+    'DSProxyRegistry',
+    config.addresses.dsProxyRegistry
+  );
+  return await dsProxyRegistryContract.proxies(address);
 }

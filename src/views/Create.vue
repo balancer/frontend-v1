@@ -4,7 +4,7 @@
     <div class="float-left col-12 col-md-6 col-lg-4 pr-md-3 mb-3">
       <div
         class="p-4 panel-background border rounded-1 d-flex flex-column"
-        style="height: 300px;"
+        style="height: 240px;"
       >
         <h3 class="mb-3 text-white">Shared pool</h3>
         <div class="flex-auto">
@@ -27,7 +27,7 @@
     <div class="float-left col-12 col-md-6 col-lg-4 pr-md-3 mb-2">
       <div
         class="p-4 panel-background border rounded-1 d-flex flex-column"
-        style="height: 300px;"
+        style="height: 240px;"
       >
         <h3 class="mb-3 text-white">Smart pool</h3>
         <div class="flex-auto">
