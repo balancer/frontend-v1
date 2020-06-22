@@ -15,7 +15,7 @@
           <div>{{ $n(balance) }}</div>
         </div>
       </div>
-      <div v-else class="text-white">
+      <div v-else class="text-white mb-3">
         Connect wallet to see balances
       </div>
     </div>

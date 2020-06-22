@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { getSharesOwned, proxies } from '@/helpers/api';
+import { proxies } from '@/helpers/utils';
 
 const state = {
   init: false,
@@ -29,10 +29,6 @@ const actions = {
     await dispatch('getBalancer');
     await dispatch('getExchangeRatesFromCoinGecko');
     commit('SET', { loading: false, init: true });
-  },
-  getSharesOwned: async ({ commit }, payload) => {
-    const sharesOwned = await getSharesOwned(payload || state.address);
-    commit('SET', { sharesOwned });
   },
   getProxies: async ({ commit }, payload) => {
     const proxy = await proxies(payload || state.address);

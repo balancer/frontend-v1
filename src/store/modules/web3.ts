@@ -258,6 +258,7 @@ const actions = {
   loadAccount: async ({ dispatch }) => {
     await dispatch('getBalances');
     await dispatch('getMyPools');
+    await dispatch('getPoolShares', state.account);
     // await dispatch('getProxies', state.account);
   },
   getBalances: async ({ commit }) => {

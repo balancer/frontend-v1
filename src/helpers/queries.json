@@ -98,5 +98,13 @@
         "tokenAmountOut": true
       }
     }
+  },
+  "getPoolShares": {
+    "poolShares": {
+      "balance": true,
+      "poolId": {
+        "id": true
+      }
+    }
   }
 }
