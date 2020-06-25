@@ -1,4 +1,4 @@
-import { Interface, parseEther } from 'ethers/utils';
+import { getAddress, Interface, parseEther } from 'ethers/utils';
 import abi from '@/helpers/abi';
 import config from '@/helpers/config';
 import { bnum, denormalizeBalance, toWei } from '@/helpers/utils';
@@ -6,31 +6,31 @@ import BigNumber from '@/helpers/bignumber';
 
 const mutations = {
   CREATE_POOL_REQUEST() {
-    console.log('CREATE_POOL_REQUEST');
+    console.debug('CREATE_POOL_REQUEST');
   },
   CREATE_POOL_SUCCESS() {
-    console.log('CREATE_POOL_SUCCESS');
+    console.debug('CREATE_POOL_SUCCESS');
   },
   CREATE_POOL_FAILURE(_state, payload) {
-    console.log('CREATE_POOL_FAILURE', payload);
+    console.debug('CREATE_POOL_FAILURE', payload);
   },
   JOIN_POOL_REQUEST() {
-    console.log('JOIN_POOL_REQUEST');
+    console.debug('JOIN_POOL_REQUEST');
   },
   JOIN_POOL_SUCCESS() {
-    console.log('JOIN_POOL_SUCCESS');
+    console.debug('JOIN_POOL_SUCCESS');
   },
   JOIN_POOL_FAILURE(_state, payload) {
-    console.log('JOIN_POOL_FAILURE', payload);
+    console.debug('JOIN_POOL_FAILURE', payload);
   },
   EXIT_POOL_REQUEST() {
-    console.log('EXIT_POOL_REQUEST');
+    console.debug('EXIT_POOL_REQUEST');
   },
   EXIT_POOL_SUCCESS() {
-    console.log('EXIT_POOL_SUCCESS');
+    console.debug('EXIT_POOL_SUCCESS');
   },
   EXIT_POOL_FAILURE(_state, payload) {
-    console.log('EXIT_POOL_FAILURE', payload);
+    console.debug('EXIT_POOL_FAILURE', payload);
   }
 };
 
@@ -80,23 +80,31 @@ const actions = {
     }
   },
   joinPool: async (
-    { commit, dispatch },
+    { commit, dispatch, rootState },
     { poolAddress, poolAmountOut, maxAmountsIn }
   ) => {
     commit('JOIN_POOL_REQUEST');
     try {
-      const params = [
-        'BPool',
-        poolAddress,
-        'joinPool',
-        [parseEther(poolAmountOut.toString()), maxAmountsIn]
-      ];
-      await dispatch('sendTransaction', params);
+      const dsProxyAddress = rootState.web3.dsProxyAddress;
+      const iface = new Interface(abi.BActions);
+      const data = iface.functions.joinPool.encode([
+        getAddress(poolAddress),
+        poolAmountOut,
+        maxAmountsIn
+      ]);
+      await dispatch('sendTransaction', [
+        'DSProxy',
+        dsProxyAddress,
+        'execute',
+        [config.addresses.bActions, data]
+      ]);
+      await dispatch('getBalances');
+      await dispatch('getPoolShares');
       dispatch('notify', ['green', "You've successfully added liquidity"]);
       commit('JOIN_POOL_SUCCESS');
     } catch (e) {
       dispatch('notify', ['red', 'Ooops, something went wrong']);
-      commit('JOIN_POOL_FAILURE');
+      commit('JOIN_POOL_FAILURE', e);
     }
   },
   exitPool: async (
@@ -112,6 +120,8 @@ const actions = {
         [parseEther(poolAmountIn), minAmountsOut]
       ];
       await dispatch('sendTransaction', params);
+      await dispatch('getBalances');
+      await dispatch('getPoolShares');
       dispatch('notify', ['green', "You've successfully removed liquidity"]);
       commit('EXIT_POOL_SUCCESS');
     } catch (e) {
