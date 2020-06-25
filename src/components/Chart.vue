@@ -1,5 +1,5 @@
 <template>
-  <div ref="chartContainer" />
+  <div ref="chartContainer" style="height: 300px;" />
 </template>
 
 <script>
@@ -78,8 +78,10 @@ export default {
           value: row[1]
         }));
         series.setData(data);
-        window.onresize = () =>
+        window.onresize = () => {
           chart.resize(chartContainer.offsetWidth, chartContainer.offsetHeight);
+          console.log('resize');
+        };
       });
     }
   },
