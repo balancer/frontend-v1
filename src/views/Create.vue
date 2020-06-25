@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h3 class="mb-4">Create a pool</h3>
+  <div class="px-0 px-md-5 py-4">
+    <h3 class="mb-4 px-4 px-md-0">Create a pool</h3>
     <div class="float-left col-12 col-md-6 col-lg-4 pr-md-3 mb-3">
       <div
         class="p-4 panel-background border rounded-1 d-flex flex-column"

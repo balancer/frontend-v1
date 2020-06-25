@@ -1,15 +1,18 @@
 <template>
-  <a v-if="!approval" @click="handleSubmit">
-    <Icon name="unlock" class="ml-n2 mr-1 v-align-middle" />
-    Unlock {{ approval }}
-  </a>
+  <VueSwitch v-model="isUnlocked" @click="handleSubmit" />
 </template>
 
 <script>
 import { mapActions } from 'vuex';
+import { getAddress } from 'ethers/utils';
 
 export default {
   props: ['tokenAddress', 'spender', 'value'],
+  data() {
+    return {
+      isUnlocked: false
+    };
+  },
   watch: {
     async approval() {
       await this.init();
@@ -28,13 +31,13 @@ export default {
     ...mapActions(['approve', 'getAllowance']),
     handleSubmit() {
       this.approve({
-        tokenAddress: this.tokenAddress,
+        tokenAddress: getAddress(this.tokenAddress),
         spender: this.spender
       });
     },
     async init() {
       await this.getAllowance({
-        tokenAddress: this.tokenAddress,
+        tokenAddress: getAddress(this.tokenAddress),
         spender: this.spender
       });
     }

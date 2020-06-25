@@ -6,7 +6,7 @@
       class="py-4 border-top d-flex text-right v-align-middle px-4"
       :style="`line-height: 0; opacity: ${1 - (i - 1) / 2.5};`"
     >
-      <div class="column-sm text-left">
+      <div class="column-sm text-left hide-sm hide-md hide-lg">
         <span
           class="bg-gray d-inline-block rounded-1 anim-pulse"
           style="height: 29px; width: 64px;"
@@ -18,25 +18,25 @@
           style="height: 29px; width: 40%;"
         />
       </div>
-      <div class="hide-sm hide-md column">
+      <div class="column hide-sm hide-md">
         <span
           class="bg-gray d-inline-block rounded-1 anim-pulse"
           style="height: 29px; width: 64px;"
         />
       </div>
-      <div class="hide-sm hide-md column">
+      <div class="column">
         <span
           class="bg-gray d-inline-block rounded-1 anim-pulse"
           style="height: 29px; width: 64px;"
         />
       </div>
-      <div class="hide-sm hide-md column">
+      <div class="column hide-sm hide-md">
         <span
           class="bg-gray d-inline-block rounded-1 anim-pulse"
           style="height: 29px; width: 64px;"
         />
       </div>
-      <div class="hide-sm hide-md column">
+      <div class="column hide-sm hide-md hide-lg">
         <span
           class="bg-gray d-inline-block rounded-1 anim-pulse"
           style="height: 29px; width: 64px;"

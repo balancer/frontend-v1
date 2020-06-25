@@ -33,18 +33,27 @@ const actions = {
     commit('GET_RATES_REQUEST');
     try {
       const addressesStr = Object.values(config.tokens)
-        // @ts-ignore
-        .map(token => token.coingeckoAddress)
+        .map((token: any) => token.coingeckoAddress)
         .join(',');
       const uri = `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${addressesStr}&vs_currencies=usd`;
       let exchangeRates = await fetch(uri).then(res => res.json());
       exchangeRates = Object.fromEntries(
         Object.entries(exchangeRates).map(exchangeRate => {
+          const address = getAddress(exchangeRate[0]);
           // @ts-ignore
-          return [getAddress(exchangeRate[0]), exchangeRate[1].usd];
+          return [address, exchangeRate[1].usd];
+        })
+      );
+      exchangeRates = Object.fromEntries(
+        Object.values(config.tokens).map((token: any) => {
+          return [
+            token.address,
+            exchangeRates[getAddress(token.coingeckoAddress)] || 0
+          ];
         })
       );
       commit('GET_RATES_SUCCESS', exchangeRates);
+      return exchangeRates;
     } catch (e) {
       commit('GET_RATES_FAILURE', e);
     }

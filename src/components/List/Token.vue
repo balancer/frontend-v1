@@ -1,5 +1,5 @@
 <template>
-  <div class="border-top d-flex flex-items-center p-4 text-right">
+  <List>
     <div class="flex-auto text-left">
       <a
         :href="`https://etherscan.io/token/${token.address}`"
@@ -17,14 +17,16 @@
       </a>
     </div>
     <div class="column">{{ $n(token.weightPercent.toFixed(2)) }}%</div>
-    <div class="column">
-      {{ $n(parseFloat(token.balance).toFixed()) }} {{ token.symbol }}
+    <div class="column hide-sm">
+      {{ $n(parseFloat(token.balance).toFixed(2)) }} {{ token.symbol }}
     </div>
-    <div class="column">
-      {{ $n(parseFloat(myPoolBalance.toFixed())) }} {{ token.symbol }}
+    <div class="column hide-sm hide-md">
+      {{ $n(parseFloat(myPoolBalance.toFixed(2))) }} {{ token.symbol }}
     </div>
-    <div class="column">${{ $n(0) }}</div>
-  </div>
+    <div class="column hide-sm hide-md hide-lg">
+      <Price :amount="myPoolBalance" :tokenAddress="token.address" />
+    </div>
+  </List>
 </template>
 
 <script>

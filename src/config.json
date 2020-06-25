@@ -17,8 +17,8 @@
         "name": "Wrapped Ether",
         "symbol": "WETH",
         "decimals": 18,
-        "iconAddress": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-        "coingeckoAddress": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+        "iconAddress": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
+        "coingeckoAddress": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
         "precision": 4,
         "chartColor": "#828384"
       },
@@ -31,6 +31,16 @@
         "coingeckoAddress": "0x6b175474e89094c44da98b954eedeac495271d0f",
         "precision": 2,
         "chartColor": "#fab323"
+      },
+      "0xef13C0c8abcaf5767160018d268f9697aE4f5375": {
+        "address": "0xef13C0c8abcaf5767160018d268f9697aE4f5375",
+        "name": "Maker",
+        "symbol": "MKR",
+        "decimals": 18,
+        "iconAddress": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
+        "coingeckoAddress": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
+        "precision": 4,
+        "chartColor": "#5eb8aa"
       },
       "0x2F375e94FC336Cdec2Dc0cCB5277FE59CBf1cAe5": {
         "address": "0x2F375e94FC336Cdec2Dc0cCB5277FE59CBf1cAe5",
@@ -69,8 +79,8 @@
         "decimals": 18,
         "iconAddress": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
         "coingeckoAddress": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
-        "precision": 4,
-        "chartColor": "#be955c"
+        "precision": 2,
+        "chartColor": "#ff5700"
       },
       "0x86436BcE20258a6DcfE48C9512d4d49A30C4d8c4": {
         "address": "0x86436BcE20258a6DcfE48C9512d4d49A30C4d8c4",
@@ -80,10 +90,8 @@
         "iconAddress": "0xc011a72400e58ecd99ee497cf89e3775d4bd732f",
         "coingeckoAddress": "0xc011a72400e58ecd99ee497cf89e3775d4bd732f",
         "precision": 2,
-        "chartColor": "#8d6268"
+        "chartColor": "#ffffff"
       },
-
-
       "0x37f03a12241E9FD3658ad6777d289c3fb8512Bc9": {
         "address": "0x37f03a12241E9FD3658ad6777d289c3fb8512Bc9",
         "name": "Aragon Network Token",
@@ -119,6 +127,16 @@
       "multicall": "0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441"
     },
     "tokens": {
+      "0xba100000625a3754423978a60c9317c58a424e3D": {
+        "address": "0xba100000625a3754423978a60c9317c58a424e3D",
+        "name": "Balancer BAL",
+        "symbol": "BAL",
+        "decimals": 18,
+        "iconAddress": "0xba100000625a3754423978a60c9317c58a424e3D",
+        "coingeckoAddress": "0xba100000625a3754423978a60c9317c58a424e3D",
+        "precision": 4,
+        "chartColor": "#000000"
+      },
       "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2": {
         "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
         "name": "Wrapped Ether",

@@ -1,5 +1,7 @@
 <template>
-  <div class="border rounded-1 panel-background">
+  <div
+    class="border-left-0 border-right-0 border-md border rounded-0 rounded-md-1 panel-background"
+  >
     <Filters :options="options" v-model="filters" />
     <div
       v-infinite-scroll="loadMore"
@@ -18,12 +20,15 @@
 import { mapActions } from 'vuex';
 
 const options = [
-  { name: 'Pool address', class: 'column-sm text-left' },
+  {
+    name: 'Pool address',
+    class: 'column-sm text-left hide-sm hide-md hide-lg'
+  },
   { name: 'Assets', class: 'flex-auto text-left' },
-  { name: 'Swap fee', class: 'column' },
+  { name: 'Swap fee', class: 'column hide-sm hide-md' },
   { name: 'Liquidity', class: 'column' },
-  { name: 'My liquidity', class: 'column' },
-  { name: 'Trade vol. (24h)', class: 'column' }
+  { name: 'My liquidity', class: 'column hide-sm hide-md' },
+  { name: 'Trade vol. (24h)', class: 'column hide-sm hide-md hide-lg' }
 ];
 
 export default {

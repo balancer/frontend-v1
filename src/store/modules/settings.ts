@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import { proxies } from '@/helpers/utils';
 
 const state = {
   init: false,
@@ -12,7 +11,8 @@ const state = {
   totalVolume1Day: 0,
   sharesOwned: [],
   poolsById: {},
-  proxy: ''
+  proxy: '',
+  sidebarIsOpen: false
 };
 
 const mutations = {
@@ -26,16 +26,21 @@ const mutations = {
 const actions = {
   init: async ({ commit, dispatch }) => {
     commit('SET', { loading: true });
-    await dispatch('getBalancer');
-    await dispatch('getExchangeRatesFromCoinGecko');
+    await Promise.all([
+      dispatch('getBalancer'),
+      dispatch('getExchangeRatesFromCoinGecko'),
+      dispatch('login')
+    ]);
     commit('SET', { loading: false, init: true });
-  },
-  getProxies: async ({ commit }, payload) => {
-    const proxy = await proxies(payload || state.address);
-    commit('SET', { proxy });
   },
   loading: ({ commit }, payload) => {
     commit('SET', { loading: payload });
+  },
+  toggleSidebar: ({ commit }) => {
+    commit('SET', { sidebarIsOpen: !state.sidebarIsOpen });
+  },
+  hideSidebar: ({ commit }) => {
+    commit('SET', { sidebarIsOpen: false });
   }
 };
 

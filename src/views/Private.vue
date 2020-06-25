@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h3 class="mb-4">Private pools</h3>
+  <div class="px-0 px-md-5 py-4">
+    <h3 class="mb-4 px-4 px-md-0">Private pools</h3>
     <ListPools :query="query" class="mb-4" />
   </div>
 </template>

@@ -22,28 +22,29 @@ const state = {
   library: null,
   active: false,
   activeProvider: null,
-  balances: {}
+  balances: {},
+  dsProxyAddress: null
 };
 
 const mutations = {
   LOAD_WEB3_REQUEST() {
-    console.log('LOAD_WEB3_REQUEST');
+    console.debug('LOAD_WEB3_REQUEST');
   },
   LOAD_WEB3_SUCCESS() {
-    console.log('LOAD_WEB3_SUCCESS');
+    console.debug('LOAD_WEB3_SUCCESS');
   },
   LOAD_WEB3_FAILURE(_state, payload) {
-    console.log('LOAD_WEB3_FAILURE', payload);
+    console.debug('LOAD_WEB3_FAILURE', payload);
   },
   LOAD_PROVIDER_REQUEST() {
-    console.log('LOAD_PROVIDER_REQUEST');
+    console.debug('LOAD_PROVIDER_REQUEST');
   },
   LOAD_PROVIDER_SUCCESS(_state, payload) {
     Vue.set(_state, 'injectedLoaded', payload.injectedLoaded);
     Vue.set(_state, 'injectedChainId', payload.injectedChainId);
     Vue.set(_state, 'account', payload.account);
     Vue.set(_state, 'name', payload.name);
-    console.log('LOAD_PROVIDER_SUCCESS');
+    console.debug('LOAD_PROVIDER_SUCCESS');
   },
   LOAD_PROVIDER_FAILURE(_state, payload) {
     Vue.set(_state, 'injectedLoaded', false);
@@ -52,13 +53,13 @@ const mutations = {
     Vue.set(_state, 'library', null);
     Vue.set(_state, 'active', false);
     Vue.set(_state, 'activeProvider', null);
-    console.log('LOAD_PROVIDER_FAILURE', payload);
+    console.debug('LOAD_PROVIDER_FAILURE', payload);
   },
   LOAD_BACKUP_PROVIDER_REQUEST() {
-    console.log('LOAD_BACKUP_PROVIDER_REQUEST');
+    console.debug('LOAD_BACKUP_PROVIDER_REQUEST');
   },
   LOAD_BACKUP_PROVIDER_SUCCESS(_state, payload) {
-    console.log('LOAD_BACKUP_PROVIDER_SUCCESS', payload);
+    console.debug('LOAD_BACKUP_PROVIDER_SUCCESS', payload);
   },
   LOAD_BACKUP_PROVIDER_FAILURE(_state, payload) {
     Vue.set(_state, 'injectedLoaded', false);
@@ -69,57 +70,67 @@ const mutations = {
     Vue.set(_state, 'library', null);
     Vue.set(_state, 'active', false);
     Vue.set(_state, 'activeProvider', null);
-    console.log('LOAD_BACKUP_PROVIDER_FAILURE', payload);
+    console.debug('LOAD_BACKUP_PROVIDER_FAILURE', payload);
   },
   HANDLE_CHAIN_CHANGED() {
-    console.log('HANDLE_CHAIN_CHANGED');
+    console.debug('HANDLE_CHAIN_CHANGED');
   },
   HANDLE_ACCOUNTS_CHANGED(_state, payload) {
     Vue.set(_state, 'account', payload);
-    console.log('HANDLE_ACCOUNTS_CHANGED', payload);
+    console.debug('HANDLE_ACCOUNTS_CHANGED', payload);
   },
   HANDLE_CLOSE_CHANGED() {
-    console.log('HANDLE_CLOSE_CHANGED');
+    console.debug('HANDLE_CLOSE_CHANGED');
   },
   HANDLE_NETWORK_CHANGED() {
-    console.log('HANDLE_NETWORK_CHANGED');
+    console.debug('HANDLE_NETWORK_CHANGED');
   },
   LOOKUP_ADDRESS_REQUEST() {
-    console.log('LOOKUP_ADDRESS_REQUEST');
+    console.debug('LOOKUP_ADDRESS_REQUEST');
   },
   LOOKUP_ADDRESS_SUCCESS() {
-    console.log('LOOKUP_ADDRESS_SUCCESS');
+    console.debug('LOOKUP_ADDRESS_SUCCESS');
   },
   LOOKUP_ADDRESS_FAILURE(_state, payload) {
-    console.log('LOOKUP_ADDRESS_FAILURE', payload);
+    console.debug('LOOKUP_ADDRESS_FAILURE', payload);
   },
   RESOLVE_NAME_REQUEST() {
-    console.log('RESOLVE_NAME_REQUEST');
+    console.debug('RESOLVE_NAME_REQUEST');
   },
   RESOLVE_NAME_SUCCESS() {
-    console.log('RESOLVE_NAME_SUCCESS');
+    console.debug('RESOLVE_NAME_SUCCESS');
   },
   RESOLVE_NAME_FAILURE(_state, payload) {
-    console.log('RESOLVE_NAME_FAILURE', payload);
+    console.debug('RESOLVE_NAME_FAILURE', payload);
   },
   SEND_TRANSACTION_REQUEST() {
-    console.log('SEND_TRANSACTION_REQUEST');
+    console.debug('SEND_TRANSACTION_REQUEST');
   },
   SEND_TRANSACTION_SUCCESS() {
-    console.log('SEND_TRANSACTION_SUCCESS');
+    console.debug('SEND_TRANSACTION_SUCCESS');
   },
   SEND_TRANSACTION_FAILURE(_state, payload) {
-    console.log('SEND_TRANSACTION_FAILURE', payload);
+    console.debug('SEND_TRANSACTION_FAILURE', payload);
   },
   GET_BALANCES_REQUEST() {
-    console.log('GET_BALANCES_REQUEST');
+    console.debug('GET_BALANCES_REQUEST');
   },
   GET_BALANCES_SUCCESS(_state, payload) {
     Vue.set(_state, 'balances', payload);
-    console.log('GET_BALANCES_SUCCESS');
+    console.debug('GET_BALANCES_SUCCESS');
   },
   GET_BALANCES_FAILURE(_state, payload) {
-    console.log('GET_BALANCES_FAILURE', payload);
+    console.debug('GET_BALANCES_FAILURE', payload);
+  },
+  GET_PROXIES_REQUEST() {
+    console.debug('GET_PROXIES_REQUEST');
+  },
+  GET_PROXIES_SUCCESS(_state, payload) {
+    Vue.set(_state, 'dsProxyAddress', payload);
+    console.debug('GET_PROXIES_SUCCESS');
+  },
+  GET_PROXIES_FAILURE(_state, payload) {
+    console.debug('GET_PROXIES_FAILURE', payload);
   }
 };
 
@@ -148,6 +159,7 @@ const actions = {
       }
     } catch (e) {
       commit('LOAD_WEB3_FAILURE', e);
+      return Promise.reject();
     }
   },
   loadProvider: async ({ commit, dispatch }) => {
@@ -194,6 +206,7 @@ const actions = {
       });
     } catch (e) {
       commit('LOAD_PROVIDER_FAILURE', e);
+      return Promise.reject();
     }
   },
   loadBackupProvider: async ({ commit }) => {
@@ -213,6 +226,7 @@ const actions = {
       });
     } catch (e) {
       commit('LOAD_BACKUP_PROVIDER_FAILURE', e);
+      return Promise.reject();
     }
   },
   lookupAddress: async ({ commit }, payload) => {
@@ -233,6 +247,7 @@ const actions = {
       return name;
     } catch (e) {
       commit('RESOLVE_NAME_FAILURE', e);
+      return Promise.reject();
     }
   },
   sendTransaction: async (
@@ -241,11 +256,11 @@ const actions = {
   ) => {
     commit('SEND_TRANSACTION_REQUEST');
     try {
-      const signer = provider.getSigner();
+      const signer = web3.getSigner();
       const contract = new ethers.Contract(
-        contractAddress,
+        getAddress(contractAddress),
         abi[contractType],
-        provider
+        web3
       );
       const contractWithSigner = contract.connect(signer);
       const tx = await contractWithSigner[action](...params);
@@ -253,12 +268,16 @@ const actions = {
       commit('SEND_TRANSACTION_SUCCESS');
     } catch (e) {
       commit('SEND_TRANSACTION_FAILURE', e);
+      return Promise.reject();
     }
   },
   loadAccount: async ({ dispatch }) => {
-    await dispatch('getBalances');
-    await dispatch('getMyPools');
-    await dispatch('getPoolShares', state.account);
+    await Promise.all([
+      dispatch('getBalances'),
+      dispatch('getMyPools'),
+      dispatch('getPoolShares'),
+      dispatch('getProxies')
+    ]);
     // await dispatch('getProxies', state.account);
   },
   getBalances: async ({ commit }) => {
@@ -299,6 +318,24 @@ const actions = {
       return balances;
     } catch (e) {
       commit('GET_BALANCES_FAILURE', e);
+      return Promise.reject();
+    }
+  },
+  getProxies: async ({ commit }) => {
+    commit('GET_PROXIES_REQUEST');
+    const address = state.account;
+    try {
+      const dsProxyRegistryContract = new ethers.Contract(
+        config.addresses.dsProxyRegistry,
+        abi['DSProxyRegistry'],
+        web3
+      );
+      const proxies = await dsProxyRegistryContract.proxies(address);
+      commit('GET_PROXIES_SUCCESS', proxies);
+      return proxies;
+    } catch (e) {
+      commit('GET_PROXIES_FAILURE', e);
+      return Promise.reject();
     }
   }
 };

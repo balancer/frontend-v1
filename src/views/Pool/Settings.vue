@@ -2,7 +2,7 @@
   <div class="border rounded-1 panel-background p-4 text-white">
     <div class="border-bottom mb-4 pb-3">
       <div class="float-right">
-        <Button click="modalEditPublicSwapOpen = true" type="outline"
+        <Button click="modalEditPublicSwapOpen = true" class="button-outline"
           >Edit</Button
         >
       </div>
@@ -11,7 +11,9 @@
     </div>
     <div class="border-bottom mb-4 pb-3">
       <div class="float-right">
-        <Button @click="modalEditTokensOpen = true" type="outline">Edit</Button>
+        <Button @click="modalEditTokensOpen = true" class="button-outline"
+          >Edit</Button
+        >
       </div>
       <label class="d-block mb-2">Tokens</label>
       <div v-if="pool.tokens.length" class="mb-2">
@@ -33,7 +35,7 @@
     </div>
     <div class="border-bottom mb-4 pb-3">
       <div class="float-right">
-        <Button @click="modalEditWeightsOpen = true" type="outline"
+        <Button @click="modalEditWeightsOpen = true" class="button-outline"
           >Edit</Button
         >
       </div>
@@ -42,7 +44,7 @@
     </div>
     <div class="pb-3">
       <div class="float-right">
-        <Button @click="modalEditSwapFeeOpen = true" type="outline"
+        <Button @click="modalEditSwapFeeOpen = true" class="button-outline"
           >Edit</Button
         >
       </div>

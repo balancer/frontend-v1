@@ -4,15 +4,15 @@
     style="z-index: 99999;"
   >
     <div class="m-5">
-      <div v-for="(item, key) in items" :key="key">
-        <a
-          class="btn-outline mt-2 px-4 d-inline-block anim-scale-in"
-          :class="`btn-${item.type}`"
+      <div v-for="(item, key) in items" :key="key" class="mb-2">
+        <Button
+          class="d-inline-block anim-scale-in"
+          :class="`button-${item.type}`"
           v-if="now < item.timestamp + duration && !item.hide"
           @click="item.hide = true"
         >
           {{ item.message }}
-        </a>
+        </Button>
       </div>
     </div>
   </div>

@@ -1,7 +1,8 @@
+import { ethers } from 'ethers';
 import { formatEther } from 'ethers/utils';
-import store from '@/store';
-import provider from '@/helpers/provider';
 import { MAX_UINT } from '@/helpers/utils';
+import abi from '@/helpers/abi';
+import web3 from '@/helpers/web3';
 
 const state = {
   approvals: {}
@@ -26,11 +27,15 @@ const mutations = {
 };
 
 const actions = {
-  getAllowance: async ({ commit }, { tokenAddress, spender }) => {
-    // @ts-ignore
-    const owner = store.state.provider.account;
-    const tokenContract = provider.getContract('TestToken', tokenAddress);
+  getAllowance: async ({ commit, rootState }, { tokenAddress, spender }) => {
+    const owner = rootState.web3.account;
+    const tokenContract = new ethers.Contract(
+      tokenAddress,
+      abi['TestToken'],
+      web3
+    );
     const approval = formatEther(await tokenContract.allowance(owner, spender));
+    console.log('Approval', approval);
     commit('SET_APPROVAL', { tokenAddress, spender, approval });
   },
   approve: async ({ commit, dispatch }, { tokenAddress, spender }) => {
