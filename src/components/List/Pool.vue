@@ -27,7 +27,7 @@
     </div>
     <div class="column hide-sm hide-md">{{ $n(pool.swapFee, 'percent') }}</div>
     <div class="column">
-      <Price :amount="pool.totalEthValue" />
+      <Price :amount="pool.liquidity" />
     </div>
     <div class="column hide-sm hide-md">
       <Price :amount="myLiquidity" />
@@ -44,7 +44,7 @@ export default {
   computed: {
     myLiquidity() {
       const poolShares = this.subgraph.poolShares[this.pool.id] || 0;
-      return (this.pool.totalEthValue / this.pool.totalShares) * poolShares;
+      return (this.pool.liquidity / this.pool.totalShares) * poolShares;
     }
   }
 };
