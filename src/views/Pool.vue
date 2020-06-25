@@ -17,8 +17,10 @@
           </Button>
         </div>
       </div>
-      <div class="border rounded-lg-2 mb-4 position-relative panel-background">
-        <div v-if="pool.id && 1 === 2" style="min-height: 300px;">
+      <div
+        class="border-left-0 border-right-0 border border-md rounded-lg-2 mb-4 position-relative panel-background"
+      >
+        <div v-if="pool.id" style="min-height: 300px;">
           <Chart :pool="pool" />
         </div>
       </div>
