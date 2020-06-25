@@ -1,6 +1,10 @@
 <template>
-  <div id="sidebar" class="d-flex flex-column bottom-0 top-0">
-    <Nav :items="items" class="pb-9 flex-auto" />
+  <div
+    id="sidebar"
+    class="d-flex flex-column bottom-0 top-0 overflow-y-auto animate"
+    :class="settings.sidebarIsOpen ? 'is-open' : 'is-closed'"
+  >
+    <Nav :items="items" class="flex-auto mb-4" />
     <div class="p-4 border-top">
       <div class="eyebrow mb-4">
         My wallet
@@ -76,12 +80,19 @@ export default {
 @import '../vars';
 
 #sidebar {
+  z-index: 10;
   border-right: $border;
   position: fixed;
   background-color: $panel-background;
   margin-top: 79px;
   padding-top: 20px;
   width: 264px;
+  left: -264px;
+  transition: left 0.2s;
+
+  @media (min-width: $width-xl) {
+    left: 0;
+  }
 
   ul > li > a {
     color: $white;
@@ -91,6 +102,10 @@ export default {
       background: $blue-900;
       border-left: 3px solid $blue;
     }
+  }
+
+  &.is-open {
+    left: 0 !important;
   }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div ref="chartContainer" class="width-full" />
+  <div ref="chartContainer" />
 </template>
 
 <script>
@@ -23,9 +23,11 @@ export default {
         getMarketChartFromCoinGecko(token.address)
       );
       const marketCharts = await Promise.all(promises);
+      if (!marketCharts) return;
       const chartContainer = this.$refs.chartContainer;
       const options = {
-        height: 300,
+        width: chartContainer.offsetWidth,
+        height: chartContainer.offsetHeight,
         priceScale: {
           position: 'right',
           borderVisible: false,
@@ -52,7 +54,7 @@ export default {
           textColor: 'white'
         }
       };
-      const chart = TV.createChart(chartContainer.parentElement, options);
+      const chart = TV.createChart(this.$refs.chartContainer, options);
       const lineWidth = 3;
       marketCharts.forEach((marketChart, i) => {
         const tokenAddress = getAddress(this.pool.tokens[i].address);
@@ -76,10 +78,12 @@ export default {
           value: row[1]
         }));
         series.setData(data);
+        window.onresize = () =>
+          chart.resize(chartContainer.offsetWidth, chartContainer.offsetHeight);
       });
     }
   },
-  beforeMount() {
+  mounted() {
     this.loadChart();
   }
 };

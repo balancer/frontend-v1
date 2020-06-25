@@ -2,10 +2,14 @@
   "en": {
     "currency": {
       "style": "currency",
-      "currency": "USD"
+      "currency": "USD",
+      "minimumFractionDigits": 0,
+      "maximumFractionDigits": 2
     },
     "percent": {
-      "style": "percent"
+      "style": "percent",
+      "minimumFractionDigits": 0,
+      "maximumFractionDigits": 3
     }
   }
 }

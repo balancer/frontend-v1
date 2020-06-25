@@ -14,8 +14,8 @@ export default {
 
 <style scoped lang="scss">
 .iconfont {
-  font-size: 22px;
-  line-height: 22px;
+  font-size: 16px;
+  line-height: 16px;
   vertical-align: baseline;
 }
 </style>

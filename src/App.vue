@@ -6,9 +6,17 @@
     />
     <div v-else>
       <Topnav />
-      <div class="d-flex flex-row">
+      <div
+        class="d-flex flex-row"
+        :style="settings.sidebarIsOpen && 'max-height: 100vh'"
+      >
+        <div
+          class="shell d-block d-xl-none"
+          :class="settings.sidebarIsOpen && 'sidebar-is-open'"
+          @click="toggleSidebar"
+        />
         <Sidebar />
-        <router-view class="flex-auto p-5" style="margin: 80px 0 0 264px;" />
+        <router-view id="view" class="flex-auto " />
       </div>
     </div>
     <Notifications />
@@ -19,11 +27,40 @@
 import { mapActions } from 'vuex';
 
 export default {
+  watch: {
+    $route() {
+      this.hideSidebar();
+    }
+  },
   methods: {
-    ...mapActions(['init'])
+    ...mapActions(['init', 'toggleSidebar', 'hideSidebar'])
   },
   mounted() {
     this.init();
   }
 };
 </script>
+
+<style lang="scss">
+@import './vars';
+
+#view {
+  margin-left: 0;
+  margin-top: 80px;
+
+  @media (min-width: $width-xl) {
+    margin-left: 264px;
+  }
+}
+
+.shell {
+  &.sidebar-is-open {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+  }
+}
+</style>

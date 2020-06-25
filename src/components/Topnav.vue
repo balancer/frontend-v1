@@ -1,7 +1,10 @@
 <template>
   <nav id="topnav" class="border-bottom position-fixed width-full">
     <div class="d-flex flex-items-center px-5" style="height: 78px;">
-      <div class="flex-auto">
+      <div class="flex-auto d-flex flex-items-center">
+        <a class="d-block d-xl-none text-white" @click="toggleSidebar">
+          <Icon name="menu" size="28" class="mr-3" />
+        </a>
         <router-link
           :to="{ name: 'home' }"
           class="d-inline-block text-blue d-flex"
@@ -23,7 +26,7 @@
       <div>
         <template v-if="web3.account && !wrongNetwork">
           <Button
-            type="outline"
+            class="button-outline"
             :to="{
               name: 'user',
               params: { id: web3.name || web3.account }
@@ -34,7 +37,7 @@
             <span v-else>{{ web3.account | shorten }}</span>
           </Button>
         </template>
-        <Button v-if="web3.injectedLoaded && wrongNetwork" class="btn-red">
+        <Button v-if="web3.injectedLoaded && wrongNetwork" class="button-red">
           <Icon name="warning" class="ml-n2 mr-1 v-align-middle" />
           Wrong network
         </Button>
@@ -70,6 +73,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['toggleSidebar']),
     ...mapActions(['login']),
     async handleLogin() {
       this.loading = true;

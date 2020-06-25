@@ -2,6 +2,9 @@
   <div v-if="open" class="modal">
     <div class="backdrop" @click="$emit('close')" />
     <div class="shell overflow-hidden anim-scale-in position-relative">
+      <a @click="$emit('close')" class="position-absolute right-0 top-2 p-4">
+        <Icon name="close" />
+      </a>
       <a
         v-if="closeButton"
         @click="$emit('close')"

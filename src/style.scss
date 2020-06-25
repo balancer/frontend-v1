@@ -2,7 +2,6 @@
 @import './fonts';
 @import './vars';
 @import "~@primer/css/core/index.scss";
-@import "~@primer/css/marketing/index.scss";
 
 body {
   font-family: $font-weight-normal;
@@ -59,89 +58,21 @@ a {
 
 .input {
   outline: none;
+  width: 20px !important;
+  color: $white;
+  font-size: 15px;
   background-color: transparent;
   border: none;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: $bg-gray;
+  background-color: $panel-border;
   background-clip: padding-box;
   border: 0;
   border-radius: 0;
 
   &:hover {
-    background-color: $gray;
-  }
-}
-
-.btn-mktg {
-  text-align: center;
-  height: 44px;
-  line-height: 44px;
-  padding: 0 26px;
-  font-size: 15px;
-  border: 0;
-  background-color: $bg-blue;
-  color: $white;
-  box-shadow: none !important;
-
-  &:hover {
-    color: $white;
-  }
-}
-
-.btn-outline {
-  @extend .btn-mktg;
-  background-color: $blue-100;
-  color: $bg-blue;
-
-  &:hover {
-    background-color: $blue-100;
-    color: $bg-blue;
-  }
-}
-
-.btn-red {
-  @extend .btn-mktg;
-  background-color: $bg-red;
-  color: $white;
-
-  &:hover {
-    background-color: $bg-red;
-    color: $white;
-  }
-}
-
-.btn-outline-red {
-  @extend .btn-mktg;
-  background-color: $red-100;
-  color: $bg-red;
-
-  &:hover {
-    background-color: $red-100;
-    color: $bg-red;
-  }
-}
-
-.btn-green {
-  @extend .btn-mktg;
-  background-color: $bg-green;
-  color: $white;
-
-  &:hover {
-    background-color: $bg-green;
-    color: $white;
-  }
-}
-
-.btn-white {
-  @extend .btn-mktg;
-  background-color: $white;
-  color: $bg-blue;
-
-  &:hover {
-    background-color: $white;
-    color: $bg-blue;
+    background-color: $input-hover-border;
   }
 }
 
@@ -150,10 +81,10 @@ a {
     @extend .border;
     @extend .rounded-md-1;
     @extend .rounded-lg-1;
-    background-color: $background;
+    background-color: $panel-background;
     padding-left: 0 !important;
     padding-right: 0 !important;
-    max-width: 440px;
+    max-width: 780px;
   }
 
   .modal-body {
@@ -279,25 +210,24 @@ label {
 .vue-ui-switch {
   .wrapper {
     margin-left: 0 !important;
-    width: 64px !important;
-    height: 32px !important;
-    border-radius: 16px !important;
-    background-color: $gray-200 !important;
+    height: 24px !important;
+    width: 42px !important;
+    border-radius: 12px !important;
+    background-color: $panel-border !important;
 
     .bullet {
-      width: 30px !important;
-      height: 30px !important;
-      border-radius: 15px !important;
-      background-color: $gray-400 !important;
+      margin: 2px;
+      width: 18px !important;
+      height: 18px !important;
+      background-color: $white !important;
     }
   }
 
   &.selected {
     .wrapper {
-      background-color: $blue-100 !important;
       .bullet {
-        margin-left: 34px !important;
-        background-color: $bg-blue !important;
+        margin-left: 20px !important;
+        background-color: $blue !important;
       }
     }
   }
@@ -305,4 +235,8 @@ label {
 
 .panel-background {
   background-color: $panel-background;
+}
+
+.link-text {
+  color: $link-text;
 }

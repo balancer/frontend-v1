@@ -7,7 +7,7 @@ import { upperFirst, camelCase } from 'lodash';
 import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
-import { shorten } from '@/helpers/utils';
+import { shorten, trunc } from '@/helpers/utils';
 import mixins from '@/mixins';
 import messages from '@/helpers/messages.json';
 import numberFormats from '@/helpers/number.json';
@@ -31,6 +31,7 @@ requireComponent.keys().forEach(fileName => {
 Vue.component('jazzicon', Jazzicon);
 
 Vue.filter('shorten', value => shorten(value));
+Vue.filter('trunc', (value, decimals) => trunc(value, decimals));
 
 Vue.mixin(mixins);
 

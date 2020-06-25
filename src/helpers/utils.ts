@@ -1,11 +1,10 @@
-import { ethers, utils } from 'ethers';
-import { getAddress } from 'ethers/utils';
+import { ethers } from 'ethers';
+import { getAddress, bigNumberify, BigNumber as ethersBN } from 'ethers/utils';
 import BigNumber from '@/helpers/bignumber';
 import config from '@/helpers/config';
-import provider from '@/helpers/provider';
 
-export const MAX_GAS = utils.bigNumberify('0xffffffff');
-export const MAX_UINT = utils.bigNumberify(ethers.constants.MaxUint256);
+export const MAX_GAS = bigNumberify('0xffffffff');
+export const MAX_UINT = bigNumberify(ethers.constants.MaxUint256);
 export const POOL_TOKENS_DECIMALS = 18;
 
 export const unknownColors = [
@@ -23,9 +22,7 @@ export function shorten(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
 }
 
-export function bnum(
-  val: string | number | utils.BigNumber | BigNumber
-): BigNumber {
+export function bnum(val: string | number | ethersBN | BigNumber): BigNumber {
   return new BigNumber(val.toString());
 }
 
@@ -35,7 +32,7 @@ export function scale(input: BigNumber, decimalPlaces: number): BigNumber {
   return input.times(scaleMul);
 }
 
-export function toWei(val: string | utils.BigNumber | BigNumber): BigNumber {
+export function toWei(val: string | ethersBN | BigNumber): BigNumber {
   return scale(bnum(val.toString()), 18).integerValue();
 }
 
@@ -50,8 +47,9 @@ export function denormalizeBalance(
 export function formatPool(pool) {
   let colorIndex = 0;
   pool.tokens = pool.tokens.map(token => {
-    const configToken = config.tokens[getAddress(token.address)];
+    token.checksum = getAddress(token.address);
     token.weightPercent = (100 / pool.totalWeight) * token.denormWeight;
+    const configToken = config.tokens[token.checksum];
     if (configToken) {
       token.chartColor = configToken.chartColor;
     } else {
@@ -60,7 +58,6 @@ export function formatPool(pool) {
     }
     return token;
   });
-  pool.swapFeePercent = pool.swapFee * 100;
   pool.holders = pool.shares.length;
   pool.tokensList = pool.tokensList.map(token => getAddress(token));
   if (pool.swaps) {
@@ -79,14 +76,18 @@ export function formatPool(pool) {
 export async function getMarketChartFromCoinGecko(address) {
   const ratePerDay = {};
   const uri = `https://api.coingecko.com/api/v3/coins/ethereum/contract/${address}/market_chart?vs_currency=usd&days=60`;
-  const marketChart = await fetch(uri).then(res => res.json());
-  marketChart.prices.forEach(p => {
-    const date = new Date();
-    date.setTime(p[0]);
-    const day = date.toISOString();
-    ratePerDay[day] = p[1];
-  });
-  return ratePerDay;
+  try {
+    const marketChart = await fetch(uri).then(res => res.json());
+    marketChart.prices.forEach(p => {
+      const date = new Date();
+      date.setTime(p[0]);
+      const day = date.toISOString();
+      ratePerDay[day] = p[1];
+    });
+    return ratePerDay;
+  } catch (e) {
+    return Promise.reject();
+  }
 }
 
 export function isValidAddress(str) {
@@ -106,10 +107,16 @@ export function clone(item) {
   return JSON.parse(JSON.stringify(item));
 }
 
-export async function proxies(address: string) {
-  const dsProxyRegistryContract = provider.getContract(
-    'DSProxyRegistry',
-    config.addresses.dsProxyRegistry
-  );
-  return await dsProxyRegistryContract.proxies(address);
+export function trunc(value: number, decimals = 0) {
+  const mutiplier = 10 ** decimals;
+  return Math.trunc(value * mutiplier) / mutiplier;
+}
+
+export function calcPoolTokensByRatio(ratio, totalShares) {
+  const buffer = bnum(100);
+  return bnum(ratio)
+    .times(toWei(totalShares))
+    .integerValue(BigNumber.ROUND_DOWN)
+    .minus(buffer)
+    .toString();
 }
