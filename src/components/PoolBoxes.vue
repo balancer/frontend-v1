@@ -6,7 +6,7 @@
       <div
         class="border-0 border-md rounded-0 rounded-md-1 panel-background py-4 mx-0 mx-md-2"
       >
-        <h2 class="mb-2"><Price :amount="pool.totalEthValue" /></h2>
+        <h2 class="mb-2"><Price :amount="pool.liquidity" /></h2>
         <h4>Liquidity</h4>
       </div>
     </div>

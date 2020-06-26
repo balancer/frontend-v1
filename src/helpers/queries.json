@@ -7,7 +7,7 @@
       "swapFee": true,
       "totalWeight": true,
       "totalShares": true,
-      "totalEthValue": true,
+      "liquidity": true,
       "tokensList": true,
       "swapsCount": true,
       "tokens": {
@@ -57,7 +57,7 @@
       "swapFee": true,
       "totalWeight": true,
       "totalShares": true,
-      "totalEthValue": true,
+      "liquidity": true,
       "tokensList": true,
       "swapsCount": true,
       "tokens": {

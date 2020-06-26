@@ -110,7 +110,7 @@ const actions = {
     const {
       first = 10,
       page = 1,
-      orderBy = 'totalEthValue',
+      orderBy = 'liquidity',
       orderDirection = 'desc',
       where = {}
     } = payload;

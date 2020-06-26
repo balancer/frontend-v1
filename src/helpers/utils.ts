@@ -64,7 +64,7 @@ export function formatPool(pool) {
     pool.totalVolume1Day = pool.swaps.reduce((a, b) => {
       const tokenOut = pool.tokens.find(token => token.address === b.tokenOut);
       const tokenOutValue =
-        (((parseFloat(pool.totalEthValue) / 100) * tokenOut.weightPercent) /
+        (((parseFloat(pool.liquidity) / 100) * tokenOut.weightPercent) /
           parseFloat(tokenOut.balance)) *
         parseFloat(b.tokenAmountOut);
       return a + tokenOutValue;
