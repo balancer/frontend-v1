@@ -4,6 +4,8 @@ import Home from '@/views/Home.vue';
 import Private from '@/views/Private.vue';
 import MyPools from '@/views/MyPools.vue';
 import Create from '@/views/Create.vue';
+import Tokens from '@/views/Tokens.vue';
+import Token from '@/views/Token.vue';
 import Pool from '@/views/Pool.vue';
 import PoolTokens from '@/views/Pool/Tokens.vue';
 import PoolSwaps from '@/views/Pool/Swaps.vue';
@@ -17,6 +19,8 @@ const routes: Array<RouteConfig> = [
   { path: '/private', name: 'private', component: Private },
   { path: '/my-pools', name: 'my-pools', component: MyPools },
   { path: '/create', name: 'create', component: Create },
+  { path: '/tokens', name: 'tokens', component: Tokens },
+  { path: '/token/:id', name: 'token', component: Token },
   {
     path: '/pool/:id',
     component: Pool,

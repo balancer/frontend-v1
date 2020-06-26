@@ -29,6 +29,7 @@ const actions = {
     await Promise.all([
       dispatch('getBalancer'),
       dispatch('getExchangeRatesFromCoinGecko'),
+      dispatch('getTokenPrices'),
       dispatch('login')
     ]);
     commit('SET', { loading: false, init: true });

@@ -1,26 +1,19 @@
 <template>
-  <div class="border rounded-1 panel-background">
-    <Filters class="overflow-hidden" :options="options" />
+  <UiTable>
+    <UiTableHeader>
+      <div v-text="'Time'" class="flex-auto text-left"/>
+      <div v-text="'Trade in'" class="column"/>
+      <div v-text="'Trade out'" class="column"/>
+      <div v-text="'Tx details'" class="column"/>
+    </UiTableHeader>
     <div class="border-top d-flex flex-items-center p-4 text-white">
       Nothing to see here.
     </div>
-  </div>
+  </UiTable>
 </template>
 
 <script>
-const options = [
-  { name: 'Time', class: 'flex-auto text-left' },
-  { name: 'Trade in', class: 'column' },
-  { name: 'Trade out', class: 'column' },
-  { name: 'Tx details', class: 'column' }
-];
-
 export default {
-  props: ['pool'],
-  data() {
-    return {
-      options
-    };
-  }
+  props: ['pool']
 };
 </script>

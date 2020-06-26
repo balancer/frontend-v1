@@ -1,5 +1,5 @@
 <template>
-  <List :to="{ name: 'pool', params: { id: pool.id } }">
+  <UiTableLine :to="{ name: 'pool', params: { id: pool.id } }">
     <div class="column-sm text-left hide-sm hide-md hide-lg">
       {{ pool.id | shorten }}
     </div>
@@ -35,7 +35,7 @@
     <div class="column hide-sm hide-md hide-lg">
       <Price :amount="pool.totalVolume1Day" />
     </div>
-  </List>
+  </UiTableLine>
 </template>
 
 <script>

@@ -75,10 +75,10 @@ export default {
       return Object.fromEntries(
         Object.entries(config.tokens)
           .map(token => {
-            token[1].balance = this.settings.balances[token[1].address];
+            token[1].balance = this.ui.balances[token[1].address];
             token[1].usdValue = this.getPrice(
               token[1].address,
-              this.settings.balances[token[1].address]
+              this.ui.balances[token[1].address]
             );
             return token;
           })

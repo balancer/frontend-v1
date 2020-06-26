@@ -1,10 +1,9 @@
 <template>
-  <List>
+  <UiTableLine>
     <div class="flex-auto text-left">
-      <a
-        :href="`https://etherscan.io/token/${token.address}`"
+      <router-link
+        :to="{ name: 'token', params: { id: token.address } }"
         class="text-white d-flex"
-        target="_blank"
       >
         <Token
           :address="token.address"
@@ -13,8 +12,7 @@
           class="mr-3"
         />
         {{ token.symbol }}
-        <Icon name="external-link ml-2" size="16" />
-      </a>
+      </router-link>
     </div>
     <div class="column">{{ $n(token.weightPercent.toFixed(2)) }}%</div>
     <div class="column hide-sm">
@@ -26,7 +24,7 @@
     <div class="column hide-sm hide-md hide-lg">
       <Price :amount="myPoolBalance" :tokenAddress="token.address" />
     </div>
-  </List>
+  </UiTableLine>
 </template>
 
 <script>
