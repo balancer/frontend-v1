@@ -1,18 +1,18 @@
 <template>
   <div id="app" class="overflow-hidden">
     <VueLoadingIndicator
-      v-if="settings.loading || !settings.init"
+      v-if="ui.loading || !ui.init"
       class="overlay big"
     />
     <div v-else>
       <Topnav />
       <div
         class="d-flex flex-row"
-        :style="settings.sidebarIsOpen && 'max-height: 100vh'"
+        :style="ui.sidebarIsOpen && 'max-height: 100vh'"
       >
         <div
           class="shell d-block d-xl-none"
-          :class="settings.sidebarIsOpen && 'sidebar-is-open'"
+          :class="ui.sidebarIsOpen && 'sidebar-is-open'"
           @click="toggleSidebar"
         />
         <Sidebar />

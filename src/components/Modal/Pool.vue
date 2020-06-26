@@ -1,5 +1,5 @@
 <template>
-  <Modal :open="open" @close="$emit('close')">
+  <UiModal :open="open" @close="$emit('close')">
     <div class="modal-body my-5 px-4 text-center">
       <h2 class="mb-4" v-text="shorten(pool.id)" />
       <div class="overflow-hidden text-center mb-4">
@@ -55,7 +55,7 @@
         </a>
       </div>
     </div>
-  </Modal>
+  </UiModal>
 </template>
 
 <script>

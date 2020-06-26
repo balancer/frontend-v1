@@ -1,8 +1,13 @@
 <template>
-  <div
-    class="border-left-0 border-right-0 border-md border rounded-0 rounded-md-1 panel-background"
-  >
-    <Filters :options="options" v-model="filters" />
+  <UiTable>
+    <UiTableHeader>
+      <div v-text="'Pool address'" class="column-sm text-left hide-sm hide-md hide-lg"/>
+      <div v-text="'Assets'" class="flex-auto text-left"/>
+      <div v-text="'Swap fee'" class="column hide-sm hide-md"/>
+      <div v-text="'Liquidity'" class="column"/>
+      <div v-text="'My liquidity'" class="column hide-sm hide-md"/>
+      <div v-text="'Trade vol. (24h)'" class="column hide-sm hide-md hide-lg"/>
+    </UiTableHeader>
     <div
       v-infinite-scroll="loadMore"
       infinite-scroll-distance="5"
@@ -13,33 +18,19 @@
       </div>
       <ListLoadingPool v-if="loading" />
     </div>
-  </div>
+  </UiTable>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 
-const options = [
-  {
-    name: 'Pool address',
-    class: 'column-sm text-left hide-sm hide-md hide-lg'
-  },
-  { name: 'Assets', class: 'flex-auto text-left' },
-  { name: 'Swap fee', class: 'column hide-sm hide-md' },
-  { name: 'Liquidity', class: 'column' },
-  { name: 'My liquidity', class: 'column hide-sm hide-md' },
-  { name: 'Trade vol. (24h)', class: 'column hide-sm hide-md hide-lg' }
-];
-
 export default {
   props: ['query'],
   data() {
     return {
-      options,
       loading: false,
       page: 0,
-      pools: [],
-      filters: {}
+      pools: []
     };
   },
   watch: {

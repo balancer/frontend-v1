@@ -8,7 +8,8 @@ import queries from '@/helpers/queries.json';
 const state = {
   balancer: {},
   poolShares: {},
-  myPools: []
+  myPools: [],
+  tokenPrices: {}
 };
 
 const mutations = {
@@ -21,6 +22,16 @@ const mutations = {
   },
   GET_BALANCER_FAILURE(_state, payload) {
     console.debug('GET_BALANCER_FAILURE', payload);
+  },
+  GET_TOKEN_PRICES_REQUEST() {
+    console.debug('GET_TOKEN_PRICES_REQUEST');
+  },
+  GET_TOKEN_PRICES_SUCCESS(_state, payload) {
+    Vue.set(_state, 'tokenPrices', payload);
+    console.debug('GET_TOKEN_PRICES_SUCCESS');
+  },
+  GET_TOKEN_PRICES_FAILURE(_state, payload) {
+    console.debug('GET_TOKEN_PRICES_FAILURE', payload);
   },
   GET_POOL_REQUEST() {
     console.debug('GET_POOL_REQUEST');
@@ -64,23 +75,28 @@ const mutations = {
 
 const actions = {
   getBalancer: async ({ commit }) => {
-    const q = `{
-      balancer(id: 1) {
-        id
-        color
-        poolCount
-        finalizedPoolCount
-        txCount
-      }
-    }`;
+    const q = queries['getBalancer'];
+    const gqlQuery = jsonToGraphQLQuery({ query: q }, { pretty: true });
     commit('GET_BALANCER_REQUEST');
     try {
-      const { balancer } = await query(config.subgraphUrl, q);
+      const { balancer } = await query(config.subgraphUrl, gqlQuery);
       balancer.privatePoolCount =
         balancer.poolCount - balancer.finalizedPoolCount;
       commit('GET_BALANCER_SUCCESS', balancer);
     } catch (e) {
       commit('GET_BALANCER_FAILURE', e);
+    }
+  },
+  getTokenPrices: async ({ commit }) => {
+    const q = queries['getTokenPrices'];
+    const gqlQuery = jsonToGraphQLQuery({ query: q }, { pretty: true });
+    commit('GET_TOKEN_PRICES_REQUEST');
+    try {
+      let { tokenPrices } = await query(config.subgraphUrl, gqlQuery);
+      tokenPrices = Object.fromEntries(tokenPrices.sort((a, b) => b.poolLiquidity - a.poolLiquidity).map(tokenPrice => [tokenPrice.id, tokenPrice]))
+      commit('GET_TOKEN_PRICES_SUCCESS', tokenPrices);
+    } catch (e) {
+      commit('GET_TOKEN_PRICES_FAILURE', e);
     }
   },
   getPool: async ({ commit }, payload) => {

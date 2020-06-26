@@ -1,4 +1,26 @@
 {
+  "getBalancer": {
+    "balancer": {
+      "__args": {
+        "id": 1
+      },
+      "color": true,
+      "poolCount": true,
+      "finalizedPoolCount": true,
+      "txCount": true
+    }
+  },
+  "getTokenPrices": {
+    "tokenPrices": {
+      "__args": {
+        "first": 1000
+      },
+      "id": true,
+      "symbol": true,
+      "price": true,
+      "poolLiquidity": true
+    }
+  },
   "getPool": {
     "pool": {
       "id": true,

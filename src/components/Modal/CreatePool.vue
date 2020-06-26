@@ -1,5 +1,5 @@
 <template>
-  <Modal :open="open" @close="$emit('close')">
+  <UiModal :open="open" @close="$emit('close')">
     <div
       class="modal-body py-6 text-center"
       :class="{ 'bg-blue mosaic anim-scroll': step === 0 || step > lastStep }"
@@ -63,7 +63,7 @@
         </div>
       </form>
     </div>
-  </Modal>
+  </UiModal>
 </template>
 
 <script>
@@ -106,7 +106,7 @@ export default {
         await delay(1e3);
         /*
         this.createSmartPool({
-          proxyAddress: this.settings.proxy,
+          proxyAddress: this.ui.proxy,
           tokens: this.tokens,
           startBalances: this.startBalances,
           startWeights: this.startWeights,

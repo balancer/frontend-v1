@@ -10,16 +10,14 @@
 </template>
 
 <script>
-const querySharedPools = {
-  where: {
-    finalized: true
-  }
-};
-
 export default {
   data() {
     return {
-      querySharedPools
+      querySharedPools: {
+        where: {
+          finalized: true
+        }
+      }
     };
   },
   computed: {

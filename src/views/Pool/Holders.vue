@@ -1,7 +1,11 @@
 <template>
-  <div class="border rounded-1 panel-background">
-    <Filters class="overflow-hidden" :options="options" />
-    <List v-for="(share, i) in pool.shares" :key="i">
+  <UiTable>
+    <UiTableHeader>
+      <div v-text="'Holder'" class="flex-auto text-left"/>
+      <div v-text="'Balance'" class="column"/>
+      <div v-text="'Shares'" class="column"/>
+    </UiTableHeader>
+    <UiTableLine v-for="(share, i) in pool.shares" :key="i">
       <div class="text-left flex-auto">
         <a
           :href="`https://etherscan.io/address/${share.userAddress.id}`"
@@ -19,23 +23,12 @@
       <div class="column">
         {{ $n((100 / pool.totalShares) * share.balance) }}%
       </div>
-    </List>
-  </div>
+    </UiTableLine>
+  </UiTable>
 </template>
 
 <script>
-const options = [
-  { name: 'Holder', class: 'flex-auto text-left' },
-  { name: 'Balance', class: 'column' },
-  { name: 'Shares', class: 'column' }
-];
-
 export default {
-  props: ['pool'],
-  data() {
-    return {
-      options
-    };
-  }
+  props: ['pool']
 };
 </script>

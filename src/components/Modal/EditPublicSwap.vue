@@ -1,5 +1,5 @@
 <template>
-  <Modal :open="open" @close="$emit('close')">
+  <UiModal :open="open" @close="$emit('close')">
     <div
       class="modal-body py-6 text-center"
       :class="{ 'bg-blue mosaic anim-scroll': step > lastStep }"
@@ -41,7 +41,7 @@
         <FormBroadcast v-if="step === 1" @close="$emit('close')" />
       </form>
     </div>
-  </Modal>
+  </UiModal>
 </template>
 
 <script>

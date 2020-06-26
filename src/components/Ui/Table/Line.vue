@@ -1,9 +1,9 @@
 <template>
   <span>
-    <router-link v-if="to" :to="to" class="list px-4 py-3 highlight">
+    <router-link v-if="to" :to="to" class="line px-4 py-3 highlight">
       <slot />
     </router-link>
-    <div v-else class="list px-4 py-3 highlight">
+    <div v-else class="line px-4 py-3 highlight">
       <slot />
     </div>
   </span>
@@ -16,9 +16,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../vars';
+@import '../../../vars';
 
-.list {
+.line {
   display: flex;
   align-items: center;
   border-top: $border;

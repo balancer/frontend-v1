@@ -1,5 +1,5 @@
 <template>
-  <Modal :open="open" @close="$emit('close')">
+  <UiModal :open="open" @close="$emit('close')">
     <div class="modal-body my-5 px-4 text-left">
       <h2 class="mb-3 text-center">About</h2>
       <p
@@ -37,7 +37,7 @@
         </a>
       </p>
     </div>
-  </Modal>
+  </UiModal>
 </template>
 
 <script>

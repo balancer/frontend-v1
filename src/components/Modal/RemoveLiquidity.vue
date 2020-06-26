@@ -1,5 +1,5 @@
 <template>
-  <Modal :open="open" @close="$emit('close')">
+  <UiModal :open="open" @close="$emit('close')">
     <div class="modal-body" v-if="pool.id">
       <h4 class="p-4 border-bottom text-white">Remove liquidity</h4>
       <form @submit.prevent="handleSubmit" class="flex-auto p-4">
@@ -76,7 +76,7 @@
         </div>
       </form>
     </div>
-  </Modal>
+  </UiModal>
 </template>
 
 <script>

@@ -2,7 +2,7 @@
   <div
     id="sidebar"
     class="d-flex flex-column bottom-0 top-0 overflow-y-auto animate"
-    :class="settings.sidebarIsOpen ? 'is-open' : 'is-closed'"
+    :class="ui.sidebarIsOpen ? 'is-open' : 'is-closed'"
   >
     <Nav :items="items" class="flex-auto mb-4" />
     <div class="p-4 border-top">
@@ -63,6 +63,10 @@ export default {
           to: { name: 'create' }
         });
       }
+      items.push({
+        name: 'Tokens',
+        to: { name: 'tokens' }
+      });
       return items;
     },
     balances() {
