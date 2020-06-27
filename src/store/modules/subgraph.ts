@@ -111,8 +111,11 @@ const actions = {
     q.pool.__args = { id: payload };
     // @ts-ignore
     q.pool.swaps.__args = {
+      first: 1,
+      orderBy: 'timestamp',
+      orderDirection: 'desc',
       where: {
-        timestamp_gt: tsYesterday
+        timestamp_lt: tsYesterday
       }
     };
     const gqlQuery = jsonToGraphQLQuery({ query: q }, { pretty: true });
@@ -149,8 +152,11 @@ const actions = {
     };
     // @ts-ignore
     q.pools.swaps.__args = {
+      first: 1,
+      orderBy: 'timestamp',
+      orderDirection: 'desc',
       where: {
-        timestamp_gt: tsYesterday
+        timestamp_lt: tsYesterday
       }
     };
     const gqlQuery = jsonToGraphQLQuery({ query: q }, { pretty: true });

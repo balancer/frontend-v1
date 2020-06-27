@@ -33,7 +33,7 @@
       <Price :amount="myLiquidity" />
     </div>
     <div class="column hide-sm hide-md hide-lg">
-      <Price :amount="pool.totalVolume1Day" />
+      <Price :amount="pool.lastSwapVolume" />
     </div>
   </UiTableLine>
 </template>
