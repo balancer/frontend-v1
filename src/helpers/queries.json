@@ -29,6 +29,7 @@
       "swapFee": true,
       "totalWeight": true,
       "totalShares": true,
+      "totalSwapVolume": true,
       "liquidity": true,
       "tokensList": true,
       "swapsCount": true,
@@ -67,7 +68,8 @@
         "tokenAmountIn": true,
         "tokenOut": true,
         "tokenOutSym": true,
-        "tokenAmountOut": true
+        "tokenAmountOut": true,
+        "poolTotalSwapVolume": true
       }
     }
   },
@@ -79,6 +81,7 @@
       "swapFee": true,
       "totalWeight": true,
       "totalShares": true,
+      "totalSwapVolume": true,
       "liquidity": true,
       "tokensList": true,
       "swapsCount": true,
@@ -117,7 +120,8 @@
         "tokenAmountIn": true,
         "tokenOut": true,
         "tokenOutSym": true,
-        "tokenAmountOut": true
+        "tokenAmountOut": true,
+        "poolTotalSwapVolume": true
       }
     }
   },

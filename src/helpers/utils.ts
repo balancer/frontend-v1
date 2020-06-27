@@ -60,15 +60,10 @@ export function formatPool(pool) {
   });
   pool.holders = pool.shares.length;
   pool.tokensList = pool.tokensList.map(token => getAddress(token));
-  if (pool.swaps) {
-    pool.totalVolume1Day = pool.swaps.reduce((a, b) => {
-      const tokenOut = pool.tokens.find(token => token.address === b.tokenOut);
-      const tokenOutValue =
-        (((parseFloat(pool.liquidity) / 100) * tokenOut.weightPercent) /
-          parseFloat(tokenOut.balance)) *
-        parseFloat(b.tokenAmountOut);
-      return a + tokenOutValue;
-    }, 0);
+  if (pool.swaps && pool.swaps[0] && pool.swaps[0].poolTotalSwapVolume) {
+    pool.lastSwapVolume =
+      parseFloat(pool.totalSwapVolume) -
+      parseFloat(pool.swaps[0].poolTotalSwapVolume);
   }
   return pool;
 }

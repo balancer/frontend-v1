@@ -1,9 +1,9 @@
 <template>
   <UiTable>
     <UiTableHeader>
-      <div v-text="'Holder'" class="flex-auto text-left"/>
-      <div v-text="'Balance'" class="column"/>
-      <div v-text="'Shares'" class="column"/>
+      <div v-text="'Holder'" class="flex-auto text-left" />
+      <div v-text="'Balance'" class="column" />
+      <div v-text="'Shares'" class="column" />
     </UiTableHeader>
     <UiTableLine v-for="(share, i) in pool.shares" :key="i">
       <div class="text-left flex-auto">
