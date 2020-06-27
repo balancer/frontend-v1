@@ -93,7 +93,11 @@ const actions = {
     commit('GET_TOKEN_PRICES_REQUEST');
     try {
       let { tokenPrices } = await query(config.subgraphUrl, gqlQuery);
-      tokenPrices = Object.fromEntries(tokenPrices.sort((a, b) => b.poolLiquidity - a.poolLiquidity).map(tokenPrice => [tokenPrice.id, tokenPrice]))
+      tokenPrices = Object.fromEntries(
+        tokenPrices
+          .sort((a, b) => b.poolLiquidity - a.poolLiquidity)
+          .map(tokenPrice => [tokenPrice.id, tokenPrice])
+      );
       commit('GET_TOKEN_PRICES_SUCCESS', tokenPrices);
     } catch (e) {
       commit('GET_TOKEN_PRICES_FAILURE', e);
