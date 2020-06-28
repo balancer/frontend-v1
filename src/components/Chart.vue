@@ -80,7 +80,6 @@ export default {
         series.setData(data);
         window.onresize = () => {
           chart.resize(chartContainer.offsetWidth, chartContainer.offsetHeight);
-          console.log('resize');
         };
       });
     }

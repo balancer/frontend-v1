@@ -1,13 +1,13 @@
 <template>
-  <span>${{ $n(price) }}</span>
+  <span>{{ $n(price, 'price') }}</span>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import config from '@/helpers/config';
-import { getAddress } from 'ethers/utils';
 
 export default {
-  props: ['tokenAddress', 'amount', 'precision'],
+  props: ['token', 'amount'],
   data() {
     return {
       forceRecomputeCounter: 0
@@ -19,15 +19,12 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['getPrice']),
     price() {
       this.forceRecomputeCounter;
       const amount = this.amount || 0;
-      const precision = this.precision || 0;
-      const tokenAddress = this.tokenAddress || config.addresses.weth;
-      const checksum = getAddress(tokenAddress);
-      const exchangeRate = this.market.exchangeRates[checksum];
-      if (!exchangeRate) return 0;
-      return (exchangeRate * amount).toFixed(precision);
+      const token = this.token || config.addresses.weth;
+      return this.getPrice(token, amount);
     }
   }
 };

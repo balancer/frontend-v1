@@ -18,10 +18,7 @@ const state = {
   injectedChainId: null,
   account: null,
   name: null,
-  backUpWeb3: null,
-  library: null,
   active: false,
-  activeProvider: null,
   balances: {},
   dsProxyAddress: null
 };
@@ -50,9 +47,7 @@ const mutations = {
     Vue.set(_state, 'injectedLoaded', false);
     Vue.set(_state, 'injectedChainId', null);
     Vue.set(_state, 'account', null);
-    Vue.set(_state, 'library', null);
     Vue.set(_state, 'active', false);
-    Vue.set(_state, 'activeProvider', null);
     console.debug('LOAD_PROVIDER_FAILURE', payload);
   },
   LOAD_BACKUP_PROVIDER_REQUEST() {
@@ -66,10 +61,7 @@ const mutations = {
     Vue.set(_state, 'backUpLoaded', false);
     Vue.set(_state, 'account', null);
     Vue.set(_state, 'activeChainId', null);
-    Vue.set(_state, 'backUpWeb3', null);
-    Vue.set(_state, 'library', null);
     Vue.set(_state, 'active', false);
-    Vue.set(_state, 'activeProvider', null);
     console.debug('LOAD_BACKUP_PROVIDER_FAILURE', payload);
   },
   HANDLE_CHAIN_CHANGED() {
@@ -88,7 +80,8 @@ const mutations = {
   LOOKUP_ADDRESS_REQUEST() {
     console.debug('LOOKUP_ADDRESS_REQUEST');
   },
-  LOOKUP_ADDRESS_SUCCESS() {
+  LOOKUP_ADDRESS_SUCCESS(_state, payload) {
+    Vue.set(_state, 'name', payload);
     console.debug('LOOKUP_ADDRESS_SUCCESS');
   },
   LOOKUP_ADDRESS_FAILURE(_state, payload) {
@@ -148,9 +141,7 @@ const actions = {
       if (!state.injectedLoaded || state.injectedChainId !== supportedChainId) {
         await dispatch('loadBackupProvider');
       } else {
-        console.log(`[Provider] Injected provider active.`);
         /**
-        this.providerStatus.library = this.providerStatus.injectedWeb3;
         this.providerStatus.activeChainId = this.providerStatus.injectedChainId;
         this.providerStatus.injectedActive = true;
         if (this.providerStatus.account)
@@ -195,14 +186,11 @@ const actions = {
       const network = await web3.getNetwork();
       const accounts = await web3.listAccounts();
       const account = accounts.length > 0 ? accounts[0] : null;
-      const name = await dispatch('lookupAddress', account);
       commit('LOAD_PROVIDER_SUCCESS', {
         injectedLoaded: true,
         injectedChainId: network.chainId,
         account,
         name
-        // injectedWeb3: web3,
-        // activeProvider: provider
       });
     } catch (e) {
       commit('LOAD_PROVIDER_FAILURE', e);
@@ -221,20 +209,18 @@ const actions = {
         account: null,
         activeChainId: network.chainId
         // backUpWeb3: web3,
-        // library: web3,
-        // activeProvider: backupUrls[supportedChainId]
       });
     } catch (e) {
       commit('LOAD_BACKUP_PROVIDER_FAILURE', e);
       return Promise.reject();
     }
   },
-  lookupAddress: async ({ commit }, payload) => {
+  lookupAddress: async ({ commit }) => {
     commit('LOOKUP_ADDRESS_REQUEST');
     try {
-      const address = await web3.lookupAddress(payload);
-      commit('LOOKUP_ADDRESS_SUCCESS');
-      return address;
+      const name = await web3.lookupAddress(state.account);
+      commit('LOOKUP_ADDRESS_SUCCESS', name);
+      return name;
     } catch (e) {
       commit('LOOKUP_ADDRESS_FAILURE', e);
     }
@@ -242,9 +228,9 @@ const actions = {
   resolveName: async ({ commit }, payload) => {
     commit('RESOLVE_NAME_REQUEST');
     try {
-      const name = await web3.resolveName(payload);
+      const address = await web3.resolveName(payload);
       commit('RESOLVE_NAME_SUCCESS');
-      return name;
+      return address;
     } catch (e) {
       commit('RESOLVE_NAME_FAILURE', e);
       return Promise.reject();
@@ -273,12 +259,12 @@ const actions = {
   },
   loadAccount: async ({ dispatch }) => {
     await Promise.all([
+      dispatch('lookupAddress'),
       dispatch('getBalances'),
       dispatch('getMyPools'),
       dispatch('getPoolShares'),
       dispatch('getProxies')
     ]);
-    // await dispatch('getProxies', state.account);
   },
   getBalances: async ({ commit }) => {
     commit('GET_BALANCES_REQUEST');

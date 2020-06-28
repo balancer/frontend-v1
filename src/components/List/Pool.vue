@@ -26,14 +26,10 @@
       </div>
     </div>
     <div class="column hide-sm hide-md">{{ $n(pool.swapFee, 'percent') }}</div>
-    <div class="column">
-      <Price :amount="pool.liquidity" />
-    </div>
-    <div class="column hide-sm hide-md">
-      <Price :amount="myLiquidity" />
-    </div>
+    <div class="column">{{ $n(pool.liquidity, 'currency') }}</div>
+    <div class="column hide-sm hide-md">{{ $n(myLiquidity, 'currency') }}</div>
     <div class="column hide-sm hide-md hide-lg">
-      <Price :amount="pool.lastSwapVolume" />
+      {{ $n(pool.lastSwapVolume, 'currency') }}
     </div>
   </UiTableLine>
 </template>
@@ -43,7 +39,8 @@ export default {
   props: ['pool'],
   computed: {
     myLiquidity() {
-      const poolShares = this.subgraph.poolShares[this.pool.id] || 0;
+      const poolShares = this.subgraph.poolShares[this.pool.id];
+      if (!this.pool.finalized || !poolShares) return 0;
       return (this.pool.liquidity / this.pool.totalShares) * poolShares;
     }
   }

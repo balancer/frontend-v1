@@ -22,7 +22,7 @@
       {{ $n(parseFloat(myPoolBalance.toFixed(2))) }} {{ token.symbol }}
     </div>
     <div class="column hide-sm hide-md hide-lg">
-      <Price :amount="myPoolBalance" :tokenAddress="token.address" />
+      <Price :token="token.address" :amount="myPoolBalance" />
     </div>
   </UiTableLine>
 </template>

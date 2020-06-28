@@ -17,7 +17,7 @@
               {{ config.tokens[token].symbol }}
             </div>
             <p class="my-2 py-1 flex-auto">
-              <Price :tokenAddress="token" :amount="startBalances[i]" />
+              <Price :token="token" :amount="startBalances[i]" />
             </p>
             <input
               v-model="startBalances[i]"

@@ -60,6 +60,7 @@ export function formatPool(pool) {
   });
   pool.holders = pool.shares.length;
   pool.tokensList = pool.tokensList.map(token => getAddress(token));
+  pool.lastSwapVolume = 0;
   if (pool.swaps && pool.swaps[0] && pool.swaps[0].poolTotalSwapVolume) {
     pool.lastSwapVolume =
       parseFloat(pool.totalSwapVolume) -
