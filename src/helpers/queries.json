@@ -13,7 +13,10 @@
   "getTokenPrices": {
     "tokenPrices": {
       "__args": {
-        "first": 1000
+        "first": 1000,
+        "where": {
+          "price_gt": 0
+        }
       },
       "id": true,
       "symbol": true,

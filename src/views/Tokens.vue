@@ -6,10 +6,11 @@
         <div v-text="'Asset'" class="flex-auto text-left" />
         <div v-text="'Top liquidity'" class="column" />
         <div v-text="'Price'" class="column" />
+        <div v-text="'Balance'" class="column" />
       </UiTableHeader>
       <UiTableLine
         :to="{ name: 'token', params: { id: i } }"
-        v-for="(tokenPrice, i) in subgraph.tokenPrices"
+        v-for="(tokenPrice, i) in tokenPrices"
         :key="i"
         class="text-white"
       >
@@ -23,17 +24,30 @@
         <div class="column">
           {{ $n(tokenPrice.price, 'price') }}
         </div>
+        <div class="column">
+          {{ $n(tokenPrice.balance, 'currency') }}
+        </div>
       </UiTableLine>
     </UiTable>
   </div>
 </template>
 
 <script>
+import { getAddress } from 'ethers/utils';
+
 export default {
-  data() {
-    return {
-      tokenPrices: {}
-    };
+  computed: {
+    tokenPrices() {
+      return Object.fromEntries(
+        Object.entries(this.subgraph.tokenPrices)
+          .map(tokenPrice => {
+            const balance = this.web3.balances[getAddress(tokenPrice[0])];
+            tokenPrice[1].balance = balance || 0;
+            return tokenPrice;
+          })
+          .sort((a, b) => b[1].balance - a[1].balance)
+      );
+    }
   }
 };
 </script>

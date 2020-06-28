@@ -18,10 +18,7 @@ const state = {
   injectedChainId: null,
   account: null,
   name: null,
-  backUpWeb3: null,
-  library: null,
   active: false,
-  activeProvider: null,
   balances: {},
   dsProxyAddress: null
 };
@@ -50,9 +47,7 @@ const mutations = {
     Vue.set(_state, 'injectedLoaded', false);
     Vue.set(_state, 'injectedChainId', null);
     Vue.set(_state, 'account', null);
-    Vue.set(_state, 'library', null);
     Vue.set(_state, 'active', false);
-    Vue.set(_state, 'activeProvider', null);
     console.debug('LOAD_PROVIDER_FAILURE', payload);
   },
   LOAD_BACKUP_PROVIDER_REQUEST() {
@@ -66,10 +61,7 @@ const mutations = {
     Vue.set(_state, 'backUpLoaded', false);
     Vue.set(_state, 'account', null);
     Vue.set(_state, 'activeChainId', null);
-    Vue.set(_state, 'backUpWeb3', null);
-    Vue.set(_state, 'library', null);
     Vue.set(_state, 'active', false);
-    Vue.set(_state, 'activeProvider', null);
     console.debug('LOAD_BACKUP_PROVIDER_FAILURE', payload);
   },
   HANDLE_CHAIN_CHANGED() {
@@ -149,9 +141,7 @@ const actions = {
       if (!state.injectedLoaded || state.injectedChainId !== supportedChainId) {
         await dispatch('loadBackupProvider');
       } else {
-        console.log(`[Provider] Injected provider active.`);
         /**
-        this.providerStatus.library = this.providerStatus.injectedWeb3;
         this.providerStatus.activeChainId = this.providerStatus.injectedChainId;
         this.providerStatus.injectedActive = true;
         if (this.providerStatus.account)
@@ -201,8 +191,6 @@ const actions = {
         injectedChainId: network.chainId,
         account,
         name
-        // injectedWeb3: web3,
-        // activeProvider: provider
       });
     } catch (e) {
       commit('LOAD_PROVIDER_FAILURE', e);
@@ -221,8 +209,6 @@ const actions = {
         account: null,
         activeChainId: network.chainId
         // backUpWeb3: web3,
-        // library: web3,
-        // activeProvider: backupUrls[supportedChainId]
       });
     } catch (e) {
       commit('LOAD_BACKUP_PROVIDER_FAILURE', e);
@@ -279,7 +265,6 @@ const actions = {
       dispatch('getPoolShares'),
       dispatch('getProxies')
     ]);
-    // await dispatch('getProxies', state.account);
   },
   getBalances: async ({ commit }) => {
     commit('GET_BALANCES_REQUEST');

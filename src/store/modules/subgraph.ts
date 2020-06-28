@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import {getAddress} from "ethers/utils";
+import { getAddress } from 'ethers/utils';
 import { jsonToGraphQLQuery } from 'json-to-graphql-query';
 import { query } from '@/helpers/subgraph';
 import { formatPool } from '@/helpers/utils';
@@ -149,7 +149,7 @@ const actions = {
     } = payload;
     const skip = (page - 1) * first;
     const ts = Math.round(new Date().getTime() / 1000);
-    const tsYesterday = ts - 24 * 3600 * 9;
+    const tsYesterday = ts - 24 * 3600;
     const q = queries['getPools'];
     where.tokensList_not = [];
     // @ts-ignore
