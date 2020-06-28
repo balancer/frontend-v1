@@ -1,10 +1,10 @@
 <template>
   <span class="d-inline-block" style="line-height: 0;">
     <img
-      v-if="imageUrl"
-      :src="imageUrl"
+      v-if="tokenLogoUrl"
+      :src="tokenLogoUrl"
       :style="style"
-      class="circle bg-white"
+      class="circle bg-white overflow-hidden"
       :title="symbol"
     />
     <span
@@ -18,6 +18,7 @@
 
 <script>
 import { getAddress } from 'ethers/utils';
+import { getTokenLogoUrl } from '@/helpers/utils';
 import config from '@/helpers/config';
 
 export default {
@@ -28,24 +29,15 @@ export default {
       return {
         width: `${size}px`,
         height: `${size}px`,
-        lineHeight: `${size + 2}px`,
+        lineHeight: `${size}px`,
         fontSize: `${(size / 3.2).toFixed()}px`
       };
     },
     token() {
       return config.tokens[getAddress(this.address)] || {};
     },
-    imageUrl() {
-      if (this.address === 'ether')
-        return 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png';
-      const checksum = getAddress(this.address);
-      if (checksum === getAddress(config.addresses.weth))
-        return 'https://www.zapper.fi/images/ETH-icon.png';
-      if (this.token.iconAddress)
-        return `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${getAddress(
-          this.token.iconAddress
-        )}/logo.png`;
-      return '';
+    tokenLogoUrl() {
+      return getTokenLogoUrl(this.address);
     }
   }
 };

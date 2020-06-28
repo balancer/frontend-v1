@@ -2,6 +2,7 @@ import { ethers } from 'ethers';
 import { getAddress, bigNumberify, BigNumber as ethersBN } from 'ethers/utils';
 import BigNumber from '@/helpers/bignumber';
 import config from '@/helpers/config';
+import trustwalletWhitelist from '@/helpers/trustwalletWhitelist.json';
 
 export const MAX_GAS = bigNumberify('0xffffffff');
 export const MAX_UINT = bigNumberify(ethers.constants.MaxUint256);
@@ -115,4 +116,20 @@ export function calcPoolTokensByRatio(ratio, totalShares) {
     .integerValue(BigNumber.ROUND_DOWN)
     .minus(buffer)
     .toString();
+}
+
+export function getTokenLogoUrl(address: string): string | null {
+  let trustwalletId: string | null = null;
+  if (address === 'ether') {
+    trustwalletId = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
+  } else {
+    const checksum = getAddress(address);
+    if (checksum === config.addresses.weth) {
+      trustwalletId = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
+    } else if (trustwalletWhitelist.includes(checksum))  {
+      trustwalletId = checksum;
+    }
+  }
+  if (!trustwalletId) return null;
+  return `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${trustwalletId}/logo.png`;
 }
