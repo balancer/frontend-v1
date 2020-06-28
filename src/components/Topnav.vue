@@ -25,7 +25,7 @@
       </div>
       <div>
         <template v-if="web3.account && !wrongNetwork">
-          <Button
+          <UiButton
             class="button-outline"
             :to="{
               name: 'user',
@@ -35,13 +35,13 @@
             <Avatar :address="web3.account" size="16" class="mr-2 ml-n1" />
             <span v-if="web3.name" v-text="web3.name" />
             <span v-else>{{ web3.account | shorten }}</span>
-          </Button>
+          </UiButton>
         </template>
-        <Button v-if="web3.injectedLoaded && wrongNetwork" class="button-red">
+        <UiButton v-if="web3.injectedLoaded && wrongNetwork" class="button-red">
           <Icon name="warning" class="ml-n2 mr-1 v-align-middle" />
           Wrong network
-        </Button>
-        <Button
+        </UiButton>
+        <UiButton
           v-if="
             (!web3.account && !web3.injectedLoaded) ||
               (!web3.account && !wrongNetwork)
@@ -51,7 +51,7 @@
         >
           <VueLoadingIndicator v-if="loading" />
           <template v-else>Connect wallet</template>
-        </Button>
+        </UiButton>
       </div>
     </div>
   </nav>

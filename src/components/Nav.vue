@@ -3,12 +3,8 @@
     <ul class="list-style-none">
       <li v-for="(item, i) in items" :key="i">
         <router-link :to="item.to">
-          {{ item.name }}
-          <span
-            v-if="item.count"
-            v-text="$n(item.count)"
-            class="counter ml-2 rounded-1"
-          />
+          <span class="mr-2">{{ item.name }}</span>
+          <UiCounter v-if="item.count" v-text="$n(item.count)" />
         </router-link>
       </li>
     </ul>
@@ -28,23 +24,6 @@ export default {
   ul > li > a {
     display: block;
     padding: 24px 0 0;
-
-    .counter {
-      vertical-align: middle;
-      font-size: 10px;
-      color: white;
-      padding: 4px 6px !important;
-      background-color: $blue-900 !important;
-    }
-
-    &.router-link-exact-active {
-      color: $white;
-
-      .counter {
-        color: $white;
-        background-color: $blue !important;
-      }
-    }
   }
 }
 </style>
