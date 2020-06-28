@@ -3,10 +3,10 @@
     <VueLoadingIndicator v-if="loading" class="big" />
     <div v-else>
       <div class="d-flex flex-items-center flex-auto mb-4 px-4 px-md-0">
-        <h2 class="flex-auto">
+        <h3 class="flex-auto">
           <span class="mr-2">Pool {{ pool.id | shorten }}</span>
           <UiLabel v-if="!pool.finalized" v-text="'Private'" />
-        </h2>
+        </h3>
         <div class="d-flex">
           <UiButton class="ml-2" @click="modalAddLiquidityOpen = true">
             Add liquidity
