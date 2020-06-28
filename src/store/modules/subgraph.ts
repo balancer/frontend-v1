@@ -1,9 +1,7 @@
 import Vue from 'vue';
 import { getAddress } from 'ethers/utils';
-import { jsonToGraphQLQuery } from 'json-to-graphql-query';
-import { query } from '@/helpers/subgraph';
+import { request } from '@/helpers/subgraph';
 import { formatPool } from '@/helpers/utils';
-import config from '@/helpers/config';
 import queries from '@/helpers/queries.json';
 
 const state = {
@@ -80,16 +78,24 @@ const mutations = {
   },
   GET_POOLS_SHARES_FAILURE(_state, payload) {
     console.debug('GET_POOLS_SHARES_FAILURE', payload);
+  },
+  GET_POOLS_SWAPS_REQUEST() {
+    console.debug('GET_POOLS_SWAPS_REQUEST');
+  },
+  GET_POOLS_SWAPS_SUCCESS() {
+    console.debug('GET_POOLS_SWAPS_SUCCESS');
+  },
+  GET_POOLS_SWAPS_FAILURE(_state, payload) {
+    console.debug('GET_POOLS_SWAPS_FAILURE', payload);
   }
 };
 
 const actions = {
   getBalancer: async ({ commit }) => {
-    const q = queries['getBalancer'];
-    const gqlQuery = jsonToGraphQLQuery({ query: q }, { pretty: true });
+    const query = queries['getBalancer'];
     commit('GET_BALANCER_REQUEST');
     try {
-      const { balancer } = await query(config.subgraphUrl, gqlQuery);
+      const { balancer } = await request(query);
       balancer.privatePoolCount =
         balancer.poolCount - balancer.finalizedPoolCount;
       commit('GET_BALANCER_SUCCESS', balancer);
@@ -98,11 +104,10 @@ const actions = {
     }
   },
   getTokenPrices: async ({ commit }) => {
-    const q = queries['getTokenPrices'];
-    const gqlQuery = jsonToGraphQLQuery({ query: q }, { pretty: true });
+    const query = queries['getTokenPrices'];
     commit('GET_TOKEN_PRICES_REQUEST');
     try {
-      let { tokenPrices } = await query(config.subgraphUrl, gqlQuery);
+      let { tokenPrices } = await request(query);
       tokenPrices = Object.fromEntries(
         tokenPrices
           .sort((a, b) => b.poolLiquidity - a.poolLiquidity)
@@ -116,11 +121,11 @@ const actions = {
   getPool: async ({ commit }, payload) => {
     const ts = Math.round(new Date().getTime() / 1000);
     const tsYesterday = ts - 24 * 3600;
-    const q = queries['getPool'];
+    const query = queries['getPool'];
     // @ts-ignore
-    q.pool.__args = { id: payload };
+    query.pool.__args = { id: payload };
     // @ts-ignore
-    q.pool.swaps.__args = {
+    query.pool.swaps.__args = {
       first: 1,
       orderBy: 'timestamp',
       orderDirection: 'desc',
@@ -128,10 +133,9 @@ const actions = {
         timestamp_lt: tsYesterday
       }
     };
-    const gqlQuery = jsonToGraphQLQuery({ query: q }, { pretty: true });
     commit('GET_POOL_REQUEST');
     try {
-      let { pool } = await query(config.subgraphUrl, gqlQuery);
+      let { pool } = await request(query);
       pool = formatPool(pool);
       commit('GET_POOL_SUCCESS');
       return pool;
@@ -150,10 +154,10 @@ const actions = {
     const skip = (page - 1) * first;
     const ts = Math.round(new Date().getTime() / 1000);
     const tsYesterday = ts - 24 * 3600;
-    const q = queries['getPools'];
+    const query = queries['getPools'];
     where.tokensList_not = [];
     // @ts-ignore
-    q.pools.__args = {
+    query.pools.__args = {
       where,
       first,
       skip,
@@ -161,7 +165,7 @@ const actions = {
       orderDirection
     };
     // @ts-ignore
-    q.pools.swaps.__args = {
+    query.pools.swaps.__args = {
       first: 1,
       orderBy: 'timestamp',
       orderDirection: 'desc',
@@ -169,10 +173,9 @@ const actions = {
         timestamp_lt: tsYesterday
       }
     };
-    const gqlQuery = jsonToGraphQLQuery({ query: q }, { pretty: true });
     commit('GET_POOLS_REQUEST');
     try {
-      let { pools } = await query(config.subgraphUrl, gqlQuery);
+      let { pools } = await request(query);
       pools = pools.map(pool => formatPool(pool));
       commit('GET_POOLS_SUCCESS');
       return pools;
@@ -201,21 +204,48 @@ const actions = {
     const address = rootState.web3.account;
     commit('GET_POOLS_SHARES_REQUEST');
     try {
-      const q = queries['getPoolShares'];
+      const query = queries['getPoolShares'];
       // @ts-ignore
-      q.poolShares.__args = {
+      query.poolShares.__args = {
         where: {
           userAddress: address.toLowerCase()
         }
       };
-      const gqlQuery = jsonToGraphQLQuery({ query: q }, { pretty: true });
-      const { poolShares } = await query(config.subgraphUrl, gqlQuery);
+      const { poolShares } = await request(query);
       const balances: any = {};
       poolShares.forEach(share => (balances[share.poolId.id] = share.balance));
       commit('GET_POOLS_SHARES_SUCCESS', balances);
       return poolShares;
     } catch (e) {
       commit('GET_POOLS_SHARES_FAILURE', e);
+    }
+  },
+  getPoolSwaps: async ({ commit }, payload) => {
+    commit('GET_POOLS_SWAPS_REQUEST');
+    try {
+      const {
+        first = 10,
+        page = 1,
+        orderBy = 'timestamp',
+        orderDirection = 'desc',
+        where = {}
+      } = payload;
+      const skip = (page - 1) * first;
+      const query = queries['getPoolSwaps'];
+      // @ts-ignore
+      query.swaps.__args = {
+        // @ts-ignore
+        where,
+        first,
+        skip,
+        orderBy,
+        orderDirection
+      };
+      const { swaps } = await request(query);
+      commit('GET_POOLS_SWAPS_SUCCESS');
+      return swaps;
+    } catch (e) {
+      commit('GET_POOLS_SWAPS_FAILURE', e);
     }
   }
 };
