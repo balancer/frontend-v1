@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import {getAddress} from "ethers/utils";
 import { jsonToGraphQLQuery } from 'json-to-graphql-query';
 import { query } from '@/helpers/subgraph';
 import { formatPool } from '@/helpers/utils';
@@ -10,6 +11,15 @@ const state = {
   poolShares: {},
   myPools: [],
   tokenPrices: {}
+};
+
+const getters = {
+  getPrice: state => (token, amount) => {
+    const checksum = getAddress(token);
+    const tokenPrice = state.tokenPrices[checksum];
+    if (!tokenPrice) return 0;
+    return tokenPrice.price * amount;
+  }
 };
 
 const mutations = {
@@ -139,7 +149,7 @@ const actions = {
     } = payload;
     const skip = (page - 1) * first;
     const ts = Math.round(new Date().getTime() / 1000);
-    const tsYesterday = ts - 24 * 3600;
+    const tsYesterday = ts - 24 * 3600 * 9;
     const q = queries['getPools'];
     where.tokensList_not = [];
     // @ts-ignore
@@ -212,6 +222,7 @@ const actions = {
 
 export default {
   state,
+  getters,
   mutations,
   actions
 };

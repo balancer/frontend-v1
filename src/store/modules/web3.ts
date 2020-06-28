@@ -88,7 +88,8 @@ const mutations = {
   LOOKUP_ADDRESS_REQUEST() {
     console.debug('LOOKUP_ADDRESS_REQUEST');
   },
-  LOOKUP_ADDRESS_SUCCESS() {
+  LOOKUP_ADDRESS_SUCCESS(_state, payload) {
+    Vue.set(_state, 'name', payload);
     console.debug('LOOKUP_ADDRESS_SUCCESS');
   },
   LOOKUP_ADDRESS_FAILURE(_state, payload) {
@@ -195,7 +196,6 @@ const actions = {
       const network = await web3.getNetwork();
       const accounts = await web3.listAccounts();
       const account = accounts.length > 0 ? accounts[0] : null;
-      const name = await dispatch('lookupAddress', account);
       commit('LOAD_PROVIDER_SUCCESS', {
         injectedLoaded: true,
         injectedChainId: network.chainId,
@@ -229,12 +229,12 @@ const actions = {
       return Promise.reject();
     }
   },
-  lookupAddress: async ({ commit }, payload) => {
+  lookupAddress: async ({ commit }) => {
     commit('LOOKUP_ADDRESS_REQUEST');
     try {
-      const address = await web3.lookupAddress(payload);
-      commit('LOOKUP_ADDRESS_SUCCESS');
-      return address;
+      const name = await web3.lookupAddress(state.account);
+      commit('LOOKUP_ADDRESS_SUCCESS', name);
+      return name;
     } catch (e) {
       commit('LOOKUP_ADDRESS_FAILURE', e);
     }
@@ -242,9 +242,9 @@ const actions = {
   resolveName: async ({ commit }, payload) => {
     commit('RESOLVE_NAME_REQUEST');
     try {
-      const name = await web3.resolveName(payload);
+      const address = await web3.resolveName(payload);
       commit('RESOLVE_NAME_SUCCESS');
-      return name;
+      return address;
     } catch (e) {
       commit('RESOLVE_NAME_FAILURE', e);
       return Promise.reject();
@@ -273,6 +273,7 @@ const actions = {
   },
   loadAccount: async ({ dispatch }) => {
     await Promise.all([
+      dispatch('lookupAddress'),
       dispatch('getBalances'),
       dispatch('getMyPools'),
       dispatch('getPoolShares'),

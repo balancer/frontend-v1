@@ -4,29 +4,24 @@
     <UiTable>
       <UiTableHeader>
         <div v-text="'Asset'" class="flex-auto text-left" />
-        <div v-text="'Liquidity'" class="column" />
+        <div v-text="'Top liquidity'" class="column" />
         <div v-text="'Price'" class="column" />
       </UiTableHeader>
       <UiTableLine
         :to="{ name: 'token', params: { id: i } }"
         v-for="(tokenPrice, i) in subgraph.tokenPrices"
         :key="i"
+        class="text-white"
       >
         <Token :address="i" class="mr-3" />
         <div class="flex-auto text-white text-left">
           {{ tokenPrice.symbol }}
         </div>
-        <div class="text-right column">
-          <Price
-            :amount="tokenPrice.poolLiquidity"
-            :precision="3"
-            class="text-white"
-          />
-          <div>{{ $n(tokenPrice.poolLiquidity) }} ETH</div>
+        <div class="column">
+          {{ $n(tokenPrice.poolLiquidity, 'currency') }}
         </div>
-        <div class="text-right column">
-          <Price :amount="tokenPrice.price" :precision="3" class="text-white" />
-          <div>{{ $n(tokenPrice.price) }} ETH</div>
+        <div class="column">
+          {{ $n(tokenPrice.price, 'price') }}
         </div>
       </UiTableLine>
     </UiTable>
