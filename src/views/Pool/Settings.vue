@@ -2,8 +2,8 @@
   <div class="border rounded-1 panel-background p-4 text-white">
     <div class="border-bottom mb-4 pb-3">
       <div class="float-right">
-        <Button click="modalEditPublicSwapOpen = true" class="button-outline"
-          >Edit</Button
+        <UiButton click="modalEditPublicSwapOpen = true" class="button-outline"
+          >Edit</UiButton
         >
       </div>
       <label class="d-block mb-2">Public swap</label>
@@ -11,8 +11,8 @@
     </div>
     <div class="border-bottom mb-4 pb-3">
       <div class="float-right">
-        <Button @click="modalEditTokensOpen = true" class="button-outline"
-          >Edit</Button
+        <UiButton @click="modalEditTokensOpen = true" class="button-outline"
+          >Edit</UiButton
         >
       </div>
       <label class="d-block mb-2">Tokens</label>
@@ -35,8 +35,8 @@
     </div>
     <div class="border-bottom mb-4 pb-3">
       <div class="float-right">
-        <Button @click="modalEditWeightsOpen = true" class="button-outline"
-          >Edit</Button
+        <UiButton @click="modalEditWeightsOpen = true" class="button-outline"
+          >Edit</UiButton
         >
       </div>
       <label class="d-block mb-2">Weights</label>
@@ -44,8 +44,8 @@
     </div>
     <div class="pb-3">
       <div class="float-right">
-        <Button @click="modalEditSwapFeeOpen = true" class="button-outline"
-          >Edit</Button
+        <UiButton @click="modalEditSwapFeeOpen = true" class="button-outline"
+          >Edit</UiButton
         >
       </div>
       <label class="d-block mb-2">Swap fee</label>

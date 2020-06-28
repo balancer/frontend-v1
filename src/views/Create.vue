@@ -20,7 +20,7 @@
           </p>
         </div>
         <div>
-          <Button>Create shared pool</Button>
+          <UiButton>Create shared pool</UiButton>
         </div>
       </div>
     </div>
@@ -43,7 +43,7 @@
           </p>
         </div>
         <div>
-          <Button @click="modalOpen = true">Create smart pool</Button>
+          <UiButton @click="modalOpen = true">Create smart pool</UiButton>
         </div>
       </div>
     </div>
@@ -52,9 +52,7 @@
 </template>
 
 <script>
-import Button from '@/components/Button';
 export default {
-  components: { Button },
   data() {
     return {
       modalOpen: false

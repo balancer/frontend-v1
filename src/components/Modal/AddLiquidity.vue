@@ -62,10 +62,10 @@
           </div>
         </div>
         <div class="text-center">
-          <Button :disabled="!isValid || loading" type="submit" class="ml-2">
+          <UiButton :disabled="!isValid || loading" type="submit" class="ml-2">
             <VueLoadingIndicator v-if="loading" />
             <span v-else>Add liquidity</span>
-          </Button>
+          </UiButton>
         </div>
       </form>
     </div>

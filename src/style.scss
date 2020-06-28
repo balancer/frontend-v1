@@ -1,21 +1,19 @@
 @import '~@vue/ui/dist/vue-ui.css';
 @import './fonts';
 @import './vars';
-@import "~@primer/css/core/index.scss";
+@import "~@primer/css/index.scss";
 
-body {
+html, body, #app {
+  background-color: $black;
+  color: $gray;
   font-family: $font-weight-normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-html, body, #app {
-  background-color: $black;
-  color: $gray;
-}
-
 h1, h2, h3 {
   color: $white;
+  font-weight: 500;
 }
 
 h2 {
@@ -46,14 +44,6 @@ a {
 
 ::placeholder {
   color: $gray;
-}
-
-.counter {
-  @extend .Counter;
-  @extend .py-1;
-  @extend .px-2;
-  color: $text-blue;
-  background-color: $blue-100 !important;
 }
 
 .input {

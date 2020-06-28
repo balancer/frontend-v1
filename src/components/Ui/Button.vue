@@ -5,14 +5,15 @@
 </template>
 
 <style scoped lang="scss">
-@import '../vars';
+@import '../../vars';
 
 .button {
   background-color: $button-background;
   color: $button-text;
   border: 1px solid $button-border;
   border-radius: $border-radius;
-  padding: 10px 18px;
+  padding: 0 18px;
+  line-height: 1em;
   height: 40px;
   outline: none;
 
