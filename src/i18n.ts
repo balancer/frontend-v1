@@ -49,5 +49,15 @@ export default new VueI18n({
         maximumFractionDigits: 3
       }
     }
+  },
+  dateTimeFormats: {
+    'en-US': {
+      short: {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric'
+      }
+    }
   }
 });

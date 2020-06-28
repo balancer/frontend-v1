@@ -76,6 +76,19 @@
       }
     }
   },
+  "getPoolSwaps": {
+    "swaps": {
+      "id": true,
+      "tokenIn": true,
+      "tokenInSym": true,
+      "tokenAmountIn": true,
+      "tokenOut": true,
+      "tokenOutSym": true,
+      "tokenAmountOut": true,
+      "poolTotalSwapVolume": true,
+      "timestamp": true
+    }
+  },
   "getPools": {
     "pools": {
       "id": true,
