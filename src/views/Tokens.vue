@@ -4,7 +4,6 @@
     <UiTable>
       <UiTableHeader>
         <div v-text="'Asset'" class="flex-auto text-left" />
-        <div v-text="'Top liquidity'" class="column" />
         <div v-text="'Price'" class="column" />
         <div v-text="'Balance'" class="column" />
       </UiTableHeader>
@@ -12,20 +11,20 @@
         :to="{ name: 'token', params: { id: i } }"
         v-for="(tokenPrice, i) in tokenPrices"
         :key="i"
-        class="text-white"
       >
         <Token :address="i" class="mr-3" />
-        <div class="flex-auto text-white text-left">
+        <div class="flex-auto text-left">
           {{ tokenPrice.symbol }}
         </div>
         <div class="column">
-          {{ $n(tokenPrice.poolLiquidity, 'currency') }}
+          <div>{{ $n(tokenPrice.price, 'price') }}</div>
+          <div class="text-gray">{{ $n(tokenPrice.priceETH) }} ETH</div>
         </div>
         <div class="column">
-          {{ $n(tokenPrice.price, 'price') }}
-        </div>
-        <div class="column">
-          {{ $n(tokenPrice.balance, 'currency') }}
+          <div>{{ $n(tokenPrice.balance) }} {{ tokenPrice.symbol }}</div>
+          <div class="text-gray">
+            {{ $n(tokenPrice.balanceUSD, 'currency') }}
+          </div>
         </div>
       </UiTableLine>
     </UiTable>
@@ -34,15 +33,22 @@
 
 <script>
 import { getAddress } from 'ethers/utils';
+import config from '@/helpers/config';
 
 export default {
   computed: {
     tokenPrices() {
+      const ethPrice = this.getPrice(config.addresses.weth, 1);
       return Object.fromEntries(
         Object.entries(this.subgraph.tokenPrices)
           .map(tokenPrice => {
             const balance = this.web3.balances[getAddress(tokenPrice[0])];
+            tokenPrice[1].priceETH = tokenPrice[1].price / ethPrice;
             tokenPrice[1].balance = balance || 0;
+            tokenPrice[1].balanceUSD = this.getPrice(
+              tokenPrice[0],
+              tokenPrice[1].balance
+            );
             return tokenPrice;
           })
           .sort((a, b) => b[1].balance - a[1].balance)

@@ -35,7 +35,8 @@
 </template>
 
 <script>
-import { capitalize, startCase } from 'lodash';
+import capitalize from 'lodash/capitalize';
+import startCase from 'lodash/startCase';
 import config from '@/helpers/config';
 
 export default {

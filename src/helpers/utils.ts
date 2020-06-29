@@ -59,7 +59,7 @@ export function formatPool(pool) {
     }
     return token;
   });
-  pool.holders = pool.shares.length;
+  if (pool.shares) pool.holders = pool.shares.length;
   pool.tokensList = pool.tokensList.map(token => getAddress(token));
   pool.lastSwapVolume = 0;
   if (pool.swaps && pool.swaps[0] && pool.swaps[0].poolTotalSwapVolume) {
@@ -132,4 +132,9 @@ export function getTokenLogoUrl(address: string): string | null {
   }
   if (!trustwalletId) return null;
   return `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${trustwalletId}/logo.png`;
+}
+
+export function etherscanLink(str: string, type = 'address'): string {
+  const network = config.network === 'homestead' ? '' : `${config.network}.`;
+  return `https://${network}etherscan.io/${type}/${str}`;
 }

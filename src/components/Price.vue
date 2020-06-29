@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import config from '@/helpers/config';
 
 export default {
@@ -19,7 +18,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getPrice']),
     price() {
       this.forceRecomputeCounter;
       const amount = this.amount || 0;

@@ -4,11 +4,15 @@
     <div v-else>
       <div class="d-flex flex-items-center flex-auto mb-4 px-4 px-md-0">
         <h3 class="flex-auto">
-          <span class="mr-2">Pool {{ pool.id | shorten }}</span>
+          <span class="mr-2">Pool {{ _shorten(pool.id) }}</span>
           <UiLabel v-if="!pool.finalized" v-text="'Private'" />
         </h3>
         <div class="d-flex">
-          <UiButton class="ml-2" @click="modalAddLiquidityOpen = true">
+          <UiButton
+            class="ml-2"
+            @click="modalAddLiquidityOpen = true"
+            v-if="enableAddLiquidity"
+          >
             Add liquidity
           </UiButton>
           <UiButton
@@ -46,6 +50,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import config from '@/helpers/config';
 
 export default {
   data() {
@@ -62,6 +67,12 @@ export default {
   computed: {
     hasShares() {
       return Object.keys(this.subgraph.poolShares).includes(this.id);
+    },
+    enableAddLiquidity() {
+      return this.pool.tokensList.reduce(
+        (a, b) => (config.errors.includes(b) ? false : a),
+        this.pool.finalized
+      );
     }
   },
   methods: {

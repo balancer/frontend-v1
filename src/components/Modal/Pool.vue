@@ -1,7 +1,7 @@
 <template>
   <UiModal :open="open" @close="$emit('close')">
     <div class="modal-body my-5 px-4 text-center">
-      <h2 class="mb-4" v-text="shorten(pool.id)" />
+      <h2 class="mb-4" v-text="_shorten(pool.id)" />
       <div class="overflow-hidden text-center mb-4">
         <Pie :tokens="pool.tokens" :size="120" class="mb-2" />
         <div>
@@ -47,7 +47,7 @@
         </a>
         <a
           class="btn-outline mb-3"
-          :href="`https://etherscan.io/address/${pool.id}`"
+          :href="_etherscanLink(pool.id)"
           target="_blank"
         >
           See on Etherscan
@@ -59,12 +59,7 @@
 </template>
 
 <script>
-import { shorten } from '@/helpers/utils';
-
 export default {
-  props: ['open', 'pool'],
-  methods: {
-    shorten
-  }
+  props: ['open', 'pool']
 };
 </script>

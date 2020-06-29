@@ -9,8 +9,8 @@
     />
     <span
       :style="style"
-      class="circle d-block bg-gray text-white text-center overflow-hidden"
-      v-text="symbol"
+      class="circle d-block text-bold bg-gray text-white text-center overflow-hidden"
+      v-text="'?'"
       v-else
     />
   </span>
@@ -30,7 +30,7 @@ export default {
         width: `${size}px`,
         height: `${size}px`,
         lineHeight: `${size}px`,
-        fontSize: `${(size / 3.2).toFixed()}px`
+        fontSize: `${(size / 2).toFixed()}px`
       };
     },
     token() {

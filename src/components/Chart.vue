@@ -5,7 +5,7 @@
 <script>
 import * as TV from 'lightweight-charts';
 import { getAddress } from 'ethers/utils';
-import { getMarketChartFromCoinGecko, shorten } from '@/helpers/utils';
+import { getMarketChartFromCoinGecko } from '@/helpers/utils';
 import config from '@/helpers/config';
 
 export default {
@@ -59,7 +59,7 @@ export default {
       marketCharts.forEach((marketChart, i) => {
         const tokenAddress = getAddress(this.pool.tokens[i].address);
         const title =
-          config.tokens[tokenAddress].symbol || shorten(tokenAddress);
+          config.tokens[tokenAddress].symbol || this._shorten(tokenAddress);
         const lineColor =
           config.tokens[tokenAddress] && config.tokens[tokenAddress].chartColor
             ? config.tokens[tokenAddress].chartColor

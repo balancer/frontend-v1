@@ -1,7 +1,7 @@
 <template>
   <div>
     <VueLoadingIndicator v-if="!pool.id" class="big py-4" />
-    <UiTable v-else>
+    <UiTable style="border-top-left-radius: 0 !important;" v-else>
       <UiTableHeader>
         <div v-text="'Token'" class="flex-auto text-left" />
         <div v-text="'Weight'" class="column" />

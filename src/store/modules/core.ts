@@ -99,7 +99,7 @@ const actions = {
         [config.addresses.bActions, data]
       ]);
       await dispatch('getBalances');
-      await dispatch('getPoolShares');
+      await dispatch('getMyPoolShares');
       dispatch('notify', ['green', "You've successfully added liquidity"]);
       commit('JOIN_POOL_SUCCESS');
     } catch (e) {
@@ -121,7 +121,7 @@ const actions = {
       ];
       await dispatch('sendTransaction', params);
       await dispatch('getBalances');
-      await dispatch('getPoolShares');
+      await dispatch('getMyPoolShares');
       dispatch('notify', ['green', "You've successfully removed liquidity"]);
       commit('EXIT_POOL_SUCCESS');
     } catch (e) {

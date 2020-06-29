@@ -58,7 +58,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import config from '@/helpers/config';
 
 export default {
@@ -70,7 +69,6 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['getPrice']),
     tokens() {
       return Object.fromEntries(
         Object.entries(config.tokens)

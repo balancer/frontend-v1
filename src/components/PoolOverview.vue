@@ -3,7 +3,7 @@
     <div class="text-left mb-4">
       <h4 class="eyebrow mb-2">Pool overview</h4>
       <div class="text-white">
-        <p class="link-text mb-2">{{ pool.id | shorten }}</p>
+        <p class="link-text mb-2">{{ _shorten(pool.id) }}</p>
         <p>My pool shares: {{ $n(poolShares, 'percent') }}</p>
         <p>Pool swap fee: {{ $n(pool.swapFee, 'percent') }}</p>
       </div>

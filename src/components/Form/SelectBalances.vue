@@ -36,7 +36,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import config from '@/helpers/config';
 
 export default {
@@ -46,9 +45,6 @@ export default {
       config,
       startBalances: []
     };
-  },
-  computed: {
-    ...mapGetters(['getPrice'])
   },
   methods: {
     handleAmountChange(tokenIndex) {
