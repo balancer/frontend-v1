@@ -131,7 +131,7 @@ const actions = {
           }
         }
       }
-    }
+    };
     commit('GET_POOL_REQUEST');
     try {
       let { pool } = await request('getPool', query);
@@ -171,7 +171,7 @@ const actions = {
           }
         }
       }
-    }
+    };
     commit('GET_POOLS_REQUEST');
     try {
       let { pools } = await request('getPools', query);
