@@ -118,23 +118,6 @@
         "symbol": true,
         "denormWeight": true
       },
-      "shares": {
-        "__args": {
-          "orderBy": "balance",
-          "orderDirection": "desc",
-          "where": {
-            "balance_gt": 0
-          }
-        },
-        "id": true,
-        "poolId": {
-          "id": true
-        },
-        "userAddress": {
-          "id": true
-        },
-        "balance": true
-      },
       "swaps": {
         "__args": {
           "first": 1,
@@ -151,7 +134,7 @@
       }
     }
   },
-  "getPoolShares": {
+  "getMyPoolShares": {
     "poolShares": {
       "balance": true,
       "poolId": {

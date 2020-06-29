@@ -7,7 +7,6 @@ import camelCase from 'lodash/camelCase';
 import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
-import { shorten, trunc } from '@/helpers/utils';
 import mixins from '@/mixins';
 import i18n from '@/i18n';
 import '@/style.scss';
@@ -23,11 +22,7 @@ requireComponent.keys().forEach(fileName => {
   );
   Vue.component(componentName, componentConfig.default || componentConfig);
 });
-
 Vue.component('jazzicon', Jazzicon);
-
-Vue.filter('shorten', value => shorten(value));
-Vue.filter('trunc', (value, decimals) => trunc(value, decimals));
 
 Vue.mixin(mixins);
 

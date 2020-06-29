@@ -14,7 +14,7 @@
         >
           <Avatar :address="share.userAddress.id" size="16" class="mr-3" />
           <div>
-            {{ share.userAddress.id | shorten }}
+            {{ _shorten(share.userAddress.id) }}
             <Icon name="external-link" size="16" class="ml-1" />
           </div>
         </a>

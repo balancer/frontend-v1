@@ -262,7 +262,7 @@ const actions = {
       dispatch('lookupAddress'),
       dispatch('getBalances'),
       dispatch('getMyPools'),
-      dispatch('getPoolShares'),
+      dispatch('getMyPoolShares'),
       dispatch('getProxies')
     ]);
   },

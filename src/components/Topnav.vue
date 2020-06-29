@@ -34,7 +34,7 @@
           >
             <Avatar :address="web3.account" size="16" class="mr-2 ml-n1" />
             <span v-if="web3.name" v-text="web3.name" />
-            <span v-else>{{ web3.account | shorten }}</span>
+            <span v-else>{{ _shorten(web3.account) }}</span>
           </UiButton>
         </template>
         <UiButton v-if="web3.injectedLoaded && wrongNetwork" class="button-red">

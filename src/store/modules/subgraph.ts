@@ -68,15 +68,15 @@ const mutations = {
   GET_MY_POOLS_FAILURE(_state, payload) {
     console.debug('GET_MY_POOLS_FAILURE', payload);
   },
-  GET_POOLS_SHARES_REQUEST() {
-    console.debug('GET_POOLS_SHARES_REQUEST');
+  GET_MY_POOLS_SHARES_REQUEST() {
+    console.debug('GET_MY_POOLS_SHARES_REQUEST');
   },
-  GET_POOLS_SHARES_SUCCESS(_state, payload) {
+  GET_MY_POOLS_SHARES_SUCCESS(_state, payload) {
     Vue.set(_state, 'poolShares', payload);
-    console.debug('GET_POOLS_SHARES_SUCCESS');
+    console.debug('GET_MY_POOLS_SHARES_SUCCESS');
   },
-  GET_POOLS_SHARES_FAILURE(_state, payload) {
-    console.debug('GET_POOLS_SHARES_FAILURE', payload);
+  GET_MY_POOLS_SHARES_FAILURE(_state, payload) {
+    console.debug('GET_MY_POOLS_SHARES_FAILURE', payload);
   },
   GET_POOLS_SWAPS_REQUEST() {
     console.debug('GET_POOLS_SWAPS_REQUEST');
@@ -199,9 +199,9 @@ const actions = {
       commit('GET_MY_POOLS_FAILURE', e);
     }
   },
-  getPoolShares: async ({ commit, rootState }) => {
+  getMyPoolShares: async ({ commit, rootState }) => {
     const address = rootState.web3.account;
-    commit('GET_POOLS_SHARES_REQUEST');
+    commit('GET_MY_POOLS_SHARES_REQUEST');
     try {
       const query = {
         poolShares: {
@@ -212,13 +212,13 @@ const actions = {
           }
         }
       };
-      const { poolShares } = await request('getPoolShares', query);
+      const { poolShares } = await request('getMyPoolShares', query);
       const balances: any = {};
       poolShares.forEach(share => (balances[share.poolId.id] = share.balance));
-      commit('GET_POOLS_SHARES_SUCCESS', balances);
+      commit('GET_MY_POOLS_SHARES_SUCCESS', balances);
       return poolShares;
     } catch (e) {
-      commit('GET_POOLS_SHARES_FAILURE', e);
+      commit('GET_MY_POOLS_SHARES_FAILURE', e);
     }
   },
   getPoolSwaps: async ({ commit }, payload) => {

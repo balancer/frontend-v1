@@ -26,9 +26,12 @@
             {{ $n(swap.tokenAmountOut) }}
             <Token :address="swap.tokenOut" size="16" class="ml-2" />
           </div>
-          <div v-text="$n(swap.poolTotalSwapVolume)" class="column" />
+          <div
+            v-text="$n(swap.poolTotalSwapVolume, 'currency')"
+            class="column"
+          />
           <div class="column">
-            {{ swap.id | shorten }} <Icon name="external-link" />
+            {{ _shorten(swap.id) }} <Icon name="external-link" />
           </div>
         </UiTableLine>
       </div>

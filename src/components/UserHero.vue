@@ -44,8 +44,6 @@
 </template>
 
 <script>
-import shorten from '@/helpers/utils';
-
 export default {
   props: ['address', 'name', 'profile'],
   computed: {
@@ -53,7 +51,7 @@ export default {
       try {
         return this.profile.name;
       } catch (e) {
-        return this.name || shorten(this.address);
+        return this.name || this._shorten(this.address);
       }
     },
     image() {
