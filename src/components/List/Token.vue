@@ -16,10 +16,10 @@
     </div>
     <div class="column">{{ $n(token.weightPercent.toFixed(2)) }}%</div>
     <div class="column hide-sm">
-      {{ $n(parseFloat(token.balance).toFixed(2)) }} {{ token.symbol }}
+      {{ $n(parseInt(token.balance)) }} {{ token.symbol }}
     </div>
     <div class="column hide-sm hide-md">
-      {{ $n(parseFloat(myPoolBalance.toFixed(2))) }} {{ token.symbol }}
+      {{ $n(myPoolBalance) }} {{ token.symbol }}
     </div>
     <div class="column hide-sm hide-md hide-lg">
       <Price :token="token.address" :amount="myPoolBalance" />
@@ -33,15 +33,12 @@ export default {
   computed: {
     myShares() {
       if (!this.web3.account) return 0;
-      const [myShares] = this.pool.shares.filter(
-        share => share.userAddress.id === this.web3.account.toLowerCase()
-      );
-      return myShares;
+      return this.subgraph.poolShares[this.pool.id];
     },
     myPoolBalance() {
       if (!this.myShares) return 0;
       return (
-        (this.myShares.balance / this.pool.totalShares) * this.token.balance
+        (this.myShares / this.pool.totalShares) * this.token.balance
       );
     }
   }
