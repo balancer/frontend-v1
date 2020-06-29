@@ -19,7 +19,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getPrice']),
     price() {
       this.forceRecomputeCounter;
       const amount = this.amount || 0;

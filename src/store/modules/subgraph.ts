@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import { getAddress } from 'ethers/utils';
 import { request } from '@/helpers/subgraph';
 import { formatPool } from '@/helpers/utils';
 
@@ -12,8 +11,7 @@ const state = {
 
 const getters = {
   getPrice: state => (token, amount) => {
-    const checksum = getAddress(token);
-    const tokenPrice = state.tokenPrices[checksum];
+    const tokenPrice = state.tokenPrices[token.toLowerCase()];
     if (!tokenPrice) return 0;
     return tokenPrice.price * amount;
   }

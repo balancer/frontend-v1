@@ -37,9 +37,7 @@ export default {
     },
     myPoolBalance() {
       if (!this.myShares) return 0;
-      return (
-        (this.myShares / this.pool.totalShares) * this.token.balance
-      );
+      return (this.myShares / this.pool.totalShares) * this.token.balance;
     }
   }
 };

@@ -70,7 +70,6 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['getPrice']),
     tokens() {
       return Object.fromEntries(
         Object.entries(config.tokens)
