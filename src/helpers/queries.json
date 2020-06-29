@@ -33,6 +33,9 @@
       "totalWeight": true,
       "totalShares": true,
       "totalSwapVolume": true,
+      "createTime": true,
+      "joinsCount": true,
+      "exitsCount": true,
       "liquidity": true,
       "tokensList": true,
       "swapsCount": true,
@@ -47,23 +50,6 @@
         "decimals": true,
         "symbol": true,
         "denormWeight": true
-      },
-      "shares": {
-        "__args": {
-          "orderBy": "balance",
-          "orderDirection": "desc",
-          "where": {
-            "balance_gt": 0
-          }
-        },
-        "id": true,
-        "poolId": {
-          "id": true
-        },
-        "userAddress": {
-          "id": true
-        },
-        "balance": true
       },
       "swaps": {
         "__args": {
@@ -92,6 +78,25 @@
       "tokenAmountOut": true,
       "poolTotalSwapVolume": true,
       "timestamp": true
+    }
+  },
+  "getPoolShares": {
+    "poolShares": {
+      "__args": {
+        "orderBy": "balance",
+        "orderDirection": "desc",
+        "where": {
+          "balance_gt": 0
+        }
+      },
+      "id": true,
+      "userAddress": {
+        "id": true
+      },
+      "poolId": {
+        "id": true
+      },
+      "balance": true
     }
   },
   "getPools": {
@@ -136,6 +141,13 @@
   },
   "getMyPoolShares": {
     "poolShares": {
+      "__args": {
+        "orderBy": "balance",
+        "orderDirection": "desc",
+        "where": {
+          "balance_gt": 0
+        }
+      },
       "balance": true,
       "poolId": {
         "id": true

@@ -3,8 +3,12 @@
     <ul class="list-style-none">
       <li v-for="(item, i) in items" :key="i">
         <router-link :to="item.to">
-          <span class="mr-2">{{ item.name }}</span>
-          <UiCounter v-if="item.count" v-text="$n(item.count)" />
+          <span>{{ item.name }}</span>
+          <UiCounter
+            v-if="item.count > 0"
+            v-text="$n(item.count)"
+            class="ml-2"
+          />
         </router-link>
       </li>
     </ul>

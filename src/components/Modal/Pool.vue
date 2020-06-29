@@ -47,7 +47,7 @@
         </a>
         <a
           class="btn-outline mb-3"
-          :href="`https://etherscan.io/address/${pool.id}`"
+          :href="_etherscanLink(pool.id)"
           target="_blank"
         >
           See on Etherscan

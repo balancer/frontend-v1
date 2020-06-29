@@ -1,5 +1,6 @@
 {
   "kovan": {
+    "network": "kovan",
     "chainId": 42,
     "defaultPrecision": 4,
     "subgraphUrl": "https://api.thegraph.com/subgraphs/name/bonustrack/balancer-kovan",
@@ -115,6 +116,7 @@
     }
   },
   "homestead": {
+    "network": "homestead",
     "chainId": 1,
     "defaultPrecision": 4,
     "subgraphUrl": "https://api.thegraph.com/subgraphs/name/bonustrack/balancer",

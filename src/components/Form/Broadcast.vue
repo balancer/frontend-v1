@@ -5,7 +5,12 @@
       <VueLoadingIndicator class="loading-xl text-white py-6" />
       <h3 class="mb-3 text-white">Your transaction is being broadcasted</h3>
       <a
-        href="https://etherscan.io/tx/0x85610520a1e5f609daa84081c7ae63fafbe358cb1122c94d3c1c018a3025aca9"
+        :href="
+          _etherscanLink(
+            '0x85610520a1e5f609daa84081c7ae63fafbe358cb1122c94d3c1c018a3025aca9',
+            'tx'
+          )
+        "
         target="_blank"
       >
         See on Etherscan
@@ -22,7 +27,12 @@
       </h3>
       <div class="overflow-hidden mb-4">
         <a
-          href="https://etherscan.io/tx/0x85610520a1e5f609daa84081c7ae63fafbe358cb1122c94d3c1c018a3025aca9"
+          :href="
+            _etherscanLink(
+              '0x85610520a1e5f609daa84081c7ae63fafbe358cb1122c94d3c1c018a3025aca9',
+              'tx'
+            )
+          "
           target="_blank"
         >
           See on Etherscan

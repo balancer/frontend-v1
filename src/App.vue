@@ -4,7 +4,7 @@
     <div v-else>
       <Topnav />
       <div
-        class="d-flex flex-row"
+        class="d-flex flex-row pb-6"
         :style="ui.sidebarIsOpen && 'max-height: 100vh'"
       >
         <div
@@ -13,7 +13,7 @@
           @click="toggleSidebar"
         />
         <Sidebar />
-        <router-view id="view" class="flex-auto " />
+        <router-view id="view" class="flex-auto" />
       </div>
     </div>
     <Notifications />

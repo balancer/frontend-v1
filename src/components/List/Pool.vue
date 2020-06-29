@@ -4,7 +4,7 @@
       {{ _shorten(pool.id) }}
     </div>
     <div>
-      <Pie :tokens="pool.tokens" class="mr-3" size="40" />
+      <Pie :tokens="pool.tokens" class="mr-3" size="34" />
     </div>
     <div class="flex-auto text-left">
       <div class="d-flex flex-wrap overflow-hidden" style="max-width: 320px;">

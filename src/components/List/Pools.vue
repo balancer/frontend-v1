@@ -19,7 +19,17 @@
       <div v-if="pools.length > 0">
         <ListPool v-for="(pool, i) in pools" :key="i" :pool="pool" />
       </div>
-      <ListLoadingPool v-if="loading" />
+      <ListLoading
+        v-if="loading"
+        :classes="[
+          'column-sm text-left hide-sm hide-md hide-lg',
+          'flex-auto text-left',
+          'column hide-sm hide-md',
+          'column',
+          'column hide-sm hide-md',
+          'column hide-sm hide-md hide-lg'
+        ]"
+      />
     </div>
   </UiTable>
 </template>

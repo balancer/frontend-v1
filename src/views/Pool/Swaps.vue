@@ -31,18 +31,32 @@
             class="column"
           />
           <div class="column">
-            {{ _shorten(swap.id) }} <Icon name="external-link" />
+            <a
+              :href="_etherscanLink(swap.id, 'tx')"
+              class="text-white"
+              target="_blank"
+            >
+              {{ _shorten(swap.id) }} <Icon name="external-link" />
+            </a>
           </div>
         </UiTableLine>
       </div>
-      <ListLoadingPool v-if="loading" />
+      <ListLoading
+        v-if="loading"
+        :classes="[
+          'flex-auto text-left',
+          'column',
+          'column',
+          'column',
+          'column'
+        ]"
+      />
     </div>
     <div
       v-if="swaps.length === 0 && !loading"
       class="border-top d-flex flex-items-center p-4 text-white"
-    >
-      Nothing to see here.
-    </div>
+      v-text="$t('messages.EMPTY_STATE')"
+    />
   </UiTable>
 </template>
 
@@ -73,7 +87,6 @@ export default {
       query = { ...query, page };
       const swaps = await this.getPoolSwaps(query);
       this.swaps = this.swaps.concat(swaps);
-      console.log(this.swaps);
       this.loading = false;
     }
   }

@@ -86,6 +86,15 @@ const mutations = {
   },
   GET_POOLS_SWAPS_FAILURE(_state, payload) {
     console.debug('GET_POOLS_SWAPS_FAILURE', payload);
+  },
+  GET_POOLS_SHARES_REQUEST() {
+    console.debug('GET_POOLS_SHARES_REQUEST');
+  },
+  GET_POOLS_SHARES_SUCCESS() {
+    console.debug('GET_POOLS_SHARES_SUCCESS');
+  },
+  GET_POOLS_SHARES_FAILURE(_state, payload) {
+    console.debug('GET_POOLS_SHARES_FAILURE', payload);
   }
 };
 
@@ -248,6 +257,35 @@ const actions = {
       return swaps;
     } catch (e) {
       commit('GET_POOLS_SWAPS_FAILURE', e);
+    }
+  },
+  getPoolShares: async ({ commit }, payload) => {
+    commit('GET_POOLS_SHARES_REQUEST');
+    try {
+      const {
+        first = 10,
+        page = 1,
+        orderBy = 'balance',
+        orderDirection = 'desc',
+        where = {}
+      } = payload;
+      const skip = (page - 1) * first;
+      const query = {
+        poolShares: {
+          __args: {
+            where,
+            first,
+            skip,
+            orderBy,
+            orderDirection
+          }
+        }
+      };
+      const { poolShares } = await request('getPoolShares', query);
+      commit('GET_POOLS_SHARES_SUCCESS');
+      return poolShares;
+    } catch (e) {
+      commit('GET_POOLS_SHARES_FAILURE', e);
     }
   }
 };

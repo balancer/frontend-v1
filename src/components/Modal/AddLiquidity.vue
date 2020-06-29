@@ -31,7 +31,7 @@
                   />
                 </div>
                 <div class="column-sm text-left">
-                  {{ web3.balances[token.checksum] | trunc(2) }}
+                  {{ _trunc(web3.balances[token.checksum], 2) }}
                   {{ token.symbol }}
                 </div>
                 <div class="column">
@@ -74,9 +74,12 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { trunc, denormalizeBalance, bnum } from '@/helpers/utils';
 import BigNumber from '@/helpers/bignumber';
-import { calcPoolTokensByRatio } from '@/helpers/utils';
+import {
+  calcPoolTokensByRatio,
+  bnum,
+  denormalizeBalance
+} from '@/helpers/utils';
 
 export default {
   props: ['open', 'pool'],
@@ -124,12 +127,12 @@ export default {
       this.poolTokens = calcPoolTokensByRatio(ratio, this.pool.totalShares);
       this.pool.tokens.forEach(token => {
         if (token.address !== changedToken) {
-          this.amounts[token.address] = trunc(ratio * token.balance, 8);
+          this.amounts[token.address] = this._trunc(ratio * token.balance, 8);
         }
       });
     },
     handleMax(token) {
-      const amount = trunc(this.web3.balances[token.checksum], 8);
+      const amount = this._trunc(this.web3.balances[token.checksum], 8);
       this.amounts[token.address] = amount;
       this.handleChange(amount, token);
     },
