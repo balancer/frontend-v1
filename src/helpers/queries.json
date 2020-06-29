@@ -66,6 +66,11 @@
         "balance": true
       },
       "swaps": {
+        "__args": {
+          "first": 1,
+          "orderBy": "timestamp",
+          "orderDirection": "desc"
+        },
         "tokenIn": true,
         "tokenInSym": true,
         "tokenAmountIn": true,
@@ -131,6 +136,11 @@
         "balance": true
       },
       "swaps": {
+        "__args": {
+          "first": 1,
+          "orderBy": "timestamp",
+          "orderDirection": "desc"
+        },
         "tokenIn": true,
         "tokenInSym": true,
         "tokenAmountIn": true,
