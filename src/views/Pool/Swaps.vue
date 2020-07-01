@@ -1,35 +1,30 @@
 <template>
   <UiTable>
-    <UiTableHeader>
+    <UiTableTh>
       <div v-text="'Time'" class="flex-auto text-left" />
-      <div v-text="'Trade in'" class="column" />
-      <div v-text="'Trade out'" class="column" />
-      <div v-text="'Swap volume'" class="column" />
+      <div v-text="'Trade in'" class="column text-left" />
+      <div v-text="'Trade out'" class="column text-left" />
       <div v-text="'Tx details'" class="column" />
-    </UiTableHeader>
+    </UiTableTh>
     <div
       v-infinite-scroll="loadMore"
       infinite-scroll-distance="5"
       class="overflow-hidden"
     >
       <div v-if="swaps.length > 0">
-        <UiTableLine v-for="(swap, i) in swaps" :key="i" :swap="swap">
+        <UiTableTr v-for="(swap, i) in swaps" :key="i" :swap="swap">
           <div
             v-text="$d(new Date(swap.timestamp * 1e3), 'short')"
             class="flex-auto text-left"
           />
-          <div class="column">
-            <Token :address="swap.tokenIn" size="16" class="mr-2" />
+          <div class="column d-flex flex-items-center">
+            <Token :address="swap.tokenIn" class="mr-2" />
             {{ $n(swap.tokenAmountIn) }}
           </div>
-          <div class="column">
+          <div class="column d-flex flex-items-center">
+            <Token :address="swap.tokenOut" class="mr-2" />
             {{ $n(swap.tokenAmountOut) }}
-            <Token :address="swap.tokenOut" size="16" class="ml-2" />
           </div>
-          <div
-            v-text="$n(swap.poolTotalSwapVolume, 'currency')"
-            class="column"
-          />
           <div class="column">
             <a
               :href="_etherscanLink(swap.id, 'tx')"
@@ -39,15 +34,14 @@
               {{ _shorten(swap.id) }} <Icon name="external-link" />
             </a>
           </div>
-        </UiTableLine>
+        </UiTableTr>
       </div>
       <ListLoading
         v-if="loading"
         :classes="[
           'flex-auto text-left',
-          'column',
-          'column',
-          'column',
+          'column text-left',
+          'column text-left',
           'column'
         ]"
       />

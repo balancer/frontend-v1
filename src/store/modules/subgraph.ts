@@ -93,6 +93,15 @@ const mutations = {
   },
   GET_POOLS_SHARES_FAILURE(_state, payload) {
     console.debug('GET_POOLS_SHARES_FAILURE', payload);
+  },
+  GET_PRICE_HISTORY_REQUEST() {
+    console.debug('GET_PRICE_HISTORY_REQUEST');
+  },
+  GET_PRICE_HISTORY_SUCCESS() {
+    console.debug('GET_PRICE_HISTORY_SUCCESS');
+  },
+  GET_PRICE_HISTORY_FAILURE(_state, payload) {
+    console.debug('GET_PRICE_HISTORY_FAILURE', payload);
   }
 };
 
@@ -284,6 +293,32 @@ const actions = {
       return poolShares;
     } catch (e) {
       commit('GET_POOLS_SHARES_FAILURE', e);
+    }
+  },
+  getPriceHistory: async ({ commit }) => {
+    commit('GET_PRICE_HISTORY_REQUEST');
+    try {
+      let query = '{';
+      const ids = ['0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'];
+      const days = 10;
+      for (let i = 0; i < days; i++) {
+        query += `
+        _${i}: tokenPrices (
+          where: {
+            id_in: ${JSON.stringify(ids)}
+          }
+        ) {
+          id
+          price
+          symbol
+        }`;
+      }
+      query += '}';
+      const priceHistory = await request(null, query);
+      commit('GET_PRICE_HISTORY_SUCCESS');
+      return priceHistory;
+    } catch (e) {
+      commit('GET_PRICE_HISTORY_FAILURE', e);
     }
   }
 };

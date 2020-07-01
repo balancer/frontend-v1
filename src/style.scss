@@ -26,6 +26,7 @@ h3 {
 }
 
 p {
+  font-size: 16px;
   font-family: $font-weight-normal;
 }
 
@@ -47,12 +48,14 @@ a {
 }
 
 .input {
+  padding: 8px 10px;
   outline: none;
-  width: 20px !important;
   color: $white;
-  font-size: 15px;
+  font-size: 16px;
   background-color: transparent;
-  border: none;
+  border: $border;
+  border-radius: $border-radius;
+  max-width: 100%;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -68,22 +71,19 @@ a {
 
 .modal {
   .shell {
-    @extend .border;
+    @extend .border-0;
+    @extend .border-md;
     @extend .rounded-md-1;
     @extend .rounded-lg-1;
     background-color: $panel-background;
     padding-left: 0 !important;
     padding-right: 0 !important;
-    max-width: 780px;
+    max-width: 580px;
   }
 
   .modal-body {
     flex: auto;
   }
-}
-
-label {
-  font-size: 18px;
 }
 
 .eyebrow {
@@ -101,59 +101,12 @@ label {
   width: 120px;
 }
 
-.form-control {
-  padding: 8px 0;
-  border: 0;
-  box-shadow: none !important;
-  background-color: transparent;
-}
-
 .highlight:hover {
   background-color: $panel-border;
 }
 
 .anim-fade-in {
   animation-duration: 0.6s !important;
-}
-
-.text-normal {
-  font-family: $font-weight-normal;
-}
-
-.check {
-  color: $gray-200;
-
-  .active {
-    color: $bg-blue;
-  }
-}
-
-.tokens-selectable {
-  &:hover {
-    .token-selectable {
-      img {
-        opacity: 0.4
-      }
-    }
-  }
-
-  .token-selectable {
-    .close {
-      display: none;
-    }
-
-    &:hover {
-      z-index: 9;
-
-      img {
-        opacity: 1
-      }
-
-      .close {
-        display: inherit;
-      }
-    }
-  }
 }
 
 .line-height-0 {
@@ -171,11 +124,6 @@ label {
 
 .text-black {
   color: $black;
-}
-
-.Progress {
-  height: 6px;
-  overflow: hidden;
 }
 
 .vue-ui-loading-indicator {
@@ -198,6 +146,8 @@ label {
 }
 
 .vue-ui-switch {
+  border-radius: 21px;
+
   .wrapper {
     margin-left: 0 !important;
     height: 24px !important;
@@ -229,4 +179,8 @@ label {
 
 .link-text {
   color: $link-text;
+}
+
+.selected {
+  background-color: $blue-900;
 }

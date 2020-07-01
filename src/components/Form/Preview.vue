@@ -1,36 +1,27 @@
 <template>
-  <div class="mb-6">
-    <h2 class="mb-4">Preview</h2>
-    <div class="px-4 text-left">
-      <div class="d-flex mb-3">
-        <label class="d-block flex-auto">Tokens</label>
-        <label class="d-block text-right">Deposits</label>
-      </div>
-      <div class="mb-6">
-        <div v-for="(token, i) in tokens" :key="token" class="border-top">
-          <div class="d-flex my-2">
-            <Token :address="token" size="40" class="mr-2 pr-1 mt-1" />
-            <div class="mt-2 pt-1 text-gray mr-2 flex-auto">
-              {{ config.tokens[token].symbol }}
-            </div>
-            <div class="my-2 py-1 text-gray text-right">
-              <span class="mr-2">
-                {{ $n(startBalances[i]) }} {{ config.tokens[token].symbol }}
-              </span>
-              {{ $n(startWeights[i]) }}%
-            </div>
+  <div class="p-4">
+    <UiTable class="mb-4">
+      <UiTableTh>
+        <div class="flex-auto text-left">Tokens</div>
+        <div class="text-right">Deposits</div>
+      </UiTableTh>
+      <UiTableTr v-for="(token, i) in tokens" :key="token">
+        <div class="d-flex flex-auto">
+          <Token :address="token" size="22" class="mr-2" />
+          <div class="mr-2">
+            {{ config.tokens[token].symbol }}
+            {{ $n(startWeights[i]) }}%
           </div>
         </div>
-      </div>
-      <div class="mb-3">
-        <label class="mb-2 d-block">Swap fee</label>
-        <div class="text-normal text-gray" v-text="`${$n(swapFee)}%`" />
-      </div>
-      <div class="mb-3">
-        <label class="mb-2 d-block">Rights</label>
-        <div class="text-normal text-gray" v-text="rightsStr" />
-      </div>
-    </div>
+        <div>{{ $n(startBalances[i]) }} {{ config.tokens[token].symbol }}</div>
+      </UiTableTr>
+    </UiTable>
+    <UiTable>
+      <UiTableTh>
+        <div class="flex-auto text-left">Swap fee</div>
+        <div class="text-white" v-text="`${$n(swapFee)}%`" />
+      </UiTableTh>
+    </UiTable>
   </div>
 </template>
 

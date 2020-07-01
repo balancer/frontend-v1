@@ -1,33 +1,30 @@
 <template>
   <div>
-    <div class="px-4 mb-4 overflow-hidden">
-      <h2 class="mb-3">Deposit</h2>
-      <p class="mb-3">Deposit initial liquidity in your pool.</p>
-    </div>
-    <div class="px-4 text-left">
-      <div class="d-flex  mb-3">
-        <label class="flex-auto">Tokens</label>
-        <label class="column-sm text-right">Deposits</label>
-      </div>
-      <div class="mb-6">
-        <div v-for="(token, i) in tokens" :key="token" class="border-top">
-          <div class="d-flex my-2">
-            <Token :address="token" size="40" class="mr-2 pr-1 mt-1" />
-            <div class="mt-2 pt-1 text-gray mr-2">
+    <div class="border rounded-1 m-4">
+      <UiTableTh class="border-bottom">
+        <div class="flex-auto text-left">Tokens</div>
+        <div class="column text-left">Balance</div>
+        <div class="column">Deposits</div>
+      </UiTableTh>
+      <div class="p-3">
+        <div v-for="(token, i) in tokens" :key="token" class="mb-2">
+          <div class="d-flex flex-items-center">
+            <Token :address="token" size="28" class="mr-3" />
+            <div class="mr-2 flex-auto text-white">
               {{ config.tokens[token].symbol }}
             </div>
-            <p class="my-2 py-1 flex-auto">
-              <Price :token="token" :amount="startBalances[i]" />
-            </p>
-            <input
-              v-model="startBalances[i]"
-              @input="handleAmountChange(i)"
-              type="number"
-              class="h2 border-0 form-control text-right ml-3 column"
-              placeholder="0.0"
-              step="any"
-              required
-            />
+            <div class="column" v-text="$n(1)" />
+            <div class="column">
+              <input
+                v-model="startBalances[i]"
+                @input="handleAmountChange(i)"
+                type="number"
+                class="input text-right"
+                placeholder="0.0"
+                step="any"
+                required
+              />
+            </div>
           </div>
         </div>
       </div>

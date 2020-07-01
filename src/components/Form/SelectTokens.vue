@@ -1,39 +1,17 @@
 <template>
   <div>
-    <h2 class="mb-4">Select tokens</h2>
-    <div
-      v-if="selectedTokens.length"
-      class="tokens-selectable d-inline-block mx-auto mb-4"
-    >
-      <div
-        class="token-selectable line-height-0 bg-white circle d-inline-block mr-n2 ml-n2 position-relative anim-pulse-in"
-        v-for="selectedToken in selectedTokens"
-        :key="selectedToken"
-      >
-        <a @click="removeToken(selectedToken)">
-          <Icon
-            name="close"
-            class="close position-absolute top-0 right-0 circle bg-blue text-white p-1"
-            size="14"
-          />
-        </a>
-        <Token
-          :key="selectedToken"
-          :address="selectedToken"
-          size="58"
-          class="circle"
-          style="border: 2px solid white !important;"
-        />
-      </div>
+    <div class="p-4 pb-0">
+      <p class="mb-4">
+        Select up to height tokens you’d like to have in the pool.
+      </p>
+      <Search v-model="query" placeholder="Search name, symbol or address" />
     </div>
-    <Search
-      v-model="query"
-      placeholder="Search name, symbol or address"
-      class="bg-blue-light px-4"
-    />
-    <div class="text-left overflow-y-scroll mb-4" style="height: 260px;">
+    <div
+      class="text-left overflow-y-scroll border rounded-1 mt-0 m-4"
+      style="height: 260px;"
+    >
       <p
-        class="px-4 py-3 mt-1 text-center"
+        class="py-3 text-center"
         v-if="query && Object.keys(tokens).length === 0"
       >
         No token found for this search
@@ -41,16 +19,23 @@
       <a
         v-for="token in tokens"
         :key="token.address"
-        class="d-flex px-4 py-3 border-bottom"
-        @click="selectToken(token.address)"
+        class="d-flex px-3 py-2 flex-items-center line-height-0 border-bottom"
+        :class="selectedTokens.includes(token.address) && 'selected'"
+        @click="toggleToken(token.address)"
       >
-        <Token :address="token.address" class="mr-2" />
-        <div class="flex-auto mt-1 ml-1">
-          <span class="text-gray mr-2">{{ token.name }}</span>
-          <span class="text-normal">{{ token.symbol }}</span>
-        </div>
-        <div class="mt-1 text-normal" v-if="token.balance >= 0.001">
-          {{ $n(token.balance) }}
+        <Icon
+          :name="
+            selectedTokens.includes(token.address) ? 'check' : 'plus-small'
+          "
+          size="22"
+          class="text-white mr-2"
+        />
+        <Token :address="token.address" class="mr-3" size="28" />
+        <div class="flex-auto">
+          <p class="p-0 m-0">
+            <span class="text-white mr-1" v-text="token.name" />
+            {{ token.symbol }}
+          </p>
         </div>
       </a>
     </div>
@@ -83,8 +68,8 @@ export default {
           .filter(token => {
             const str = `${token[1].address} ${token[1].symbol} ${token[1].name}`.toLowerCase();
             return (
-              str.includes(this.query.toLowerCase()) &&
-              !this.selectedTokens.includes(token[1].address)
+              str.includes(this.query.toLowerCase()) ||
+              this.selectedTokens.includes(token[1].address)
             );
           })
           .sort((a, b) => b[1].usdValue - a[1].usdValue)
@@ -92,9 +77,13 @@ export default {
     }
   },
   methods: {
-    selectToken(tokenAddress) {
-      if (this.selectedTokens.length < 8)
+    toggleToken(tokenAddress) {
+      const i = this.selectedTokens.indexOf(tokenAddress);
+      if (i !== -1) {
+        this.selectedTokens.splice(i, 1);
+      } else if (this.selectedTokens.length < 8) {
         this.selectedTokens.push(tokenAddress);
+      }
       this.$emit('input', this.selectedTokens);
     },
     removeToken(tokenAddress) {

@@ -1,24 +1,28 @@
 <template>
-  <div class="p-3 border rounded-1 text-center">
-    <div class="text-left mb-4">
-      <h4 class="eyebrow mb-2">Pool overview</h4>
-      <div class="text-white">
-        <p class="link-text mb-2">{{ _shorten(pool.id) }}</p>
-        <p>My pool shares: {{ $n(poolShares, 'percent') }}</p>
-        <p>Pool swap fee: {{ $n(pool.swapFee, 'percent') }}</p>
+  <div class="p-3 border rounded-1">
+    <h4 class="mb-2">Pool {{ _shorten(pool.id) }}</h4>
+    <div class="d-flex">
+      <div class="mr-3">
+        <Pie :tokens="pool.tokens" size="60" />
       </div>
-    </div>
-    <Pie :tokens="pool.tokens" size="100" class="mb-3" />
-    <div class="text-left text-white">
-      <div v-for="token in pool.tokens" :key="token.address" class="mx-4 mb-1">
-        <Icon
-          name="bullet"
-          size="6"
-          class="mr-1"
-          :style="`color: ${token.chartColor}`"
-        />
-        {{ $n(token.weightPercent.toFixed()) }}%
-        {{ token.symbol }}
+      <div class="text-white">
+        <div class="mb-2">
+          <div>Swap fee: {{ $n(pool.swapFee, 'percent') }}</div>
+        </div>
+        <div
+          v-for="token in pool.tokens"
+          :key="token.address"
+          class="d-inline-block mx-1"
+        >
+          <Icon
+            name="bullet"
+            size="6"
+            class="mr-1"
+            :style="`color: ${token.chartColor}`"
+          />
+          {{ $n(token.weightPercent.toFixed()) }}%
+          {{ token.symbol }}
+        </div>
       </div>
     </div>
   </div>
@@ -26,13 +30,6 @@
 
 <script>
 export default {
-  props: ['pool'],
-  computed: {
-    poolShares() {
-      const poolShares = this.subgraph.poolShares[this.pool.id];
-      if (!poolShares) return 0;
-      return ((100 / this.pool.totalShares) * poolShares) / 100;
-    }
-  }
+  props: ['pool']
 };
 </script>

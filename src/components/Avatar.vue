@@ -1,8 +1,8 @@
 <template>
   <jazzicon
     :address="address"
-    :diameter="parseInt(size) || 64"
-    class="d-inline-block v-align-middle"
+    :diameter="parseInt(size) || 22"
+    class="d-inline-block v-align-middle line-height-0"
   />
 </template>
 

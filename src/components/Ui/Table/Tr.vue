@@ -1,9 +1,13 @@
 <template>
   <span>
-    <router-link v-if="to" :to="to" class="line px-4 py-3 highlight">
+    <router-link
+      v-if="to"
+      :to="to"
+      class="line v-align-middle px-4 py-3 highlight d-flex"
+    >
       <slot />
     </router-link>
-    <div v-else class="line px-4 py-3 highlight">
+    <div v-else class="line px-4 py-3 d-flex">
       <slot />
     </div>
   </span>

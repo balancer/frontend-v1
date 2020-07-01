@@ -1,35 +1,33 @@
 <template>
   <UiTable>
-    <UiTableHeader>
+    <UiTableTh>
       <div v-text="'Holder'" class="flex-auto text-left" />
       <div v-text="'Balance'" class="column" />
       <div v-text="'Shares'" class="column" />
-    </UiTableHeader>
+    </UiTableTh>
     <div
       v-infinite-scroll="loadMore"
       infinite-scroll-distance="5"
       class="overflow-hidden"
     >
       <div v-if="shares.length > 0">
-        <UiTableLine v-for="(share, i) in shares" :key="i">
+        <UiTableTr v-for="(share, i) in shares" :key="i">
           <div class="text-left flex-auto">
             <a
               :href="_etherscanLink(share.userAddress.id)"
               target="_blank"
-              class="d-flex d-block text-white"
+              class="text-white"
             >
-              <Avatar :address="share.userAddress.id" size="16" class="mr-3" />
-              <div>
-                {{ _shorten(share.userAddress.id) }}
-                <Icon name="external-link" size="16" class="ml-1" />
-              </div>
+              <Avatar :address="share.userAddress.id" class="mr-2" />
+              {{ _shorten(share.userAddress.id) }}
+              <Icon name="external-link" size="16" class="ml-1" />
             </a>
           </div>
           <div class="column">{{ $n(share.balance) }} BPT</div>
           <div class="column">
             {{ $n((100 / pool.totalShares) * share.balance) }}%
           </div>
-        </UiTableLine>
+        </UiTableTr>
       </div>
       <ListLoading
         v-if="loading"

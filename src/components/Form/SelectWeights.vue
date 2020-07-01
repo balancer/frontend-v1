@@ -1,30 +1,33 @@
 <template>
-  <div>
-    <h2 class="mb-4">Set the weights</h2>
-    <div>
-      <Pie :tokens="tokensForPie" size="120" class="mb-4" />
+  <div class="p-4 pb-0">
+    <div class="p-4 border rounded-1 text-center mb-4">
+      <Pie :tokens="tokensForPie" size="120" />
     </div>
-    <div class="px-4">
-      <div class="d-flex text-right mb-3">
-        <label class="flex-auto text-left">Tokens</label>
-        <label class="column-sm">Weights</label>
-      </div>
-      <div class="mb-6 text-left">
-        <div v-for="(token, i) in tokens" :key="token" class="border-top">
-          <div class="d-flex my-2">
-            <Token :address="token" size="40" class="mr-2 pr-1 mt-1" />
-            <div class="mt-2 pt-1 text-gray mr-2">
-              {{ config.tokens[token].symbol }}
+    <div class="border rounded-1">
+      <UiTableTh class="border-bottom">
+        <div class="flex-auto text-left">Tokens</div>
+        <div class="column-sm">Weights</div>
+      </UiTableTh>
+      <div class="p-3">
+        <div
+          v-for="(token, i) in tokens"
+          :key="token"
+          class="d-flex flex-items-center mb-2"
+        >
+          <Token :address="token" size="28" class="mr-3" />
+          <div class="flex-auto text-white">
+            {{ config.tokens[token].symbol }}
+          </div>
+          <div class="column text-right pr-3">
+            <div v-if="weightRatio * startWeights[i]">
+              {{ $n((weightRatio * startWeights[i]).toFixed(2)) }}%
             </div>
-            <div class="flex-auto">
-              <p class="my-2 py-1" v-if="weightRatio * startWeights[i]">
-                {{ $n((weightRatio * startWeights[i]).toFixed(2)) }}%
-              </p>
-            </div>
+          </div>
+          <div class="column">
             <input
               v-model="startWeights[i]"
               type="number"
-              class="h2 border-0 form-control text-right ml-3 column"
+              class="input text-right btn-block"
               placeholder="0.0"
               min="2"
               max="98"

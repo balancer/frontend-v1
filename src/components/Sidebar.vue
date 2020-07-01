@@ -54,11 +54,6 @@ export default {
       items[1].count = this.subgraph.balancer.privatePoolCount;
       if (this.web3.account) {
         items.push({
-          name: 'My pools',
-          to: { name: 'my-pools' },
-          count: this.subgraph.myPools.length
-        });
-        items.push({
           name: 'Create a pool',
           to: { name: 'create' }
         });

@@ -47,11 +47,9 @@
               (!web3.account && !wrongNetwork)
           "
           @click="handleLogin"
-          :disabled="loading"
-        >
-          <VueLoadingIndicator v-if="loading" />
-          <template v-else>Connect wallet</template>
-        </UiButton>
+          :loading="loading"
+          v-text="'Connect wallet'"
+        />
       </div>
     </div>
   </nav>
