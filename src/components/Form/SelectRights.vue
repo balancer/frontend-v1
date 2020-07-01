@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="px-4 mb-4 overflow-hidden">
-      <h2 class="mb-3">Select right(s)</h2>
       <p class="mb-3">Venenatis urna cursus eget nunc scelerisque viverra.</p>
     </div>
     <div

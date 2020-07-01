@@ -1,74 +1,73 @@
 <template>
-  <UiModal :open="open" @close="$emit('close')">
-    <div class="modal-body" v-if="pool.id">
-      <h4 class="p-4 border-bottom text-white">Add liquidity</h4>
-      <form @submit.prevent="handleSubmit" class="flex-auto p-4">
-        <div class="d-flex mb-4">
-          <PoolOverview :pool="pool" class="col-3" />
-          <div class="border rounded-1 flex-auto ml-4">
-            <div>
+  <UiModal :open="open" @close="$emit('close')" v-if="pool.id">
+    <UiModalForm @submit="handleSubmit">
+      <template slot="header">
+        <h3 class="text-white">Add liquidity</h3>
+      </template>
+      <div class="px-4 pt-4">
+        <PoolOverview :pool="pool" class="mb-4" />
+        <UiTable class="mb-4">
+          <UiTableTh>
+            <div class="flex-auto text-left">Asset</div>
+            <div class="column-sm text-left">Unlock</div>
+            <div class="column-sm text-left">Wallet balance</div>
+            <div class="column-sm">Deposit amount</div>
+          </UiTableTh>
+          <UiTableTr v-for="token in pool.tokens" :key="token.address">
+            <div class="flex-auto text-left d-flex">
+              <Token :address="token.address" class="mr-3" size="20" />
+              <div class="text-white">{{ token.symbol }}</div>
+            </div>
+            <div class="column-sm text-left">
+              <ButtonUnlock
+                :tokenAddress="token.address"
+                :spender="poolAddress"
+              />
+            </div>
+            <div class="column-sm text-left">
+              {{ _trunc(web3.balances[token.checksum], 2) }}
+              {{ token.symbol }}
+            </div>
+            <div class="column-sm">
               <div
-                class="d-flex flex-items-center text-right px-4 py-3 border-bottom"
+                class="flex-auto ml-3 text-left d-flex flex-items-center position-relative"
               >
-                <div class="column-sm text-left">Asset</div>
-                <div class="flex-auto text-left">Unlock</div>
-                <div class="column-sm text-left">Wallet balance</div>
-                <div class="column">Deposit amount</div>
-              </div>
-              <div
-                v-for="token in pool.tokens"
-                :key="token.address"
-                class="d-flex px-4 py-3 text-right text-white flex-items-center"
-              >
-                <div class="column-sm text-left d-flex">
-                  <Token :address="token.address" class="mr-3" size="20" />
-                  <div class="text-white">{{ token.symbol }}</div>
-                </div>
-                <div class="flex-auto text-left">
-                  <ButtonUnlock
-                    :tokenAddress="token.address"
-                    :spender="poolAddress"
-                  />
-                </div>
-                <div class="column-sm text-left">
-                  {{ _trunc(web3.balances[token.checksum], 2) }}
-                  {{ token.symbol }}
-                </div>
-                <div class="column">
-                  <div
-                    class="rounded-1 border flex-auto ml-3 py-1 text-left d-flex flex-items-center"
-                  >
-                    <a @click="handleMax(token)" class="link-text mx-2">
-                      Max
-                    </a>
-                    <input
-                      v-model="amounts[token.address]"
-                      type="number"
-                      step="any"
-                      class="input flex-auto text-right column-sm px-2"
-                      :class="
-                        web3.balances[token.checksum] >=
-                        parseFloat(amounts[token.address])
-                          ? 'text-white'
-                          : 'text-red'
-                      "
-                      placeholder="0.0"
-                      @input="handleChange(amounts[token.address], token)"
-                    />
-                  </div>
-                </div>
+                <a
+                  @click="handleMax(token)"
+                  class="link-text position-absolute left-2"
+                >
+                  Max
+                </a>
+                <input
+                  v-model="amounts[token.address]"
+                  type="number"
+                  step="any"
+                  class="input flex-auto text-right pl-6"
+                  :class="
+                    web3.balances[token.checksum] >=
+                    parseFloat(amounts[token.address])
+                      ? 'text-white'
+                      : 'text-red'
+                  "
+                  placeholder="0.0"
+                  @input="handleChange(amounts[token.address], token)"
+                />
               </div>
             </div>
-          </div>
-        </div>
-        <div class="text-center">
-          <UiButton :disabled="!isValid || loading" type="submit" class="ml-2">
-            <VueLoadingIndicator v-if="loading" />
-            <span v-else>Add liquidity</span>
-          </UiButton>
-        </div>
-      </form>
-    </div>
+          </UiTableTr>
+        </UiTable>
+      </div>
+      <MyPoolShares :pool="pool" class="mb-4 mx-4" />
+      <template slot="footer">
+        <UiButton
+          :disabled="!isValid || loading"
+          type="submit"
+          :loading="loading"
+        >
+          Add liquidity
+        </UiButton>
+      </template>
+    </UiModalForm>
   </UiModal>
 </template>
 

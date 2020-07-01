@@ -2,13 +2,13 @@
   <div>
     <VueLoadingIndicator v-if="!pool.id" class="big py-4" />
     <UiTable style="border-top-left-radius: 0 !important;" v-else>
-      <UiTableHeader>
+      <UiTableTh>
         <div v-text="'Token'" class="flex-auto text-left" />
         <div v-text="'Weight'" class="column" />
         <div v-text="'Pool balance'" class="column hide-sm" />
         <div v-text="'My pool balance'" class="column hide-sm hide-md" />
         <div v-text="'My asset value'" class="column hide-sm hide-md hide-lg" />
-      </UiTableHeader>
+      </UiTableTh>
       <ListTokens :pool="pool" />
     </UiTable>
   </div>

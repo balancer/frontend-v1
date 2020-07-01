@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import * as TV from 'lightweight-charts';
 import { getAddress } from 'ethers/utils';
 import { getMarketChartFromCoinGecko } from '@/helpers/utils';
@@ -16,9 +17,13 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['getPriceHistory']),
     async loadChart() {
       if (this.chartInit) return;
       this.chartInit = true;
+
+      // this.getPriceHistory();
+
       const promises = this.pool.tokens.map(token =>
         getMarketChartFromCoinGecko(token.address)
       );

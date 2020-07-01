@@ -14,7 +14,7 @@
       >
         <span
           class="bg-gray d-inline-block rounded-1 anim-pulse my-1"
-          style="height: 30px; width: 40%;"
+          :style="style"
         />
       </div>
     </div>
@@ -24,7 +24,16 @@
 <script>
 export default {
   props: {
-    classes: Array
+    classes: Array,
+    height: Number
+  },
+  computed: {
+    style() {
+      return {
+        height: `${this.height || 14}px`,
+        width: '40%'
+      };
+    }
   }
 };
 </script>

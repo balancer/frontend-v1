@@ -1,16 +1,11 @@
 <template>
-  <UiTableLine>
+  <UiTableTr>
     <div class="flex-auto text-left">
       <router-link
         :to="{ name: 'token', params: { id: token.address } }"
         class="text-white d-flex"
       >
-        <Token
-          :address="token.address"
-          size="20"
-          :symbol="token.symbol"
-          class="mr-3"
-        />
+        <Token :address="token.address" :symbol="token.symbol" class="mr-3" />
         {{ token.symbol }}
       </router-link>
     </div>
@@ -22,9 +17,9 @@
       {{ $n(myPoolBalance) }} {{ token.symbol }}
     </div>
     <div class="column hide-sm hide-md hide-lg">
-      <Price :token="token.address" :amount="myPoolBalance" />
+      {{ $n(getPrice(token.address, myPoolBalance), 'currency') }}
     </div>
-  </UiTableLine>
+  </UiTableTr>
 </template>
 
 <script>

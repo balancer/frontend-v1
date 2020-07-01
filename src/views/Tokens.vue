@@ -2,17 +2,17 @@
   <div class="px-0 px-md-5 py-4">
     <h3 class="mb-4 px-4 px-md-0">Tokens</h3>
     <UiTable>
-      <UiTableHeader>
+      <UiTableTh>
         <div v-text="'Asset'" class="flex-auto text-left" />
         <div v-text="'Price'" class="column" />
         <div v-text="'Balance'" class="column" />
-      </UiTableHeader>
-      <UiTableLine
+      </UiTableTh>
+      <UiTableTr
         :to="{ name: 'token', params: { id: i } }"
         v-for="(tokenPrice, i) in tokenPrices"
         :key="i"
       >
-        <Token :address="i" class="mr-3" />
+        <Token :address="i" class="mr-3" size="32" />
         <div class="flex-auto text-left">
           {{ tokenPrice.symbol }}
         </div>
@@ -26,7 +26,7 @@
             {{ $n(tokenPrice.balanceUSD, 'currency') }}
           </div>
         </div>
-      </UiTableLine>
+      </UiTableTr>
     </UiTable>
   </div>
 </template>

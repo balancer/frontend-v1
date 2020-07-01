@@ -1,5 +1,5 @@
 <template>
-  <UiTableLine :to="{ name: 'pool', params: { id: pool.id } }">
+  <UiTableTr :to="{ name: 'pool', params: { id: pool.id } }">
     <div class="column-sm text-left hide-sm hide-md hide-lg">
       {{ _shorten(pool.id) }}
     </div>
@@ -31,7 +31,7 @@
     <div class="column hide-sm hide-md hide-lg">
       {{ $n(pool.lastSwapVolume, 'currency') }}
     </div>
-  </UiTableLine>
+  </UiTableTr>
 </template>
 
 <script>

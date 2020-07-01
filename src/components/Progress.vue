@@ -1,6 +1,6 @@
 <template>
   <span
-    class="Progress bg-gray-1 mb-5 col-2 mx-auto"
+    class="Progress Progress--small mb-5 col-2 mx-auto"
     v-if="step && step < stepCount"
   >
     <span

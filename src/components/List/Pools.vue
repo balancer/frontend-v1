@@ -1,6 +1,6 @@
 <template>
   <UiTable>
-    <UiTableHeader>
+    <UiTableTh>
       <div
         v-text="'Pool address'"
         class="column-sm text-left hide-sm hide-md hide-lg"
@@ -10,7 +10,7 @@
       <div v-text="'Liquidity'" class="column" />
       <div v-text="'My liquidity'" class="column hide-sm hide-md" />
       <div v-text="'Trade vol. (24h)'" class="column hide-sm hide-md hide-lg" />
-    </UiTableHeader>
+    </UiTableTh>
     <div
       v-infinite-scroll="loadMore"
       infinite-scroll-distance="5"
@@ -29,6 +29,7 @@
           'column hide-sm hide-md',
           'column hide-sm hide-md hide-lg'
         ]"
+        :height="30"
       />
     </div>
   </UiTable>

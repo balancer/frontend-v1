@@ -3,8 +3,8 @@
     <VueLoadingIndicator v-if="loading" class="big" />
     <div v-else>
       <div class="d-flex flex-items-center flex-auto mb-4 px-4 px-md-0">
-        <h3 class="flex-auto">
-          <span class="mr-2">Pool {{ _shorten(pool.id) }}</span>
+        <h3 class="flex-auto d-flex flex-items-center">
+          <div class="mr-2">Pool {{ _shorten(pool.id) }}</div>
           <UiLabel v-if="!pool.finalized" v-text="'Private'" />
         </h3>
         <div class="d-flex">

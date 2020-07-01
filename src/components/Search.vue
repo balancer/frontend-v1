@@ -1,9 +1,8 @@
 <template>
-  <div class="d-flex">
-    <Icon name="search" class="h3 pt-3 mt-1" />
+  <div class="d-flex position-relative">
+    <Icon name="search" class="h3 px-1 py-2 my-1 position-absolute left-2" />
     <input
-      class="input h3 py-3 px-2 flex-auto"
-      style="height: 68px;"
+      class="input pl-6 flex-auto"
       :placeholder="placeholder || 'Search'"
       @input="handleInput"
       type="text"

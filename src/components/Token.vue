@@ -4,7 +4,7 @@
       v-if="tokenLogoUrl"
       :src="tokenLogoUrl"
       :style="style"
-      class="circle bg-white overflow-hidden"
+      class="circle bg-white"
       :title="symbol"
     />
     <span
@@ -25,7 +25,7 @@ export default {
   props: ['address', 'symbol', 'size'],
   computed: {
     style() {
-      const size = this.size || 32;
+      const size = this.size || 22;
       return {
         width: `${size}px`,
         height: `${size}px`,
