@@ -1,56 +1,72 @@
 <template>
-  <UiTable>
-    <UiTableTh>
-      <div
-        v-text="'Pool address'"
-        class="column-sm text-left hide-sm hide-md hide-lg"
-      />
-      <div v-text="'Assets'" class="flex-auto text-left" />
-      <div v-text="'Swap fee'" class="column hide-sm hide-md" />
-      <div v-text="'Liquidity'" class="column" />
-      <div v-text="'My liquidity'" class="column hide-sm hide-md" />
-      <div v-text="'Trade vol. (24h)'" class="column hide-sm hide-md hide-lg" />
-    </UiTableTh>
-    <div
-      v-infinite-scroll="loadMore"
-      infinite-scroll-distance="5"
-      class="overflow-hidden"
-    >
-      <div v-if="pools.length > 0">
-        <ListPool v-for="(pool, i) in pools" :key="i" :pool="pool" />
-      </div>
-      <ListLoading
-        v-if="loading"
-        :classes="[
-          'column-sm text-left hide-sm hide-md hide-lg',
-          'flex-auto text-left',
-          'column hide-sm hide-md',
-          'column',
-          'column hide-sm hide-md',
-          'column hide-sm hide-md hide-lg'
-        ]"
-        :height="30"
-      />
+  <div>
+    <div v-if="title" class="d-flex flex-items-center px-4 px-md-0 mb-4">
+      <h3 class="flex-auto" v-text="title" />
+      <Filters v-model="filters" />
     </div>
-  </UiTable>
+    <UiTable>
+      <UiTableTh>
+        <div
+          v-text="'Pool address'"
+          class="column-sm text-left hide-sm hide-md hide-lg"
+        />
+        <div v-text="'Assets'" class="flex-auto text-left" />
+        <div v-text="'Swap fee'" class="column hide-sm hide-md" />
+        <div v-text="'Liquidity'" class="column" />
+        <div v-text="'My liquidity'" class="column hide-sm hide-md" />
+        <div
+          v-text="'Trade vol. (24h)'"
+          class="column hide-sm hide-md hide-lg"
+        />
+      </UiTableTh>
+      <div
+        v-infinite-scroll="loadMore"
+        infinite-scroll-distance="5"
+        class="overflow-hidden"
+      >
+        <div v-if="pools.length > 0">
+          <ListPool v-for="(pool, i) in pools" :key="i" :pool="pool" />
+        </div>
+        <ListLoading
+          v-if="loading"
+          :classes="[
+            'column-sm text-left hide-sm hide-md hide-lg',
+            'flex-auto text-left',
+            'column hide-sm hide-md',
+            'column',
+            'column hide-sm hide-md',
+            'column hide-sm hide-md hide-lg'
+          ]"
+          :height="30"
+        />
+      </div>
+    </UiTable>
+  </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 
 export default {
-  props: ['query'],
+  props: ['query', 'title'],
   data() {
     return {
       loading: false,
       page: 0,
-      pools: []
+      pools: [],
+      filters: []
     };
   },
   watch: {
     query() {
       this.page = 0;
       this.loading = true;
+      this.loadMore();
+    },
+    filters() {
+      this.page = 0;
+      this.loading = true;
+      this.pools = [];
       this.loadMore();
     }
   },
@@ -62,6 +78,8 @@ export default {
       this.page++;
       const page = this.page;
       let query = this.query || {};
+      if (this.filters.length > 0)
+        query.where.tokensList_contains = this.filters;
       query = { ...query, page };
       const pools = await this.getPools(query);
       this.pools = this.pools.concat(pools);

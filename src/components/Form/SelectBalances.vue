@@ -13,7 +13,7 @@
             <div class="mr-2 flex-auto text-white">
               {{ config.tokens[token].symbol }}
             </div>
-            <div class="column" v-text="$n(1)" />
+            <div class="column" v-text="$n(web3.balances[token])" />
             <div class="column">
               <input
                 v-model="startBalances[i]"

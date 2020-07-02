@@ -33,6 +33,7 @@ export default {
     ...mapActions(['init', 'toggleSidebar', 'hideSidebar'])
   },
   mounted() {
+    // const x = GIT_DESCRIBE;
     this.init();
   }
 };

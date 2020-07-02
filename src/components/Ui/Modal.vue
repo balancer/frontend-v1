@@ -1,5 +1,5 @@
 <template>
-  <div v-if="open" class="modal">
+  <div v-if="open" class="modal mx-auto">
     <div class="backdrop" @click="$emit('close')" />
     <div class="shell overflow-hidden anim-scale-in position-relative">
       <slot />
@@ -39,7 +39,7 @@ export default {
   }
 
   .shell {
-    max-height: calc(100vh - 60px);
+    max-height: calc(100vh - 160px);
     display: flex;
     flex-direction: column;
     z-index: 999;
