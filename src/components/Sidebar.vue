@@ -59,8 +59,8 @@ export default {
         });
       }
       items.push({
-        name: 'Tokens',
-        to: { name: 'tokens' }
+        name: 'My wallet',
+        to: { name: 'wallet' }
       });
       return items;
     },

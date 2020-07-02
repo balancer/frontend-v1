@@ -4,7 +4,7 @@ import Home from '@/views/Home.vue';
 import Private from '@/views/Private.vue';
 import MyPools from '@/views/MyPools.vue';
 import Create from '@/views/Create.vue';
-import Tokens from '@/views/Tokens.vue';
+import Wallet from '@/views/Wallet.vue';
 import Token from '@/views/Token.vue';
 import Pool from '@/views/Pool.vue';
 import PoolTokens from '@/views/Pool/Tokens.vue';
@@ -19,7 +19,7 @@ const routes: Array<RouteConfig> = [
   { path: '/private', name: 'private', component: Private },
   { path: '/my-pools', name: 'my-pools', component: MyPools },
   { path: '/create', name: 'create', component: Create },
-  { path: '/tokens', name: 'tokens', component: Tokens },
+  { path: '/wallet', name: 'wallet', component: Wallet },
   { path: '/token/:id', name: 'token', component: Token },
   {
     path: '/pool/:id',
@@ -30,7 +30,8 @@ const routes: Array<RouteConfig> = [
       { path: 'shares', name: 'pool-shares', component: PoolShares },
       { path: 'settings', name: 'pool-settings', component: PoolSettings }
     ]
-  }
+  },
+  { path: '/*', name: 'error-404', beforeEnter: (to, from, next) => next('/') }
 ];
 
 const router = new VueRouter({

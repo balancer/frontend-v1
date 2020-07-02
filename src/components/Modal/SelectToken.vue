@@ -56,7 +56,7 @@ export default {
             return token;
           })
           .filter(token => {
-            const tokenStr = JSON.stringify(token[1]).toLowerCase();
+            const tokenStr = `${token[1].id} ${token[1].symbol}`.toLowerCase();
             return (
               tokenStr.includes(this.query.toLowerCase()) &&
               !this.not.includes(token[0])
