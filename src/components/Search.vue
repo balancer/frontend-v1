@@ -8,6 +8,7 @@
       type="text"
       autocorrect="off"
       autocapitalize="none"
+      v-autofocus
     />
   </div>
 </template>

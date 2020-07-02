@@ -34,6 +34,7 @@
     "primer-support": "^5.0.0",
     "typescript": "~3.9.3",
     "vue": "^2.6.11",
+    "vue-autofocus-directive": "^1.0.4",
     "vue-cli-plugin-express": "^1.0.2",
     "vue-cli-plugin-git-describe": "^1.0.0",
     "vue-cli-plugin-webpack-bundle-analyzer": "^2.0.0",

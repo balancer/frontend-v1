@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import autofocus from 'vue-autofocus-directive';
 import VueUi from '@vue/ui';
 import infiniteScroll from 'vue-infinite-scroll';
 import Jazzicon from 'vue-jazzicon';
@@ -22,9 +23,10 @@ requireComponent.keys().forEach(fileName => {
   );
   Vue.component(componentName, componentConfig.default || componentConfig);
 });
-Vue.component('jazzicon', Jazzicon);
 
+Vue.component('jazzicon', Jazzicon);
 Vue.mixin(mixins);
+Vue.directive('autofocus', autofocus);
 
 Vue.config.productionTip = false;
 
