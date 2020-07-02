@@ -46,7 +46,7 @@
           Back
         </UiButton>
         <UiButton
-          :disabled="(step !== 0 && tokens.length < 2) || loading"
+          :disabled="tokens.length < 2 || loading"
           type="submit"
           class="button-blue d-inline-block column mx-1"
           :class="{ 'btn-white': step === 0 }"

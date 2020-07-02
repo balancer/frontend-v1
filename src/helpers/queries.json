@@ -22,7 +22,8 @@
       "id": true,
       "symbol": true,
       "price": true,
-      "poolLiquidity": true
+      "poolLiquidity": true,
+      "poolTokenId": true
     }
   },
   "getPool": {

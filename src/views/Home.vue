@@ -1,25 +1,22 @@
 <template>
   <div class="px-0 px-md-5 py-4">
-    <div v-if="Object.keys(subgraph.poolShares).length > 0">
-      <h3 class="mb-4 px-4 px-md-0">My liquidity</h3>
-      <ListPools :query="queryMyLiquidity" class="mb-4" />
-    </div>
-    <h3 class="mb-4 px-4 px-md-0">Shared pools</h3>
-    <ListPools :query="querySharedPools" class="mb-4" />
+    <ListPools
+      title="My liquidity"
+      v-if="Object.keys(subgraph.poolShares).length > 0"
+      :query="queryMyLiquidity"
+      class="mb-4"
+    />
+    <ListPools
+      title="Shared pools"
+      :query="querySharedPools"
+      :key="querySharedPools"
+      class="mb-4"
+    />
   </div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      querySharedPools: {
-        where: {
-          finalized: true
-        }
-      }
-    };
-  },
   computed: {
     queryMyLiquidity() {
       const poolShares = this.subgraph.poolShares;
@@ -27,6 +24,13 @@ export default {
       return {
         where: {
           id_in: ids
+        }
+      };
+    },
+    querySharedPools() {
+      return {
+        where: {
+          finalized: true
         }
       };
     }

@@ -11,6 +11,10 @@ html, body, #app {
   -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  outline: none !important;
+}
+
 h1, h2, h3 {
   color: $white;
   font-weight: 500;
@@ -79,6 +83,7 @@ a {
     padding-left: 0 !important;
     padding-right: 0 !important;
     max-width: 580px;
+    min-height: 380px;
   }
 
   .modal-body {

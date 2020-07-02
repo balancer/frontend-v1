@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center mx-auto" style="max-width: 260px;">
+  <div class="text-center mx-auto p-4" style="max-width: 260px;">
     <template v-if="!confirmed">
       <h2 class="text-white">Waiting...</h2>
       <VueLoadingIndicator class="loading-xl text-white py-6" />
@@ -39,13 +39,13 @@
           <Icon name="external-link" size="16" class="ml-1" />
         </a>
       </div>
-      <a
+      <UiButton
+        type="button"
+        class="button-outline d-inline-block column mx-1"
         @click="$emit('close')"
-        to="/"
-        class="btn-white d-inline-block column mx-1"
       >
         Close
-      </a>
+      </UiButton>
     </template>
   </div>
 </template>
