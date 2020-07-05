@@ -5,15 +5,15 @@
       <div class="p-4 panel-background border rounded-1 d-flex flex-column">
         <h2 class="mb-3 text-white">Shared pool</h2>
         <div class="flex-auto">
-          <p class="mb-2 text-white">
+          <div class="mb-2 text-white">
             On a shared pool all the parameters are set once and for ever.
-          </p>
-          <p class="mb-4">
+          </div>
+          <div class="mb-4">
             <a target="_blank">
               Learn more
               <Icon name="external-link" size="16" class="ml-1" />
             </a>
-          </p>
+          </div>
         </div>
         <div>
           <UiButton @click="modalOpen = true">Create shared pool</UiButton>

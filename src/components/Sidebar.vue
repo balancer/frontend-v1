@@ -66,9 +66,9 @@ export default {
     },
     balances() {
       return Object.fromEntries(
-        Object.entries(this.web3.balances).filter(
-          balance => balance[1] >= 0.001
-        )
+        Object.entries(this.web3.balances)
+          .filter(balance => balance[1] >= 0.001)
+          .slice(0, 5)
       );
     }
   }

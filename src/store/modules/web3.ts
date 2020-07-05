@@ -20,7 +20,8 @@ const state = {
   name: null,
   active: false,
   balances: {},
-  dsProxyAddress: null
+  dsProxyAddress: null,
+  proxyAllowances: {}
 };
 
 const mutations = {
@@ -124,6 +125,16 @@ const mutations = {
   },
   GET_PROXIES_FAILURE(_state, payload) {
     console.debug('GET_PROXIES_FAILURE', payload);
+  },
+  GET_PROXY_ALLOWANCE_REQUEST() {
+    console.debug('GET_PROXY_ALLOWANCE_REQUEST');
+  },
+  GET_PROXY_ALLOWANCE_SUCCESS(_state, payload) {
+    Vue.set(_state.proxyAllowances, payload.tokenAddress, payload.allowance);
+    console.debug('GET_PROXY_ALLOWANCE_SUCCESS');
+  },
+  GET_PROXY_ALLOWANCE_FAILURE(_state, payload) {
+    console.debug('GET_PROXY_ALLOWANCE_FAILURE', payload);
   }
 };
 
@@ -321,6 +332,31 @@ const actions = {
       return proxies;
     } catch (e) {
       commit('GET_PROXIES_FAILURE', e);
+      return Promise.reject();
+    }
+  },
+  getProxyAllowance: async ({ commit }, tokenAddress) => {
+    commit('GET_PROXY_ALLOWANCE_REQUEST');
+    const owner = state.account;
+    const spender = state.dsProxyAddress;
+    try {
+      const tokenContract = new ethers.Contract(
+        getAddress(tokenAddress),
+        abi['TestToken'],
+        web3
+      );
+      const allowance = parseFloat(
+        formatEther(await tokenContract.allowance(owner, spender))
+      );
+      commit('GET_PROXY_ALLOWANCE_SUCCESS', {
+        tokenAddress,
+        owner,
+        spender,
+        allowance
+      });
+      return allowance;
+    } catch (e) {
+      commit('GET_PROXY_ALLOWANCE_FAILURE', e);
       return Promise.reject();
     }
   }

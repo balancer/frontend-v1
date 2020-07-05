@@ -1,49 +1,43 @@
 <template>
-  <VueSwitch v-model="isUnlocked" @click="handleSubmit" />
+  <UiButton
+    @click="handleSubmit"
+    type="button"
+    class="button-sm"
+    v-if="!allowance && init"
+    :loading="loading"
+  >
+    Unlock
+  </UiButton>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-import { getAddress } from 'ethers/utils';
 
 export default {
-  props: ['tokenAddress', 'spender', 'value'],
+  props: ['tokenAddress', 'spender'],
   data() {
     return {
-      isUnlocked: false
+      init: false,
+      loading: false,
+      input: false
     };
   },
-  watch: {
-    async approval() {
-      await this.init();
-    }
-  },
   computed: {
-    approval() {
-      try {
-        return this.allowances.approvals[this.tokenAddress];
-      } catch (e) {
-        return '';
-      }
+    allowance() {
+      return this.web3.proxyAllowances[this.tokenAddress] || 0;
     }
   },
   methods: {
-    ...mapActions(['approve', 'getAllowance']),
-    handleSubmit() {
-      this.approve({
-        tokenAddress: getAddress(this.tokenAddress),
-        spender: this.spender
-      });
-    },
-    async init() {
-      await this.getAllowance({
-        tokenAddress: getAddress(this.tokenAddress),
-        spender: this.spender
-      });
+    ...mapActions(['approve', 'getProxyAllowance']),
+    async handleSubmit() {
+      this.loading = true;
+      await this.approve(this.tokenAddress);
+      this.loading = false;
     }
   },
   async created() {
-    await this.init();
+    await this.getProxyAllowance(this.tokenAddress);
+    this.init = true;
   }
 };
 </script>
