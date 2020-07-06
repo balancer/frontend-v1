@@ -24,13 +24,6 @@
           </UiButton>
         </div>
       </div>
-      <div
-        class="border-left-0 border-right-0 border border-md rounded-lg-2 mb-4 position-relative panel-background"
-      >
-        <div v-if="pool.id" style="min-height: 300px;">
-          <Chart :pool="pool" />
-        </div>
-      </div>
       <PoolBoxes :pool="pool" />
       <Tabs :pool="pool" />
       <router-view :key="$route.path" :pool="pool" />
@@ -60,8 +53,7 @@ export default {
       pool: {},
       loading: false,
       modalAddLiquidityOpen: false,
-      modalRemoveLiquidityOpen: false,
-      chartInit: false
+      modalRemoveLiquidityOpen: false
     };
   },
   computed: {

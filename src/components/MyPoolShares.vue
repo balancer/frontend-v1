@@ -1,17 +1,33 @@
 <template>
   <div class="p-3 border text-white text-center rounded-1">
-    Your pool share will go from {{ $n(poolShares, 'percent') }} to X%
+    Your pool share will go from {{ $n(poolSharesPercentFrom, 'percent') }} to
+    {{ $n(poolSharesPercentTo, 'percent') }}
   </div>
 </template>
 
 <script>
+import { POOL_TOKENS_DECIMALS } from '@/helpers/utils';
+
 export default {
-  props: ['pool'],
+  props: ['pool', 'poolTokens'],
   computed: {
-    poolShares() {
-      const poolShares = this.subgraph.poolShares[this.pool.id];
-      if (!poolShares) return 0;
-      return ((100 / this.pool.totalShares) * poolShares) / 100;
+    poolSharesPercentFrom() {
+      const poolSharesFrom = this.subgraph.poolShares[this.pool.id] || 0;
+      if (!poolSharesFrom) return 0;
+      return ((100 / this.pool.totalShares) * poolSharesFrom) / 100;
+    },
+    poolSharesPercentTo() {
+      const poolTokens =
+        parseFloat(this.poolTokens).toFixed(POOL_TOKENS_DECIMALS) / 1e18;
+      if (!poolTokens) return this.poolSharesPercentFrom;
+      const poolSharesFrom = this.subgraph.poolShares[this.pool.id] || 0;
+      const poolSharesTo = poolSharesFrom + poolTokens;
+      if (poolSharesTo <= 0) return 0;
+      return (
+        ((100 / (parseFloat(this.pool.totalShares) + poolTokens)) *
+          poolSharesTo) /
+        100
+      );
     }
   }
 };

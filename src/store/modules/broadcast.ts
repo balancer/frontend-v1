@@ -107,6 +107,15 @@ const actions = {
         poolAmountOut,
         maxAmountsIn
       ]);
+
+      console.log(
+        getAddress(poolAddress),
+        dsProxyAddress,
+        config.addresses.bActions,
+        poolAmountOut,
+        maxAmountsIn
+      );
+
       await dispatch('sendTransaction', [
         'DSProxy',
         dsProxyAddress,

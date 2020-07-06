@@ -137,7 +137,7 @@ const actions = {
     const query = {
       pool: {
         __args: {
-          id: payload
+          id: payload.toLowerCase()
         },
         swaps: {
           __args: {
@@ -230,7 +230,7 @@ const actions = {
       };
       const { poolShares } = await request('getMyPoolShares', query);
       const balances: any = {};
-      poolShares.forEach(share => (balances[share.poolId.id] = share.balance));
+      poolShares.forEach(share => (balances[share.poolId.id] = parseFloat(share.balance)));
       commit('GET_MY_POOLS_SHARES_SUCCESS', balances);
       return poolShares;
     } catch (e) {

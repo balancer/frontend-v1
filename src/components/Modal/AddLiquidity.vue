@@ -9,46 +9,38 @@
         <UiTable class="mb-4">
           <UiTableTh>
             <div class="flex-auto text-left">Asset</div>
-            <div class="column-sm text-left">Unlock</div>
-            <div class="column-sm text-left">Wallet balance</div>
+            <div class="column text-left">Wallet balance</div>
             <div class="column-sm">Deposit amount</div>
           </UiTableTh>
           <UiTableTr v-for="token in pool.tokens" :key="token.address">
-            <div class="flex-auto text-left d-flex">
-              <Token :address="token.address" class="mr-3" size="20" />
+            <div class="flex-auto d-flex flex-items-center text-left d-flex">
+              <Token :address="token.address" class="mr-2" size="20" />
               <div class="text-white">{{ token.symbol }}</div>
+              <ButtonUnlock class="ml-2" :tokenAddress="token.address" />
             </div>
-            <div class="column-sm text-left">
-              <ButtonUnlock
-                :tokenAddress="token.address"
-                :spender="poolAddress"
-              />
-            </div>
-            <div class="column-sm text-left">
-              {{ _trunc(web3.balances[token.checksum], 2) }}
+            <div class="column text-left">
+              {{ _trunc(web3.balances[token.checksum] || 0, 2) }}
               {{ token.symbol }}
+              <a @click="handleMax(token)" class="ml-1">
+                <UiLabel v-text="'Max'" />
+              </a>
             </div>
             <div class="column-sm">
               <div
                 class="flex-auto ml-3 text-left d-flex flex-items-center position-relative"
               >
-                <a
-                  @click="handleMax(token)"
-                  class="link-text position-absolute left-2"
-                >
-                  Max
-                </a>
                 <input
                   v-model="amounts[token.address]"
                   type="number"
                   step="any"
-                  class="input flex-auto text-right pl-6"
+                  class="input flex-auto text-right"
                   :class="
                     web3.balances[token.checksum] >=
                     parseFloat(amounts[token.address])
                       ? 'text-white'
                       : 'text-red'
                   "
+                  min="0"
                   placeholder="0.0"
                   @input="handleChange(amounts[token.address], token)"
                 />
@@ -57,13 +49,9 @@
           </UiTableTr>
         </UiTable>
       </div>
-      <MyPoolShares :pool="pool" class="mb-4 mx-4" />
+      <MyPoolShares :pool="pool" :poolTokens="poolTokens" class="mb-4 mx-4" />
       <template slot="footer">
-        <UiButton
-          :disabled="!isValid || loading"
-          type="submit"
-          :loading="loading"
-        >
+        <UiButton :disabled="!isValid" type="submit" :loading="loading">
           Add liquidity
         </UiButton>
       </template>
@@ -101,15 +89,15 @@ export default {
     }
   },
   computed: {
-    poolAddress() {
-      return this.pool.id;
-    },
     isValid() {
       let isValid = true;
       this.pool.tokens.forEach(token => {
+        const allowance = this.web3.proxyAllowances[token.address] || 0;
         if (
+          this.loading ||
           !this.amounts[token.address] ||
-          this.web3.balances[token.checksum] < this.amounts[token.address]
+          this.web3.balances[token.checksum] < this.amounts[token.address] ||
+          allowance <= 0
         )
           isValid = false;
       });
@@ -119,13 +107,12 @@ export default {
   methods: {
     ...mapActions(['joinPool']),
     handleChange(changedAmount, changedToken) {
-      if (!parseFloat(changedAmount)) return;
-
       // @TODO - fix calcs so no buffer is needed
       const ratio = changedAmount / changedToken.balance;
       this.poolTokens = calcPoolTokensByRatio(ratio, this.pool.totalShares);
+
       this.pool.tokens.forEach(token => {
-        if (token.address !== changedToken) {
+        if (token.address !== changedToken.address) {
           this.amounts[token.address] = this._trunc(ratio * token.balance, 8);
         }
       });
@@ -137,9 +124,8 @@ export default {
     },
     async handleSubmit() {
       this.loading = true;
-
-      await this.joinPool({
-        poolAddress: this.poolAddress,
+      const params = {
+        poolAddress: this.pool.id,
         poolAmountOut: this.poolTokens,
         maxAmountsIn: this.pool.tokensList.map(token => {
           const amount = bnum(this.amounts[token.toLowerCase()]);
@@ -147,8 +133,8 @@ export default {
             .integerValue(BigNumber.ROUND_DOWN)
             .toString();
         })
-      });
-
+      };
+      await this.joinPool(params);
       this.loading = false;
     }
   }

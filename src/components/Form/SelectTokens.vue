@@ -31,11 +31,8 @@
           class="text-white mr-2"
         />
         <Token :address="token.address" class="mr-3" size="28" />
-        <div class="flex-auto">
-          <p class="p-0 m-0">
-            <span class="text-white mr-1" v-text="token.name" />
-            {{ token.symbol }}
-          </p>
+        <div class="flex-auto text-white">
+          {{ token.symbol }}
         </div>
       </a>
     </div>
