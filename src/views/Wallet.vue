@@ -66,7 +66,7 @@ export default {
             );
             return tokenPrice;
           })
-          .sort((a, b) => b[1].balance - a[1].balance)
+          .sort((a, b) => b[1].balanceUSD - a[1].balanceUSD)
       );
     }
   }

@@ -1,33 +1,32 @@
 <template>
   <div>
-    <div class="border rounded-1 m-4">
-      <UiTableTh class="border-bottom">
+    <UiTable class="m-4">
+      <UiTableTh>
         <div class="flex-auto text-left">Tokens</div>
-        <div class="column text-left">Balance</div>
-        <div class="column">Deposits</div>
+        <div class="column-sm text-left">Balance</div>
+        <div class="column-sm">Deposits</div>
       </UiTableTh>
-      <div class="p-3">
-        <div v-for="(token, i) in tokens" :key="token" class="mb-2">
-          <div class="d-flex flex-items-center">
-            <Token :address="token" size="28" class="mr-3" />
-            <div class="mr-2 flex-auto text-white">
-              {{ config.tokens[token].symbol }}
-            </div>
-            <div class="column" v-text="$n(web3.balances[token])" />
-            <div class="column">
-              <input
-                v-model="startBalances[i]"
-                @input="handleAmountChange(i)"
-                type="number"
-                class="input text-right"
-                placeholder="0.0"
-                step="any"
-                required
-              />
-            </div>
-          </div>
+      <UiTableTr v-for="(token, i) in tokens" :key="token">
+        <div class="flex-auto d-flex flex-items-center text-left d-flex">
+          <Token :address="token" class="mr-2" size="20" />
+          <div class="text-white">{{ config.tokens[token].symbol }}</div>
+          <ButtonUnlock class="ml-2" :tokenAddress="token" />
         </div>
-      </div>
+        <div class="column-sm text-left" v-text="$n(web3.balances[token])" />
+        <input
+          v-model="startBalances[i]"
+          @input="handleAmountChange(i)"
+          type="number"
+          class="input column-sm text-right"
+          placeholder="0.0"
+          step="any"
+          required
+        />
+      </UiTableTr>
+    </UiTable>
+    <div class="m-4 p-3 border rounded-1 text-white">
+      <VueSwitch v-model="autoPricing" class="mr-3" /> Calculate deposits using
+      Balancer price (recommended)
     </div>
   </div>
 </template>
@@ -40,11 +39,17 @@ export default {
   data() {
     return {
       config,
-      startBalances: []
+      startBalances: [],
+      autoPricing: true
     };
   },
   methods: {
     handleAmountChange(tokenIndex) {
+      if (!this.autoPricing) {
+        this.$emit('input', this.startBalances);
+        return;
+      }
+
       const changedPrice = this.getPrice(
         this.tokens[tokenIndex],
         this.startBalances[tokenIndex]

@@ -1,7 +1,13 @@
 import { getAddress, Interface, parseEther } from 'ethers/utils';
 import abi from '@/helpers/abi';
 import config from '@/helpers/config';
-import { bnum, denormalizeBalance, toWei } from '@/helpers/utils';
+import {
+  bnum,
+  denormalizeBalance,
+  MAX_UINT,
+  shorten,
+  toWei
+} from '@/helpers/utils';
 import BigNumber from '@/helpers/bignumber';
 
 const mutations = {
@@ -31,6 +37,15 @@ const mutations = {
   },
   EXIT_POOL_FAILURE(_state, payload) {
     console.debug('EXIT_POOL_FAILURE', payload);
+  },
+  APPROVE_REQUEST() {
+    console.debug('APPROVE_REQUEST');
+  },
+  APPROVE_SUCCESS() {
+    console.debug('APPROVE_SUCCESS');
+  },
+  APPROVE_FAILURE(_state, payload) {
+    console.debug('APPROVE_FAILURE', payload);
   }
 };
 
@@ -76,7 +91,7 @@ const actions = {
       commit('CREATE_POOL_SUCCESS');
     } catch (e) {
       dispatch('notify', ['red', 'Ooops, something went wrong']);
-      commit('CREATE_POOL_FAILURE');
+      commit('CREATE_POOL_FAILURE', e);
     }
   },
   joinPool: async (
@@ -92,6 +107,15 @@ const actions = {
         poolAmountOut,
         maxAmountsIn
       ]);
+
+      console.log(
+        getAddress(poolAddress),
+        dsProxyAddress,
+        config.addresses.bActions,
+        poolAmountOut,
+        maxAmountsIn
+      );
+
       await dispatch('sendTransaction', [
         'DSProxy',
         dsProxyAddress,
@@ -126,7 +150,28 @@ const actions = {
       commit('EXIT_POOL_SUCCESS');
     } catch (e) {
       dispatch('notify', ['red', 'Ooops, something went wrong']);
-      commit('EXIT_POOL_FAILURE');
+      commit('EXIT_POOL_FAILURE', e);
+    }
+  },
+  approve: async ({ commit, dispatch, rootState }, token) => {
+    commit('APPROVE_REQUEST');
+    const spender = rootState.web3.dsProxyAddress;
+    const tokenPrice = rootState.subgraph.tokenPrices[token];
+    const symbol = tokenPrice ? tokenPrice.symbol : shorten(token);
+    try {
+      const params = [
+        'TestToken',
+        getAddress(token),
+        'approve',
+        [spender, MAX_UINT.toString()]
+      ];
+      await dispatch('sendTransaction', params);
+      await dispatch('getProxyAllowance', token);
+      dispatch('notify', ['green', `You've successfully unlocked ${symbol}`]);
+      commit('APPROVE_SUCCESS');
+    } catch (e) {
+      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      commit('APPROVE_FAILURE', e);
     }
   }
 };

@@ -34,6 +34,13 @@ export default {
     cursor: not-allowed;
   }
 
+  &.button-sm {
+    font-size: 12px;
+    border-radius: 19px;
+    padding: 0 14px;
+    height: 36px;
+  }
+
   &.button-outline {
     color: $link-text;
     border: 1px solid $panel-border;

@@ -3,7 +3,7 @@
     <ListPools
       title="Shared pools"
       :query="querySharedPools"
-      :key="querySharedPools"
+      :key="JSON.stringify(querySharedPools)"
       class="mb-4"
     />
   </div>
