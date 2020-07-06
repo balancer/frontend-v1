@@ -62,7 +62,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { delay } from '@/helpers/utils';
+// import { delay } from '@/helpers/utils';
 
 export default {
   props: ['open'],
@@ -104,17 +104,14 @@ export default {
     async handleSubmit() {
       if (this.step === this.lastStep) {
         this.loading = true;
-        await delay(1e3);
-        /*
-        this.createSmartPool({
-          proxyAddress: this.ui.proxy,
+        // await delay(1e3);
+        this.createPool({
           tokens: this.tokens,
           startBalances: this.startBalances,
           startWeights: this.startWeights,
-          swapFee: this.swapFee,
-          rights: this.rights
+          swapFee: this.swapFee
+          // rights: this.rights
         });
-        */
         this.loading = false;
         this.step++;
       } else {

@@ -263,6 +263,7 @@ const actions = {
       const tx = await contractWithSigner[action](...params);
       await tx.wait();
       commit('SEND_TRANSACTION_SUCCESS');
+      return tx;
     } catch (e) {
       commit('SEND_TRANSACTION_FAILURE', e);
       return Promise.reject();

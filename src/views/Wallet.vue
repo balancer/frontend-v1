@@ -20,7 +20,8 @@
       >
         <Token :address="i" class="mr-3" size="32" />
         <div class="flex-auto text-left">
-          {{ tokenPrice.symbol }}
+          {{ tokenPrice.name }}
+          <span class="text-gray" v-text="tokenPrice.symbol" />
         </div>
         <div class="column">
           <div>{{ $n(tokenPrice.price, 'price') }}</div>
@@ -66,6 +67,7 @@ export default {
             );
             return tokenPrice;
           })
+          .filter(tokenPrice => tokenPrice[1].balanceUSD > 0)
           .sort((a, b) => b[1].balanceUSD - a[1].balanceUSD)
       );
     }

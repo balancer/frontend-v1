@@ -5,7 +5,6 @@
         <h3 class="text-white">Add liquidity</h3>
       </template>
       <div class="px-4 pt-4">
-        <PoolOverview :pool="pool" class="mb-4" />
         <UiTable class="mb-4">
           <UiTableTh>
             <div class="flex-auto text-left">Asset</div>

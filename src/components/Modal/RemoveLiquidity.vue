@@ -5,23 +5,26 @@
         <h3 class="text-white">Remove liquidity</h3>
       </template>
       <div class="px-4 pt-4">
-        <PoolOverview :pool="pool" class="mb-4" />
         <UiTable class="mb-4">
           <UiTableTh>
             <div class="flex-auto text-left">Asset</div>
-            <div class="column-sm">My pool balance</div>
+            <div class="column text-left">My pool balance</div>
             <div class="column-sm">Withdraw</div>
           </UiTableTh>
-          <UiTableTr v-for="token in tokens" :key="token.address">
+          <UiTableTr
+            v-for="token in tokens"
+            :key="token.address"
+            class="text-white"
+          >
             <div class="flex-auto flex-items-center d-flex text-left">
               <Token :address="token.address" class="mr-3" size="20" />
               <div class="text-white">{{ token.symbol }}</div>
             </div>
-            <div class="text-white column">
+            <div class="text-left column">
               {{ $n(token.myBalance.toFixed(3)) }}
               {{ token.symbol }}
             </div>
-            <div class="text-white column">
+            <div class="column-sm">
               {{ $n((token.balance / pool.totalShares) * poolAmountIn) }}
               {{ token.symbol }}
             </div>
@@ -30,7 +33,7 @@
         <UiTable class="mb-4">
           <UiTableTh class="text-left flex-items-center text-white">
             <div class="flex-auto">BPT amount</div>
-            <div class="ml-2">
+            <div class="ml-2 column text-left">
               {{ $n(poolTokenBalance) }} BPT
               <a @click="setMax" class="link-text mr-3">
                 <UiLabel v-text="'Max'" />

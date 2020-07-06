@@ -83,7 +83,8 @@
         "precision": 2,
         "chartColor": "#536DFE"
       }
-    }
+    },
+    "errors": []
   },
   "homestead": {
     "network": "homestead",

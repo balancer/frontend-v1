@@ -3,7 +3,7 @@
     <UiTable class="m-4">
       <UiTableTh>
         <div class="flex-auto text-left">Tokens</div>
-        <div class="column-sm text-left">Balance</div>
+        <div class="column text-left">Balance</div>
         <div class="column-sm">Deposits</div>
       </UiTableTh>
       <UiTableTr v-for="(token, i) in tokens" :key="token">
@@ -12,7 +12,13 @@
           <div class="text-white">{{ config.tokens[token].symbol }}</div>
           <ButtonUnlock class="ml-2" :tokenAddress="token" />
         </div>
-        <div class="column-sm text-left" v-text="$n(web3.balances[token])" />
+        <div class="column text-left">
+          {{ $n(web3.balances[token]) }}
+          {{ config.tokens[token].symbol }}
+          <a class="ml-1">
+            <UiLabel v-text="'Max'" />
+          </a>
+        </div>
         <input
           v-model="startBalances[i]"
           @input="handleAmountChange(i)"
@@ -20,6 +26,11 @@
           class="input column-sm text-right"
           placeholder="0.0"
           step="any"
+          :class="
+            web3.balances[token] >= parseFloat(startBalances[i])
+              ? 'text-white'
+              : 'text-red'
+          "
           required
         />
       </UiTableTr>

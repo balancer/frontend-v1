@@ -1,5 +1,5 @@
 <template>
-  <UiModal :open="open" @close="$emit('close')" style="max-width: 420px;">
+  <UiModal :open="open" @close="$emit('close')" style="max-width: 440px;">
     <UiModalForm>
       <template slot="header">
         <h3 class="text-white mb-4">Select a token</h3>
@@ -19,7 +19,8 @@
           >
             <div class="flex-auto d-flex flex-items-center">
               <Token :address="i" class="mr-2" />
-              {{ token.symbol }}
+              {{ token.name }}
+              <span class="text-gray ml-2" v-text="token.symbol" />
             </div>
             <span v-if="token.balance">
               <span

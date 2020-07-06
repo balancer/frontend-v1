@@ -1,5 +1,10 @@
 <template>
   <div class="p-4">
+    <p class="mb-4">
+      There is a minimum swap fee of
+      <a class="link-text" @click="setSwapFee(0.0001)">0.0001%</a> and a maximum
+      of <a class="link-text" @click="setSwapFee(10)">10%</a>.
+    </p>
     <UiTable>
       <UiTableTh>
         <div class="flex-auto text-left">
@@ -31,6 +36,12 @@ export default {
   },
   created() {
     this.swapFee = this.value;
+  },
+  methods: {
+    setSwapFee(swapFee) {
+      this.swapFee = swapFee;
+      this.$emit('input', swapFee);
+    }
   }
 };
 </script>

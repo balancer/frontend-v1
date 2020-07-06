@@ -51,38 +51,39 @@ const mutations = {
 
 const actions = {
   createPool: async (
-    { commit, dispatch },
-    { proxyAddress, tokens, amounts, weights, fee }
+    { commit, dispatch, rootState },
+    { tokens, startBalances, startWeights, swapFee }
   ) => {
     commit('CREATE_POOL_REQUEST');
+    const dsProxyAddress = rootState.web3.dsProxyAddress;
     try {
-      const balances = tokens.map((token, i) => {
-        const amountInput = amounts[i];
+      startBalances = tokens.map((token, i) => {
+        const amountInput = startBalances[i];
         const amount = bnum(amountInput);
         return denormalizeBalance(amount, token)
           .integerValue(BigNumber.ROUND_DOWN)
           .toString();
       });
-      const denorms = tokens.map((token, i) => {
-        return toWei(weights[i])
+      startWeights = tokens.map((token, i) => {
+        return toWei(startWeights[i])
           .div(2)
           .toString();
       });
-      const swapFee = toWei(fee)
+      swapFee = toWei(swapFee)
         .div(100)
         .toString();
       const iface = new Interface(abi.BActions);
       const data = iface.functions.create.encode([
         config.addresses.bFactory,
         tokens,
-        balances,
-        denorms,
+        startBalances,
+        startWeights,
         swapFee,
         true
       ]);
       const params = [
         'DSProxy',
-        proxyAddress,
+        dsProxyAddress,
         'execute',
         [config.addresses.bActions, data]
       ];
@@ -165,7 +166,8 @@ const actions = {
         'approve',
         [spender, MAX_UINT.toString()]
       ];
-      await dispatch('sendTransaction', params);
+      const tx = await dispatch('sendTransaction', params);
+      await tx.wait(1);
       await dispatch('getProxyAllowance', token);
       dispatch('notify', ['green', `You've successfully unlocked ${symbol}`]);
       commit('APPROVE_SUCCESS');

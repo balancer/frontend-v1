@@ -21,6 +21,8 @@
       },
       "id": true,
       "symbol": true,
+      "name": true,
+      "decimals": true,
       "price": true,
       "poolLiquidity": true,
       "poolTokenId": true
