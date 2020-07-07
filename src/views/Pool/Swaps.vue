@@ -27,11 +27,12 @@
           </div>
           <div class="column">
             <a
-              :href="_etherscanLink(swap.id, 'tx')"
+              :href="_etherscanLink(_getTxHashFromId(swap.id), 'tx')"
               class="text-white"
               target="_blank"
             >
-              {{ _shorten(swap.id) }} <Icon name="external-link" />
+              {{ _shorten(_getTxHashFromId(swap.id)) }}
+              <Icon name="external-link" />
             </a>
           </div>
         </UiTableTr>
@@ -82,6 +83,9 @@ export default {
       const swaps = await this.getPoolSwaps(query);
       this.swaps = this.swaps.concat(swaps);
       this.loading = false;
+    },
+    _getTxHashFromId(id) {
+      return id.split('-')[0];
     }
   }
 };
