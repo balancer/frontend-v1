@@ -4,7 +4,7 @@
       <div v-text="'Time'" class="flex-auto text-left" />
       <div v-text="'Trade in'" class="column text-left" />
       <div v-text="'Trade out'" class="column text-left" />
-      <div v-text="'Tx details'" class="column" />
+      <div v-text="'Transaction'" class="column" />
     </UiTableTh>
     <div
       v-infinite-scroll="loadMore"
