@@ -8,7 +8,7 @@ Pool management interface for users to add and remove liquidity to Balancer pool
 -   Configure supported network
 
 ```
-# Network ID (e.g. mainnet, kovan)
+# Network ID (e.g. homestead, kovan)
 VUE_APP_NETWORK=kovan
 ```
 
