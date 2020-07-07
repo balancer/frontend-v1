@@ -23,18 +23,12 @@
           >
         </router-link>
       </div>
-      <div>
+      <div :key="web3.account">
         <template v-if="web3.account && !wrongNetwork">
-          <UiButton
-            class="button-outline"
-            :to="{
-              name: 'user',
-              params: { id: web3.name || web3.account }
-            }"
-          >
+          <UiButton class="button-outline" :loading="loading">
             <Avatar :address="web3.account" size="16" class="mr-2 ml-n1" />
             <span v-if="web3.name" v-text="web3.name" />
-            <span v-else>{{ _shorten(web3.account) }}</span>
+            <span v-else v-text="_shorten(web3.account)" />
           </UiButton>
         </template>
         <UiButton v-if="web3.injectedLoaded && wrongNetwork" class="button-red">
@@ -42,10 +36,7 @@
           Wrong network
         </UiButton>
         <UiButton
-          v-if="
-            (!web3.account && !web3.injectedLoaded) ||
-              (!web3.account && !wrongNetwork)
-          "
+          v-if="showLogin"
           @click="handleLogin"
           :loading="loading"
           v-text="'Connect wallet'"
@@ -68,6 +59,12 @@ export default {
   computed: {
     wrongNetwork() {
       return config.chainId !== this.web3.injectedChainId;
+    },
+    showLogin() {
+      return (
+        (!this.web3.account && !this.web3.injectedLoaded) ||
+        (!this.web3.account && !this.wrongNetwork)
+      );
     }
   },
   methods: {
