@@ -14,7 +14,7 @@
       <div v-if="swaps.length > 0">
         <UiTableTr v-for="(swap, i) in swaps" :key="i" :swap="swap">
           <div
-            v-text="$d(new Date(swap.timestamp * 1e3), 'short')"
+            v-text="$d(new Date(swap.timestamp * 1e3), 'long')"
             class="flex-auto text-left"
           />
           <div class="column d-flex flex-items-center">
