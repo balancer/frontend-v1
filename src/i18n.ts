@@ -42,6 +42,13 @@ export default new VueI18n({
         month: 'short',
         day: 'numeric',
         hour: 'numeric'
+      },
+      long: {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric'
       }
     }
   }

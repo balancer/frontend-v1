@@ -2,9 +2,9 @@
   <UiTable>
     <UiTableTh>
       <div v-text="'Time'" class="flex-auto text-left" />
-      <div v-text="'Trade in'" class="column text-left" />
-      <div v-text="'Trade out'" class="column text-left" />
-      <div v-text="'Tx details'" class="column" />
+      <div v-text="'Trade in'" class="column-lg text-left" />
+      <div v-text="'Trade out'" class="column-lg text-left" />
+      <div v-text="'Transaction'" class="column" />
     </UiTableTh>
     <div
       v-infinite-scroll="loadMore"
@@ -14,24 +14,27 @@
       <div v-if="swaps.length > 0">
         <UiTableTr v-for="(swap, i) in swaps" :key="i" :swap="swap">
           <div
-            v-text="$d(new Date(swap.timestamp * 1e3), 'short')"
+            v-text="$d(new Date(swap.timestamp * 1e3), 'long')"
             class="flex-auto text-left"
           />
-          <div class="column d-flex flex-items-center">
+          <div class="column-lg d-flex flex-items-center">
             <Token :address="swap.tokenIn" class="mr-2" />
             {{ $n(swap.tokenAmountIn) }}
+            {{ swap.tokenInSym }}
           </div>
-          <div class="column d-flex flex-items-center">
+          <div class="column-lg d-flex flex-items-center">
             <Token :address="swap.tokenOut" class="mr-2" />
             {{ $n(swap.tokenAmountOut) }}
+            {{ swap.tokenOutSym }}
           </div>
           <div class="column">
             <a
-              :href="_etherscanLink(swap.id, 'tx')"
+              :href="_etherscanLink(_getTxHashFromId(swap.id), 'tx')"
               class="text-white"
               target="_blank"
             >
-              {{ _shorten(swap.id) }} <Icon name="external-link" />
+              {{ _shorten(_getTxHashFromId(swap.id)) }}
+              <Icon name="external-link" />
             </a>
           </div>
         </UiTableTr>
@@ -40,8 +43,8 @@
         v-if="loading"
         :classes="[
           'flex-auto text-left',
-          'column text-left',
-          'column text-left',
+          'column-lg text-left',
+          'column-lg text-left',
           'column'
         ]"
       />
@@ -82,6 +85,9 @@ export default {
       const swaps = await this.getPoolSwaps(query);
       this.swaps = this.swaps.concat(swaps);
       this.loading = false;
+    },
+    getTxHashFromId(id) {
+      return id.split('-')[0];
     }
   }
 };
