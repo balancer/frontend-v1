@@ -86,7 +86,7 @@ export default {
       this.swaps = this.swaps.concat(swaps);
       this.loading = false;
     },
-    _getTxHashFromId(id) {
+    getTxHashFromId(id) {
       return id.split('-')[0];
     }
   }
