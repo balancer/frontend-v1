@@ -29,11 +29,11 @@
           </div>
           <div class="column">
             <a
-              :href="_etherscanLink(_getTxHashFromId(swap.id), 'tx')"
+              :href="_etherscanLink(getTxHashFromId(swap.id), 'tx')"
               class="text-white"
               target="_blank"
             >
-              {{ _shorten(_getTxHashFromId(swap.id)) }}
+              {{ _shorten(getTxHashFromId(swap.id)) }}
               <Icon name="external-link" />
             </a>
           </div>
