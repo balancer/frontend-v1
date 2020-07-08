@@ -6,7 +6,7 @@
       </template>
       <UiTable class="m-4">
         <a
-          v-for="(connector, i) in connectors"
+          v-for="(connector, id, i) in connectors"
           :key="i"
           class="d-flex flex-items-center px-3 py-2"
           :class="i !== 0 && 'border-top'"
