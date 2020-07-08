@@ -70,7 +70,7 @@ const actions = {
       ];
       const tx = await dispatch('sendTransaction', params);
       dispatch('notify', ['green', "You've successfully created a proxy"]);
-      dispatch('getProxy')
+      dispatch('getProxy');
       commit('CREATE_PROXY_SUCCESS');
       return tx;
     } catch (e) {
