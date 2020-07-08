@@ -12,6 +12,11 @@
       "weth": "0xd0A1E359811322d97991E03f863a0C30C2cF029C",
       "multicall": "0x2cc8688C5f75E365aaEEb4ea8D6a480405A48D2A"
     },
+    "connectors": [
+      { "id": "injected", "name": "MetaMask" },
+      { "id": "walletconnect", "name": "WalletConnect" },
+      { "id": "portis", "name": "Portis" }
+    ],
     "tokens": {
       "0xd0A1E359811322d97991E03f863a0C30C2cF029C": {
         "address": "0xd0A1E359811322d97991E03f863a0C30C2cF029C",
@@ -99,6 +104,11 @@
       "weth": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
       "multicall": "0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441"
     },
+    "connectors": [
+      { "id": "injected", "name": "MetaMask" },
+      { "id": "walletconnect", "name": "WalletConnect" },
+      { "id": "portis", "name": "Portis" }
+    ],
     "tokens": {
       "0xba100000625a3754423978a60c9317c58a424e3D": {
         "symbol": "BAL",

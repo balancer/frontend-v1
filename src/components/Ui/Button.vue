@@ -1,9 +1,7 @@
 <template>
-  <button @click="$emit('click')" class="button">
-    <span>
-      <VueLoadingIndicator v-if="loading" />
-      <slot v-else />
-    </span>
+  <button @click="$emit('click')" class="button" :disabled="loading">
+    <VueLoadingIndicator v-if="loading" />
+    <slot v-else />
   </button>
 </template>
 

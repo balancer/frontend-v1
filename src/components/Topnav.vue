@@ -35,14 +35,16 @@
           <Icon name="warning" class="ml-n2 mr-1 v-align-middle" />
           Wrong network
         </UiButton>
-        <UiButton
-          v-if="showLogin"
-          @click="handleLogin"
-          :loading="loading"
-          v-text="'Connect wallet'"
-        />
+        <UiButton v-if="showLogin" @click="modalOpen = true" :loading="loading">
+          Connect wallet
+        </UiButton>
       </div>
     </div>
+    <ModalConnect
+      :open="modalOpen"
+      @close="modalOpen = false"
+      @login="handleLogin"
+    />
   </nav>
 </template>
 
@@ -53,7 +55,8 @@ import config from '@/helpers/config';
 export default {
   data() {
     return {
-      loading: false
+      loading: false,
+      modalOpen: false
     };
   },
   computed: {
@@ -70,9 +73,10 @@ export default {
   methods: {
     ...mapActions(['toggleSidebar']),
     ...mapActions(['login']),
-    async handleLogin() {
+    async handleLogin(connector) {
+      this.modalOpen = false;
       this.loading = true;
-      await this.login();
+      await this.login(connector);
       this.loading = false;
     }
   }
