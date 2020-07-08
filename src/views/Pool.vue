@@ -10,7 +10,7 @@
         <div class="d-flex">
           <UiButton
             class="ml-2"
-            @click="modalAddLiquidityOpen = true"
+            @click="openAddLiquidityModal"
             v-if="enableAddLiquidity"
           >
             Add liquidity
@@ -18,7 +18,7 @@
           <UiButton
             v-if="hasShares"
             class="button-outline ml-2"
-            @click="modalRemoveLiquidityOpen = true"
+            @click="openRemoveLiquidityModal"
           >
             Remove liquidity
           </UiButton>
@@ -68,7 +68,19 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getPool'])
+    ...mapActions(['getPool']),
+    openAddLiquidityModal() {
+      const proxyAddress = this.web3.dsProxyAddress;
+      const hasInstance =
+        proxyAddress !== '0x0000000000000000000000000000000000000000';
+      if (!hasInstance) {
+        this.$router.push({ name: 'setup' });
+      }
+      this.modalAddLiquidityOpen = true;
+    },
+    openRemoveLiquidityModal() {
+      this.modalRemoveLiquidityOpen = true;
+    }
   },
   async created() {
     if (this.count === 0) {

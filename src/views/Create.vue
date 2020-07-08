@@ -16,7 +16,7 @@
           </div>
         </div>
         <div>
-          <UiButton @click="modalOpen = true">Create shared pool</UiButton>
+          <UiButton @click="openModal">Create shared pool</UiButton>
         </div>
       </div>
     </div>
@@ -30,6 +30,17 @@ export default {
     return {
       modalOpen: false
     };
+  },
+  methods: {
+    openModal() {
+      const proxyAddress = this.web3.dsProxyAddress;
+      const hasInstance =
+        proxyAddress !== '0x0000000000000000000000000000000000000000';
+      if (!hasInstance) {
+        this.$router.push({ name: 'setup' });
+      }
+      this.modalOpen = true;
+    }
   }
 };
 </script>
