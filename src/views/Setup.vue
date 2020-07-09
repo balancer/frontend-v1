@@ -1,6 +1,6 @@
 <template>
   <div class="px-0 px-md-5 py-4 d-flex flex-justify-center">
-    <div class="col-12 col-md-6 col-lg-4">
+    <div class="col-12 col-md-6 col-lg-4 mt-8">
       <div class="p-4 panel-background border rounded-1 d-flex flex-column">
         <h3 class="mb-4 px-4 px-md-0">Setup Proxy</h3>
         <div>
