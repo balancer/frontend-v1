@@ -1,17 +1,17 @@
 import Vue from 'vue';
 import { formatEther, getAddress, Interface } from 'ethers/utils';
-import provider, { connectToInjected } from '@/helpers/provider';
-import web3 from '@/helpers/web3';
 import { ethers } from 'ethers';
 import abi from '@/helpers/abi';
 import config from '@/helpers/config';
+import connectors from '@/helpers/connectors';
 
-const supportedChainId = 1;
-const infuraId = '8b8aadcdedf14ddeaa449f33b1c24953';
+const infuraId = process.env.VUE_APP_INFURA_ID;
 const backupUrls = {
   1: `https://mainnet.infura.io/v3/${infuraId}`,
   42: `https://kovan.infura.io/v3/${infuraId}`
 };
+let provider;
+let web3;
 
 const state = {
   injectedLoaded: false,
@@ -139,9 +139,13 @@ const mutations = {
 };
 
 const actions = {
-  login: async ({ dispatch }) => {
-    await connectToInjected();
-    if (provider) await dispatch('loadWeb3');
+  login: async ({ dispatch }, connector = 'injected') => {
+    const options = config.connectors[connector].options || {};
+    provider = await connectors[connector](options);
+    if (provider) {
+      web3 = new ethers.providers.Web3Provider(provider);
+      await dispatch('loadWeb3');
+    }
   },
   loadWeb3: async ({ commit, dispatch }) => {
     commit('LOAD_WEB3_REQUEST');
@@ -149,7 +153,7 @@ const actions = {
       await dispatch('loadProvider');
       await dispatch('loadAccount');
       commit('LOAD_WEB3_SUCCESS');
-      if (!state.injectedLoaded || state.injectedChainId !== supportedChainId) {
+      if (!state.injectedLoaded || state.injectedChainId !== config.chainId) {
         await dispatch('loadBackupProvider');
       } else {
         /**
@@ -211,7 +215,7 @@ const actions = {
   loadBackupProvider: async ({ commit }) => {
     try {
       const web3 = new ethers.providers.JsonRpcProvider(
-        backupUrls[supportedChainId]
+        backupUrls[config.chainId]
       );
       const network = await web3.getNetwork();
       commit('LOAD_BACKUP_PROVIDER_SUCCESS', {

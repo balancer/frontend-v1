@@ -25,7 +25,8 @@
       "scripthost"
     ],
     "noImplicitAny": false,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*.ts",

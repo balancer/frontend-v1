@@ -26,11 +26,7 @@ const mutations = {
 const actions = {
   init: async ({ commit, dispatch }) => {
     commit('SET', { loading: true });
-    await Promise.all([
-      dispatch('getBalancer'),
-      dispatch('getTokenPrices'),
-      dispatch('login')
-    ]);
+    await Promise.all([dispatch('getBalancer'), dispatch('getTokenPrices')]);
     commit('SET', { loading: false, init: true });
   },
   loading: ({ commit }, payload) => {

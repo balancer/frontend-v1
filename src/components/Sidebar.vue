@@ -79,7 +79,7 @@ export default {
 @import '../vars';
 
 #sidebar {
-  z-index: 10;
+  z-index: 5;
   border-right: $border;
   position: fixed;
   background-color: $panel-background;
