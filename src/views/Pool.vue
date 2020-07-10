@@ -70,11 +70,8 @@ export default {
   methods: {
     ...mapActions(['getPool']),
     openAddLiquidityModal() {
-      const proxyAddress = this.web3.dsProxyAddress;
-      const hasInstance =
-        proxyAddress !== '0x0000000000000000000000000000000000000000';
-      if (!hasInstance) {
-        this.$router.push({ name: 'setup' });
+      if (!this.hasProxy) {
+        return this.$router.push({ name: 'setup' });
       }
       this.modalAddLiquidityOpen = true;
     },

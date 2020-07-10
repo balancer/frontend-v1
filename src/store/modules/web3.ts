@@ -1,8 +1,9 @@
 import Vue from 'vue';
+import { ethers } from 'ethers';
+import { AddressZero } from 'ethers/constants';
 import { formatEther, getAddress, Interface } from 'ethers/utils';
 import provider, { connectToInjected } from '@/helpers/provider';
 import web3 from '@/helpers/web3';
-import { ethers } from 'ethers';
 import abi from '@/helpers/abi';
 import config from '@/helpers/config';
 
@@ -22,6 +23,13 @@ const state = {
   balances: {},
   dsProxyAddress: null,
   proxyAllowances: {}
+};
+
+const getters = {
+  hasProxy: state => {
+    const proxyAddress = state.dsProxyAddress;
+    return !!proxyAddress && proxyAddress !== AddressZero;
+  }
 };
 
 const mutations = {
@@ -365,6 +373,7 @@ const actions = {
 
 export default {
   state,
+  getters,
   mutations,
   actions
 };

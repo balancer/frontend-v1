@@ -8,7 +8,7 @@ const modules = Object.entries(store.state).map(module => module[0]);
 export default {
   computed: {
     ...mapState(modules),
-    ...mapGetters(['getPrice'])
+    ...mapGetters(['getPrice', 'hasProxy'])
   },
   methods: {
     _shorten(str: string): string {

@@ -52,10 +52,7 @@ export default {
   },
   computed: {
     isInstanceReady() {
-      const proxyAddress = this.web3.dsProxyAddress;
-      const hasInstance =
-        proxyAddress !== '0x0000000000000000000000000000000000000000';
-      return hasInstance && !this.loading;
+      return this.hasProxy && !this.loading;
     }
   }
 };
