@@ -2,8 +2,6 @@ import Vue from 'vue';
 import { ethers } from 'ethers';
 import { AddressZero } from 'ethers/constants';
 import { formatEther, getAddress, Interface } from 'ethers/utils';
-import provider, { connectToInjected } from '@/helpers/provider';
-import web3 from '@/helpers/web3';
 import abi from '@/helpers/abi';
 import config from '@/helpers/config';
 import connectors from '@/helpers/connectors';
