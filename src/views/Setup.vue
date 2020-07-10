@@ -7,7 +7,12 @@
           Create proxy contract to manage liquidity on Balancer.
         </div>
         <div class="mt-4 d-flex flex-justify-center">
-          <UiButton @click="setup()" v-if="!isInstanceReady" :loading="loading" :disabled="loading">
+          <UiButton
+            @click="setup()"
+            v-if="!isInstanceReady"
+            :loading="loading"
+            :disabled="loading"
+          >
             Setup
           </UiButton>
           <UiButton @click="goBack()" v-else>Next</UiButton>
