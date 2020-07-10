@@ -11,6 +11,15 @@ import {
 import BigNumber from '@/helpers/bignumber';
 
 const mutations = {
+  CREATE_PROXY_REQUEST() {
+    console.debug('CREATE_PROXY_REQUEST');
+  },
+  CREATE_PROXY_SUCCESS() {
+    console.debug('CREATE_PROXY_SUCCESS');
+  },
+  CREATE_PROXY_FAILURE(_state, payload) {
+    console.debug('CREATE_PROXY_FAILURE', payload);
+  },
   CREATE_POOL_REQUEST() {
     console.debug('CREATE_POOL_REQUEST');
   },
@@ -50,6 +59,25 @@ const mutations = {
 };
 
 const actions = {
+  createProxy: async ({ commit, dispatch }) => {
+    commit('CREATE_PROXY_REQUEST');
+    try {
+      const params = [
+        'DSProxyRegistry',
+        config.addresses.dsProxyRegistry,
+        'build',
+        []
+      ];
+      const tx = await dispatch('sendTransaction', params);
+      dispatch('notify', ['green', "You've successfully created a proxy"]);
+      dispatch('getProxy');
+      commit('CREATE_PROXY_SUCCESS');
+      return tx;
+    } catch (e) {
+      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      commit('CREATE_PROXY_FAILURE', e);
+    }
+  },
   createPool: async (
     { commit, dispatch, rootState },
     { tokens, startBalances, startWeights, swapFee }

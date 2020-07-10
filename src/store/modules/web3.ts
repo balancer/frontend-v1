@@ -1,6 +1,7 @@
 import Vue from 'vue';
-import { formatEther, getAddress, Interface } from 'ethers/utils';
 import { ethers } from 'ethers';
+import { AddressZero } from 'ethers/constants';
+import { formatEther, getAddress, Interface } from 'ethers/utils';
 import abi from '@/helpers/abi';
 import config from '@/helpers/config';
 import connectors from '@/helpers/connectors';
@@ -22,6 +23,13 @@ const state = {
   balances: {},
   dsProxyAddress: null,
   proxyAllowances: {}
+};
+
+const getters = {
+  hasProxy: state => {
+    const proxyAddress = state.dsProxyAddress;
+    return !!proxyAddress && proxyAddress !== AddressZero;
+  }
 };
 
 const mutations = {
@@ -116,15 +124,15 @@ const mutations = {
   GET_BALANCES_FAILURE(_state, payload) {
     console.debug('GET_BALANCES_FAILURE', payload);
   },
-  GET_PROXIES_REQUEST() {
-    console.debug('GET_PROXIES_REQUEST');
+  GET_PROXY_REQUEST() {
+    console.debug('GET_PROXY_REQUEST');
   },
-  GET_PROXIES_SUCCESS(_state, payload) {
+  GET_PROXY_SUCCESS(_state, payload) {
     Vue.set(_state, 'dsProxyAddress', payload);
-    console.debug('GET_PROXIES_SUCCESS');
+    console.debug('GET_PROXY_SUCCESS');
   },
-  GET_PROXIES_FAILURE(_state, payload) {
-    console.debug('GET_PROXIES_FAILURE', payload);
+  GET_PROXY_FAILURE(_state, payload) {
+    console.debug('GET_PROXY_FAILURE', payload);
   },
   GET_PROXY_ALLOWANCE_REQUEST() {
     console.debug('GET_PROXY_ALLOWANCE_REQUEST');
@@ -279,7 +287,7 @@ const actions = {
       dispatch('getBalances'),
       dispatch('getMyPools'),
       dispatch('getMyPoolShares'),
-      dispatch('getProxies')
+      dispatch('getProxy')
     ]);
   },
   getBalances: async ({ commit }) => {
@@ -323,8 +331,8 @@ const actions = {
       return Promise.reject();
     }
   },
-  getProxies: async ({ commit }) => {
-    commit('GET_PROXIES_REQUEST');
+  getProxy: async ({ commit }) => {
+    commit('GET_PROXY_REQUEST');
     const address = state.account;
     try {
       const dsProxyRegistryContract = new ethers.Contract(
@@ -332,11 +340,11 @@ const actions = {
         abi['DSProxyRegistry'],
         web3
       );
-      const proxies = await dsProxyRegistryContract.proxies(address);
-      commit('GET_PROXIES_SUCCESS', proxies);
-      return proxies;
+      const proxy = await dsProxyRegistryContract.proxies(address);
+      commit('GET_PROXY_SUCCESS', proxy);
+      return proxy;
     } catch (e) {
-      commit('GET_PROXIES_FAILURE', e);
+      commit('GET_PROXY_FAILURE', e);
       return Promise.reject();
     }
   },
@@ -369,6 +377,7 @@ const actions = {
 
 export default {
   state,
+  getters,
   mutations,
   actions
 };
