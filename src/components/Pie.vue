@@ -43,3 +43,11 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+@supports not (background: conic-gradient(red 50%, blue 50%)) {
+  span {
+    display: none !important;
+  }
+}
+</style>
