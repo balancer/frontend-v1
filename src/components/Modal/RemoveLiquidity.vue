@@ -2,13 +2,13 @@
   <UiModal :open="open" @close="$emit('close')" v-if="pool.id">
     <UiModalForm @submit="handleSubmit">
       <template slot="header">
-        <h3 class="text-white">Remove liquidity</h3>
+        <h3 class="text-white">Remove Liquidity</h3>
       </template>
       <div class="px-4 pt-4">
         <UiTable class="mb-4">
           <UiTableTh>
             <div class="flex-auto text-left">Asset</div>
-            <div class="column text-left">My pool balance</div>
+            <div class="column text-left">My Pool Balance</div>
             <div class="column-sm">Withdraw</div>
           </UiTableTh>
           <UiTableTr
@@ -58,7 +58,7 @@
           class="ml-2"
           :loading="loading"
         >
-          Remove liquidity
+          Remove Liquidity
         </UiButton>
       </template>
     </UiModalForm>

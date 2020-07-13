@@ -1,12 +1,12 @@
 <template>
   <div class="px-0 px-md-5 py-4">
     <ListPools
-      title="My liquidity"
+      title="My Liquidity"
       v-if="Object.keys(subgraph.poolShares).length > 0"
       :query="queryMyLiquidity"
       class="mb-4"
     />
-    <h3 class="mb-4 px-4 px-md-0">My wallet</h3>
+    <h3 class="mb-4 px-4 px-md-0">My Wallet</h3>
     <UiTable>
       <UiTableTh>
         <div v-text="'Asset'" class="flex-auto text-left" />

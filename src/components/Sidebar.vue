@@ -32,11 +32,11 @@ import { clone } from '@/helpers/utils';
 
 const startItems = [
   {
-    name: 'Shared pools',
+    name: 'Shared Pools',
     to: { name: 'home' }
   },
   {
-    name: 'Private pools',
+    name: 'Private Pools',
     to: { name: 'private' }
   }
 ];
@@ -54,12 +54,12 @@ export default {
       items[1].count = this.subgraph.balancer.privatePoolCount;
       if (this.web3.account) {
         items.push({
-          name: 'Create a pool',
+          name: 'Create a Pool',
           to: { name: 'create' }
         });
       }
       items.push({
-        name: 'My wallet',
+        name: 'My Wallet',
         to: { name: 'wallet' }
       });
       return items;

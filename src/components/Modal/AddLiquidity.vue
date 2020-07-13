@@ -2,14 +2,14 @@
   <UiModal :open="open" @close="$emit('close')" v-if="pool.id">
     <UiModalForm @submit="handleSubmit">
       <template slot="header">
-        <h3 class="text-white">Add liquidity</h3>
+        <h3 class="text-white">Add Liquidity</h3>
       </template>
       <div class="px-4 pt-4">
         <UiTable class="mb-4">
           <UiTableTh>
             <div class="flex-auto text-left">Asset</div>
-            <div class="column text-left">Wallet balance</div>
-            <div class="column-sm">Deposit amount</div>
+            <div class="column text-left">Wallet Balance</div>
+            <div class="column-sm">Deposit Amount</div>
           </UiTableTh>
           <UiTableTr v-for="token in pool.tokens" :key="token.address">
             <div class="flex-auto d-flex flex-items-center text-left d-flex">
@@ -51,7 +51,7 @@
       <MyPoolShares :pool="pool" :poolTokens="poolTokens" class="mb-4 mx-4" />
       <template slot="footer">
         <UiButton :disabled="!isValid" type="submit" :loading="loading">
-          Add liquidity
+          Add Liquidity
         </UiButton>
       </template>
     </UiModalForm>

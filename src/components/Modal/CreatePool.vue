@@ -69,10 +69,10 @@ export default {
   data() {
     return {
       stepTitles: [
-        'Select tokens',
-        'Set the weights',
+        'Select Tokens',
+        'Set Weights',
         'Deposit',
-        'Set a swap fee',
+        'Set Swap Fee',
         'Preview'
       ],
       loading: false,

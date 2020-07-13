@@ -33,10 +33,10 @@
         </template>
         <UiButton v-if="web3.injectedLoaded && wrongNetwork" class="button-red">
           <Icon name="warning" class="ml-n2 mr-1 v-align-middle" />
-          Wrong network
+          Wrong Network
         </UiButton>
         <UiButton v-if="showLogin" @click="modalOpen = true" :loading="loading">
-          Connect wallet
+          Connect Wallet
         </UiButton>
       </div>
     </div>
