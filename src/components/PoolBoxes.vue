@@ -13,7 +13,7 @@
         class="border rounded-0 rounded-md-1 panel-background py-4 mx-0 mx-md-2"
       >
         <h2 class="mb-2" v-text="$n(pool.lastSwapVolume, 'currency')" />
-        <h4>Trade Vol. (24hr)</h4>
+        <h4>Volume (24hr)</h4>
       </div>
     </div>
     <div class="col-12 col-md-3 float-left mb-4">

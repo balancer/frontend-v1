@@ -15,7 +15,7 @@
         <div v-text="'Liquidity'" class="column" />
         <div v-text="'My Liquidity'" class="column hide-sm hide-md" />
         <div
-          v-text="'Trade vol. (24h)'"
+          v-text="'Volume (24h)'"
           class="column hide-sm hide-md hide-lg"
         />
       </UiTableTh>
