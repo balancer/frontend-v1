@@ -2,7 +2,7 @@
   <div>
     <div class="p-4 pb-0">
       <p class="mb-4">
-        Select up to height tokens you’d like to have in the pool.
+        Select up to 8 tokens you’d like to have in the pool.
       </p>
       <Search v-model="query" placeholder="Search name, symbol or address" />
     </div>

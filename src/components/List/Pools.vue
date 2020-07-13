@@ -11,9 +11,9 @@
           class="column-sm text-left hide-sm hide-md hide-lg"
         />
         <div v-text="'Assets'" class="flex-auto text-left" />
-        <div v-text="'Swap fee'" class="column hide-sm hide-md" />
+        <div v-text="'Swap Fee'" class="column hide-sm hide-md" />
         <div v-text="'Liquidity'" class="column" />
-        <div v-text="'My liquidity'" class="column hide-sm hide-md" />
+        <div v-text="'My Liquidity'" class="column hide-sm hide-md" />
         <div
           v-text="'Trade vol. (24h)'"
           class="column hide-sm hide-md hide-lg"

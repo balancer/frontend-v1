@@ -7,7 +7,7 @@
     <UiTable>
       <UiTableTh>
         <div class="flex-auto text-left">Tokens</div>
-        <div class="column">Weights percent</div>
+        <div class="column">Weights Percent</div>
         <div class="column-sm">Weights</div>
       </UiTableTh>
       <UiTableTr v-for="(token, i) in tokens" :key="token">

@@ -2,7 +2,7 @@
   <UiModal :open="open" @close="$emit('close')" style="max-width: 440px;">
     <UiModalForm>
       <template slot="header">
-        <h3>Connect wallet</h3>
+        <h3>Connect Wallet</h3>
       </template>
       <UiTable class="m-4">
         <a

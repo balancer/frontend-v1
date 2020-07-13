@@ -2,7 +2,7 @@
   <UiModal :open="open" @close="$emit('close')" style="max-width: 440px;">
     <UiModalForm>
       <template slot="header">
-        <h3 class="text-white mb-4">Select a token</h3>
+        <h3 class="text-white mb-4">Select Token</h3>
         <Search v-model="query" placeholder="Search name, symbol or address" />
       </template>
       <ul>

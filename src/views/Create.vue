@@ -1,9 +1,9 @@
 <template>
   <div class="px-0 px-md-5 py-4">
-    <h3 class="mb-4 px-4 px-md-0">Create a pool</h3>
+    <h3 class="mb-4 px-4 px-md-0">Create a Pool</h3>
     <div class="float-left col-12 col-md-6 col-lg-4 pr-md-3 mb-2">
       <div class="p-4 panel-background border rounded-1 d-flex flex-column">
-        <h2 class="mb-3 text-white">Shared pool</h2>
+        <h2 class="mb-3 text-white">Shared Pool</h2>
         <div class="flex-auto">
           <div class="mb-2 text-white">
             On a shared pool all the parameters are set once and for ever.
@@ -16,7 +16,7 @@
           </div>
         </div>
         <div>
-          <UiButton @click="openModal">Create shared pool</UiButton>
+          <UiButton @click="openModal">Create Shared Pool</UiButton>
         </div>
       </div>
     </div>
