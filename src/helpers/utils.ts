@@ -45,6 +45,21 @@ export function denormalizeBalance(
   return scale(bnum(amount), token.decimals);
 }
 
+export function normalizeBalance(
+  amount: BigNumber,
+  tokenAddress: string
+): BigNumber {
+  const wethTokenAddress = Object.keys(config.tokens).find(tokenAddress => {
+    const token = config.tokens[tokenAddress];
+    return token.symbol === 'WETH';
+  });
+  const token =
+    tokenAddress === 'ether'
+      ? config.tokens[wethTokenAddress]
+      : config.tokens[tokenAddress];
+  return scale(bnum(amount), -token.decimals);
+}
+
 export function formatPool(pool) {
   let colorIndex = 0;
   pool.tokens = pool.tokens.map(token => {
@@ -110,6 +125,7 @@ export function trunc(value: number, decimals = 0) {
 }
 
 export function calcPoolTokensByRatio(ratio, totalShares) {
+  // @TODO - fix calcs so no buffer is needed
   const buffer = bnum(100);
   return bnum(ratio)
     .times(toWei(totalShares))

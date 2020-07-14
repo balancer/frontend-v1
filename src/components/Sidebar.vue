@@ -16,7 +16,7 @@
             {{ config.tokens[i].symbol || 'ETH' }}
           </div>
           <div v-else class="flex-auto">ETH</div>
-          <div>{{ $n(balance) }}</div>
+          <div>{{ $n(formatBalance(balance, i)) }}</div>
         </div>
       </div>
       <div v-else class="text-white mb-3">
@@ -28,7 +28,7 @@
 
 <script>
 import config from '@/helpers/config';
-import { clone } from '@/helpers/utils';
+import { clone, normalizeBalance } from '@/helpers/utils';
 
 const startItems = [
   {
@@ -70,6 +70,11 @@ export default {
           .filter(balance => balance[1] >= 0.001)
           .slice(0, 5)
       );
+    }
+  },
+  methods: {
+    formatBalance(balanceString, address) {
+      return normalizeBalance(balanceString, address);
     }
   }
 };

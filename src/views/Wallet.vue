@@ -41,6 +41,7 @@
 <script>
 import { getAddress } from 'ethers/utils';
 import config from '@/helpers/config';
+import { normalizeBalance } from '@/helpers/utils';
 
 export default {
   computed: {
@@ -58,9 +59,10 @@ export default {
       return Object.fromEntries(
         Object.entries(this.subgraph.tokenPrices)
           .map(tokenPrice => {
-            const balance = this.web3.balances[getAddress(tokenPrice[0])];
+            const address = getAddress(tokenPrice[0]);
+            const balance = this.web3.balances[address];
             tokenPrice[1].priceETH = tokenPrice[1].price / ethPrice;
-            tokenPrice[1].balance = balance || 0;
+            tokenPrice[1].balance = normalizeBalance(balance, address);
             tokenPrice[1].balanceUSD = this.getPrice(
               tokenPrice[0],
               tokenPrice[1].balance
