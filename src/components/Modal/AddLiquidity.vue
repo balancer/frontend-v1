@@ -106,18 +106,17 @@ export default {
   methods: {
     ...mapActions(['joinPool']),
     handleChange(changedAmount, changedToken) {
-      // @TODO - fix calcs so no buffer is needed
-      const ratio = changedAmount / changedToken.balance;
+      const ratio = bnum(changedAmount).div(changedToken.balance);
       this.poolTokens = calcPoolTokensByRatio(ratio, this.pool.totalShares);
 
       this.pool.tokens.forEach(token => {
         if (token.address !== changedToken.address) {
-          this.amounts[token.address] = this._trunc(ratio * token.balance, 8);
+          this.amounts[token.address] = ratio.times(token.balance);
         }
       });
     },
     handleMax(token) {
-      const amount = this._trunc(this.web3.balances[token.checksum], 8);
+      const amount = this.web3.balances[token.checksum];
       this.amounts[token.address] = amount;
       this.handleChange(amount, token);
     },

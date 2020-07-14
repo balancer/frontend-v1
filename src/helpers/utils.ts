@@ -110,6 +110,7 @@ export function trunc(value: number, decimals = 0) {
 }
 
 export function calcPoolTokensByRatio(ratio, totalShares) {
+  // @TODO - fix calcs so no buffer is needed
   const buffer = bnum(100);
   return bnum(ratio)
     .times(toWei(totalShares))
