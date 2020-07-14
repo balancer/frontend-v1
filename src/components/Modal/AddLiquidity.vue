@@ -18,7 +18,15 @@
               <ButtonUnlock class="ml-2" :tokenAddress="token.address" />
             </div>
             <div class="column text-left">
-              {{ _trunc(web3.balances[token.checksum] || 0, 2) }}
+              {{
+                _trunc(
+                  formatBalance(
+                    web3.balances[token.checksum] || '0',
+                    token.checksum
+                  ),
+                  2
+                )
+              }}
               {{ token.symbol }}
               <a @click="handleMax(token)" class="ml-1">
                 <UiLabel v-text="'Max'" />
@@ -34,8 +42,7 @@
                   step="any"
                   class="input flex-auto text-right"
                   :class="
-                    web3.balances[token.checksum] >=
-                    parseFloat(amounts[token.address])
+                    isSufficientBalance(token.checksum)
                       ? 'text-white'
                       : 'text-red'
                   "
@@ -64,6 +71,7 @@ import BigNumber from '@/helpers/bignumber';
 import {
   calcPoolTokensByRatio,
   bnum,
+  normalizeBalance,
   denormalizeBalance
 } from '@/helpers/utils';
 
@@ -95,7 +103,7 @@ export default {
         if (
           this.loading ||
           !this.amounts[token.address] ||
-          this.web3.balances[token.checksum] < this.amounts[token.address] ||
+          !this.isSufficientBalance(token.checksum) ||
           allowance <= 0
         )
           isValid = false;
@@ -116,7 +124,8 @@ export default {
       });
     },
     handleMax(token) {
-      const amount = this.web3.balances[token.checksum];
+      const balance = this.web3.balances[token.checksum];
+      const amount = normalizeBalance(balance, token.checksum);
       this.amounts[token.address] = amount;
       this.handleChange(amount, token);
     },
@@ -128,12 +137,21 @@ export default {
         maxAmountsIn: this.pool.tokensList.map(token => {
           const amount = bnum(this.amounts[token.toLowerCase()]);
           return denormalizeBalance(amount, token)
-            .integerValue(BigNumber.ROUND_DOWN)
+            .integerValue(BigNumber.ROUND_UP)
             .toString();
         })
       };
       await this.joinPool(params);
       this.loading = false;
+    },
+    isSufficientBalance(tokenAddress) {
+      const amount = this.amounts[tokenAddress.toLowerCase()] || 0;
+      const amountNumber = denormalizeBalance(amount, tokenAddress);
+      const balance = this.web3.balances[tokenAddress];
+      return amountNumber.lte(balance);
+    },
+    formatBalance(balanceString, address) {
+      return normalizeBalance(balanceString, address);
     }
   }
 };

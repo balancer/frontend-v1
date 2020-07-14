@@ -45,6 +45,21 @@ export function denormalizeBalance(
   return scale(bnum(amount), token.decimals);
 }
 
+export function normalizeBalance(
+  amount: BigNumber,
+  tokenAddress: string
+): BigNumber {
+  const wethTokenAddress = Object.keys(config.tokens).find(tokenAddress => {
+    const token = config.tokens[tokenAddress];
+    return token.symbol === 'WETH';
+  });
+  const token =
+    tokenAddress === 'ether'
+      ? config.tokens[wethTokenAddress]
+      : config.tokens[tokenAddress];
+  return scale(bnum(amount), -token.decimals);
+}
+
 export function formatPool(pool) {
   let colorIndex = 0;
   pool.tokens = pool.tokens.map(token => {

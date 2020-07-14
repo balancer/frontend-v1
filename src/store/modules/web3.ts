@@ -3,6 +3,7 @@ import { ethers } from 'ethers';
 import { AddressZero } from 'ethers/constants';
 import { formatEther, getAddress, Interface } from 'ethers/utils';
 import abi from '@/helpers/abi';
+import BigNumber from '@/helpers/bignumber';
 import config from '@/helpers/config';
 import connectors from '@/helpers/connectors';
 
@@ -313,14 +314,14 @@ const actions = {
     try {
       // @ts-ignore
       const [[, response], ethBalance] = await Promise.all(promises);
-      balances.ether = parseFloat(formatEther(ethBalance as any));
+      const ethBalanceNumber = new BigNumber(ethBalance as any);
+      balances.ether = ethBalanceNumber.toString();
       let i = 0;
       response.forEach(value => {
         if (tokens && tokens[i]) {
           const tokenBalance = testToken.functions.balanceOf.decode(value);
-          balances[getAddress(tokens[i])] = parseFloat(
-            formatEther(tokenBalance.toString())
-          );
+          const tokenBalanceNumber = new BigNumber(tokenBalance);
+          balances[getAddress(tokens[i])] = tokenBalanceNumber.toString();
         }
         i++;
       });
