@@ -48,7 +48,6 @@ import config from '@/helpers/config';
 export default {
   data() {
     return {
-      count: 0,
       id: this.$route.params.id,
       pool: {},
       loading: false,
@@ -68,7 +67,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getPool']),
+    ...mapActions(['getPool', 'getBalances']),
     openAddLiquidityModal() {
       if (!this.hasProxy) {
         return this.$router.push({ name: 'setup' });
@@ -80,10 +79,12 @@ export default {
     }
   },
   async created() {
-    if (this.count === 0) {
-      this.count++;
+    if (Object.keys(this.pool).length === 0) {
       this.loading = true;
       this.pool = await this.getPool(this.id);
+      if (this.web3.account) {
+        this.getBalances(this.pool.tokensList);
+      }
       this.loading = false;
     }
   }

@@ -283,19 +283,19 @@ const actions = {
     }
   },
   loadAccount: async ({ dispatch }) => {
+    // @ts-ignore
+    const tokens = Object.entries(config.tokens).map(token => token[1].address);
     await Promise.all([
       dispatch('lookupAddress'),
-      dispatch('getBalances'),
+      dispatch('getBalances', tokens),
       dispatch('getMyPools'),
       dispatch('getMyPoolShares'),
       dispatch('getProxy')
     ]);
   },
-  getBalances: async ({ commit }) => {
+  getBalances: async ({ commit }, tokens) => {
     commit('GET_BALANCES_REQUEST');
     const address = state.account;
-    // @ts-ignore
-    const tokens = Object.entries(config.tokens).map(token => token[1].address);
     const promises: any = [];
     const multi = new ethers.Contract(
       config.addresses.multicall,
