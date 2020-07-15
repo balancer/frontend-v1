@@ -4,15 +4,18 @@
       <template slot="header">
         <h3 class="text-white">Add Liquidity</h3>
       </template>
-      <div class="px-4 pt-4">
-        <UiTable class="mb-4">
+      <div class="m-4 d-flex flex-justify-between">
+        <PoolOverview :pool="pool" :userShare="userShare" style="width: 32%" />
+        <UiTable style="width: 64%">
           <UiTableTh>
-            <div class="flex-auto text-left">Asset</div>
+            <div class="column flex-auto text-left">Asset</div>
             <div class="column text-left">Wallet Balance</div>
             <div class="column-sm">Deposit Amount</div>
           </UiTableTh>
           <UiTableTr v-for="token in pool.tokens" :key="token.address">
-            <div class="flex-auto d-flex flex-items-center text-left d-flex">
+            <div
+              class="column flex-auto d-flex flex-items-center text-left d-flex"
+            >
               <Token :address="token.address" class="mr-2" size="20" />
               <div class="text-white">{{ token.symbol }}</div>
               <ButtonUnlock class="ml-2" :tokenAddress="token.address" />
@@ -38,13 +41,10 @@
               >
                 <input
                   v-model="amounts[token.address]"
-                  type="number"
-                  step="any"
                   class="input flex-auto text-right"
                   :class="
                     isSufficientBalance(token) ? 'text-white' : 'text-red'
                   "
-                  min="0"
                   placeholder="0.0"
                   @input="handleChange(amounts[token.address], token)"
                 />
@@ -53,7 +53,6 @@
           </UiTableTr>
         </UiTable>
       </div>
-      <MyPoolShares :pool="pool" :poolTokens="poolTokens" class="mb-4 mx-4" />
       <template slot="footer">
         <UiButton :disabled="!isValid" type="submit" :loading="loading">
           Add Liquidity
@@ -94,6 +93,22 @@ export default {
     }
   },
   computed: {
+    userShare() {
+      const poolSharesFrom = this.subgraph.poolShares[this.pool.id] || 0;
+      const totalShares = parseFloat(this.pool.totalShares);
+      const current = poolSharesFrom / totalShares;
+      const poolTokens = this.poolTokens
+        ? bnum(this.poolTokens)
+            .div('1e18')
+            .toNumber()
+        : 0;
+      const future = (poolSharesFrom + poolTokens) / (totalShares + poolTokens);
+      const userShare = {
+        current,
+        future
+      };
+      return userShare;
+    },
     isValid() {
       let isValid = true;
       this.pool.tokens.forEach(token => {
