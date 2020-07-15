@@ -6,7 +6,7 @@
       :query="queryMyLiquidity"
       class="mb-4"
     />
-    <h3 class="mb-4 px-4 px-md-0">My Wallet</h3>
+    <!-- <h3 class="mb-4 px-4 px-md-0">My Wallet</h3>
     <UiTable>
       <UiTableTh>
         <div v-text="'Asset'" class="flex-auto text-left" />
@@ -34,14 +34,14 @@
           </div>
         </div>
       </UiTableTr>
-    </UiTable>
+    </UiTable> -->
   </div>
 </template>
 
 <script>
-import { getAddress } from 'ethers/utils';
-import config from '@/helpers/config';
-import { normalizeBalance } from '@/helpers/utils';
+// import { getAddress } from 'ethers/utils';
+// import config from '@/helpers/config';
+// import { normalizeBalance } from '@/helpers/utils';
 
 export default {
   computed: {
@@ -53,27 +53,27 @@ export default {
           id_in: ids
         }
       };
-    },
-    tokenPrices() {
-      const ethPrice = this.getPrice(config.addresses.weth, 1);
-      return Object.fromEntries(
-        Object.entries(this.subgraph.tokenPrices)
-          .map(tokenPrice => {
-            const address = getAddress(tokenPrice[0]);
-            const balance = this.web3.balances[address];
-            const decimals = tokenPrice.decimals;
-            tokenPrice[1].priceETH = tokenPrice[1].price / ethPrice;
-            tokenPrice[1].balance = normalizeBalance(balance, decimals);
-            tokenPrice[1].balanceUSD = this.getPrice(
-              tokenPrice[0],
-              tokenPrice[1].balance
-            );
-            return tokenPrice;
-          })
-          .filter(tokenPrice => tokenPrice[1].balanceUSD > 0)
-          .sort((a, b) => b[1].balanceUSD - a[1].balanceUSD)
-      );
     }
+    // tokenPrices() {
+    //   const ethPrice = this.getPrice(config.addresses.weth, 1);
+    //   return Object.fromEntries(
+    //     Object.entries(this.subgraph.tokenPrices)
+    //       .map(tokenPrice => {
+    //         const address = getAddress(tokenPrice[0]);
+    //         const balance = this.web3.balances[address];
+    //         const decimals = tokenPrice.decimals;
+    //         tokenPrice[1].priceETH = tokenPrice[1].price / ethPrice;
+    //         tokenPrice[1].balance = normalizeBalance(balance, decimals);
+    //         tokenPrice[1].balanceUSD = this.getPrice(
+    //           tokenPrice[0],
+    //           tokenPrice[1].balance
+    //         );
+    //         return tokenPrice;
+    //       })
+    //       .filter(tokenPrice => tokenPrice[1].balanceUSD > 0)
+    //       .sort((a, b) => b[1].balanceUSD - a[1].balanceUSD)
+    //   );
+    // }
   }
 };
 </script>
