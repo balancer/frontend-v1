@@ -28,7 +28,7 @@
 
 <script>
 import config from '@/helpers/config';
-import { clone, normalizeBalance } from '@/helpers/utils';
+import { bnum, clone, normalizeBalance } from '@/helpers/utils';
 
 const startItems = [
   {
@@ -66,18 +66,18 @@ export default {
     },
     balances() {
       return Object.fromEntries(
-        Object.entries(this.web3.balances)
-          .filter(balance => balance[1] >= 0.001)
-          .slice(0, 5)
+        Object.entries(this.web3.balances).filter(entry => {
+          const address = entry[0];
+          const balance = entry[1];
+          return this.web3.tokenMetadata[address] && bnum(balance).gt(0);
+        })
       );
     }
   },
   methods: {
     formatBalance(balanceString, address) {
       const decimals =
-        address === 'ether'
-          ? 18
-          : this.subgraph.tokenPrices[address.toLowerCase()].decimals;
+        address === 'ether' ? 18 : this.web3.tokenMetadata[address].decimals;
       return normalizeBalance(balanceString, decimals);
     }
   }

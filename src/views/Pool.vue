@@ -67,7 +67,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getPool', 'getBalances']),
+    ...mapActions(['getPool', 'getBalances', 'loadTokenMetadata']),
     openAddLiquidityModal() {
       if (!this.hasProxy) {
         return this.$router.push({ name: 'setup' });
@@ -82,6 +82,7 @@ export default {
     if (Object.keys(this.pool).length === 0) {
       this.loading = true;
       this.pool = await this.getPool(this.id);
+      this.loadTokenMetadata(this.pool.tokensList);
       if (this.web3.account) {
         this.getBalances(this.pool.tokensList);
       }
