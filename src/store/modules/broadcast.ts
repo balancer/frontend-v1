@@ -88,7 +88,9 @@ const actions = {
       startBalances = tokens.map((token, i) => {
         const amountInput = startBalances[i];
         const amount = bnum(amountInput);
-        return denormalizeBalance(amount, token)
+        const tokenMetadata = rootState.web3.tokenMetadata[token];
+        const decimals = tokenMetadata ? tokenMetadata.decimals : null;
+        return denormalizeBalance(amount, decimals)
           .integerValue(BigNumber.ROUND_DOWN)
           .toString();
       });

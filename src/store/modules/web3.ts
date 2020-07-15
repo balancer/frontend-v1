@@ -23,7 +23,8 @@ const state = {
   active: false,
   balances: {},
   dsProxyAddress: null,
-  proxyAllowances: {}
+  proxyAllowances: {},
+  tokenMetadata: {}
 };
 
 const getters = {
@@ -34,6 +35,18 @@ const getters = {
 };
 
 const mutations = {
+  LOAD_TOKEN_METADATA_REQUEST() {
+    console.debug('LOAD_TOKEN_METADATA_REQUEST');
+  },
+  LOAD_TOKEN_METADATA_SUCCESS(_state, payload) {
+    for (const address in payload) {
+      Vue.set(_state.tokenMetadata, address, payload[address]);
+    }
+    console.debug('LOAD_TOKEN_METADATA_SUCCESS');
+  },
+  LOAD_TOKEN_METADATA_FAILURE(_state, payload) {
+    console.debug('LOAD_TOKEN_METADATA_FAILURE', payload);
+  },
   LOAD_WEB3_REQUEST() {
     console.debug('LOAD_WEB3_REQUEST');
   },
@@ -119,7 +132,9 @@ const mutations = {
     console.debug('GET_BALANCES_REQUEST');
   },
   GET_BALANCES_SUCCESS(_state, payload) {
-    Vue.set(_state, 'balances', payload);
+    for (const address in payload) {
+      Vue.set(_state.balances, address, payload[address]);
+    }
     console.debug('GET_BALANCES_SUCCESS');
   },
   GET_BALANCES_FAILURE(_state, payload) {
@@ -148,6 +163,42 @@ const mutations = {
 };
 
 const actions = {
+  loadTokenMetadata: async ({ commit }, tokens) => {
+    commit('LOAD_TOKEN_METADATA_REQUEST');
+    const web3 = new ethers.providers.JsonRpcProvider(
+      backupUrls[config.chainId]
+    );
+    const multi = new ethers.Contract(
+      config.addresses.multicall,
+      abi['Multicall'],
+      web3
+    );
+    const calls = [];
+    const testToken = new Interface(abi.TestToken);
+    tokens.forEach(token => {
+      // @ts-ignore
+      calls.push([token, testToken.functions.decimals.encode([])]);
+    });
+    const tokenMetadata: any = {};
+    try {
+      const [, response] = await multi.aggregate(calls);
+      let i = 0;
+      response.forEach(value => {
+        if (tokens && tokens[i]) {
+          const tokenDecimals = testToken.functions.decimals.decode(value)[0];
+          tokenMetadata[getAddress(tokens[i])] = {
+            decimals: tokenDecimals
+          };
+        }
+        i++;
+      });
+      commit('LOAD_TOKEN_METADATA_SUCCESS', tokenMetadata);
+      return tokenMetadata;
+    } catch (e) {
+      commit('LOAD_TOKEN_METADATA_FAILURE', e);
+      return Promise.reject();
+    }
+  },
   login: async ({ dispatch }, connector = 'injected') => {
     const options = config.connectors[connector].options || {};
     provider = await connectors[connector](options);
@@ -283,19 +334,19 @@ const actions = {
     }
   },
   loadAccount: async ({ dispatch }) => {
+    // @ts-ignore
+    const tokens = Object.entries(config.tokens).map(token => token[1].address);
     await Promise.all([
       dispatch('lookupAddress'),
-      dispatch('getBalances'),
+      dispatch('getBalances', tokens),
       dispatch('getMyPools'),
       dispatch('getMyPoolShares'),
       dispatch('getProxy')
     ]);
   },
-  getBalances: async ({ commit }) => {
+  getBalances: async ({ commit }, tokens) => {
     commit('GET_BALANCES_REQUEST');
     const address = state.account;
-    // @ts-ignore
-    const tokens = Object.entries(config.tokens).map(token => token[1].address);
     const promises: any = [];
     const multi = new ethers.Contract(
       config.addresses.multicall,

@@ -22,7 +22,7 @@
                 _trunc(
                   formatBalance(
                     web3.balances[token.checksum] || '0',
-                    token.checksum
+                    token.decimals
                   ),
                   2
                 )
@@ -42,9 +42,7 @@
                   step="any"
                   class="input flex-auto text-right"
                   :class="
-                    isSufficientBalance(token.checksum)
-                      ? 'text-white'
-                      : 'text-red'
+                    isSufficientBalance(token) ? 'text-white' : 'text-red'
                   "
                   min="0"
                   placeholder="0.0"
@@ -103,7 +101,7 @@ export default {
         if (
           this.loading ||
           !this.amounts[token.address] ||
-          !this.isSufficientBalance(token.checksum) ||
+          !this.isSufficientBalance(token) ||
           allowance <= 0
         )
           isValid = false;
@@ -125,7 +123,7 @@ export default {
     },
     handleMax(token) {
       const balance = this.web3.balances[token.checksum];
-      const amount = normalizeBalance(balance, token.checksum);
+      const amount = normalizeBalance(balance, token.decimals);
       this.amounts[token.address] = amount;
       this.handleChange(amount, token);
     },
@@ -134,9 +132,12 @@ export default {
       const params = {
         poolAddress: this.pool.id,
         poolAmountOut: this.poolTokens,
-        maxAmountsIn: this.pool.tokensList.map(token => {
-          const amount = bnum(this.amounts[token.toLowerCase()]);
-          return denormalizeBalance(amount, token)
+        maxAmountsIn: this.pool.tokensList.map(tokenAddress => {
+          const token = this.pool.tokens.find(
+            token => token.checksum === tokenAddress
+          );
+          const amount = bnum(this.amounts[token.address]);
+          return denormalizeBalance(amount, token.decimals)
             .integerValue(BigNumber.ROUND_UP)
             .toString();
         })
@@ -144,14 +145,14 @@ export default {
       await this.joinPool(params);
       this.loading = false;
     },
-    isSufficientBalance(tokenAddress) {
-      const amount = this.amounts[tokenAddress.toLowerCase()] || 0;
-      const amountNumber = denormalizeBalance(amount, tokenAddress);
-      const balance = this.web3.balances[tokenAddress];
+    isSufficientBalance(token) {
+      const amount = this.amounts[token.address] || 0;
+      const amountNumber = denormalizeBalance(amount, token.decimals);
+      const balance = this.web3.balances[token.checksum];
       return amountNumber.lte(balance);
     },
-    formatBalance(balanceString, address) {
-      return normalizeBalance(balanceString, address);
+    formatBalance(balanceString, tokenDecimals) {
+      return normalizeBalance(balanceString, tokenDecimals);
     }
   }
 };
