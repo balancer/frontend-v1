@@ -132,7 +132,9 @@ const mutations = {
     console.debug('GET_BALANCES_REQUEST');
   },
   GET_BALANCES_SUCCESS(_state, payload) {
-    Vue.set(_state, 'balances', payload);
+    for (const address in payload) {
+      Vue.set(_state.balances, address, payload[address]);
+    }
     console.debug('GET_BALANCES_SUCCESS');
   },
   GET_BALANCES_FAILURE(_state, payload) {
