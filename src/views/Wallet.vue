@@ -61,8 +61,9 @@ export default {
           .map(tokenPrice => {
             const address = getAddress(tokenPrice[0]);
             const balance = this.web3.balances[address];
+            const decimals = tokenPrice.decimals;
             tokenPrice[1].priceETH = tokenPrice[1].price / ethPrice;
-            tokenPrice[1].balance = normalizeBalance(balance, address);
+            tokenPrice[1].balance = normalizeBalance(balance, decimals);
             tokenPrice[1].balanceUSD = this.getPrice(
               tokenPrice[0],
               tokenPrice[1].balance

@@ -88,7 +88,9 @@ const actions = {
       startBalances = tokens.map((token, i) => {
         const amountInput = startBalances[i];
         const amount = bnum(amountInput);
-        return denormalizeBalance(amount, token)
+        const tokenPrice = rootState.subgraph.tokenPrices[token];
+        const decimals = tokenPrice ? tokenPrice.decimals : null;
+        return denormalizeBalance(amount, decimals)
           .integerValue(BigNumber.ROUND_DOWN)
           .toString();
       });

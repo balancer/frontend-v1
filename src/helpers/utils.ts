@@ -39,25 +39,16 @@ export function toWei(val: string | ethersBN | BigNumber): BigNumber {
 
 export function denormalizeBalance(
   amount: BigNumber,
-  tokenAddress: string
+  tokenDecimals: number
 ): BigNumber {
-  const token = config.tokens[tokenAddress];
-  return scale(bnum(amount), token.decimals);
+  return scale(bnum(amount), tokenDecimals);
 }
 
 export function normalizeBalance(
   amount: BigNumber,
-  tokenAddress: string
+  tokenDecimals: number
 ): BigNumber {
-  const wethTokenAddress = Object.keys(config.tokens).find(tokenAddress => {
-    const token = config.tokens[tokenAddress];
-    return token.symbol === 'WETH';
-  });
-  const token =
-    tokenAddress === 'ether'
-      ? config.tokens[wethTokenAddress]
-      : config.tokens[tokenAddress];
-  return scale(bnum(amount), -token.decimals);
+  return scale(bnum(amount), -tokenDecimals);
 }
 
 export function formatPool(pool) {

@@ -13,7 +13,7 @@
         <div v-for="(balance, i) in balances" :key="i" class="d-flex mb-3">
           <Token :address="i" size="20" class="mr-2" />
           <div v-if="i !== 'ether'" class="flex-auto">
-            {{ config.tokens[i].symbol || 'ETH' }}
+            {{ _ticker(i.toLowerCase()) || 'ETH' }}
           </div>
           <div v-else class="flex-auto">ETH</div>
           <div>{{ $n(formatBalance(balance, i)) }}</div>
@@ -74,7 +74,11 @@ export default {
   },
   methods: {
     formatBalance(balanceString, address) {
-      return normalizeBalance(balanceString, address);
+      const decimals =
+        address === 'ether'
+          ? 18
+          : this.subgraph.tokenPrices[address.toLowerCase()].decimals;
+      return normalizeBalance(balanceString, decimals);
     }
   }
 };
