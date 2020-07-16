@@ -9,8 +9,10 @@
       {{ _shorten(pool.id) }}
     </div>
     <div class="text-white">
-      My share: {{ $n(userShare.current, 'percent') }} →
-      {{ $n(userShare.future, 'percent') }}
+      My share: {{ $n(userShare.current, 'percent') }}
+      <span v-if="userShare.future">
+        → {{ $n(userShare.future, 'percent') }}
+      </span>
     </div>
     <div class="text-white">Swap fee: {{ $n(pool.swapFee, 'percent') }}</div>
     <Pie :tokens="pool.tokens" size="64" class="mr-2" />
