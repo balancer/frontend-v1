@@ -38,6 +38,15 @@ const mutations = {
   JOIN_POOL_FAILURE(_state, payload) {
     console.debug('JOIN_POOL_FAILURE', payload);
   },
+  JOINSWAP_EXTERN_AMOUNT_REQUEST() {
+    console.debug('JOINSWAP_EXTERN_AMOUNT_REQUEST');
+  },
+  JOINSWAP_EXTERN_AMOUNT_SUCCESS() {
+    console.debug('JOINSWAP_EXTERN_AMOUNT_SUCCESS');
+  },
+  JOINSWAP_EXTERN_AMOUNT_FAILURE(_state, payload) {
+    console.debug('JOINSWAP_EXTERN_AMOUNT_FAILURE', payload);
+  },
   EXIT_POOL_REQUEST() {
     console.debug('EXIT_POOL_REQUEST');
   },
@@ -160,6 +169,45 @@ const actions = {
     } catch (e) {
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('JOIN_POOL_FAILURE', e);
+    }
+  },
+  joinswapExternAmountIn: async (
+    { commit, dispatch, rootState },
+    { poolAddress, tokenInAddress, tokenAmountIn, minPoolAmountOut }
+  ) => {
+    commit('JOINSWAP_EXTERN_AMOUNT_REQUEST');
+    try {
+      const dsProxyAddress = rootState.web3.dsProxyAddress;
+      const iface = new Interface(abi.BActions);
+      const data = iface.functions.joinswapExternAmountIn.encode([
+        getAddress(poolAddress),
+        tokenInAddress,
+        tokenAmountIn,
+        minPoolAmountOut
+      ]);
+
+      console.log(
+        getAddress(poolAddress),
+        dsProxyAddress,
+        config.addresses.bActions,
+        tokenInAddress,
+        tokenAmountIn,
+        minPoolAmountOut
+      );
+
+      await dispatch('sendTransaction', [
+        'DSProxy',
+        dsProxyAddress,
+        'execute',
+        [config.addresses.bActions, data]
+      ]);
+      await dispatch('getBalances');
+      await dispatch('getMyPoolShares');
+      dispatch('notify', ['green', "You've successfully added liquidity"]);
+      commit('JOINSWAP_EXTERN_AMOUNT_SUCCESS');
+    } catch (e) {
+      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      commit('JOINSWAP_EXTERN_AMOUNT_FAILURE', e);
     }
   },
   exitPool: async (

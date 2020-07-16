@@ -39,7 +39,6 @@ export default {
   }
 
   .shell {
-    max-height: calc(100vh - 160px);
     display: flex;
     flex-direction: column;
     z-index: 999;

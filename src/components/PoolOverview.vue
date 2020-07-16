@@ -1,22 +1,32 @@
 <template>
-  <div class="p-3 border rounded-1">
-    <h4 class="mb-2">Pool {{ _shorten(pool.id) }}</h4>
-    <div class="d-flex">
-      <div class="mr-3">
-        <Pie :tokens="pool.tokens" size="60" />
-      </div>
-      <div class="text-white">
-        <div class="mb-2">
-          <div>Swap fee: {{ $n(pool.swapFee, 'percent') }}</div>
-        </div>
+  <div
+    class="p-4 border-left-0 border-right-0 border-md border rounded-0 rounded-md-1 panel-background"
+  >
+    <div class="eyebrow mb-4">
+      Pool Overview
+    </div>
+    <div class="text-white">
+      {{ _shorten(pool.id) }}
+    </div>
+    <div class="text-white">
+      My share: {{ $n(userShare.current, 'percent') }}
+      <span v-if="userShare.future">
+        → {{ $n(userShare.future, 'percent') }}
+      </span>
+    </div>
+    <div class="text-white">Swap fee: {{ $n(pool.swapFee, 'percent') }}</div>
+    <Pie :tokens="pool.tokens" size="64" class="mr-2" />
+    <div class="flex-auto text-left mt-3">
+      <div class="overflow-hidden" style="max-width: 320px;">
         <div
           v-for="token in pool.tokens"
           :key="token.address"
-          class="d-inline-block mx-1"
+          class="d-flex flex-items-center flex-justify-center mr-2 text-white"
+          style="font-size: 12px; font-weight: 500"
         >
           <Icon
             name="bullet"
-            size="6"
+            size="4"
             class="mr-1"
             :style="`color: ${token.chartColor}`"
           />
@@ -30,6 +40,6 @@
 
 <script>
 export default {
-  props: ['pool']
+  props: ['pool', 'userShare']
 };
 </script>

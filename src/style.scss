@@ -52,10 +52,10 @@ a {
 }
 
 .input {
-  padding: 8px 10px;
+  padding: 4px 10px;
   outline: none;
   color: $white;
-  font-size: 16px;
+  font-size: 14px;
   background-color: transparent;
   border: $border;
   border-radius: $border-radius;
@@ -82,7 +82,7 @@ a {
     background-color: $panel-background;
     padding-left: 0 !important;
     padding-right: 0 !important;
-    max-width: 540px;
+    max-width: 810px;
   }
 
   .modal-body {
