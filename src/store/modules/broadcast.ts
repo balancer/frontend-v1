@@ -56,6 +56,15 @@ const mutations = {
   EXIT_POOL_FAILURE(_state, payload) {
     console.debug('EXIT_POOL_FAILURE', payload);
   },
+  EXITSWAP_POOL_AMOUNT_IN_REQUEST() {
+    console.debug('EXITSWAP_POOL_AMOUNT_IN_REQUEST');
+  },
+  EXITSWAP_POOL_AMOUNT_IN_SUCCESS() {
+    console.debug('EXITSWAP_POOL_AMOUNT_IN_SUCCESS');
+  },
+  EXITSWAP_POOL_AMOUNT_IN_FAILURE(_state, payload) {
+    console.debug('EXITSWAP_POOL_AMOUNT_IN_FAILURE', payload);
+  },
   APPROVE_REQUEST() {
     console.debug('APPROVE_REQUEST');
   },
@@ -162,7 +171,7 @@ const actions = {
         'execute',
         [config.addresses.bActions, data]
       ]);
-      await dispatch('getBalances');
+      // await dispatch('getBalances');
       await dispatch('getMyPoolShares');
       dispatch('notify', ['green', "You've successfully added liquidity"]);
       commit('JOIN_POOL_SUCCESS');
@@ -201,7 +210,7 @@ const actions = {
         'execute',
         [config.addresses.bActions, data]
       ]);
-      await dispatch('getBalances');
+      // await dispatch('getBalances');
       await dispatch('getMyPoolShares');
       dispatch('notify', ['green', "You've successfully added liquidity"]);
       commit('JOINSWAP_EXTERN_AMOUNT_SUCCESS');
@@ -223,13 +232,39 @@ const actions = {
         [parseEther(poolAmountIn), minAmountsOut]
       ];
       await dispatch('sendTransaction', params);
-      await dispatch('getBalances');
+      // await dispatch('getBalances');
       await dispatch('getMyPoolShares');
       dispatch('notify', ['green', "You've successfully removed liquidity"]);
       commit('EXIT_POOL_SUCCESS');
     } catch (e) {
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('EXIT_POOL_FAILURE', e);
+    }
+  },
+  exitswapPoolAmountIn: async (
+    { commit, dispatch },
+    { poolAddress, tokenOutAddress, poolAmountIn, minTokenAmountOut }
+  ) => {
+    commit('EXITSWAP_POOL_AMOUNT_IN_REQUEST');
+    try {
+      const params = [
+        'BPool',
+        poolAddress,
+        'exitswapPoolAmountIn',
+        [
+          getAddress(tokenOutAddress),
+          parseEther(poolAmountIn),
+          minTokenAmountOut
+        ]
+      ];
+      await dispatch('sendTransaction', params);
+      // await dispatch('getBalances');
+      await dispatch('getMyPoolShares');
+      dispatch('notify', ['green', "You've successfully removed liquidity"]);
+      commit('EXITSWAP_POOL_AMOUNT_IN_SUCCESS');
+    } catch (e) {
+      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      commit('EXITSWAP_POOL_AMOUNT_IN_FAILURE', e);
     }
   },
   approve: async ({ commit, dispatch, rootState }, token) => {
