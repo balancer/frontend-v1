@@ -171,7 +171,7 @@ const actions = {
         'execute',
         [config.addresses.bActions, data]
       ]);
-      await dispatch('getBalances');
+      // await dispatch('getBalances');
       await dispatch('getMyPoolShares');
       dispatch('notify', ['green', "You've successfully added liquidity"]);
       commit('JOIN_POOL_SUCCESS');
@@ -210,7 +210,7 @@ const actions = {
         'execute',
         [config.addresses.bActions, data]
       ]);
-      await dispatch('getBalances');
+      // await dispatch('getBalances');
       await dispatch('getMyPoolShares');
       dispatch('notify', ['green', "You've successfully added liquidity"]);
       commit('JOINSWAP_EXTERN_AMOUNT_SUCCESS');
@@ -232,7 +232,7 @@ const actions = {
         [parseEther(poolAmountIn), minAmountsOut]
       ];
       await dispatch('sendTransaction', params);
-      await dispatch('getBalances');
+      // await dispatch('getBalances');
       await dispatch('getMyPoolShares');
       dispatch('notify', ['green', "You've successfully removed liquidity"]);
       commit('EXIT_POOL_SUCCESS');
@@ -258,7 +258,7 @@ const actions = {
         ]
       ];
       await dispatch('sendTransaction', params);
-      await dispatch('getBalances');
+      // await dispatch('getBalances');
       await dispatch('getMyPoolShares');
       dispatch('notify', ['green', "You've successfully removed liquidity"]);
       commit('EXITSWAP_POOL_AMOUNT_IN_SUCCESS');
