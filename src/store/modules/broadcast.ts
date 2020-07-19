@@ -84,7 +84,8 @@ const actions = {
         'DSProxyRegistry',
         config.addresses.dsProxyRegistry,
         'build',
-        []
+        [],
+        {}
       ];
       const tx = await dispatch('sendTransaction', params);
       dispatch('notify', ['green', "You've successfully created a proxy"]);
@@ -133,7 +134,8 @@ const actions = {
         'DSProxy',
         dsProxyAddress,
         'execute',
-        [config.addresses.bActions, data]
+        [config.addresses.bActions, data],
+        {}
       ];
       await dispatch('sendTransaction', params);
       dispatch('notify', ['green', "You've successfully created a pool"]);
@@ -165,12 +167,15 @@ const actions = {
         maxAmountsIn
       );
 
-      await dispatch('sendTransaction', [
+      const params = [
         'DSProxy',
         dsProxyAddress,
         'execute',
-        [config.addresses.bActions, data]
-      ]);
+        [config.addresses.bActions, data],
+        {}
+      ];
+
+      await dispatch('sendTransaction', params);
       // await dispatch('getBalances');
       await dispatch('getMyPoolShares');
       dispatch('notify', ['green', "You've successfully added liquidity"]);
@@ -204,12 +209,15 @@ const actions = {
         minPoolAmountOut
       );
 
-      await dispatch('sendTransaction', [
+      const params = [
         'DSProxy',
         dsProxyAddress,
         'execute',
-        [config.addresses.bActions, data]
-      ]);
+        [config.addresses.bActions, data],
+        {}
+      ];
+
+      await dispatch('sendTransaction', params);
       // await dispatch('getBalances');
       await dispatch('getMyPoolShares');
       dispatch('notify', ['green', "You've successfully added liquidity"]);
@@ -229,7 +237,8 @@ const actions = {
         'BPool',
         poolAddress,
         'exitPool',
-        [parseEther(poolAmountIn), minAmountsOut]
+        [parseEther(poolAmountIn), minAmountsOut],
+        {}
       ];
       await dispatch('sendTransaction', params);
       // await dispatch('getBalances');
@@ -255,7 +264,8 @@ const actions = {
           getAddress(tokenOutAddress),
           parseEther(poolAmountIn),
           minTokenAmountOut
-        ]
+        ],
+        {}
       ];
       await dispatch('sendTransaction', params);
       // await dispatch('getBalances');
@@ -277,7 +287,8 @@ const actions = {
         'TestToken',
         getAddress(token),
         'approve',
-        [spender, MAX_UINT.toString()]
+        [spender, MAX_UINT.toString()],
+        {}
       ];
       const tx = await dispatch('sendTransaction', params);
       await tx.wait(1);

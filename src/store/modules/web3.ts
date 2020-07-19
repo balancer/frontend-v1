@@ -313,7 +313,7 @@ const actions = {
   },
   sendTransaction: async (
     { commit },
-    [contractType, contractAddress, action, params]
+    [contractType, contractAddress, action, params, overrides]
   ) => {
     commit('SEND_TRANSACTION_REQUEST');
     try {
@@ -324,7 +324,7 @@ const actions = {
         web3
       );
       const contractWithSigner = contract.connect(signer);
-      const tx = await contractWithSigner[action](...params);
+      const tx = await contractWithSigner[action](...params, overrides);
       await tx.wait();
       commit('SEND_TRANSACTION_SUCCESS');
       return tx;
