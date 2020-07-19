@@ -73,6 +73,24 @@ const mutations = {
   },
   APPROVE_FAILURE(_state, payload) {
     console.debug('APPROVE_FAILURE', payload);
+  },
+  WRAP_ETH_REQUEST() {
+    console.debug('WRAP_ETH_REQUEST');
+  },
+  WRAP_ETH_SUCCESS() {
+    console.debug('WRAP_ETH_SUCCESS');
+  },
+  WRAP_ETH_FAILURE(_state, payload) {
+    console.debug('WRAP_ETH_FAILURE', payload);
+  },
+  UNWRAP_ETH_REQUEST() {
+    console.debug('UNWRAP_ETH_REQUEST');
+  },
+  UNWRAP_ETH_SUCCESS() {
+    console.debug('UNWRAP_ETH_SUCCESS');
+  },
+  UNWRAP_ETH_FAILURE(_state, payload) {
+    console.debug('UNWRAP_ETH_FAILURE', payload);
   }
 };
 
@@ -84,7 +102,8 @@ const actions = {
         'DSProxyRegistry',
         config.addresses.dsProxyRegistry,
         'build',
-        []
+        [],
+        {}
       ];
       const tx = await dispatch('sendTransaction', params);
       dispatch('notify', ['green', "You've successfully created a proxy"]);
@@ -133,7 +152,8 @@ const actions = {
         'DSProxy',
         dsProxyAddress,
         'execute',
-        [config.addresses.bActions, data]
+        [config.addresses.bActions, data],
+        {}
       ];
       await dispatch('sendTransaction', params);
       dispatch('notify', ['green', "You've successfully created a pool"]);
@@ -165,12 +185,15 @@ const actions = {
         maxAmountsIn
       );
 
-      await dispatch('sendTransaction', [
+      const params = [
         'DSProxy',
         dsProxyAddress,
         'execute',
-        [config.addresses.bActions, data]
-      ]);
+        [config.addresses.bActions, data],
+        {}
+      ];
+
+      await dispatch('sendTransaction', params);
       // await dispatch('getBalances');
       await dispatch('getMyPoolShares');
       dispatch('notify', ['green', "You've successfully added liquidity"]);
@@ -204,12 +227,15 @@ const actions = {
         minPoolAmountOut
       );
 
-      await dispatch('sendTransaction', [
+      const params = [
         'DSProxy',
         dsProxyAddress,
         'execute',
-        [config.addresses.bActions, data]
-      ]);
+        [config.addresses.bActions, data],
+        {}
+      ];
+
+      await dispatch('sendTransaction', params);
       // await dispatch('getBalances');
       await dispatch('getMyPoolShares');
       dispatch('notify', ['green', "You've successfully added liquidity"]);
@@ -229,7 +255,8 @@ const actions = {
         'BPool',
         poolAddress,
         'exitPool',
-        [parseEther(poolAmountIn), minAmountsOut]
+        [parseEther(poolAmountIn), minAmountsOut],
+        {}
       ];
       await dispatch('sendTransaction', params);
       // await dispatch('getBalances');
@@ -255,7 +282,8 @@ const actions = {
           getAddress(tokenOutAddress),
           parseEther(poolAmountIn),
           minTokenAmountOut
-        ]
+        ],
+        {}
       ];
       await dispatch('sendTransaction', params);
       // await dispatch('getBalances');
@@ -277,7 +305,8 @@ const actions = {
         'TestToken',
         getAddress(token),
         'approve',
-        [spender, MAX_UINT.toString()]
+        [spender, MAX_UINT.toString()],
+        {}
       ];
       const tx = await dispatch('sendTransaction', params);
       await tx.wait(1);
@@ -287,6 +316,48 @@ const actions = {
     } catch (e) {
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('APPROVE_FAILURE', e);
+    }
+  },
+  wrap: async ({ commit, dispatch }, amount) => {
+    commit('WRAP_ETH_REQUEST');
+    try {
+      const params = [
+        'Weth',
+        config.addresses.weth,
+        'deposit',
+        [],
+        { value: parseEther(amount) }
+      ];
+      await dispatch('sendTransaction', params);
+      dispatch('notify', [
+        'green',
+        `You've successfully wrapped ${amount} ether`
+      ]);
+      commit('WRAP_ETH_SUCCESS');
+    } catch (e) {
+      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      commit('WRAP_ETH_FAILURE', e);
+    }
+  },
+  unwrap: async ({ commit, dispatch }, amount) => {
+    commit('UNWRAP_ETH_REQUEST');
+    try {
+      const params = [
+        'Weth',
+        config.addresses.weth,
+        'withdraw',
+        [parseEther(amount)],
+        {}
+      ];
+      await dispatch('sendTransaction', params);
+      dispatch('notify', [
+        'green',
+        `You've successfully unwrapped ${amount} ether`
+      ]);
+      commit('UNWRAP_ETH_SUCCESS');
+    } catch (e) {
+      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      commit('UNWRAP_ETH_FAILURE', e);
     }
   }
 };
