@@ -73,6 +73,24 @@ const mutations = {
   },
   APPROVE_FAILURE(_state, payload) {
     console.debug('APPROVE_FAILURE', payload);
+  },
+  WRAP_ETH_REQUEST() {
+    console.debug('WRAP_ETH_REQUEST');
+  },
+  WRAP_ETH_SUCCESS() {
+    console.debug('WRAP_ETH_SUCCESS');
+  },
+  WRAP_ETH_FAILURE(_state, payload) {
+    console.debug('WRAP_ETH_FAILURE', payload);
+  },
+  UNWRAP_ETH_REQUEST() {
+    console.debug('UNWRAP_ETH_REQUEST');
+  },
+  UNWRAP_ETH_SUCCESS() {
+    console.debug('UNWRAP_ETH_SUCCESS');
+  },
+  UNWRAP_ETH_FAILURE(_state, payload) {
+    console.debug('UNWRAP_ETH_FAILURE', payload);
   }
 };
 
@@ -298,6 +316,48 @@ const actions = {
     } catch (e) {
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('APPROVE_FAILURE', e);
+    }
+  },
+  wrap: async ({ commit, dispatch }, amount) => {
+    commit('WRAP_ETH_REQUEST');
+    try {
+      const params = [
+        'Weth',
+        config.addresses.weth,
+        'deposit',
+        [],
+        { value: parseEther(amount) }
+      ];
+      await dispatch('sendTransaction', params);
+      dispatch('notify', [
+        'green',
+        `You've successfully wrapped ${amount} ether`
+      ]);
+      commit('WRAP_ETH_SUCCESS');
+    } catch (e) {
+      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      commit('WRAP_ETH_FAILURE', e);
+    }
+  },
+  unwrap: async ({ commit, dispatch }, amount) => {
+    commit('UNWRAP_ETH_REQUEST');
+    try {
+      const params = [
+        'Weth',
+        config.addresses.weth,
+        'withdraw',
+        [parseEther(amount)],
+        {}
+      ];
+      await dispatch('sendTransaction', params);
+      dispatch('notify', [
+        'green',
+        `You've successfully unwrapped ${amount} ether`
+      ]);
+      commit('UNWRAP_ETH_SUCCESS');
+    } catch (e) {
+      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      commit('UNWRAP_ETH_FAILURE', e);
     }
   }
 };

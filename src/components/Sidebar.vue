@@ -6,6 +6,36 @@
   >
     <Nav :items="items" class="flex-auto mb-4" />
     <div class="p-4 border-top">
+      <div>
+        <div class="eyebrow mt-2">
+          ETH → WETH
+        </div>
+        <div class="d-flex">
+          <input
+            v-model="weth.wrapAmount"
+            class="input flex-auto text-right text-white amount-input"
+            placeholder="0.0"
+          />
+          <UiButton class="button-outline ml-2 px-4" @click="wrapEther">
+            Wrap
+          </UiButton>
+        </div>
+        <div class="eyebrow mt-2">
+          WETH → ETH
+        </div>
+        <div class="d-flex">
+          <input
+            v-model="weth.unwrapAmount"
+            class="input flex-auto text-right text-white amount-input"
+            placeholder="0.0"
+          />
+          <UiButton class="button-outline ml-2 px-3" @click="unwrapEther">
+            Unwrap
+          </UiButton>
+        </div>
+      </div>
+    </div>
+    <div class="p-4 border-top">
       <div class="eyebrow mb-4">
         My wallet
       </div>
@@ -27,6 +57,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 import config from '@/helpers/config';
 import { bnum, clone, normalizeBalance } from '@/helpers/utils';
 
@@ -44,6 +76,10 @@ const startItems = [
 export default {
   data() {
     return {
+      weth: {
+        wrapAmount: '',
+        unwrapAmount: ''
+      },
       config
     };
   },
@@ -75,6 +111,13 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['wrap', 'unwrap']),
+    wrapEther() {
+      this.wrap(this.weth.wrapAmount);
+    },
+    unwrapEther() {
+      this.unwrap(this.weth.unwrapAmount);
+    },
     formatBalance(balanceString, address) {
       const decimals =
         address === 'ether' ? 18 : this.web3.tokenMetadata[address].decimals;
@@ -115,5 +158,11 @@ export default {
   &.is-open {
     left: 0 !important;
   }
+}
+</style>
+
+<style scoped>
+.amount-input {
+  width: 60%;
 }
 </style>
