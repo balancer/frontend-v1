@@ -38,6 +38,7 @@
 
 <script>
 import { getAddress } from 'ethers/utils';
+import { normalizeBalance } from '@/helpers/utils';
 
 export default {
   props: ['open', 'not'],
@@ -51,9 +52,13 @@ export default {
       return Object.fromEntries(
         Object.entries(this.subgraph.tokenPrices)
           .map(token => {
-            const balance = this.web3.balances[getAddress(token[0])];
+            const balance = normalizeBalance(
+              this.web3.balances[getAddress(token[0])] || 0,
+              token[1].decimals
+            );
             token[1].balance = balance || 0;
             token[1].balanceUSD = this.getPrice(token[0], token[1].balance);
+            console.log(token[0], token[1]);
             return token;
           })
           .filter(token => {
