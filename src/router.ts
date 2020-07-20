@@ -7,6 +7,7 @@ import Create from '@/views/Create.vue';
 import Setup from '@/views/Setup.vue';
 import Wallet from '@/views/Wallet.vue';
 import Token from '@/views/Token.vue';
+import NewPool from '@/views/NewPool.vue';
 import Pool from '@/views/Pool.vue';
 import PoolTokens from '@/views/Pool/Tokens.vue';
 import PoolSwaps from '@/views/Pool/Swaps.vue';
@@ -23,6 +24,10 @@ const routes: Array<RouteConfig> = [
   { path: '/setup', name: 'setup', component: Setup },
   { path: '/wallet', name: 'wallet', component: Wallet },
   { path: '/token/:id', name: 'token', component: Token },
+  {
+    path: '/pool/new',
+    component: NewPool
+  },
   {
     path: '/pool/:id',
     component: Pool,
