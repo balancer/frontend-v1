@@ -4,6 +4,7 @@ import BigNumber from '@/helpers/bignumber';
 import config from '@/helpers/config';
 import trustwalletWhitelist from '@/helpers/trustwalletWhitelist.json';
 
+const LS_KEY = 'balancer-pool-management';
 export const MAX_GAS = bigNumberify('0xffffffff');
 export const MAX_UINT = bigNumberify(ethers.constants.MaxUint256);
 export const POOL_TOKENS_DECIMALS = 18;
@@ -18,6 +19,14 @@ export const unknownColors = [
   '#9a4f50',
   '#c28d75'
 ];
+
+export function jsonParse(input, fallback?) {
+  try {
+    return JSON.parse(input);
+  } catch (err) {
+    return fallback || {};
+  }
+}
 
 export function shorten(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -68,11 +77,11 @@ export function formatPool(pool) {
   if (pool.shares) pool.holders = pool.shares.length;
   pool.tokensList = pool.tokensList.map(token => getAddress(token));
   pool.lastSwapVolume = 0;
-  if (pool.swaps && pool.swaps[0] && pool.swaps[0].poolTotalSwapVolume) {
-    pool.lastSwapVolume =
-      parseFloat(pool.totalSwapVolume) -
-      parseFloat(pool.swaps[0].poolTotalSwapVolume);
-  }
+  const poolTotalSwapVolume =
+    pool.swaps && pool.swaps[0] && pool.swaps[0].poolTotalSwapVolume
+      ? parseFloat(pool.swaps[0].poolTotalSwapVolume)
+      : 0;
+  pool.lastSwapVolume = parseFloat(pool.totalSwapVolume) - poolTotalSwapVolume;
   return pool;
 }
 
@@ -144,4 +153,17 @@ export function getTokenLogoUrl(address: string): string | null {
 export function etherscanLink(str: string, type = 'address'): string {
   const network = config.network === 'homestead' ? '' : `${config.network}.`;
   return `https://${network}etherscan.io/${type}/${str}`;
+}
+
+export function lsSet(key: string, value: any) {
+  return localStorage.setItem(`${LS_KEY}.${key}`, JSON.stringify(value));
+}
+
+export function lsGet(key: string) {
+  const item = localStorage.getItem(`${LS_KEY}.${key}`);
+  return jsonParse(item, '');
+}
+
+export function lsRemove(key: string) {
+  return localStorage.removeItem(`${LS_KEY}.${key}`);
 }
