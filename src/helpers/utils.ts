@@ -3,8 +3,8 @@ import { getAddress, bigNumberify, BigNumber as ethersBN } from 'ethers/utils';
 import BigNumber from '@/helpers/bignumber';
 import config from '@/helpers/config';
 import trustwalletWhitelist from '@/helpers/trustwalletWhitelist.json';
-import pkg from '@/../package.json';
 
+const LS_KEY = 'balancer-pool-management';
 export const MAX_GAS = bigNumberify('0xffffffff');
 export const MAX_UINT = bigNumberify(ethers.constants.MaxUint256);
 export const POOL_TOKENS_DECIMALS = 18;
@@ -156,14 +156,14 @@ export function etherscanLink(str: string, type = 'address'): string {
 }
 
 export function lsSet(key: string, value: any) {
-  return localStorage.setItem(`${pkg.name}.${key}`, JSON.stringify(value));
+  return localStorage.setItem(`${LS_KEY}.${key}`, JSON.stringify(value));
 }
 
 export function lsGet(key: string) {
-  const item = localStorage.getItem(`${pkg.name}.${key}`);
+  const item = localStorage.getItem(`${LS_KEY}.${key}`);
   return jsonParse(item, '');
 }
 
 export function lsRemove(key: string) {
-  return localStorage.removeItem(`${pkg.name}.${key}`);
+  return localStorage.removeItem(`${LS_KEY}.${key}`);
 }
