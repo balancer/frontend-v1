@@ -25,7 +25,8 @@
         "id": "portis",
         "name": "Portis",
         "options": {
-          "network": "kovan"
+          "network": "kovan",
+          "dappId": "3f1c3cfc-7dd5-4e8a-aa03-71ff7396d9fe"
         }
       }
     },
@@ -129,7 +130,8 @@
         "id": "portis",
         "name": "Portis",
         "options": {
-          "network": "mainnet"
+          "network": "mainnet",
+          "dappId": "3f1c3cfc-7dd5-4e8a-aa03-71ff7396d9fe"
         }
       }
     },

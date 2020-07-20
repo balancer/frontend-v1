@@ -12,6 +12,7 @@
     "start": "vue-cli-service express:run"
   },
   "dependencies": {
+    "@bonustrack/lock": "github:bonustrack/lock#6e43125d1d7ffbf90e7723ba605d3444bbff0616",
     "@portis/web3": "^2.0.0-beta.56",
     "@primer/css": "^14.4.0",
     "@types/react": "^16.9.36",

@@ -5,7 +5,7 @@
         <h3 class="text-white mb-4">Select Token</h3>
         <Search v-model="query" placeholder="Search name, symbol or address" />
       </template>
-      <ul>
+      <ul style="max-height: 60vh;">
         <li
           class="py-3 text-center"
           v-if="query && Object.keys(tokens).length === 0"
@@ -38,6 +38,7 @@
 
 <script>
 import { getAddress } from 'ethers/utils';
+import { normalizeBalance } from '@/helpers/utils';
 
 export default {
   props: ['open', 'not'],
@@ -51,7 +52,10 @@ export default {
       return Object.fromEntries(
         Object.entries(this.subgraph.tokenPrices)
           .map(token => {
-            const balance = this.web3.balances[getAddress(token[0])];
+            const balance = normalizeBalance(
+              this.web3.balances[getAddress(token[0])] || 0,
+              token[1].decimals
+            );
             token[1].balance = balance || 0;
             token[1].balanceUSD = this.getPrice(token[0], token[1].balance);
             return token;
