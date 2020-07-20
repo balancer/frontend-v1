@@ -5,7 +5,8 @@ import { formatEther, getAddress, Interface } from 'ethers/utils';
 import abi from '@/helpers/abi';
 import BigNumber from '@/helpers/bignumber';
 import config from '@/helpers/config';
-import connectors from '@/helpers/connectors';
+import lock from '@/helpers/lock';
+import { lsSet, lsGet, lsRemove } from '@/helpers/utils';
 
 const infuraId = process.env.VUE_APP_INFURA_ID;
 const backupUrls = {
@@ -35,6 +36,9 @@ const getters = {
 };
 
 const mutations = {
+  LOGOUT() {
+    console.debug('LOGOUT');
+  },
   LOAD_TOKEN_METADATA_REQUEST() {
     console.debug('LOAD_TOKEN_METADATA_REQUEST');
   },
@@ -200,12 +204,22 @@ const actions = {
     }
   },
   login: async ({ dispatch }, connector = 'injected') => {
-    const options = config.connectors[connector].options || {};
-    provider = await connectors[connector](options);
+    const lockConnector = lock.getConnector(connector);
+    provider = await lockConnector.connect();
     if (provider) {
       web3 = new ethers.providers.Web3Provider(provider);
       await dispatch('loadWeb3');
+      if (state.account) lsSet('connector', connector);
     }
+  },
+  logout: async ({ commit }) => {
+    const connector = lsGet('connector');
+    if (connector) {
+      const lockConnector = lock.getConnector(connector);
+      await lockConnector.logout();
+      lsRemove('connector');
+    }
+    commit('LOGOUT');
   },
   loadWeb3: async ({ commit, dispatch }) => {
     commit('LOAD_WEB3_REQUEST');
