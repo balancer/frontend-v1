@@ -58,7 +58,6 @@ export default {
             );
             token[1].balance = balance || 0;
             token[1].balanceUSD = this.getPrice(token[0], token[1].balance);
-            console.log(token[0], token[1]);
             return token;
           })
           .filter(token => {
