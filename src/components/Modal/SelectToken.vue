@@ -5,7 +5,7 @@
         <h3 class="text-white mb-4">Select Token</h3>
         <Search v-model="query" placeholder="Search name, symbol or address" />
       </template>
-      <ul style="max-height: 500px;">
+      <ul style="max-height: 60vh;">
         <li
           class="py-3 text-center"
           v-if="query && Object.keys(tokens).length === 0"
