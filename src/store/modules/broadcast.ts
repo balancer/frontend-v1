@@ -122,8 +122,8 @@ const actions = {
     commit('CREATE_POOL_REQUEST');
     const dsProxyAddress = rootState.web3.dsProxyAddress;
     try {
-      startBalances = tokens.map((token, i) => {
-        const amountInput = startBalances[i];
+      startBalances = tokens.map(token => {
+        const amountInput = startBalances[token];
         const amount = bnum(amountInput);
         const tokenMetadata = rootState.web3.tokenMetadata[token];
         const decimals = tokenMetadata ? tokenMetadata.decimals : null;
@@ -131,8 +131,8 @@ const actions = {
           .integerValue(BigNumber.ROUND_DOWN)
           .toString();
       });
-      startWeights = tokens.map((token, i) => {
-        return toWei(startWeights[i])
+      startWeights = tokens.map(token => {
+        return toWei(startWeights[token])
           .div(2)
           .toString();
       });
