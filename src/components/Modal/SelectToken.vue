@@ -3,7 +3,11 @@
     <UiModalForm>
       <template slot="header">
         <h3 class="text-white mb-4">Select Token</h3>
-        <Search v-model="query" placeholder="Search name, symbol or address" />
+        <Search
+          v-model="query"
+          @input="handleQuery"
+          placeholder="Search name, symbol or address"
+        />
       </template>
       <ul style="max-height: 60vh;">
         <li
@@ -38,7 +42,7 @@
 
 <script>
 import { getAddress } from 'ethers/utils';
-import { normalizeBalance } from '@/helpers/utils';
+import { isValidAddress, normalizeBalance } from '@/helpers/utils';
 
 export default {
   props: ['open', 'not'],
@@ -75,6 +79,19 @@ export default {
     selectToken(token) {
       this.$emit('input', token);
       this.$emit('close');
+    },
+    handleQuery() {
+      if (!isValidAddress(this.query)) {
+        return;
+      }
+      const address = this.query.toLowerCase();
+      if (this.subgraph.tokenPrices[address]) {
+        return;
+      }
+      this.subgraph.tokenPrices[address] = {
+        id: address,
+        name: address
+      };
     }
   }
 };
