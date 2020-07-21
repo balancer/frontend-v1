@@ -26,6 +26,7 @@ const routes: Array<RouteConfig> = [
   { path: '/token/:id', name: 'token', component: Token },
   {
     path: '/pool/new',
+    name: 'new-pool',
     component: NewPool
   },
   {
