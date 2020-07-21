@@ -6,22 +6,25 @@
     <UiTable>
       <UiTableTh>
         <div v-text="'Asset'" class="flex-auto text-left" />
-        <div v-text="'Unlock'" class="column-sm text-left" />
-        <div v-text="'Weight'" class="column-lg" />
+        <div v-text="'Weight (total max: 100)'" class="column-lg" />
         <div v-text="'Amount'" class="column" />
         <div v-text="'Value'" class="column-lg" />
         <div v-text="'Remove'" class="column" />
       </UiTableTh>
-      <div v-for="token in tokens" :key="token">
+      <div v-for="(token, i) in tokens" :key="token">
         <UiTableTr>
           <div class="d-flex flex-auto flex-items-center text-left">
             <Token :address="token" :symbol="getSymbol(token)" class="mr-3" />
             {{ getSymbol(token) }}
-            <a class="d-block text-white p-1" @click="changeToken(token)">
+            <a
+              class="d-block text-white p-1"
+              @click="
+                modalOpen = true;
+                activeToken = i;
+              "
+            >
               <Icon name="arrow-down" />
             </a>
-          </div>
-          <div class="column-sm text-left">
             <ButtonUnlock class="ml-2" :tokenAddress="token" />
           </div>
           <div class="column-lg d-flex flex-items-center flex-justify-between">
@@ -59,7 +62,7 @@
       <h3 class="flex-auto" v-text="'Swap fee'" />
     </div>
     <div>
-      <input class="input pool-input text-right" v-model="fee" />
+      <input class="input pool-input text-right" v-model="swapFee" />
     </div>
     <UiButton class="mt-4" @click="create">
       Create
@@ -67,15 +70,19 @@
     <ModalSelectToken
       :open="modalOpen"
       @close="modalOpen = false"
-      @input="addToken"
-      :not="input"
+      @input="changeToken"
+      :not="tokens.map(token => token.toLowerCase())"
     />
   </div>
 </template>
 
 <script>
+import Vue from 'vue';
+import { mapActions } from 'vuex';
+import { getAddress } from 'ethers/utils';
+
 import config from '@/helpers/config';
-import { bnum } from '@/helpers/utils';
+import { shorten, bnum } from '@/helpers/utils';
 
 function getTokenAddressBySymbol(symbol) {
   const tokenAddresses = Object.keys(config.tokens);
@@ -102,29 +109,56 @@ export default {
     return {
       amounts: {},
       weights: {},
-      fee: '',
-      tokens: [getTokenAddressBySymbol('DAI'), getTokenAddressBySymbol('USDC')],
-      input: '',
+      swapFee: '0.15',
+      tokens: [],
+      activeToken: 0,
       modalOpen: false
     };
   },
+  created() {
+    const dai = getTokenAddressBySymbol('DAI');
+    const usdc = getTokenAddressBySymbol('USDC');
+    this.tokens = [dai, usdc];
+    Vue.set(this.weights, dai, '30');
+    Vue.set(this.weights, usdc, '20');
+  },
+  computed: {
+    excludedTokens() {
+      return this.tokens.map(token => token.toLowerCase());
+    }
+  },
   methods: {
-    changeToken(tokenAddress) {
-      this.modalOpen = true;
+    ...mapActions(['createPool', 'loadTokenMetadata']),
+    changeToken(selectedToken) {
+      const tokenAddress = getAddress(selectedToken);
+      Vue.set(this.tokens, this.activeToken, tokenAddress);
+      Vue.set(this.weights, tokenAddress, '');
+      Vue.set(this.amounts, tokenAddress, '');
+      this.loadTokenMetadata([tokenAddress]);
     },
     addToken() {
       const anotherToken = getAnotherToken(config.tokens, this.tokens);
       this.tokens.push(anotherToken);
+      Vue.set(this.weights, anotherToken, '');
+      Vue.set(this.amounts, anotherToken, '');
     },
     removeToken(tokenAddress) {
       const index = this.tokens.indexOf(tokenAddress);
       this.tokens.splice(index, 1);
     },
     create() {
-      // TODO
+      this.createPool({
+        tokens: this.tokens,
+        startBalances: this.amounts,
+        startWeights: this.weights,
+        swapFee: this.swapFee
+      });
     },
     handleAmountChange(tokenAddress) {
       const tokenPrice = this.subgraph.tokenPrices[tokenAddress.toLowerCase()];
+      if (!tokenPrice || !tokenPrice.price) {
+        return;
+      }
       const tokenValue = bnum(this.amounts[tokenAddress]).times(
         tokenPrice.price
       );
@@ -140,13 +174,19 @@ export default {
           continue;
         }
         const tokenPrice = this.subgraph.tokenPrices[token.toLowerCase()];
+        if (!tokenPrice || !tokenPrice.price) {
+          continue;
+        }
         const tokenValue = tokenWeight.times(totalValue);
         const tokenAmount = tokenValue.div(tokenPrice.price);
         this.amounts[token] = tokenAmount.toString();
       }
     },
     getSymbol(tokenAddress) {
-      return config.tokens[tokenAddress].symbol;
+      if (config.tokens[tokenAddress]) {
+        return config.tokens[tokenAddress].symbol;
+      }
+      return shorten(tokenAddress);
     },
     getValue(tokenAddress) {
       const tokenPrice = this.subgraph.tokenPrices[tokenAddress.toLowerCase()];
