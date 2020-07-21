@@ -1,6 +1,6 @@
 <template>
-  <div class="d-flex position-relative">
-    <Icon name="search" class="h3 px-1 py-2 my-1 position-absolute left-2" />
+  <div class="d-flex flex-items-center position-relative">
+    <Icon name="search" class="h3 px-1 position-absolute left-2" />
     <input
       class="input pl-6 flex-auto"
       :placeholder="placeholder || 'Search'"
