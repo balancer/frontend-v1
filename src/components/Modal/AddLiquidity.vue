@@ -29,7 +29,7 @@
               />
               <Token :address="token.address" class="mr-2" size="20" />
               <div class="text-white">{{ token.symbol }}</div>
-              <ButtonUnlock class="ml-2" :tokenAddress="token.address" />
+              <ButtonUnlock class="ml-2" :tokenAddress="token.checksum" />
             </div>
             <div class="column text-left">
               {{
@@ -139,7 +139,9 @@ export default {
         if (!this.isMultiAsset && token.address !== this.activeToken) {
           return;
         }
-        const allowance = this.web3.proxyAllowances[token.address] || 0;
+        const proxy = this.web3.dsProxyAddress;
+        const tokenAllowance = this.web3.allowances[token.checksum];
+        const allowance = tokenAllowance ? tokenAllowance[proxy] || 0 : 0;
         if (
           this.loading ||
           !this.amounts[token.address] ||

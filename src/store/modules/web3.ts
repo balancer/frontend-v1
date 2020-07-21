@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { ethers } from 'ethers';
 import { AddressZero } from 'ethers/constants';
-import { formatEther, getAddress, Interface } from 'ethers/utils';
+import { getAddress, Interface } from 'ethers/utils';
 import abi from '@/helpers/abi';
 import BigNumber from '@/helpers/bignumber';
 import config from '@/helpers/config';
@@ -20,11 +20,11 @@ const state = {
   injectedLoaded: false,
   injectedChainId: null,
   account: null,
+  dsProxyAddress: null,
   name: null,
   active: false,
   balances: {},
-  dsProxyAddress: null,
-  proxyAllowances: {},
+  allowances: {},
   tokenMetadata: {}
 };
 
@@ -144,6 +144,24 @@ const mutations = {
   GET_BALANCES_FAILURE(_state, payload) {
     console.debug('GET_BALANCES_FAILURE', payload);
   },
+  GET_ALLOWANCES_REQUEST() {
+    console.debug('GET_ALLOWANCES_REQUEST');
+  },
+  GET_ALLOWANCES_SUCCESS(_state, payload) {
+    for (const address in payload) {
+      if (!_state.allowances.address) {
+        Vue.set(_state.allowances, address, {});
+      }
+      for (const spender in payload[address]) {
+        const allowance = payload[address][spender];
+        Vue.set(_state.allowances[address], spender, allowance);
+      }
+    }
+    console.debug('GET_ALLOWANCES_SUCCESS');
+  },
+  GET_ALLOWANCES_FAILURE(_state, payload) {
+    console.debug('GET_ALLOWANCES_FAILURE', payload);
+  },
   GET_PROXY_REQUEST() {
     console.debug('GET_PROXY_REQUEST');
   },
@@ -153,20 +171,25 @@ const mutations = {
   },
   GET_PROXY_FAILURE(_state, payload) {
     console.debug('GET_PROXY_FAILURE', payload);
-  },
-  GET_PROXY_ALLOWANCE_REQUEST() {
-    console.debug('GET_PROXY_ALLOWANCE_REQUEST');
-  },
-  GET_PROXY_ALLOWANCE_SUCCESS(_state, payload) {
-    Vue.set(_state.proxyAllowances, payload.tokenAddress, payload.allowance);
-    console.debug('GET_PROXY_ALLOWANCE_SUCCESS');
-  },
-  GET_PROXY_ALLOWANCE_FAILURE(_state, payload) {
-    console.debug('GET_PROXY_ALLOWANCE_FAILURE', payload);
   }
 };
 
 const actions = {
+  initTokenMetadata: async ({ commit }) => {
+    const metadata = Object.fromEntries(
+      Object.entries(config.tokens).map(tokenEntry => {
+        const { decimals, symbol } = tokenEntry[1] as any;
+        return [
+          tokenEntry[0],
+          {
+            decimals,
+            symbol
+          }
+        ];
+      })
+    );
+    commit('LOAD_TOKEN_METADATA_SUCCESS', metadata);
+  },
   loadTokenMetadata: async ({ commit }, tokens) => {
     commit('LOAD_TOKEN_METADATA_REQUEST');
     const web3 = new ethers.providers.JsonRpcProvider(
@@ -182,20 +205,24 @@ const actions = {
     tokens.forEach(token => {
       // @ts-ignore
       calls.push([token, testToken.functions.decimals.encode([])]);
+      // @ts-ignore
+      calls.push([token, testToken.functions.symbol.encode([])]);
     });
     const tokenMetadata: any = {};
     try {
       const [, response] = await multi.aggregate(calls);
-      let i = 0;
-      response.forEach(value => {
-        if (tokens && tokens[i]) {
-          const tokenDecimals = testToken.functions.decimals.decode(value)[0];
-          tokenMetadata[getAddress(tokens[i])] = {
-            decimals: tokenDecimals
-          };
-        }
-        i++;
-      });
+      for (let i = 0; i < tokens.length; i++) {
+        const decimals = testToken.functions.decimals.decode(
+          response[2 * i]
+        )[0];
+        const symbol = testToken.functions.symbol.decode(
+          response[2 * i + 1]
+        )[0];
+        tokenMetadata[tokens[i]] = {
+          decimals,
+          symbol
+        };
+      }
       commit('LOAD_TOKEN_METADATA_SUCCESS', tokenMetadata);
       return tokenMetadata;
     } catch (e) {
@@ -350,12 +377,13 @@ const actions = {
   loadAccount: async ({ dispatch }) => {
     // @ts-ignore
     const tokens = Object.entries(config.tokens).map(token => token[1].address);
+    await dispatch('getProxy');
     await Promise.all([
       dispatch('lookupAddress'),
       dispatch('getBalances', tokens),
+      dispatch('getAllowances', { tokens, spender: state.dsProxyAddress }),
       dispatch('getMyPools'),
-      dispatch('getMyPoolShares'),
-      dispatch('getProxy')
+      dispatch('getMyPoolShares')
     ]);
   },
   getBalances: async ({ commit }, tokens) => {
@@ -369,7 +397,10 @@ const actions = {
     );
     const calls = [];
     const testToken = new Interface(abi.TestToken);
-    tokens.forEach(token => {
+    const tokensToFetch = tokens
+      ? tokens
+      : Object.keys(state.balances).filter(token => token !== 'ether');
+    tokensToFetch.forEach(token => {
       // @ts-ignore
       calls.push([token, testToken.functions.balanceOf.encode([address])]);
     });
@@ -383,10 +414,10 @@ const actions = {
       balances.ether = ethBalanceNumber.toString();
       let i = 0;
       response.forEach(value => {
-        if (tokens && tokens[i]) {
+        if (tokensToFetch && tokensToFetch[i]) {
           const tokenBalance = testToken.functions.balanceOf.decode(value);
           const tokenBalanceNumber = new BigNumber(tokenBalance);
-          balances[getAddress(tokens[i])] = tokenBalanceNumber.toString();
+          balances[tokensToFetch[i]] = tokenBalanceNumber.toString();
         }
         i++;
       });
@@ -394,6 +425,48 @@ const actions = {
       return balances;
     } catch (e) {
       commit('GET_BALANCES_FAILURE', e);
+      return Promise.reject();
+    }
+  },
+  getAllowances: async ({ commit }, { tokens, spender }) => {
+    commit('GET_ALLOWANCES_REQUEST');
+    const address = state.account;
+    const promises: any = [];
+    const multi = new ethers.Contract(
+      config.addresses.multicall,
+      abi['Multicall'],
+      web3
+    );
+    const calls = [];
+    const testToken = new Interface(abi.TestToken);
+    tokens.forEach(token => {
+      calls.push([
+        // @ts-ignore
+        token,
+        // @ts-ignore
+        testToken.functions.allowance.encode([address, spender])
+      ]);
+    });
+    promises.push(multi.aggregate(calls));
+    const allowances: any = {};
+    try {
+      const [, response] = await multi.aggregate(calls);
+      let i = 0;
+      response.forEach(value => {
+        if (tokens && tokens[i]) {
+          const tokenAllowance = testToken.functions.allowance.decode(value);
+          const tokenAllowanceNumber = new BigNumber(tokenAllowance);
+          if (!allowances[tokens[i]]) {
+            allowances[tokens[i]] = {};
+          }
+          allowances[tokens[i]][spender] = tokenAllowanceNumber.toString();
+        }
+        i++;
+      });
+      commit('GET_ALLOWANCES_SUCCESS', allowances);
+      return allowances;
+    } catch (e) {
+      commit('GET_ALLOWANCES_FAILURE', e);
       return Promise.reject();
     }
   },
@@ -411,31 +484,6 @@ const actions = {
       return proxy;
     } catch (e) {
       commit('GET_PROXY_FAILURE', e);
-      return Promise.reject();
-    }
-  },
-  getProxyAllowance: async ({ commit }, tokenAddress) => {
-    commit('GET_PROXY_ALLOWANCE_REQUEST');
-    const owner = state.account;
-    const spender = state.dsProxyAddress;
-    try {
-      const tokenContract = new ethers.Contract(
-        getAddress(tokenAddress),
-        abi['TestToken'],
-        web3
-      );
-      const allowance = parseFloat(
-        formatEther(await tokenContract.allowance(owner, spender))
-      );
-      commit('GET_PROXY_ALLOWANCE_SUCCESS', {
-        tokenAddress,
-        owner,
-        spender,
-        allowance
-      });
-      return allowance;
-    } catch (e) {
-      commit('GET_PROXY_ALLOWANCE_FAILURE', e);
       return Promise.reject();
     }
   }

@@ -34,7 +34,11 @@ const actions = {
       const isLoggedIn = await lockConnector.isLoggedIn();
       if (isLoggedIn) await dispatch('login', connector);
     }
-    await Promise.all([dispatch('getBalancer'), dispatch('getTokenPrices')]);
+    await Promise.all([
+      dispatch('getBalancer'),
+      dispatch('getTokenPrices'),
+      dispatch('initTokenMetadata')
+    ]);
     commit('SET', { loading: false, init: true });
   },
   loading: ({ commit }, payload) => {

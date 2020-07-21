@@ -17,9 +17,7 @@
 </template>
 
 <script>
-import { getAddress } from 'ethers/utils';
 import { getTokenLogoUrl } from '@/helpers/utils';
-import config from '@/helpers/config';
 
 export default {
   props: ['address', 'symbol', 'size'],
@@ -32,9 +30,6 @@ export default {
         lineHeight: `${size}px`,
         fontSize: `${(size / 2).toFixed()}px`
       };
-    },
-    token() {
-      return config.tokens[getAddress(this.address)] || {};
     },
     tokenLogoUrl() {
       return getTokenLogoUrl(this.address);

@@ -13,7 +13,7 @@
       <UiTableTr v-for="(token, i) in tokens" :key="token">
         <Token :address="token" size="28" class="mr-2" />
         <div class="flex-auto text-left">
-          {{ config.tokens[token].symbol }}
+          {{ _ticker(token) }}
         </div>
         <div
           class="column text-right"
@@ -40,13 +40,10 @@
 </template>
 
 <script>
-import config from '@/helpers/config';
-
 export default {
   props: ['value', 'tokens'],
   data() {
     return {
-      config,
       startWeights: []
     };
   },

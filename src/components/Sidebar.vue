@@ -43,7 +43,7 @@
         <div v-for="(balance, i) in balances" :key="i" class="d-flex mb-3">
           <Token :address="i" size="20" class="mr-2" />
           <div v-if="i !== 'ether'" class="flex-auto">
-            {{ _ticker(i.toLowerCase()) || 'ETH' }}
+            {{ _ticker(i) || 'ETH' }}
           </div>
           <div v-else class="flex-auto">ETH</div>
           <div>{{ $n(formatBalance(balance, i)) }}</div>
@@ -59,7 +59,6 @@
 <script>
 import { mapActions } from 'vuex';
 
-import config from '@/helpers/config';
 import { bnum, clone, normalizeBalance } from '@/helpers/utils';
 
 const startItems = [
@@ -79,8 +78,7 @@ export default {
       weth: {
         wrapAmount: '',
         unwrapAmount: ''
-      },
-      config
+      }
     };
   },
   computed: {
