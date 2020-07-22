@@ -1,18 +1,20 @@
 <template>
-  <input type="checkbox" :checked="checked" @change="onChange" />
+  <input type="checkbox" :checked="checked" @change="$emit('change')" />
 </template>
 
 <script>
 export default {
-  props: ['checked', 'onChange']
+  props: ['checked']
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import '../../vars';
+
 input {
   appearance: none;
-  background-color: var(--panel-background);
-  border: 2px solid var(--error);
+  background-color: $panel-background;
+  border: 2px solid $error;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
     inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
   padding: 9px;
@@ -27,8 +29,8 @@ input {
   }
 
   &:checked {
-    background-color: var(--error);
-    border: 2px solid var(--error);
+    background-color: $error;
+    border: 2px solid $error;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
       inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05),
       inset 15px 10px -12px rgba(255, 255, 255, 0.1);
@@ -36,12 +38,12 @@ input {
   }
 
   &:checked:after {
-    content: '\\00AC';
+    content: '\00AC';
     font-size: 24px;
     position: absolute;
-    top: -3px;
+    top: -5px;
     left: 5px;
-    color: var(--panel-background);
+    color: $panel-background;
     rotate: 135deg;
   }
 }
