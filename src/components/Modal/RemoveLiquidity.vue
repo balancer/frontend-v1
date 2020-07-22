@@ -57,7 +57,7 @@
               <input
                 id="poolAmountIn"
                 v-model="poolAmountIn"
-                :class="!poolAmountIn || isValid ? 'text-white' : 'text-red'"
+                :class="!poolAmountIn || validationError ? 'text-red' : 'text-white'"
                 class="input text-right column-sm"
                 type="number"
                 step="any"
@@ -68,8 +68,18 @@
         </div>
       </div>
       <template slot="footer">
+        <MessageError
+          v-if="validationError"
+          :text="validationError"
+          class="mb-4"
+        />
+        <MessageWarning
+          v-if="slippageWarning"
+          :text="slippageWarning"
+          class="mb-4"
+        />
         <UiButton
-          :disabled="!isValid || loading"
+          :disabled="validationError || loading"
           type="submit"
           class="ml-2"
           :loading="loading"
@@ -113,7 +123,7 @@ export default {
       const poolSharesFrom = this.subgraph.poolShares[this.pool.id] || 0;
       const totalShares = parseFloat(this.pool.totalShares);
       const current = poolSharesFrom / totalShares;
-      if (!this.isValid) {
+      if (this.validationError) {
         return {
           current
         };
@@ -133,8 +143,69 @@ export default {
         return token;
       });
     },
-    isValid() {
-      return this.poolTokenBalance >= parseFloat(this.poolAmountIn);
+    validationError() {
+      this.poolTokenBalance >= parseFloat(this.poolAmountIn);
+      // Basic input validation
+      if (!this.poolAmountIn) {
+        return `Value can't be empty`;
+      }
+      if (isNaN(this.poolAmountIn)) {
+        return 'Values should be numbers';
+      }
+      if (parseFloat(this.poolAmountIn) <= 0) {
+        return 'Value should be a positive number';
+      }
+      // Amount validation
+      const amount = bnum(this.poolAmountIn);
+      if (amount.gt(this.poolTokenBalance)) {
+        return 'Token amount should not exceed balance';
+      }
+      return undefined;
+    },
+    slippageWarning() {
+      if (this.validationError) {
+        return undefined;
+      }
+      if (this.isMultiAsset) {
+        return undefined;
+      }
+      const slippageThreshold = 0.01;
+      const tokenOutAddress = this.activeToken;
+      const tokenOut = this.pool.tokens.find(
+        token => token.address === tokenOutAddress
+      );
+      const amount = bnum(this.poolAmountIn).times('1e18');
+
+      const tokenBalanceOut = denormalizeBalance(
+        tokenOut.balance,
+        tokenOut.decimals
+      );
+      const tokenWeightOut = bnum(tokenOut.denormWeight).times('1e18');
+      const poolSupply = denormalizeBalance(this.pool.totalShares, 18);
+      const totalWeight = bnum(this.pool.totalWeight).times('1e18');
+      const swapFee = bnum(this.pool.swapFee).times('1e18');
+
+      const tokenAmountOut = calcSingleOutGivenPoolIn(
+        tokenBalanceOut,
+        tokenWeightOut,
+        poolSupply,
+        totalWeight,
+        amount,
+        swapFee
+      );
+      const expectedTokenAmountOut = amount
+        .times(totalWeight)
+        .times(tokenBalanceOut)
+        .div(poolSupply)
+        .div(tokenWeightOut);
+      const one = bnum(1);
+      const slippage = one.minus(tokenAmountOut.div(expectedTokenAmountOut));
+
+      if (slippage.gte(slippageThreshold)) {
+        const slippageString = slippage.times(100).toFixed(2);
+        return `Removing liquidity will incur ${slippageString}% of slippage`;
+      }
+      return undefined;
     },
     isMultiAsset() {
       return this.type === LiquidityType.MULTI_ASSET;
