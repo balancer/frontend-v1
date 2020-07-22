@@ -43,9 +43,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { getAddress } from 'ethers/utils';
-
-import config from '@/helpers/config';
 
 export default {
   data() {
@@ -62,10 +59,7 @@ export default {
       return Object.keys(this.subgraph.poolShares).includes(this.id);
     },
     enableAddLiquidity() {
-      return this.pool.tokensList.reduce(
-        (a, b) => (config.errors.includes(b) ? false : a),
-        this.pool.finalized
-      );
+      return this.pool.finalized;
     }
   },
   methods: {
@@ -89,8 +83,12 @@ export default {
     if (Object.keys(this.pool).length === 0) {
       this.loading = true;
       this.pool = await this.getPool(this.id);
-      const tokens = this.pool.tokensList.map(token => getAddress(token));
-      await this.loadTokenMetadata(tokens);
+      const unknownTokens = this.pool.tokensList.filter(
+        tokenAddress => !this.web3.tokenMetadata[tokenAddress]
+      );
+      if (unknownTokens.length > 0) {
+        await this.loadTokenMetadata(unknownTokens);
+      }
       if (this.web3.account) {
         await Promise.all([
           this.getBalances(this.pool.tokensList),
