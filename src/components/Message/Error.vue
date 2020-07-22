@@ -1,5 +1,5 @@
 <template>
-  <div id="error" class="p-4">
+  <div id="error" class="p-4 text-left">
     <Icon name="warning" class="mr-4" />
     {{ text }}
   </div>
