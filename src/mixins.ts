@@ -22,7 +22,7 @@ export default {
     },
     _ticker(address: string): string {
       // @ts-ignore
-      const token = this.subgraph.tokenPrices[address];
+      const token = this.web3.tokenMetadata[address];
       return token ? token.symbol : this._shorten(address);
     }
   }

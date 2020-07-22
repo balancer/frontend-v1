@@ -14,8 +14,8 @@
       <div v-for="(token, i) in tokens" :key="token">
         <UiTableTr>
           <div class="d-flex flex-auto flex-items-center text-left">
-            <Token :address="token" :symbol="getSymbol(token)" class="mr-3" />
-            {{ getSymbol(token) }}
+            <Token :address="token" :symbol="token" class="mr-3" />
+            {{ _ticker(token) }}
             <a
               class="d-block text-white p-1"
               @click="
@@ -71,7 +71,7 @@
       :open="modalOpen"
       @close="modalOpen = false"
       @input="changeToken"
-      :not="tokens.map(token => token.toLowerCase())"
+      :not="tokens"
     />
   </div>
 </template>
@@ -122,11 +122,6 @@ export default {
     Vue.set(this.weights, dai, '30');
     Vue.set(this.weights, usdc, '20');
   },
-  computed: {
-    excludedTokens() {
-      return this.tokens.map(token => token.toLowerCase());
-    }
-  },
   methods: {
     ...mapActions(['createPool', 'loadTokenMetadata']),
     changeToken(selectedToken) {
@@ -155,13 +150,11 @@ export default {
       });
     },
     handleAmountChange(tokenAddress) {
-      const tokenPrice = this.subgraph.tokenPrices[tokenAddress.toLowerCase()];
-      if (!tokenPrice || !tokenPrice.price) {
+      const tokenPrice = this.subgraph.tokenPrices[tokenAddress];
+      if (!tokenPrice) {
         return;
       }
-      const tokenValue = bnum(this.amounts[tokenAddress]).times(
-        tokenPrice.price
-      );
+      const tokenValue = bnum(this.amounts[tokenAddress]).times(tokenPrice);
       const totalValue = tokenValue.div(this.weights[tokenAddress]);
 
       for (const token of this.tokens) {
@@ -173,28 +166,29 @@ export default {
           this.amounts[token] = '';
           continue;
         }
-        const tokenPrice = this.subgraph.tokenPrices[token.toLowerCase()];
-        if (!tokenPrice || !tokenPrice.price) {
+        const tokenPrice = this.subgraph.tokenPrices[token];
+        if (!tokenPrice) {
           continue;
         }
         const tokenValue = tokenWeight.times(totalValue);
-        const tokenAmount = tokenValue.div(tokenPrice.price);
+        const tokenAmount = tokenValue.div(tokenPrice);
         this.amounts[token] = tokenAmount.toString();
       }
     },
-    getSymbol(tokenAddress) {
-      if (config.tokens[tokenAddress]) {
-        return config.tokens[tokenAddress].symbol;
+    _ticker(tokenAddress) {
+      const tokenMetadata = this.web3.tokenMetadata[tokenAddress];
+      if (tokenMetadata) {
+        return tokenMetadata.symbol;
       }
       return shorten(tokenAddress);
     },
     getValue(tokenAddress) {
-      const tokenPrice = this.subgraph.tokenPrices[tokenAddress.toLowerCase()];
+      const tokenPrice = this.subgraph.tokenPrices[tokenAddress];
       if (!tokenPrice || !this.amounts[tokenAddress]) {
         return '-';
       }
       return bnum(this.amounts[tokenAddress])
-        .times(tokenPrice.price)
+        .times(tokenPrice)
         .toFixed(2);
     },
     getRelativeWeight(tokenAddress) {

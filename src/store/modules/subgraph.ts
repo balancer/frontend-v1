@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import { getAddress } from 'ethers/utils';
 import { request } from '@/helpers/subgraph';
 import { formatPool } from '@/helpers/utils';
 
@@ -11,9 +12,9 @@ const state = {
 
 const getters = {
   getPrice: state => (token, amount) => {
-    const tokenPrice = state.tokenPrices[token.toLowerCase()];
+    const tokenPrice = state.tokenPrices[token];
     if (!tokenPrice) return 0;
-    return tokenPrice.price * amount;
+    return tokenPrice * amount;
   }
 };
 
@@ -124,7 +125,7 @@ const actions = {
       tokenPrices = Object.fromEntries(
         tokenPrices
           .sort((a, b) => b.poolLiquidity - a.poolLiquidity)
-          .map(tokenPrice => [tokenPrice.id, tokenPrice])
+          .map(tokenPrice => [getAddress(tokenPrice.id), tokenPrice.price])
       );
       commit('GET_TOKEN_PRICES_SUCCESS', tokenPrices);
     } catch (e) {
@@ -230,9 +231,7 @@ const actions = {
       };
       const { poolShares } = await request('getMyPoolShares', query);
       const balances: any = {};
-      poolShares.forEach(
-        share => (balances[share.poolId.id] = parseFloat(share.balance))
-      );
+      poolShares.forEach(share => (balances[share.poolId.id] = share.balance));
       commit('GET_MY_POOLS_SHARES_SUCCESS', balances);
       return poolShares;
     } catch (e) {

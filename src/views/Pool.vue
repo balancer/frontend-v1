@@ -43,6 +43,8 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { getAddress } from 'ethers/utils';
+
 import config from '@/helpers/config';
 
 export default {
@@ -67,7 +69,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getPool', 'getBalances', 'loadTokenMetadata']),
+    ...mapActions([
+      'getPool',
+      'getBalances',
+      'getAllowances',
+      'loadTokenMetadata'
+    ]),
     openAddLiquidityModal() {
       if (!this.hasProxy) {
         return this.$router.push({ name: 'setup' });
@@ -82,9 +89,16 @@ export default {
     if (Object.keys(this.pool).length === 0) {
       this.loading = true;
       this.pool = await this.getPool(this.id);
-      this.loadTokenMetadata(this.pool.tokensList);
+      const tokens = this.pool.tokensList.map(token => getAddress(token));
+      await this.loadTokenMetadata(tokens);
       if (this.web3.account) {
-        this.getBalances(this.pool.tokensList);
+        await Promise.all([
+          this.getBalances(this.pool.tokensList),
+          this.getAllowances({
+            tokens: this.pool.tokensList,
+            spender: this.web3.dsProxyAddress
+          })
+        ]);
       }
       this.loading = false;
     }

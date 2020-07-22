@@ -194,7 +194,7 @@ const actions = {
       ];
 
       await dispatch('sendTransaction', params);
-      // await dispatch('getBalances');
+      await dispatch('getBalances');
       await dispatch('getMyPoolShares');
       dispatch('notify', ['green', "You've successfully added liquidity"]);
       commit('JOIN_POOL_SUCCESS');
@@ -236,7 +236,7 @@ const actions = {
       ];
 
       await dispatch('sendTransaction', params);
-      // await dispatch('getBalances');
+      await dispatch('getBalances');
       await dispatch('getMyPoolShares');
       dispatch('notify', ['green', "You've successfully added liquidity"]);
       commit('JOINSWAP_EXTERN_AMOUNT_SUCCESS');
@@ -259,7 +259,7 @@ const actions = {
         {}
       ];
       await dispatch('sendTransaction', params);
-      // await dispatch('getBalances');
+      await dispatch('getBalances');
       await dispatch('getMyPoolShares');
       dispatch('notify', ['green', "You've successfully removed liquidity"]);
       commit('EXIT_POOL_SUCCESS');
@@ -286,7 +286,7 @@ const actions = {
         {}
       ];
       await dispatch('sendTransaction', params);
-      // await dispatch('getBalances');
+      await dispatch('getBalances');
       await dispatch('getMyPoolShares');
       dispatch('notify', ['green', "You've successfully removed liquidity"]);
       commit('EXITSWAP_POOL_AMOUNT_IN_SUCCESS');
@@ -298,8 +298,8 @@ const actions = {
   approve: async ({ commit, dispatch, rootState }, token) => {
     commit('APPROVE_REQUEST');
     const spender = rootState.web3.dsProxyAddress;
-    const tokenPrice = rootState.subgraph.tokenPrices[token];
-    const symbol = tokenPrice ? tokenPrice.symbol : shorten(token);
+    const tokenMetadata = rootState.web3.tokenMetadata[token];
+    const symbol = tokenMetadata ? tokenMetadata.symbol : shorten(token);
     try {
       const params = [
         'TestToken',

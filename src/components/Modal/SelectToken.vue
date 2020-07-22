@@ -1,5 +1,5 @@
 <template>
-  <UiModal :open="open" @close="$emit('close')" style="max-width: 440px;">
+  <UiModal :open="open" @close="close" style="max-width: 440px;">
     <UiModalForm>
       <template slot="header">
         <h3 class="text-white mb-4">Select Token</h3>
@@ -9,7 +9,8 @@
           placeholder="Search name, symbol or address"
         />
       </template>
-      <ul style="max-height: 60vh;">
+      <VueLoadingIndicator v-if="loading" class="big" />
+      <ul v-else style="max-height: 60vh;">
         <li
           class="py-3 text-center"
           v-if="query && Object.keys(tokens).length === 0"
@@ -26,10 +27,11 @@
               {{ token.name }}
               <span class="text-gray ml-2" v-text="token.symbol" />
             </div>
-            <span v-if="token.balance">
+            <span>
               <span
                 class="text-gray mr-2"
-                v-text="$n(token.balanceUSD, 'currency')"
+                v-text="$n(token.value, 'currency')"
+                v-if="token.price"
               />
               {{ $n(token.balance) }}
             </span>
@@ -41,57 +43,86 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import { getAddress } from 'ethers/utils';
-import { isValidAddress, normalizeBalance } from '@/helpers/utils';
+
+import { bnum, isValidAddress, normalizeBalance } from '@/helpers/utils';
 
 export default {
   props: ['open', 'not'],
   data() {
     return {
+      loading: false,
       query: ''
     };
   },
   computed: {
     tokens() {
       return Object.fromEntries(
-        Object.entries(this.subgraph.tokenPrices)
+        Object.entries(this.web3.tokenMetadata)
           .map(token => {
+            const address = token[0];
+            const decimals = token[1].decimals;
+            const price = bnum(this.subgraph.tokenPrices[address] || 0);
             const balance = normalizeBalance(
-              this.web3.balances[getAddress(token[0])] || 0,
-              token[1].decimals
+              this.web3.balances[address] || 0,
+              decimals
             );
-            token[1].balance = balance || 0;
-            token[1].balanceUSD = this.getPrice(token[0], token[1].balance);
-            return token;
+            const value = price.times(balance);
+            return [
+              address,
+              {
+                decimals,
+                balance: balance.toNumber(),
+                price: price.toNumber(),
+                value: value.toNumber(),
+                symbol: token[1].symbol,
+                name: token[1].name
+              }
+            ];
           })
           .filter(token => {
-            const tokenStr = `${token[1].id} ${token[1].symbol}`.toLowerCase();
+            const tokenStr = `${token[0]} ${token[1].symbol}`.toLowerCase();
             return (
               tokenStr.includes(this.query.toLowerCase()) &&
               !this.not.includes(token[0])
             );
           })
-          .sort((a, b) => b[1].balanceUSD - a[1].balanceUSD)
+          .sort((a, b) => {
+            if (a[1].value && b[1].value) return b[1].value - a[1].value;
+            if (a[1].value) return -1;
+            if (b[1].value) return 1;
+            return b[1].balance - a[1].balance;
+          })
       );
     }
   },
   methods: {
+    ...mapActions(['loadTokenMetadata', 'getBalances', 'getAllowances']),
     selectToken(token) {
       this.$emit('input', token);
+      this.close();
+    },
+    close() {
       this.$emit('close');
+      this.query = '';
     },
     handleQuery() {
       if (!isValidAddress(this.query)) {
         return;
       }
-      const address = this.query.toLowerCase();
-      if (this.subgraph.tokenPrices[address]) {
+      const address = getAddress(this.query);
+      if (this.web3.tokenMetadata[address]) {
         return;
       }
-      this.subgraph.tokenPrices[address] = {
-        id: address,
-        name: address
-      };
+      this.loading = true;
+      this.loadTokenMetadata([address]);
+      this.getBalances([address]);
+      this.getAllowances({
+        tokens: [address],
+        spender: this.web3.dsProxyAddress
+      });
+      this.loading = false;
     }
   }
 };

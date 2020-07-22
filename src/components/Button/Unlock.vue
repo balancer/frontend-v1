@@ -3,7 +3,7 @@
     @click="handleSubmit"
     type="button"
     class="button-sm"
-    v-if="!allowance && init"
+    v-if="!allowance"
     :loading="loading"
   >
     Unlock
@@ -17,27 +17,28 @@ export default {
   props: ['tokenAddress', 'spender'],
   data() {
     return {
-      init: false,
       loading: false,
       input: false
     };
   },
   computed: {
     allowance() {
-      return this.web3.proxyAllowances[this.tokenAddress] || 0;
+      const proxyAddress = this.web3.dsProxyAddress;
+      const tokenAllowance = this.web3.allowances[this.tokenAddress];
+      if (!tokenAllowance || !tokenAllowance[proxyAddress]) {
+        return false;
+      }
+      const allowance = tokenAllowance[proxyAddress];
+      return allowance !== '0';
     }
   },
   methods: {
-    ...mapActions(['approve', 'getProxyAllowance']),
+    ...mapActions(['approve']),
     async handleSubmit() {
       this.loading = true;
       await this.approve(this.tokenAddress);
       this.loading = false;
     }
-  },
-  async created() {
-    await this.getProxyAllowance(this.tokenAddress);
-    this.init = true;
   }
 };
 </script>
