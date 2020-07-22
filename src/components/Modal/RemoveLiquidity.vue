@@ -57,7 +57,9 @@
               <input
                 id="poolAmountIn"
                 v-model="poolAmountIn"
-                :class="!poolAmountIn || validationError ? 'text-red' : 'text-white'"
+                :class="
+                  !poolAmountIn || validationError ? 'text-red' : 'text-white'
+                "
                 class="input text-right column-sm"
                 type="number"
                 step="any"
