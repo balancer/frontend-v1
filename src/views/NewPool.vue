@@ -64,6 +64,13 @@
     <div>
       <input class="input pool-input text-right" v-model="swapFee" />
     </div>
+    <MessageError v-if="error" :text="error" class="mt-4" />
+    <MessageCustomToken
+      v-if="hasCustomToken"
+      :accepted="customTokenAccept"
+      @toggle="customTokenAccept = !customTokenAccept"
+      class="mt-4"
+    />
     <UiButton class="mt-4" @click="create">
       Create
     </UiButton>
@@ -82,7 +89,7 @@ import { mapActions } from 'vuex';
 import { getAddress } from 'ethers/utils';
 
 import config from '@/helpers/config';
-import { shorten, bnum } from '@/helpers/utils';
+import { shorten, bnum, normalizeBalance } from '@/helpers/utils';
 
 function getTokenAddressBySymbol(symbol) {
   const tokenAddresses = Object.keys(config.tokens);
@@ -112,7 +119,8 @@ export default {
       swapFee: '0.15',
       tokens: [],
       activeToken: 0,
-      modalOpen: false
+      modalOpen: false,
+      customTokenAccept: false
     };
   },
   created() {
@@ -121,6 +129,81 @@ export default {
     this.tokens = [dai, usdc];
     Vue.set(this.weights, dai, '30');
     Vue.set(this.weights, usdc, '20');
+  },
+  computed: {
+    error() {
+      // Basic input validation
+      for (const token of this.tokens) {
+        if (!this.amounts[token] || !this.weights[token]) {
+          return `Values can't be empty`;
+        }
+      }
+      if (!this.swapFee) {
+        return `Values can't be empty`;
+      }
+      for (const token of this.tokens) {
+        if (isNaN(this.amounts[token]) || isNaN(this.weights[token])) {
+          return 'Values should be numbers';
+        }
+      }
+      if (isNaN(this.swapFee)) {
+        return 'Values should be numbers';
+      }
+      for (const token of this.tokens) {
+        if (parseFloat(this.amounts[token]) <= 0) {
+          return 'Values should be positive numbers';
+        }
+        if (parseFloat(this.weights[token]) <= 0) {
+          return 'Values should be positive numbers';
+        }
+      }
+      if (parseFloat(this.swapFee) <= 0) {
+        return 'Values should be positive numbers';
+      }
+      // Weight validation
+      for (const token of this.tokens) {
+        const weight = parseFloat(this.weights[token]);
+        if (weight < 2 || weight > 98) {
+          return 'Weight should be from 2 to 98';
+        }
+      }
+      const totalWeight = this.tokens.reduce((acc, token) => {
+        const weight = parseFloat(this.weights[token]);
+        return acc + weight;
+      }, 0);
+      if (totalWeight > 100) {
+        return 'Total weight should not exceed 100';
+      }
+      // Amount validation
+      for (const token of this.tokens) {
+        const amount = bnum(this.amounts[token]);
+        const balance = normalizeBalance(
+          this.web3.balances[token],
+          this.web3.tokenMetadata[token].decimals
+        );
+        if (amount.gt(balance)) {
+          return 'Token amount should not exceed balance';
+        }
+      }
+      // Fee validation
+      const fee = parseFloat(this.swapFee);
+      if (fee < 0.0001 || fee > 10) {
+        return 'Fee should be from 0.0001% to 10%';
+      }
+      return undefined;
+    },
+    hasCustomToken() {
+      if (this.error) {
+        return false;
+      }
+      for (const token of this.tokens) {
+        const tokenMetadata = this.web3.tokenMetadata[token];
+        if (!tokenMetadata || !tokenMetadata.whitelisted) {
+          return true;
+        }
+      }
+      return false;
+    }
   },
   methods: {
     ...mapActions(['createPool', 'loadTokenMetadata']),

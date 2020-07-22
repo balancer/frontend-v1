@@ -183,7 +183,8 @@ const actions = {
           tokenEntry[0],
           {
             decimals,
-            symbol
+            symbol,
+            whitelisted: true
           }
         ];
       })
