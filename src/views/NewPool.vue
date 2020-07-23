@@ -64,14 +64,18 @@
     <div>
       <input class="input pool-input text-right" v-model="swapFee" />
     </div>
-    <MessageError v-if="error" :text="error" class="mt-4" />
+    <MessageError v-if="validationError" :text="validationError" class="mt-4" />
     <MessageCustomToken
       v-if="hasCustomToken"
       :accepted="customTokenAccept"
       @toggle="customTokenAccept = !customTokenAccept"
       class="mt-4"
     />
-    <UiButton class="mt-4" @click="create">
+    <UiButton
+      :disabled="validationError || (hasCustomToken && !customTokenAccept)"
+      class="mt-4"
+      @click="create"
+    >
       Create
     </UiButton>
     <ModalSelectToken
@@ -89,7 +93,12 @@ import { mapActions } from 'vuex';
 import { getAddress } from 'ethers/utils';
 
 import config from '@/helpers/config';
-import { shorten, bnum, normalizeBalance } from '@/helpers/utils';
+import {
+  shorten,
+  bnum,
+  normalizeBalance,
+  denormalizeBalance
+} from '@/helpers/utils';
 
 function getTokenAddressBySymbol(symbol) {
   const tokenAddresses = Object.keys(config.tokens);
@@ -131,7 +140,7 @@ export default {
     Vue.set(this.weights, usdc, '20');
   },
   computed: {
-    error() {
+    validationError() {
       // Basic input validation
       for (const token of this.tokens) {
         if (!this.amounts[token] || !this.weights[token]) {
@@ -177,6 +186,13 @@ export default {
       // Amount validation
       for (const token of this.tokens) {
         const amount = bnum(this.amounts[token]);
+        const weiAmount = denormalizeBalance(
+          amount,
+          this.web3.tokenMetadata[token].decimals
+        );
+        if (weiAmount.lt('1e6')) {
+          return 'Token balance in wei form needs to be at least 1,000,000. For example, WBTC has 8 decimals so the minimum is 0.01 WBTC.';
+        }
         const balance = normalizeBalance(
           this.web3.balances[token],
           this.web3.tokenMetadata[token].decimals
@@ -193,7 +209,7 @@ export default {
       return undefined;
     },
     hasCustomToken() {
-      if (this.error) {
+      if (this.validationError) {
         return false;
       }
       for (const token of this.tokens) {

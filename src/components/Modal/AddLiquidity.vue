@@ -221,6 +221,17 @@ export default {
           return 'Token amount should not exceed balance';
         }
       }
+      // Max in ratio validation
+      if (!this.isMultiAsset) {
+        const maxInRatio = 1 / 2;
+        const amount = bnum(this.amounts[this.activeToken]);
+        const tokenIn = this.pool.tokens.find(
+          token => token.checksum === this.activeToken
+        );
+        if (amount.div(tokenIn.balance).gt(maxInRatio)) {
+          return 'Insufficient pool liquidity';
+        }
+      }
       return undefined;
     },
     transferError() {
