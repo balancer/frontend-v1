@@ -10,7 +10,7 @@
         />
       </template>
       <VueLoadingIndicator v-if="loading" class="big" />
-      <ul v-else style="max-height: 60vh;">
+      <ul v-else>
         <li
           class="py-3 text-center"
           v-if="query && Object.keys(tokens).length === 0"
