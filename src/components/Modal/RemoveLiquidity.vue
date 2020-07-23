@@ -162,6 +162,43 @@ export default {
       if (amount.gt(this.poolTokenBalance)) {
         return 'Token amount should not exceed balance';
       }
+      // Max ratio out validation
+      if (!this.isMultiAsset) {
+        const tokenOutAddress = this.activeToken;
+        const tokenOut = this.pool.tokens.find(
+          token => token.address === tokenOutAddress
+        );
+
+        const maxOutRatio = 1 / 3;
+        const amount = denormalizeBalance(this.poolAmountIn, 18);
+
+        const tokenBalanceOut = denormalizeBalance(
+          tokenOut.balance,
+          tokenOut.decimals
+        );
+        const tokenWeightOut = bnum(tokenOut.denormWeight).times('1e18');
+        const poolSupply = denormalizeBalance(this.pool.totalShares, 18);
+        const totalWeight = bnum(this.pool.totalWeight).times('1e18');
+        const swapFee = bnum(this.pool.swapFee).times('1e18');
+
+        if (amount.div(poolSupply).gt(0.99)) {
+          // Invalidate user's attempt to withdraw the entire pool supply in a single token
+          // At amounts close to 100%, solidity math freaks out
+          return 'Insufficient pool liquidity';
+        }
+
+        const tokenAmountOut = calcSingleOutGivenPoolIn(
+          tokenBalanceOut,
+          tokenWeightOut,
+          poolSupply,
+          totalWeight,
+          amount,
+          swapFee
+        );
+        if (tokenAmountOut.div(tokenBalanceOut).gt(maxOutRatio)) {
+          return 'Insufficient pool liquidity';
+        }
+      }
       return undefined;
     },
     slippageWarning() {
@@ -245,6 +282,9 @@ export default {
       return (this.poolTokenBalance / this.pool.totalShares) * token.balance;
     },
     getTokenAmountOut(token) {
+      if (this.validationError) {
+        return 0;
+      }
       if (this.isMultiAsset) {
         return (token.balance / this.pool.totalShares) * this.poolAmountIn;
       } else {
