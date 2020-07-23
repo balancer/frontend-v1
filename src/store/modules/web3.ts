@@ -68,6 +68,7 @@ const mutations = {
     Vue.set(_state, 'injectedChainId', payload.injectedChainId);
     Vue.set(_state, 'account', payload.account);
     Vue.set(_state, 'name', payload.name);
+    Vue.set(_state, 'active', true);
     console.debug('LOAD_PROVIDER_SUCCESS');
   },
   LOAD_PROVIDER_FAILURE(_state, payload) {
@@ -82,11 +83,10 @@ const mutations = {
   },
   LOAD_BACKUP_PROVIDER_SUCCESS(_state, payload) {
     console.debug('LOAD_BACKUP_PROVIDER_SUCCESS', payload);
+    Vue.set(_state, 'active', true);
   },
   LOAD_BACKUP_PROVIDER_FAILURE(_state, payload) {
-    Vue.set(_state, 'injectedLoaded', false);
     Vue.set(_state, 'backUpLoaded', false);
-    Vue.set(_state, 'account', null);
     Vue.set(_state, 'activeChainId', null);
     Vue.set(_state, 'active', false);
     console.debug('LOAD_BACKUP_PROVIDER_FAILURE', payload);
@@ -193,9 +193,6 @@ const actions = {
   },
   loadTokenMetadata: async ({ commit }, tokens) => {
     commit('LOAD_TOKEN_METADATA_REQUEST');
-    const web3 = new ethers.providers.JsonRpcProvider(
-      backupUrls[config.chainId]
-    );
     const multi = new ethers.Contract(
       config.addresses.multicall,
       abi['Multicall'],
@@ -252,19 +249,16 @@ const actions = {
   loadWeb3: async ({ commit, dispatch }) => {
     commit('LOAD_WEB3_REQUEST');
     try {
-      await dispatch('loadProvider');
-      await dispatch('loadAccount');
-      commit('LOAD_WEB3_SUCCESS');
-      if (!state.injectedLoaded || state.injectedChainId !== config.chainId) {
+      if (!web3 || !provider) {
         await dispatch('loadBackupProvider');
       } else {
-        /**
-        this.providerStatus.activeChainId = this.providerStatus.injectedChainId;
-        this.providerStatus.injectedActive = true;
-        if (this.providerStatus.account)
-          this.fetchUserBlockchainData(this.providerStatus.account);
-        */
+        await dispatch('loadProvider');
+        if (!state.injectedLoaded || state.injectedChainId !== config.chainId) {
+          await dispatch('loadBackupProvider');
+        }
       }
+      await dispatch('loadAccount');
+      commit('LOAD_WEB3_SUCCESS');
     } catch (e) {
       commit('LOAD_WEB3_FAILURE', e);
       return Promise.reject();
@@ -274,11 +268,11 @@ const actions = {
     commit('LOAD_PROVIDER_REQUEST');
     try {
       // @TODO Remove any old listeners
-      if (provider.on) {
+      if (provider && provider.on) {
         provider.on('chainChanged', async () => {
           commit('HANDLE_CHAIN_CHANGED');
           if (state.active) {
-            await dispatch('loadWeb3');
+            await dispatch('login');
           }
         });
         provider.on('accountsChanged', async accounts => {
@@ -296,7 +290,7 @@ const actions = {
         provider.on('networkChanged', async () => {
           commit('HANDLE_NETWORK_CHANGED');
           if (state.active) {
-            await dispatch('loadWeb3');
+            await dispatch('login');
           }
         });
       }
@@ -315,17 +309,18 @@ const actions = {
     }
   },
   loadBackupProvider: async ({ commit }) => {
+    commit('LOAD_BACKUP_PROVIDER_REQUEST');
     try {
-      const web3 = new ethers.providers.JsonRpcProvider(
+      web3 = new ethers.providers.JsonRpcProvider(
         backupUrls[config.chainId]
       );
+      provider = null;
       const network = await web3.getNetwork();
       commit('LOAD_BACKUP_PROVIDER_SUCCESS', {
         injectedActive: false,
         backUpLoaded: true,
         account: null,
         activeChainId: network.chainId
-        // backUpWeb3: web3,
       });
     } catch (e) {
       commit('LOAD_BACKUP_PROVIDER_FAILURE', e);
@@ -376,6 +371,9 @@ const actions = {
     }
   },
   loadAccount: async ({ dispatch }) => {
+    if (!state.account) {
+      return;
+    }
     // @ts-ignore
     const tokens = Object.entries(config.tokens).map(token => token[1].address);
     await dispatch('getProxy');

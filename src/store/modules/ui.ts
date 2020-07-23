@@ -32,7 +32,13 @@ const actions = {
     if (connector) {
       const lockConnector = lock.getConnector(connector);
       const isLoggedIn = await lockConnector.isLoggedIn();
-      if (isLoggedIn) await dispatch('login', connector);
+      if (isLoggedIn) {
+        await dispatch('login', connector);
+      } else {
+        await dispatch('loadWeb3');
+      }
+    } else {
+      await dispatch('loadWeb3');
     }
     await Promise.all([
       dispatch('getBalancer'),

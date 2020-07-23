@@ -30,6 +30,7 @@
           <div class="column-lg d-flex flex-items-center flex-justify-between">
             <input
               class="input pool-input text-right"
+              :class="isWeightInputValid(token) ? 'text-white' : 'text-red'"
               v-model="weights[token]"
               @input="handleWeightChange(token)"
             />
@@ -38,6 +39,7 @@
           <div class="column">
             <input
               class="input pool-input text-right"
+              :class="isAmountInputValid(token) ? 'text-white' : 'text-red'"
               v-model="amounts[token]"
               @input="handleAmountChange(token)"
             />
@@ -63,7 +65,11 @@
       <h3 class="flex-auto" v-text="'Swap fee'" />
     </div>
     <div>
-      <input class="input pool-input text-right" v-model="swapFee" />
+      <input
+        class="input pool-input text-right"
+        :class="isSwapFeeInputValid() ? 'text-white' : 'text-red'"
+        v-model="swapFee"
+      />
     </div>
     <MessageError v-if="validationError" :text="validationError" class="mt-4" />
     <MessageCustomToken
@@ -94,12 +100,7 @@ import { mapActions } from 'vuex';
 import { getAddress } from 'ethers/utils';
 
 import config from '@/helpers/config';
-import {
-  shorten,
-  bnum,
-  normalizeBalance,
-  denormalizeBalance
-} from '@/helpers/utils';
+import { bnum, normalizeBalance, denormalizeBalance } from '@/helpers/utils';
 
 function getTokenAddressBySymbol(symbol) {
   const tokenAddresses = Object.keys(config.tokens);
@@ -278,12 +279,52 @@ export default {
         this.amounts[token] = tokenAmount.toString();
       }
     },
-    _ticker(tokenAddress) {
-      const tokenMetadata = this.web3.tokenMetadata[tokenAddress];
-      if (tokenMetadata) {
-        return tokenMetadata.symbol;
+    isWeightInputValid(tokenAddress) {
+      if (!this.weights[tokenAddress] || isNaN(this.weights[tokenAddress])) {
+        return false;
       }
-      return shorten(tokenAddress);
+      const weight = bnum(this.weights[tokenAddress]);
+      if (weight.lt(2) || weight.gt(98)) {
+        return false;
+      }
+      return true;
+    },
+    isAmountInputValid(tokenAddress) {
+      if (!this.amounts[tokenAddress] || isNaN(this.amounts[tokenAddress])) {
+        return false;
+      }
+      const amount = bnum(this.amounts[tokenAddress]);
+      if (amount.lte(0)) {
+        return false;
+      }
+      const weiAmount = denormalizeBalance(
+        amount,
+        this.web3.tokenMetadata[tokenAddress].decimals
+      );
+      if (weiAmount.lt('1e6')) {
+        return false;
+      }
+      const balance = normalizeBalance(
+        this.web3.balances[tokenAddress],
+        this.web3.tokenMetadata[tokenAddress].decimals
+      );
+      if (amount.gt(balance)) {
+        return false;
+      }
+      return true;
+    },
+    isSwapFeeInputValid() {
+      if (!this.swapFee || isNaN(this.swapFee)) {
+        return false;
+      }
+      const swapFee = parseFloat(this.swapFee);
+      if (swapFee <= 0) {
+        return false;
+      }
+      if (swapFee < 0.0001 || swapFee > 10) {
+        return false;
+      }
+      return true;
     },
     getValue(tokenAddress) {
       const tokenPrice = this.subgraph.tokenPrices[tokenAddress];
