@@ -89,11 +89,7 @@ export default {
       if (this.web3.account) {
         items.push({
           name: 'Create a Pool',
-          to: { name: 'create' }
-        });
-        items.push({
-          name: 'My Wallet',
-          to: { name: 'wallet' }
+          to: { name: 'new-pool' }
         });
       }
       return items;
