@@ -54,9 +54,7 @@
                   v-model="amounts[token.checksum]"
                   v-if="isMultiAsset || activeToken === token.checksum"
                   class="input flex-auto text-right"
-                  :class="
-                    isSufficientBalance(token) ? 'text-white' : 'text-red'
-                  "
+                  :class="isInputValid(token) ? 'text-white' : 'text-red'"
                   placeholder="0.0"
                   @input="handleChange(amounts[token.checksum], token)"
                 />
@@ -503,10 +501,17 @@ export default {
       }
       this.loading = false;
     },
-    isSufficientBalance(token) {
-      const amount = this.amounts[token.checksum] || 0;
+    isInputValid(token) {
+      const tokenAddress = token.checksum;
+      if (!this.isMultiAsset && this.activeToken !== tokenAddress) {
+        return true;
+      }
+      const amount = this.amounts[tokenAddress];
+      if (!amount || isNaN(amount)) {
+        return false;
+      }
       const amountNumber = denormalizeBalance(amount, token.decimals);
-      const balance = this.web3.balances[token.checksum];
+      const balance = this.web3.balances[tokenAddress];
       return amountNumber.lte(balance);
     },
     hasToken(pool, symbol) {
