@@ -57,12 +57,8 @@
               <input
                 id="poolAmountIn"
                 v-model="poolAmountIn"
-                :class="
-                  !poolAmountIn || validationError ? 'text-red' : 'text-white'
-                "
+                :class="validationError ? 'text-red' : 'text-white'"
                 class="input text-right column-sm"
-                type="number"
-                step="any"
                 placeholder="0.0"
               />
             </UiTableTh>
