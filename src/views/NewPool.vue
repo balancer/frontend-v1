@@ -31,6 +31,7 @@
             <input
               class="input pool-input text-right"
               v-model="weights[token]"
+              @input="handleWeightChange(token)"
             />
             {{ $n(getRelativeWeight(token), 'percent') }}
           </div>
@@ -247,6 +248,9 @@ export default {
         startWeights: this.weights,
         swapFee: this.swapFee
       });
+    },
+    handleWeightChange(tokenAddress) {
+      this.handleAmountChange(tokenAddress);
     },
     handleAmountChange(tokenAddress) {
       const tokenPrice = this.subgraph.tokenPrices[tokenAddress];
