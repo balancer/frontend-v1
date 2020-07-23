@@ -8,7 +8,7 @@ import config from '@/helpers/config';
 import lock from '@/helpers/lock';
 import { lsSet, lsGet, lsRemove } from '@/helpers/utils';
 
-const infuraId = process.env.VUE_APP_INFURA_ID;
+const infuraId = process.env.VUE_APP_INFURA_ID || '93e3393c76ed4e1f940d0266e2fdbda2';
 const backupUrls = {
   1: `https://mainnet.infura.io/v3/${infuraId}`,
   42: `https://kovan.infura.io/v3/${infuraId}`
