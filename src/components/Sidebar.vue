@@ -91,10 +91,6 @@ export default {
           name: 'Create a Pool',
           to: { name: 'new-pool' }
         });
-        items.push({
-          name: 'My Wallet',
-          to: { name: 'wallet' }
-        });
       }
       return items;
     },
