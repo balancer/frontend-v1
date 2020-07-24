@@ -79,7 +79,11 @@
       class="mt-4"
     />
     <UiButton
-      :disabled="validationError || (hasCustomToken && !customTokenAccept)"
+      :disabled="
+        validationError ||
+          hasLockedToken ||
+          (hasCustomToken && !customTokenAccept)
+      "
       class="mt-4"
       @click="create"
     >
@@ -209,6 +213,20 @@ export default {
         return 'Fee should be from 0.0001% to 10%';
       }
       return undefined;
+    },
+    hasLockedToken() {
+      const proxyAddress = this.web3.dsProxyAddress;
+      for (const token of this.tokens) {
+        const tokenAllowance = this.web3.allowances[token];
+        if (!tokenAllowance || !tokenAllowance[proxyAddress]) {
+          return true;
+        }
+        const allowance = tokenAllowance[proxyAddress];
+        if (allowance === '0') {
+          return true;
+        }
+      }
+      return false;
     },
     hasCustomToken() {
       if (this.validationError) {
