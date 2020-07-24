@@ -99,7 +99,10 @@ export default {
         Object.entries(this.web3.balances).filter(entry => {
           const address = entry[0];
           const balance = entry[1];
-          return this.web3.tokenMetadata[address] && bnum(balance).gt(0);
+          return (
+            (address === 'ether' || this.web3.tokenMetadata[address]) &&
+            bnum(balance).gt(0)
+          );
         })
       );
     }
