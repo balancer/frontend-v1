@@ -64,7 +64,7 @@ export default {
       return Object.keys(this.subgraph.poolShares).includes(this.id);
     },
     enableAddLiquidity() {
-      return this.pool.finalized;
+      return this.pool.finalized && this.pool.totalShares !== '0';
     }
   },
   methods: {
