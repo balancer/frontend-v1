@@ -1,11 +1,17 @@
 import store from '@/store';
 import { mapGetters, mapState } from 'vuex';
+import config from '@/helpers/config';
 import { shorten, trunc, etherscanLink } from '@/helpers/utils';
 
 // @ts-ignore
 const modules = Object.entries(store.state).map(module => module[0]);
 
 export default {
+  data() {
+    return {
+      config
+    };
+  },
   computed: {
     ...mapState(modules),
     ...mapGetters(['getPrice', 'hasProxy'])

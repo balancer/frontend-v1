@@ -8,7 +8,8 @@ import config from '@/helpers/config';
 import lock from '@/helpers/lock';
 import { lsSet, lsGet, lsRemove } from '@/helpers/utils';
 
-const infuraId = process.env.VUE_APP_INFURA_ID || '93e3393c76ed4e1f940d0266e2fdbda2';
+const infuraId =
+  process.env.VUE_APP_INFURA_ID || '93e3393c76ed4e1f940d0266e2fdbda2';
 const backupUrls = {
   1: `https://mainnet.infura.io/v3/${infuraId}`,
   42: `https://kovan.infura.io/v3/${infuraId}`
@@ -36,7 +37,13 @@ const getters = {
 };
 
 const mutations = {
-  LOGOUT() {
+  LOGOUT(_state) {
+    Vue.set(_state, 'injectedLoaded', false);
+    Vue.set(_state, 'injectedChainId', null);
+    Vue.set(_state, 'account', null);
+    Vue.set(_state, 'name', null);
+    Vue.set(_state, 'active', false);
+    Vue.set(_state, 'balances', {});
     console.debug('LOGOUT');
   },
   LOAD_TOKEN_METADATA_REQUEST() {
@@ -175,6 +182,24 @@ const mutations = {
 };
 
 const actions = {
+  login: async ({ dispatch }, connector = 'injected') => {
+    const lockConnector = lock.getConnector(connector);
+    provider = await lockConnector.connect();
+    if (provider) {
+      web3 = new ethers.providers.Web3Provider(provider);
+      await dispatch('loadWeb3');
+      if (state.account) lsSet('connector', connector);
+    }
+  },
+  logout: async ({ commit }) => {
+    const connector = lsGet('connector');
+    if (connector) {
+      const lockConnector = lock.getConnector(connector);
+      await lockConnector.logout();
+      lsRemove('connector');
+    }
+    commit('LOGOUT');
+  },
   initTokenMetadata: async ({ commit }) => {
     const metadata = Object.fromEntries(
       Object.entries(config.tokens).map(tokenEntry => {
@@ -227,24 +252,6 @@ const actions = {
       commit('LOAD_TOKEN_METADATA_FAILURE', e);
       return Promise.reject();
     }
-  },
-  login: async ({ dispatch }, connector = 'injected') => {
-    const lockConnector = lock.getConnector(connector);
-    provider = await lockConnector.connect();
-    if (provider) {
-      web3 = new ethers.providers.Web3Provider(provider);
-      await dispatch('loadWeb3');
-      if (state.account) lsSet('connector', connector);
-    }
-  },
-  logout: async ({ commit }) => {
-    const connector = lsGet('connector');
-    if (connector) {
-      const lockConnector = lock.getConnector(connector);
-      await lockConnector.logout();
-      lsRemove('connector');
-    }
-    commit('LOGOUT');
   },
   loadWeb3: async ({ commit, dispatch }) => {
     commit('LOAD_WEB3_REQUEST');
@@ -311,9 +318,7 @@ const actions = {
   loadBackupProvider: async ({ commit }) => {
     commit('LOAD_BACKUP_PROVIDER_REQUEST');
     try {
-      web3 = new ethers.providers.JsonRpcProvider(
-        backupUrls[config.chainId]
-      );
+      web3 = new ethers.providers.JsonRpcProvider(backupUrls[config.chainId]);
       provider = null;
       const network = await web3.getNetwork();
       commit('LOAD_BACKUP_PROVIDER_SUCCESS', {

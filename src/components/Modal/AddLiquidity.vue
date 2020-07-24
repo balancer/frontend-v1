@@ -113,7 +113,6 @@ import {
   denormalizeBalance
 } from '@/helpers/utils';
 import { calcPoolOutGivenSingleIn } from '@/helpers/math';
-import config from '@/helpers/config';
 import { LiquidityType } from '@/components/SingleMultiToggle';
 
 const BALANCE_BUFFER = 0.01;
@@ -169,7 +168,9 @@ export default {
     },
     tokenError() {
       if (
-        this.pool.tokens.some(token => config.errors.includes(token.checksum))
+        this.pool.tokens.some(token =>
+          this.config.errors.includes(token.checksum)
+        )
       ) {
         return 'This pool contains a deflationary token that is likely to cause loss of funds. Do not deposit.';
       }
