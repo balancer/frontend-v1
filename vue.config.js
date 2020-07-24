@@ -5,7 +5,7 @@ module.exports = {
       serverDir: '.'
     },
     webpackBundleAnalyzer: {
-      openAnalyzer: true
+      openAnalyzer: false
     }
   }
 };

@@ -205,16 +205,19 @@ const actions = {
     const testToken = new Interface(abi.TestToken);
     tokens.forEach(token => {
       // @ts-ignore
-      calls.push([token, testToken.functions.decimals.encode([])]);
+      calls.push([token, testToken.encodeFunctionData('decimals', [])]);
       // @ts-ignore
-      calls.push([token, testToken.functions.symbol.encode([])]);
+      calls.push([token, testToken.encodeFunctionData('symbol', [])]);
     });
     const tokenMetadata: any = {};
     try {
       const [, response] = await multi.aggregate(calls);
       for (let i = 0; i < tokens.length; i++) {
-        const decimals = response[2 * i][0];
-        const symbol = response[2 * i + 1][0];
+        const [decimals] = testToken.decodeFunctionResult(
+          'decimals',
+          response[0]
+        );
+        const [symbol] = testToken.decodeFunctionResult('symbol', response[1]);
         tokenMetadata[tokens[i]] = {
           decimals,
           symbol
@@ -447,8 +450,10 @@ const actions = {
       let i = 0;
       response.forEach(value => {
         if (tokens && tokens[i]) {
-          const tokenAllowance = value; // decode
-          const tokenAllowanceNumber = new BigNumber(tokenAllowance);
+          const tokenAllowanceNumber = testToken.decodeFunctionResult(
+            'allowance',
+            value
+          );
           if (!allowances[tokens[i]]) {
             allowances[tokens[i]] = {};
           }
