@@ -1,4 +1,6 @@
-import { getAddress, Interface, parseEther } from 'ethers/utils';
+import { getAddress } from '@ethersproject/address';
+import { Interface } from '@ethersproject/abi';
+import { parseEther } from '@ethersproject/units';
 import abi from '@/helpers/abi';
 import config from '@/helpers/config';
 import {
@@ -140,7 +142,7 @@ const actions = {
         .div(100)
         .toString();
       const iface = new Interface(abi.BActions);
-      const data = iface.functions.create.encode([
+      const data = iface.encodeFunctionData('create', [
         config.addresses.bFactory,
         tokens,
         startBalances,
@@ -171,7 +173,7 @@ const actions = {
     try {
       const dsProxyAddress = rootState.web3.dsProxyAddress;
       const iface = new Interface(abi.BActions);
-      const data = iface.functions.joinPool.encode([
+      const data = iface.encodeFunctionData('joinPool', [
         getAddress(poolAddress),
         poolAmountOut,
         maxAmountsIn
@@ -211,7 +213,7 @@ const actions = {
     try {
       const dsProxyAddress = rootState.web3.dsProxyAddress;
       const iface = new Interface(abi.BActions);
-      const data = iface.functions.joinswapExternAmountIn.encode([
+      const data = iface.encodeFunctionData('joinswapExternAmount', [
         getAddress(poolAddress),
         tokenInAddress,
         tokenAmountIn,

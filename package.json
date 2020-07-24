@@ -1,8 +1,8 @@
 {
-  "name": "smartpool",
+  "name": "pool-management-vue",
   "version": "0.1.0",
-  "description": "Your portfolio yielder",
-  "author": "Bonustrack",
+  "repository": "balancer-labs/pool-management-vue",
+  "license": "GPL-3.0",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -12,10 +12,16 @@
     "start": "vue-cli-service express:run"
   },
   "dependencies": {
-    "@bonustrack/lock": "github:bonustrack/lock#6e43125d1d7ffbf90e7723ba605d3444bbff0616",
-    "@portis/web3": "^2.0.0-beta.56",
+    "@bonustrack/lock": "github:bonustrack/lock#0ec9a1ef0af8774e076aa42e175f7a80885e55f4",
+    "@ethersproject/abi": "^5.0.1",
+    "@ethersproject/address": "^5.0.1",
+    "@ethersproject/constants": "^5.0.1",
+    "@ethersproject/contracts": "^5.0.1",
+    "@ethersproject/providers": "^5.0.4",
+    "@ethersproject/units": "^5.0.1",
+    "@ethersproject/wallet": "^5.0.1",
+    "@portis/web3": "2.0.0-beta.49",
     "@primer/css": "^14.4.0",
-    "@types/react": "^16.9.36",
     "@vue/cli-plugin-babel": "^4.4.0",
     "@vue/cli-plugin-eslint": "^4.4.0",
     "@vue/cli-plugin-typescript": "^4.4.0",
@@ -26,20 +32,14 @@
     "body-parser": "^1.19.0",
     "core-js": "^3.6.5",
     "eslint": "^6.7.2",
-    "ethereum-blockies-base64": "^1.0.2",
-    "ethers": "^4.0.47",
-    "git-describe": "^4.0.4",
-    "install": "^0.13.0",
     "json-to-graphql-query": "^2.0.0",
     "lightweight-charts": "^3.0.0",
     "lodash": "^4.17.15",
-    "npm": "^6.14.5",
     "primer-support": "^5.0.0",
     "typescript": "~3.9.3",
     "vue": "^2.6.11",
     "vue-autofocus-directive": "^1.0.4",
     "vue-cli-plugin-express": "^1.0.2",
-    "vue-cli-plugin-git-describe": "^1.0.0",
     "vue-cli-plugin-webpack-bundle-analyzer": "^2.0.0",
     "vue-i18n": "^8.18.1",
     "vue-infinite-scroll": "^2.0.2",
@@ -61,11 +61,5 @@
     "prettier": "^1.19.1",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
-  },
-  "bugs": {
-    "url": "https://github.com/bonustrack/smartpool/issues"
-  },
-  "homepage": "https://smartpool.dev",
-  "license": "MIT",
-  "repository": "bonustrack/smartpool"
+  }
 }

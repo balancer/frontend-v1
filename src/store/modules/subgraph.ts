@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { getAddress } from 'ethers/utils';
+import { getAddress } from '@ethersproject/address';
 import { request } from '@/helpers/subgraph';
 import { formatPool } from '@/helpers/utils';
 

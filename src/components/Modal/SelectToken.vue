@@ -44,7 +44,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { getAddress } from 'ethers/utils';
+import { getAddress } from '@ethersproject/address';
 
 import { bnum, isValidAddress, normalizeBalance } from '@/helpers/utils';
 

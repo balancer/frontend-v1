@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { getAddress } from 'ethers/utils';
+import { getAddress } from '@ethersproject/address';
 import { delay, clone } from '@/helpers/utils';
 
 export default {
