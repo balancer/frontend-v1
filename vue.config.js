@@ -5,10 +5,7 @@ module.exports = {
       serverDir: '.'
     },
     webpackBundleAnalyzer: {
-      openAnalyzer: false
-    },
-    gitDescribe: {
-      variableName: 'GIT_DESCRIBE'
+      openAnalyzer: true
     }
   }
 };

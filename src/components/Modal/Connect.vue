@@ -14,8 +14,8 @@
         >
           <img
             :src="require(`@/assets/connectors/${connector.id}.svg`)"
-            width="48"
-            height="48"
+            width="42"
+            height="42"
             class="mr-3"
           />
           <h3 v-text="connector.name" />

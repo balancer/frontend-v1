@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { getAddress } from 'ethers/utils';
+import { getAddress } from '@ethersproject/address';
 import config from '@/helpers/config';
 
 const unknownColors = [
