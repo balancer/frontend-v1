@@ -1,12 +1,12 @@
-import { ethers } from 'ethers';
-import { getAddress, bigNumberify, BigNumber as ethersBN } from 'ethers/utils';
+import { getAddress } from '@ethersproject/address';
+import { MaxUint256 } from '@ethersproject/constants';
 import BigNumber from '@/helpers/bignumber';
 import config from '@/helpers/config';
 import trustwalletWhitelist from '@/helpers/trustwalletWhitelist.json';
 
 const LS_KEY = 'balancer-pool-management';
-export const MAX_GAS = bigNumberify('0xffffffff');
-export const MAX_UINT = bigNumberify(ethers.constants.MaxUint256);
+export const MAX_GAS = new BigNumber('0xffffffff');
+export const MAX_UINT = MaxUint256;
 export const POOL_TOKENS_DECIMALS = 18;
 
 export const unknownColors = [
@@ -32,7 +32,7 @@ export function shorten(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
 }
 
-export function bnum(val: string | number | ethersBN | BigNumber): BigNumber {
+export function bnum(val: string | number | BigNumber): BigNumber {
   return new BigNumber(val.toString());
 }
 
@@ -42,7 +42,7 @@ export function scale(input: BigNumber, decimalPlaces: number): BigNumber {
   return input.times(scaleMul);
 }
 
-export function toWei(val: string | ethersBN | BigNumber): BigNumber {
+export function toWei(val: string | BigNumber): BigNumber {
   return scale(bnum(val.toString()), 18).integerValue();
 }
 

@@ -1,14 +1,17 @@
 import Vue from 'vue';
-import { ethers } from 'ethers';
-import { AddressZero } from 'ethers/constants';
-import { getAddress, Interface } from 'ethers/utils';
+import { JsonRpcProvider, Web3Provider } from '@ethersproject/providers';
+import { Contract } from '@ethersproject/contracts';
+import { AddressZero } from '@ethersproject/constants';
+import { getAddress } from '@ethersproject/address';
+import { Interface } from '@ethersproject/abi';
 import abi from '@/helpers/abi';
 import BigNumber from '@/helpers/bignumber';
 import config from '@/helpers/config';
 import lock from '@/helpers/lock';
 import { lsSet, lsGet, lsRemove } from '@/helpers/utils';
 
-const infuraId = process.env.VUE_APP_INFURA_ID || '93e3393c76ed4e1f940d0266e2fdbda2';
+const infuraId =
+  process.env.VUE_APP_INFURA_ID || '93e3393c76ed4e1f940d0266e2fdbda2';
 const backupUrls = {
   1: `https://mainnet.infura.io/v3/${infuraId}`,
   42: `https://kovan.infura.io/v3/${infuraId}`
@@ -193,7 +196,7 @@ const actions = {
   },
   loadTokenMetadata: async ({ commit }, tokens) => {
     commit('LOAD_TOKEN_METADATA_REQUEST');
-    const multi = new ethers.Contract(
+    const multi = new Contract(
       config.addresses.multicall,
       abi['Multicall'],
       web3
@@ -202,20 +205,19 @@ const actions = {
     const testToken = new Interface(abi.TestToken);
     tokens.forEach(token => {
       // @ts-ignore
-      calls.push([token, testToken.functions.decimals.encode([])]);
+      calls.push([token, testToken.encodeFunctionData('decimals', [])]);
       // @ts-ignore
-      calls.push([token, testToken.functions.symbol.encode([])]);
+      calls.push([token, testToken.encodeFunctionData('symbol', [])]);
     });
     const tokenMetadata: any = {};
     try {
       const [, response] = await multi.aggregate(calls);
       for (let i = 0; i < tokens.length; i++) {
-        const decimals = testToken.functions.decimals.decode(
-          response[2 * i]
-        )[0];
-        const symbol = testToken.functions.symbol.decode(
-          response[2 * i + 1]
-        )[0];
+        const [decimals] = testToken.decodeFunctionResult(
+          'decimals',
+          response[0]
+        );
+        const [symbol] = testToken.decodeFunctionResult('symbol', response[1]);
         tokenMetadata[tokens[i]] = {
           decimals,
           symbol
@@ -232,7 +234,7 @@ const actions = {
     const lockConnector = lock.getConnector(connector);
     provider = await lockConnector.connect();
     if (provider) {
-      web3 = new ethers.providers.Web3Provider(provider);
+      web3 = new Web3Provider(provider);
       await dispatch('loadWeb3');
       if (state.account) lsSet('connector', connector);
     }
@@ -267,7 +269,7 @@ const actions = {
   loadProvider: async ({ commit, dispatch }) => {
     commit('LOAD_PROVIDER_REQUEST');
     try {
-      // @TODO Remove any old listeners
+      provider.removeAllListeners();
       if (provider && provider.on) {
         provider.on('chainChanged', async () => {
           commit('HANDLE_CHAIN_CHANGED');
@@ -311,9 +313,7 @@ const actions = {
   loadBackupProvider: async ({ commit }) => {
     commit('LOAD_BACKUP_PROVIDER_REQUEST');
     try {
-      web3 = new ethers.providers.JsonRpcProvider(
-        backupUrls[config.chainId]
-      );
+      web3 = new JsonRpcProvider(backupUrls[config.chainId]);
       provider = null;
       const network = await web3.getNetwork();
       commit('LOAD_BACKUP_PROVIDER_SUCCESS', {
@@ -355,7 +355,7 @@ const actions = {
     commit('SEND_TRANSACTION_REQUEST');
     try {
       const signer = web3.getSigner();
-      const contract = new ethers.Contract(
+      const contract = new Contract(
         getAddress(contractAddress),
         abi[contractType],
         web3
@@ -389,7 +389,7 @@ const actions = {
     commit('GET_BALANCES_REQUEST');
     const address = state.account;
     const promises: any = [];
-    const multi = new ethers.Contract(
+    const multi = new Contract(
       config.addresses.multicall,
       abi['Multicall'],
       web3
@@ -401,7 +401,7 @@ const actions = {
       : Object.keys(state.balances).filter(token => token !== 'ether');
     tokensToFetch.forEach(token => {
       // @ts-ignore
-      calls.push([token, testToken.functions.balanceOf.encode([address])]);
+      calls.push([token, testToken.encodeFunctionData('balanceOf', [address])]);
     });
     promises.push(multi.aggregate(calls));
     promises.push(multi.getEthBalance(address));
@@ -409,14 +409,11 @@ const actions = {
     try {
       // @ts-ignore
       const [[, response], ethBalance] = await Promise.all(promises);
-      const ethBalanceNumber = new BigNumber(ethBalance as any);
-      balances.ether = ethBalanceNumber.toString();
+      balances.ether = new BigNumber(ethBalance as any);
       let i = 0;
       response.forEach(value => {
         if (tokensToFetch && tokensToFetch[i]) {
-          const tokenBalance = testToken.functions.balanceOf.decode(value);
-          const tokenBalanceNumber = new BigNumber(tokenBalance);
-          balances[tokensToFetch[i]] = tokenBalanceNumber.toString();
+          balances[tokensToFetch[i]] = new BigNumber(value);
         }
         i++;
       });
@@ -431,7 +428,7 @@ const actions = {
     commit('GET_ALLOWANCES_REQUEST');
     const address = state.account;
     const promises: any = [];
-    const multi = new ethers.Contract(
+    const multi = new Contract(
       config.addresses.multicall,
       abi['Multicall'],
       web3
@@ -443,7 +440,7 @@ const actions = {
         // @ts-ignore
         token,
         // @ts-ignore
-        testToken.functions.allowance.encode([address, spender])
+        testToken.encodeFunctionData('allowance', [address, spender])
       ]);
     });
     promises.push(multi.aggregate(calls));
@@ -453,8 +450,10 @@ const actions = {
       let i = 0;
       response.forEach(value => {
         if (tokens && tokens[i]) {
-          const tokenAllowance = testToken.functions.allowance.decode(value);
-          const tokenAllowanceNumber = new BigNumber(tokenAllowance);
+          const tokenAllowanceNumber = testToken.decodeFunctionResult(
+            'allowance',
+            value
+          );
           if (!allowances[tokens[i]]) {
             allowances[tokens[i]] = {};
           }
@@ -473,7 +472,7 @@ const actions = {
     commit('GET_PROXY_REQUEST');
     const address = state.account;
     try {
-      const dsProxyRegistryContract = new ethers.Contract(
+      const dsProxyRegistryContract = new Contract(
         config.addresses.dsProxyRegistry,
         abi['DSProxyRegistry'],
         web3
