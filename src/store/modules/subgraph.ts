@@ -152,6 +152,9 @@ const actions = {
     commit('GET_POOL_REQUEST');
     try {
       let { pool } = await request('getPool', query);
+      if (!pool) {
+        return;
+      }
       pool = formatPool(pool);
       commit('GET_POOL_SUCCESS');
       return pool;
