@@ -79,7 +79,11 @@
       class="mt-4"
     />
     <UiButton
-      :disabled="validationError || (hasCustomToken && !customTokenAccept)"
+      :disabled="
+        validationError ||
+          hasLockedToken ||
+          (hasCustomToken && !customTokenAccept)
+      "
       class="mt-4"
       @click="create"
     >
@@ -210,6 +214,20 @@ export default {
       }
       return undefined;
     },
+    hasLockedToken() {
+      const proxyAddress = this.web3.dsProxyAddress;
+      for (const token of this.tokens) {
+        const tokenAllowance = this.web3.allowances[token];
+        if (!tokenAllowance || !tokenAllowance[proxyAddress]) {
+          return true;
+        }
+        const allowance = tokenAllowance[proxyAddress];
+        if (allowance === '0') {
+          return true;
+        }
+      }
+      return false;
+    },
     hasCustomToken() {
       if (this.validationError) {
         return false;
@@ -224,13 +242,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['createPool', 'loadTokenMetadata']),
+    ...mapActions(['createPool']),
     changeToken(selectedToken) {
       const tokenAddress = getAddress(selectedToken);
       Vue.set(this.tokens, this.activeToken, tokenAddress);
       Vue.set(this.weights, tokenAddress, '');
       Vue.set(this.amounts, tokenAddress, '');
-      this.loadTokenMetadata([tokenAddress]);
     },
     addToken() {
       const anotherToken = getAnotherToken(config.tokens, this.tokens);

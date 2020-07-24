@@ -1,7 +1,7 @@
 <template>
   <div class="px-0 px-md-5 py-4">
     <VueLoadingIndicator v-if="loading" class="big" />
-    <div v-else>
+    <div v-else-if="pool">
       <div class="d-flex flex-items-center flex-auto mb-4 px-4 px-md-0">
         <h3 class="flex-auto d-flex flex-items-center">
           <div class="mr-2">Pool {{ _shorten(pool.id) }}</div>
@@ -28,12 +28,17 @@
       <Tabs :pool="pool" />
       <router-view :key="$route.path" :pool="pool" />
     </div>
+    <div v-else class="text-white text-center mt-8" style="font-size: 24px;">
+      Pool not found
+    </div>
     <ModalAddLiquidity
+      v-if="pool"
       :pool="pool"
       :open="modalAddLiquidityOpen"
       @close="modalAddLiquidityOpen = false"
     />
     <ModalRemoveLiquidity
+      v-if="pool"
       :pool="pool"
       :open="modalRemoveLiquidityOpen"
       @close="modalRemoveLiquidityOpen = false"
@@ -59,7 +64,7 @@ export default {
       return Object.keys(this.subgraph.poolShares).includes(this.id);
     },
     enableAddLiquidity() {
-      return this.pool.finalized;
+      return this.pool.finalized && this.pool.totalShares !== '0';
     }
   },
   methods: {
@@ -83,6 +88,10 @@ export default {
     if (Object.keys(this.pool).length === 0) {
       this.loading = true;
       this.pool = await this.getPool(this.id);
+      if (!this.pool) {
+        this.loading = false;
+        return;
+      }
       const unknownTokens = this.pool.tokensList.filter(
         tokenAddress => !this.web3.tokenMetadata[tokenAddress]
       );

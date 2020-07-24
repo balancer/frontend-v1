@@ -107,7 +107,7 @@ export default {
       this.$emit('close');
       this.query = '';
     },
-    handleQuery() {
+    async handleQuery() {
       if (!isValidAddress(this.query)) {
         return;
       }
@@ -116,12 +116,14 @@ export default {
         return;
       }
       this.loading = true;
-      this.loadTokenMetadata([address]);
-      this.getBalances([address]);
-      this.getAllowances({
-        tokens: [address],
-        spender: this.web3.dsProxyAddress
-      });
+      await Promise.all([
+        this.loadTokenMetadata([address]),
+        this.getBalances([address]),
+        this.getAllowances({
+          tokens: [address],
+          spender: this.web3.dsProxyAddress
+        })
+      ]);
       this.loading = false;
     }
   }

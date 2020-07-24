@@ -17,11 +17,7 @@
 
 <script>
 export default {
-  data() {
-    return {
-      accepted: false
-    };
-  }
+  props: ['accepted']
 };
 </script>
 

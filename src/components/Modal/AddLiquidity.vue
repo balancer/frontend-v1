@@ -92,6 +92,7 @@
           :disabled="
             tokenError ||
               validationError ||
+              hasLockedToken ||
               (hasCustomToken && !customTokenAccept)
           "
           :loading="loading"
@@ -282,6 +283,20 @@ export default {
         return 'Adding liquidity failed as your Compound position might go underwater. ';
       }
       return 'Adding liquidity failed as one of the underlying tokens blocked the transfer. ';
+    },
+    hasLockedToken() {
+      const proxyAddress = this.web3.dsProxyAddress;
+      for (const token of this.pool.tokensList) {
+        const tokenAllowance = this.web3.allowances[token];
+        if (!tokenAllowance || !tokenAllowance[proxyAddress]) {
+          return true;
+        }
+        const allowance = tokenAllowance[proxyAddress];
+        if (allowance === '0') {
+          return true;
+        }
+      }
+      return false;
     },
     hasCustomToken() {
       if (this.validationError || this.tokenError) {
