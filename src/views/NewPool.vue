@@ -102,7 +102,6 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { getAddress } from '@ethersproject/address';
-
 import config from '@/helpers/config';
 import { bnum, normalizeBalance, denormalizeBalance } from '@/helpers/utils';
 

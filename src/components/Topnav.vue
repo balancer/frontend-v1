@@ -25,7 +25,11 @@
       </div>
       <div :key="web3.account">
         <template v-if="web3.account && !wrongNetwork">
-          <UiButton class="button-outline" :loading="loading">
+          <UiButton
+            @click="modalOpen = true"
+            :loading="loading"
+            class="button-outline"
+          >
             <Avatar :address="web3.account" size="16" class="mr-2 ml-n1" />
             <span v-if="web3.name" v-text="web3.name" />
             <span v-else v-text="_shorten(web3.account)" />
@@ -40,7 +44,7 @@
         </UiButton>
       </div>
     </div>
-    <ModalConnect
+    <ModalAccount
       :open="modalOpen"
       @close="modalOpen = false"
       @login="handleLogin"
@@ -50,7 +54,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-import config from '@/helpers/config';
 
 export default {
   data() {
@@ -61,7 +64,7 @@ export default {
   },
   computed: {
     wrongNetwork() {
-      return config.chainId !== this.web3.injectedChainId;
+      return this.config.chainId !== this.web3.injectedChainId;
     },
     showLogin() {
       return (

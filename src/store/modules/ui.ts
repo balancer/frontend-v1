@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import lock from '@/helpers/lock';
+import config from '@/helpers/config';
 import { lsGet } from '@/helpers/utils';
 
 const state = {
@@ -28,23 +29,17 @@ const mutations = {
 const actions = {
   init: async ({ commit, dispatch }) => {
     commit('SET', { loading: true });
-    const connector = lsGet('connector');
-    if (connector) {
-      const lockConnector = lock.getConnector(connector);
-      const isLoggedIn = await lockConnector.isLoggedIn();
-      if (isLoggedIn) {
-        await dispatch('login', connector);
-      } else {
-        await dispatch('loadWeb3');
-      }
-    } else {
-      await dispatch('loadWeb3');
-    }
     await Promise.all([
       dispatch('getBalancer'),
       dispatch('getTokenPrices'),
       dispatch('initTokenMetadata')
     ]);
+    const connector = lsGet('connector');
+    if (Object.keys(config.connectors).includes(connector)) {
+      const lockConnector = lock.getConnector(connector);
+      const isLoggedIn = await lockConnector.isLoggedIn();
+      if (isLoggedIn) await dispatch('login', connector);
+    }
     commit('SET', { loading: false, init: true });
   },
   loading: ({ commit }, payload) => {

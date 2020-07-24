@@ -39,7 +39,13 @@ const getters = {
 };
 
 const mutations = {
-  LOGOUT() {
+  LOGOUT(_state) {
+    Vue.set(_state, 'injectedLoaded', false);
+    Vue.set(_state, 'injectedChainId', null);
+    Vue.set(_state, 'account', null);
+    Vue.set(_state, 'name', null);
+    Vue.set(_state, 'active', false);
+    Vue.set(_state, 'balances', {});
     console.debug('LOGOUT');
   },
   LOAD_TOKEN_METADATA_REQUEST() {
@@ -178,6 +184,24 @@ const mutations = {
 };
 
 const actions = {
+  login: async ({ dispatch }, connector = 'injected') => {
+    const lockConnector = lock.getConnector(connector);
+    provider = await lockConnector.connect();
+    if (provider) {
+      web3 = new Web3Provider(provider);
+      await dispatch('loadWeb3');
+      if (state.account) lsSet('connector', connector);
+    }
+  },
+  logout: async ({ commit }) => {
+    const connector = lsGet('connector');
+    if (connector) {
+      const lockConnector = lock.getConnector(connector);
+      await lockConnector.logout();
+      lsRemove('connector');
+    }
+    commit('LOGOUT');
+  },
   initTokenMetadata: async ({ commit }) => {
     const metadata = Object.fromEntries(
       Object.entries(config.tokens).map(tokenEntry => {
@@ -229,24 +253,6 @@ const actions = {
       commit('LOAD_TOKEN_METADATA_FAILURE', e);
       return Promise.reject();
     }
-  },
-  login: async ({ dispatch }, connector = 'injected') => {
-    const lockConnector = lock.getConnector(connector);
-    provider = await lockConnector.connect();
-    if (provider) {
-      web3 = new Web3Provider(provider);
-      await dispatch('loadWeb3');
-      if (state.account) lsSet('connector', connector);
-    }
-  },
-  logout: async ({ commit }) => {
-    const connector = lsGet('connector');
-    if (connector) {
-      const lockConnector = lock.getConnector(connector);
-      await lockConnector.logout();
-      lsRemove('connector');
-    }
-    commit('LOGOUT');
   },
   loadWeb3: async ({ commit, dispatch }) => {
     commit('LOAD_WEB3_REQUEST');

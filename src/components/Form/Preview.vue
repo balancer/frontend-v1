@@ -35,15 +35,8 @@
 </template>
 
 <script>
-import config from '@/helpers/config';
-
 export default {
   props: ['tokens', 'startWeights', 'startBalances', 'swapFee', 'rights'],
-  data() {
-    return {
-      config
-    };
-  },
   computed: {
     weightRatio() {
       return 100 / this.startWeights.reduce((a, b) => a + parseFloat(b), 0);

@@ -40,8 +40,6 @@
 </template>
 
 <script>
-import config from '@/helpers/config';
-
 export default {
   props: ['value'],
   data() {
@@ -53,7 +51,7 @@ export default {
   computed: {
     tokens() {
       return Object.fromEntries(
-        Object.entries(config.tokens)
+        Object.entries(this.config.tokens)
           .map(token => {
             token[1].balance = this.ui.balances[token[1].address];
             token[1].usdValue = this.getPrice(

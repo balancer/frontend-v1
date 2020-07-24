@@ -3,8 +3,6 @@
 </template>
 
 <script>
-import config from '@/helpers/config';
-
 export default {
   props: ['token', 'amount'],
   data() {
@@ -21,7 +19,7 @@ export default {
     price() {
       this.forceRecomputeCounter;
       const amount = this.amount || 0;
-      const token = this.token || config.addresses.weth;
+      const token = this.token || this.config.addresses.weth;
       return this.getPrice(token, amount);
     }
   }
