@@ -242,13 +242,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['createPool', 'loadTokenMetadata']),
+    ...mapActions(['createPool']),
     changeToken(selectedToken) {
       const tokenAddress = getAddress(selectedToken);
       Vue.set(this.tokens, this.activeToken, tokenAddress);
       Vue.set(this.weights, tokenAddress, '');
       Vue.set(this.amounts, tokenAddress, '');
-      this.loadTokenMetadata([tokenAddress]);
     },
     addToken() {
       const anotherToken = getAnotherToken(config.tokens, this.tokens);
