@@ -491,9 +491,12 @@ export default {
               token => token.checksum === tokenAddress
             );
             const amount = bnum(this.amounts[token.checksum]);
-            return denormalizeBalance(amount, token.decimals)
-              .integerValue(BigNumber.ROUND_UP)
-              .toString();
+            const inputAmountIn = denormalizeBalance(amount, token.decimals)
+              .div(1 - BALANCE_BUFFER)
+              .integerValue(BigNumber.ROUND_UP);
+            const balanceAmountIn = bnum(this.web3.balances[token.checksum]);
+            const tokenAmountIn = BigNumber.min(inputAmountIn, balanceAmountIn);
+            return tokenAmountIn.toString();
           })
         };
         await this.joinPool(params);
