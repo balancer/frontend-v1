@@ -223,7 +223,7 @@ const actions = {
     try {
       const dsProxyAddress = rootState.web3.dsProxyAddress;
       const iface = new Interface(abi.BActions);
-      const data = iface.encodeFunctionData('joinswapExternAmount', [
+      const data = iface.encodeFunctionData('joinswapExternAmountIn', [
         getAddress(poolAddress),
         tokenInAddress,
         tokenAmountIn,
