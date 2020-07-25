@@ -111,7 +111,8 @@ import {
   calcPoolTokensByRatio,
   bnum,
   normalizeBalance,
-  denormalizeBalance
+  denormalizeBalance,
+  isTxReverted
 } from '@/helpers/utils';
 import { calcPoolOutGivenSingleIn } from '@/helpers/math';
 import { LiquidityType } from '@/components/SingleMultiToggle';
@@ -142,6 +143,8 @@ export default {
       );
       this.type = LiquidityType.MULTI_ASSET;
       this.activeToken = this.pool.tokens[0].checksum;
+      this.customTokenAccept = false;
+      this.transactionFailed = false;
     }
   },
   computed: {
@@ -499,7 +502,10 @@ export default {
             return tokenAmountIn.toString();
           })
         };
-        await this.joinPool(params);
+        const txResult = await this.joinPool(params);
+        if (isTxReverted(txResult)) {
+          this.transactionFailed = true;
+        }
       } else {
         const tokenIn = this.pool.tokens.find(
           token => token.checksum === this.activeToken
