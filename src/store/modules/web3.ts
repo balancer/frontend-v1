@@ -8,7 +8,7 @@ import abi from '@/helpers/abi';
 import BigNumber from '@/helpers/bignumber';
 import config from '@/helpers/config';
 import lock from '@/helpers/lock';
-import { lsSet, lsGet, lsRemove } from '@/helpers/utils';
+import { lsSet, lsGet, lsRemove, isTxRejected } from '@/helpers/utils';
 
 const GAS_LIMIT_BUFFER = 0.1;
 
@@ -139,6 +139,9 @@ const mutations = {
   },
   SEND_TRANSACTION_SUCCESS() {
     console.debug('SEND_TRANSACTION_SUCCESS');
+  },
+  SEND_TRANSACTION_REJECTED(_state, payload) {
+    console.debug('SEND_TRANSACTION_REJECTED', payload);
   },
   SEND_TRANSACTION_FAILURE(_state, payload) {
     console.debug('SEND_TRANSACTION_FAILURE', payload);
@@ -384,8 +387,12 @@ const actions = {
       commit('SEND_TRANSACTION_SUCCESS');
       return tx;
     } catch (e) {
+      if (isTxRejected(e)) {
+        commit('SEND_TRANSACTION_REJECTED', e);
+        return Promise.reject();
+      }
       commit('SEND_TRANSACTION_FAILURE', e);
-      return Promise.reject();
+      return Promise.reject(e);
     }
   },
   loadAccount: async ({ dispatch }) => {

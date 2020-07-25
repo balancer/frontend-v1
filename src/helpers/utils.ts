@@ -167,3 +167,17 @@ export function lsGet(key: string) {
 export function lsRemove(key: string) {
   return localStorage.removeItem(`${LS_KEY}.${key}`);
 }
+
+export const isTxRejected = error => {
+  if (!error) {
+    return false;
+  }
+  return error.code === 4001;
+};
+
+export const isTxReverted = error => {
+  if (!error) {
+    return false;
+  }
+  return error.code === -32016;
+};
