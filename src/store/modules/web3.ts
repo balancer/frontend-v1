@@ -10,6 +10,8 @@ import config from '@/helpers/config';
 import lock from '@/helpers/lock';
 import { lsSet, lsGet, lsRemove } from '@/helpers/utils';
 
+const GAS_LIMIT_BUFFER = 0.1;
+
 const infuraId =
   process.env.VUE_APP_INFURA_ID || '93e3393c76ed4e1f940d0266e2fdbda2';
 const backupUrls = {
@@ -367,6 +369,16 @@ const actions = {
         web3
       );
       const contractWithSigner = contract.connect(signer);
+
+      // Gas estimation
+      const gasLimitNumber = await contractWithSigner.estimateGas[action](
+        ...params,
+        overrides
+      );
+      const gasLimit = gasLimitNumber.toNumber();
+      const safeGasLimit = Math.floor(gasLimit * (1 + GAS_LIMIT_BUFFER));
+      overrides.gasLimit = safeGasLimit;
+
       const tx = await contractWithSigner[action](...params, overrides);
       await tx.wait();
       commit('SEND_TRANSACTION_SUCCESS');
