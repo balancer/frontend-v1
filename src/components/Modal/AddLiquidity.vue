@@ -93,7 +93,8 @@
             tokenError ||
               validationError ||
               hasLockedToken ||
-              (hasCustomToken && !customTokenAccept)
+              (hasCustomToken && !customTokenAccept) ||
+              transactionFailed
           "
           :loading="loading"
         >
@@ -111,7 +112,8 @@ import {
   calcPoolTokensByRatio,
   bnum,
   normalizeBalance,
-  denormalizeBalance
+  denormalizeBalance,
+  isTxReverted
 } from '@/helpers/utils';
 import { calcPoolOutGivenSingleIn } from '@/helpers/math';
 import { LiquidityType } from '@/components/SingleMultiToggle';
@@ -142,6 +144,8 @@ export default {
       );
       this.type = LiquidityType.MULTI_ASSET;
       this.activeToken = this.pool.tokens[0].checksum;
+      this.customTokenAccept = false;
+      this.transactionFailed = false;
     }
   },
   computed: {
@@ -288,6 +292,9 @@ export default {
     hasLockedToken() {
       const proxyAddress = this.web3.dsProxyAddress;
       for (const token of this.pool.tokensList) {
+        if (!this.isMultiAsset && this.activeToken !== token) {
+          continue;
+        }
         const tokenAllowance = this.web3.allowances[token];
         if (!tokenAllowance || !tokenAllowance[proxyAddress]) {
           return true;
@@ -491,12 +498,18 @@ export default {
               token => token.checksum === tokenAddress
             );
             const amount = bnum(this.amounts[token.checksum]);
-            return denormalizeBalance(amount, token.decimals)
-              .integerValue(BigNumber.ROUND_UP)
-              .toString();
+            const inputAmountIn = denormalizeBalance(amount, token.decimals)
+              .div(1 - BALANCE_BUFFER)
+              .integerValue(BigNumber.ROUND_UP);
+            const balanceAmountIn = bnum(this.web3.balances[token.checksum]);
+            const tokenAmountIn = BigNumber.min(inputAmountIn, balanceAmountIn);
+            return tokenAmountIn.toString();
           })
         };
-        await this.joinPool(params);
+        const txResult = await this.joinPool(params);
+        if (isTxReverted(txResult)) {
+          this.transactionFailed = true;
+        }
       } else {
         const tokenIn = this.pool.tokens.find(
           token => token.checksum === this.activeToken
