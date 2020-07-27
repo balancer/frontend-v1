@@ -291,6 +291,9 @@ export default {
     hasLockedToken() {
       const proxyAddress = this.web3.dsProxyAddress;
       for (const token of this.pool.tokensList) {
+        if (!this.isMultiAsset && this.activeToken !== token) {
+          continue;
+        }
         const tokenAllowance = this.web3.allowances[token];
         if (!tokenAllowance || !tokenAllowance[proxyAddress]) {
           return true;
