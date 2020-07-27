@@ -17,7 +17,7 @@
       {{ $n(myPoolBalance) }} {{ token.symbol }}
     </div>
     <div class="column hide-sm hide-md hide-lg">
-      {{ $n(getPrice(token.address, myPoolBalance), 'currency') }}
+      {{ $n(myShareValue, 'currency') }}
     </div>
   </UiTableTr>
 </template>
@@ -33,6 +33,10 @@ export default {
     myPoolBalance() {
       if (!this.myShares) return 0;
       return (this.myShares / this.pool.totalShares) * this.token.balance;
+    },
+    myShareValue() {
+      const price = this.price.values[this.token.checksum];
+      return price * this.myPoolBalance;
     }
   }
 };

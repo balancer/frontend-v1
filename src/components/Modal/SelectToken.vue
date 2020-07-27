@@ -63,7 +63,7 @@ export default {
           .map(token => {
             const address = token[0];
             const decimals = token[1].decimals;
-            const price = bnum(this.subgraph.tokenPrices[address] || 0);
+            const price = bnum(this.price.values[address] || 0);
             const balance = normalizeBalance(
               this.web3.balances[address] || 0,
               decimals
@@ -98,7 +98,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['loadTokenMetadata', 'getBalances', 'getAllowances']),
+    ...mapActions([
+      'loadTokenMetadata',
+      'loadPricesByAddress',
+      'getBalances',
+      'getAllowances'
+    ]),
     selectToken(token) {
       this.$emit('input', token);
       this.close();
@@ -118,6 +123,7 @@ export default {
       this.loading = true;
       await Promise.all([
         this.loadTokenMetadata([address]),
+        this.loadPricesByAddress([address]),
         this.getBalances([address]),
         this.getAllowances({
           tokens: [address],

@@ -14,7 +14,7 @@ export default {
   },
   computed: {
     ...mapState(modules),
-    ...mapGetters(['getPrice', 'hasProxy'])
+    ...mapGetters(['hasProxy'])
   },
   methods: {
     _shorten(str: string): string {
