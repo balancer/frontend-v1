@@ -93,7 +93,8 @@
             tokenError ||
               validationError ||
               hasLockedToken ||
-              (hasCustomToken && !customTokenAccept)
+              (hasCustomToken && !customTokenAccept) ||
+              transactionFailed
           "
           :loading="loading"
         >
