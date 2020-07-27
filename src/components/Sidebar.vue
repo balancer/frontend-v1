@@ -11,11 +11,13 @@
           ETH → WETH
         </div>
         <div class="d-flex">
-          <input
-            v-model="weth.wrapAmount"
-            class="input flex-auto text-right text-white amount-input"
-            placeholder="0.0"
-          />
+          <div class="input d-flex flex-justify-end">
+            <input
+              v-model="weth.wrapAmount"
+              class="flex-auto text-right text-white amount-input"
+              placeholder="0.0"
+            />
+          </div>
           <UiButton class="button-outline ml-2 px-4" @click="wrapEther">
             Wrap
           </UiButton>
@@ -24,11 +26,16 @@
           WETH → ETH
         </div>
         <div class="d-flex">
-          <input
-            v-model="weth.unwrapAmount"
-            class="input flex-auto text-right text-white amount-input"
-            placeholder="0.0"
-          />
+          <div class="input d-flex flex-items-center">
+            <a @click="handleMax()">
+              <UiLabel v-text="'Max'" />
+            </a>
+            <input
+              v-model="weth.unwrapAmount"
+              class="flex-auto text-right text-white amount-input ml-1"
+              placeholder="0.0"
+            />
+          </div>
           <UiButton class="button-outline ml-2 px-3" @click="unwrapEther">
             Unwrap
           </UiButton>
@@ -59,6 +66,7 @@
 <script>
 import { mapActions } from 'vuex';
 
+import config from '@/helpers/config';
 import { bnum, clone, normalizeBalance } from '@/helpers/utils';
 
 const startItems = [
@@ -71,6 +79,14 @@ const startItems = [
     to: { name: 'private' }
   }
 ];
+
+function getToken(symbol) {
+  const tokenAddresses = Object.keys(config.tokens);
+  const tokenAddress = tokenAddresses.find(
+    tokenAddress => config.tokens[tokenAddress].symbol === symbol
+  );
+  return config.tokens[tokenAddress];
+}
 
 export default {
   data() {
@@ -114,6 +130,12 @@ export default {
     },
     unwrapEther() {
       this.unwrap(this.weth.unwrapAmount);
+    },
+    handleMax() {
+      const weth = getToken('WETH');
+      const wethBalance = this.web3.balances[weth.address];
+      const balance = normalizeBalance(wethBalance, weth.decimals);
+      this.weth.unwrapAmount = balance.toString();
     },
     formatBalance(balanceString, address) {
       const decimals =
@@ -162,5 +184,7 @@ export default {
 <style scoped>
 .amount-input {
   width: 60%;
+  background-color: transparent;
+  border: none;
 }
 </style>
