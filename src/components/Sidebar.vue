@@ -118,7 +118,8 @@ export default {
     formatBalance(balanceString, address) {
       const decimals =
         address === 'ether' ? 18 : this.web3.tokenMetadata[address].decimals;
-      return normalizeBalance(balanceString, decimals);
+      const rawBalance = normalizeBalance(balanceString, decimals);
+      return this._precision(rawBalance.toNumber(), address);
     }
   }
 };
