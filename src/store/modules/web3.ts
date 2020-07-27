@@ -9,7 +9,9 @@ import BigNumber from '@/helpers/bignumber';
 import config from '@/helpers/config';
 import lock from '@/helpers/lock';
 import wsProvider from '@/helpers/ws';
-import { lsSet, lsGet, lsRemove } from '@/helpers/utils';
+import { lsSet, lsGet, lsRemove, isTxRejected } from '@/helpers/utils';
+
+const GAS_LIMIT_BUFFER = 0.1;
 
 let provider;
 let web3;
@@ -132,6 +134,9 @@ const mutations = {
   },
   SEND_TRANSACTION_SUCCESS() {
     console.debug('SEND_TRANSACTION_SUCCESS');
+  },
+  SEND_TRANSACTION_REJECTED(_state, payload) {
+    console.debug('SEND_TRANSACTION_REJECTED', payload);
   },
   SEND_TRANSACTION_FAILURE(_state, payload) {
     console.debug('SEND_TRANSACTION_FAILURE', payload);
@@ -362,13 +367,27 @@ const actions = {
         web3
       );
       const contractWithSigner = contract.connect(signer);
+
+      // Gas estimation
+      const gasLimitNumber = await contractWithSigner.estimateGas[action](
+        ...params,
+        overrides
+      );
+      const gasLimit = gasLimitNumber.toNumber();
+      const safeGasLimit = Math.floor(gasLimit * (1 + GAS_LIMIT_BUFFER));
+      overrides.gasLimit = safeGasLimit;
+
       const tx = await contractWithSigner[action](...params, overrides);
       await tx.wait();
       commit('SEND_TRANSACTION_SUCCESS');
       return tx;
     } catch (e) {
+      if (isTxRejected(e)) {
+        commit('SEND_TRANSACTION_REJECTED', e);
+        return Promise.reject();
+      }
       commit('SEND_TRANSACTION_FAILURE', e);
-      return Promise.reject();
+      return Promise.reject(e);
     }
   },
   loadAccount: async ({ dispatch }) => {

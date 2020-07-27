@@ -8,7 +8,8 @@ import {
   denormalizeBalance,
   MAX_UINT,
   shorten,
-  toWei
+  toWei,
+  isTxReverted
 } from '@/helpers/utils';
 import BigNumber from '@/helpers/bignumber';
 
@@ -113,6 +114,9 @@ const actions = {
       commit('CREATE_PROXY_SUCCESS');
       return tx;
     } catch (e) {
+      if (!e || isTxReverted(e)) {
+        return e;
+      }
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('CREATE_PROXY_FAILURE', e);
     }
@@ -161,6 +165,9 @@ const actions = {
       dispatch('notify', ['green', "You've successfully created a pool"]);
       commit('CREATE_POOL_SUCCESS');
     } catch (e) {
+      if (!e || isTxReverted(e)) {
+        return e;
+      }
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('CREATE_POOL_FAILURE', e);
     }
@@ -201,6 +208,9 @@ const actions = {
       dispatch('notify', ['green', "You've successfully added liquidity"]);
       commit('JOIN_POOL_SUCCESS');
     } catch (e) {
+      if (!e || isTxReverted(e)) {
+        return e;
+      }
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('JOIN_POOL_FAILURE', e);
     }
@@ -213,7 +223,7 @@ const actions = {
     try {
       const dsProxyAddress = rootState.web3.dsProxyAddress;
       const iface = new Interface(abi.BActions);
-      const data = iface.encodeFunctionData('joinswapExternAmount', [
+      const data = iface.encodeFunctionData('joinswapExternAmountIn', [
         getAddress(poolAddress),
         tokenInAddress,
         tokenAmountIn,
@@ -243,6 +253,9 @@ const actions = {
       dispatch('notify', ['green', "You've successfully added liquidity"]);
       commit('JOINSWAP_EXTERN_AMOUNT_SUCCESS');
     } catch (e) {
+      if (!e || isTxReverted(e)) {
+        return e;
+      }
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('JOINSWAP_EXTERN_AMOUNT_FAILURE', e);
     }
@@ -266,6 +279,9 @@ const actions = {
       dispatch('notify', ['green', "You've successfully removed liquidity"]);
       commit('EXIT_POOL_SUCCESS');
     } catch (e) {
+      if (!e || isTxReverted(e)) {
+        return e;
+      }
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('EXIT_POOL_FAILURE', e);
     }
@@ -293,6 +309,9 @@ const actions = {
       dispatch('notify', ['green', "You've successfully removed liquidity"]);
       commit('EXITSWAP_POOL_AMOUNT_IN_SUCCESS');
     } catch (e) {
+      if (!e || isTxReverted(e)) {
+        return e;
+      }
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('EXITSWAP_POOL_AMOUNT_IN_FAILURE', e);
     }
@@ -316,6 +335,9 @@ const actions = {
       dispatch('notify', ['green', `You've successfully unlocked ${symbol}`]);
       commit('APPROVE_SUCCESS');
     } catch (e) {
+      if (!e || isTxReverted(e)) {
+        return e;
+      }
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('APPROVE_FAILURE', e);
     }
@@ -337,6 +359,9 @@ const actions = {
       ]);
       commit('WRAP_ETH_SUCCESS');
     } catch (e) {
+      if (!e || isTxReverted(e)) {
+        return e;
+      }
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('WRAP_ETH_FAILURE', e);
     }
@@ -358,6 +383,9 @@ const actions = {
       ]);
       commit('UNWRAP_ETH_SUCCESS');
     } catch (e) {
+      if (!e || isTxReverted(e)) {
+        return e;
+      }
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('UNWRAP_ETH_FAILURE', e);
     }

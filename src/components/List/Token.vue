@@ -11,10 +11,10 @@
     </div>
     <div class="column">{{ $n(token.weightPercent.toFixed(2)) }}%</div>
     <div class="column hide-sm">
-      {{ $n(parseInt(token.balance)) }} {{ token.symbol }}
+      {{ $n(tokenBalance) }}
     </div>
     <div class="column hide-sm hide-md">
-      {{ $n(myPoolBalance) }} {{ token.symbol }}
+      {{ $n(myPoolBalance) }}
     </div>
     <div class="column hide-sm hide-md hide-lg">
       {{ $n(myShareValue, 'currency') }}
@@ -32,11 +32,19 @@ export default {
     },
     myPoolBalance() {
       if (!this.myShares) return 0;
-      return (this.myShares / this.pool.totalShares) * this.token.balance;
+      const balance =
+        (this.myShares / this.pool.totalShares) * this.token.balance;
+      return this._precision(balance, this.token.checksum);
     },
     myShareValue() {
       const price = this.price.values[this.token.checksum];
       return price * this.myPoolBalance;
+    },
+    tokenBalance() {
+      return this._precision(
+        parseFloat(this.token.balance),
+        this.token.checksum
+      );
     }
   }
 };

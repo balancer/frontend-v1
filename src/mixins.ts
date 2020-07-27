@@ -30,6 +30,12 @@ export default {
       // @ts-ignore
       const token = this.web3.tokenMetadata[address];
       return token ? token.symbol : this._shorten(address);
+    },
+    _precision(rawValue: number, address: string): number {
+      const tokenConfig = config.tokens[address] || {};
+      const precision = tokenConfig.precision || config.defaultPrecision;
+      const value = rawValue.toFixed(precision);
+      return parseFloat(value);
     }
   }
 };
