@@ -3,7 +3,6 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '@/views/Home.vue';
 import Private from '@/views/Private.vue';
 import MyPools from '@/views/MyPools.vue';
-import Create from '@/views/Create.vue';
 import Setup from '@/views/Setup.vue';
 import Wallet from '@/views/Wallet.vue';
 import Token from '@/views/Token.vue';
@@ -20,7 +19,6 @@ const routes: Array<RouteConfig> = [
   { path: '/', name: 'home', component: Home },
   { path: '/private', name: 'private', component: Private },
   { path: '/my-pools', name: 'my-pools', component: MyPools },
-  { path: '/create', name: 'create', component: Create },
   { path: '/setup', name: 'setup', component: Setup },
   { path: '/wallet', name: 'wallet', component: Wallet },
   { path: '/token/:id', name: 'token', component: Token },
