@@ -429,11 +429,12 @@ const actions = {
     try {
       // @ts-ignore
       const [[, response], ethBalance] = await Promise.all(promises);
-      balances.ether = new BigNumber(ethBalance.toString());
+      balances.ether = ethBalance.toString();
       let i = 0;
       response.forEach(value => {
         if (tokensToFetch && tokensToFetch[i]) {
-          balances[tokensToFetch[i]] = new BigNumber(value);
+          const balanceNumber = testToken.decodeFunctionResult('balanceOf', value);
+          balances[tokensToFetch[i]] = balanceNumber.toString();
         }
         i++;
       });
