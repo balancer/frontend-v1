@@ -5,6 +5,9 @@
       <div class="d-flex flex-items-center flex-auto mb-4 px-4 px-md-0">
         <h3 class="flex-auto d-flex flex-items-center">
           <div class="mr-2">Pool {{ _shorten(pool.id) }}</div>
+          <a :href="_etherscanLink(pool.id)" target="_blank" class="text-white">
+            <Icon name="external-link" size="16" class="ml-1" />
+          </a>
           <UiLabel v-if="!pool.finalized" v-text="'Private'" />
         </h3>
         <div class="d-flex">
