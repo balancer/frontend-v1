@@ -8,16 +8,11 @@ import abi from '@/helpers/abi';
 import BigNumber from '@/helpers/bignumber';
 import config from '@/helpers/config';
 import lock from '@/helpers/lock';
+import wsProvider from '@/helpers/ws';
 import { lsSet, lsGet, lsRemove, isTxRejected } from '@/helpers/utils';
 
 const GAS_LIMIT_BUFFER = 0.1;
 
-const infuraId =
-  process.env.VUE_APP_INFURA_ID || '93e3393c76ed4e1f940d0266e2fdbda2';
-const backupUrls = {
-  1: `https://mainnet.infura.io/v3/${infuraId}`,
-  42: `https://kovan.infura.io/v3/${infuraId}`
-};
 let provider;
 let web3;
 
@@ -324,7 +319,7 @@ const actions = {
   loadBackupProvider: async ({ commit }) => {
     commit('LOAD_BACKUP_PROVIDER_REQUEST');
     try {
-      web3 = new JsonRpcProvider(backupUrls[config.chainId]);
+      web3 = wsProvider;
       provider = null;
       const network = await web3.getNetwork();
       commit('LOAD_BACKUP_PROVIDER_SUCCESS', {
