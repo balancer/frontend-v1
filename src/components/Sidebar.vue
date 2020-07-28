@@ -67,7 +67,7 @@
 import { mapActions } from 'vuex';
 
 import config from '@/helpers/config';
-import { bnum, clone, normalizeBalance } from '@/helpers/utils';
+import { clone, normalizeBalance } from '@/helpers/utils';
 
 const startItems = [
   {
