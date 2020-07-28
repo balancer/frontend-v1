@@ -174,7 +174,7 @@ export default {
     tokenError() {
       if (
         this.pool.tokens.some(token =>
-          this.config.errors.includes(token.checksum)
+          this.config.errors.transferFee.includes(token.checksum)
         )
       ) {
         return 'This pool contains a deflationary token that is likely to cause loss of funds. Do not deposit.';
