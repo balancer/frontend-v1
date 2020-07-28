@@ -75,7 +75,8 @@ export default {
       'getPool',
       'getBalances',
       'getAllowances',
-      'loadTokenMetadata'
+      'loadTokenMetadata',
+      'loadPricesByAddress'
     ]),
     openAddLiquidityModal() {
       if (!this.hasProxy) {
@@ -100,6 +101,7 @@ export default {
       );
       if (unknownTokens.length > 0) {
         await this.loadTokenMetadata(unknownTokens);
+        await this.loadPricesByAddress(unknownTokens);
       }
       if (this.web3.account) {
         await Promise.all([

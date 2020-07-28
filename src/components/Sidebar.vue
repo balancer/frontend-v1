@@ -67,7 +67,7 @@
 import { mapActions } from 'vuex';
 
 import config from '@/helpers/config';
-import { bnum, clone, normalizeBalance } from '@/helpers/utils';
+import { clone, normalizeBalance } from '@/helpers/utils';
 
 const startItems = [
   {
@@ -112,14 +112,13 @@ export default {
     },
     balances() {
       return Object.fromEntries(
-        Object.entries(this.web3.balances).filter(entry => {
-          const address = entry[0];
-          const balance = entry[1];
-          return (
-            (address === 'ether' || this.web3.tokenMetadata[address]) &&
-            bnum(balance).gt(0)
-          );
-        })
+        Object.entries(this.web3.balances)
+          .filter(entry => this.getTokenValue(entry) > 1)
+          .sort((a, b) => {
+            const aValue = this.getTokenValue(a);
+            const bValue = this.getTokenValue(b);
+            return bValue - aValue;
+          })
       );
     }
   },
@@ -136,6 +135,19 @@ export default {
       const wethBalance = this.web3.balances[weth.address];
       const balance = normalizeBalance(wethBalance, weth.decimals);
       this.weth.unwrapAmount = balance.toString();
+    },
+    getTokenValue(entry) {
+      const address = entry[0];
+      const balanceString = entry[1];
+      const decimals =
+        address === 'ether' ? 18 : this.web3.tokenMetadata[address].decimals;
+      const balance = normalizeBalance(balanceString, decimals);
+      const weth = getToken('WETH');
+      const price =
+        address === 'ether'
+          ? this.price.values[weth.address]
+          : this.price.values[address];
+      return balance.times(price).toNumber();
     },
     formatBalance(balanceString, address) {
       const decimals =
