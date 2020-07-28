@@ -49,9 +49,7 @@
       <div v-if="web3.account" class="text-white">
         <div v-for="(balance, i) in balances" :key="i" class="d-flex mb-3">
           <Token :address="i" size="20" class="mr-2" />
-          <div v-if="i !== 'ether'" class="flex-auto">
-            {{ _ticker(i) || 'ETH' }}
-          </div>
+          <div v-text="_ticker(i)" v-if="i !== 'ether'" class="flex-auto" />
           <div v-else class="flex-auto">ETH</div>
           <div>{{ $n(formatBalance(balance, i)) }}</div>
         </div>
@@ -111,15 +109,18 @@ export default {
       return items;
     },
     balances() {
-      return Object.fromEntries(
-        Object.entries(this.web3.balances)
-          .filter(entry => this.getTokenValue(entry) > 1)
+      const balances = Object.fromEntries(
+        Object.entries(clone(this.web3.balances))
+          .filter(entry => this.getTokenValue(entry) > 0.001)
           .sort((a, b) => {
             const aValue = this.getTokenValue(a);
             const bValue = this.getTokenValue(b);
             return bValue - aValue;
           })
       );
+      const target = { ether: balances.ether };
+      target[config.addresses.weth] = balances[config.addresses.weth];
+      return Object.assign(target, balances);
     }
   },
   methods: {

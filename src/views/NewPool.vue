@@ -62,13 +62,14 @@
       Add Token
     </UiButton>
     <div class="d-flex flex-items-center px-4 px-md-0 my-4">
-      <h3 class="flex-auto" v-text="'Swap fee'" />
+      <h3 class="flex-auto" v-text="'Swap fee (%)'" />
     </div>
     <div>
       <input
         class="input pool-input text-right"
         :class="isSwapFeeInputValid() ? 'text-white' : 'text-red'"
         v-model="swapFee"
+        placeholder="0.00"
       />
     </div>
     <MessageError v-if="validationError" :text="validationError" class="mt-4" />
@@ -116,7 +117,7 @@ function getAnotherToken(tokens, selectedTokens) {
   const tokenAddresses = Object.keys(tokens);
   for (const tokenAddress of tokenAddresses) {
     const token = tokens[tokenAddress];
-    if (token.symbol == 'ETH') {
+    if (token.symbol === 'ETH') {
       continue;
     }
     if (!selectedTokens.includes(token.address)) {
@@ -130,7 +131,7 @@ export default {
     return {
       amounts: {},
       weights: {},
-      swapFee: '0.15',
+      swapFee: '',
       tokens: [],
       activeToken: 0,
       modalOpen: false,
