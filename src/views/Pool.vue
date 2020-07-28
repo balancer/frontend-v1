@@ -1,7 +1,21 @@
 <template>
   <div class="px-0 px-md-5 py-4">
     <VueLoadingIndicator v-if="loading" class="big" />
-    <div v-else-if="pool">
+    <div
+      v-else-if="!pool"
+      class="text-white text-center mt-8"
+      style="font-size: 24px;"
+    >
+      Pool not found
+    </div>
+    <div
+      v-else-if="hasScamToken"
+      class="text-white text-center mt-8"
+      style="font-size: 24px;"
+    >
+      Pool unavailable
+    </div>
+    <div v-else>
       <div class="d-flex flex-items-center flex-auto mb-4 px-4 px-md-0">
         <h3 class="flex-auto d-flex flex-items-center">
           <div>Pool {{ _shorten(pool.id) }}</div>
@@ -31,9 +45,6 @@
       <Tabs :pool="pool" />
       <router-view :key="$route.path" :pool="pool" />
     </div>
-    <div v-else class="text-white text-center mt-8" style="font-size: 24px;">
-      Pool not found
-    </div>
     <ModalAddLiquidity
       v-if="pool"
       :pool="pool"
@@ -52,6 +63,8 @@
 <script>
 import { mapActions } from 'vuex';
 
+import config from '@/helpers/config';
+
 export default {
   data() {
     return {
@@ -63,6 +76,17 @@ export default {
     };
   },
   computed: {
+    hasScamToken() {
+      if (!this.pool) {
+        return false;
+      }
+      for (const token of this.pool.tokensList) {
+        if (config.scams.includes(token)) {
+          return true;
+        }
+      }
+      return false;
+    },
     hasShares() {
       return Object.keys(this.subgraph.poolShares).includes(this.id);
     },
