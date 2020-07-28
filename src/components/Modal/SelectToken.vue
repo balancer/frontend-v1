@@ -26,6 +26,11 @@
               <Token :address="i" class="mr-2" />
               {{ token.name }}
               <span class="text-gray ml-2" v-text="token.symbol" />
+              <span
+                class="text-red ml-2"
+                v-if="isDisabled(i)"
+                v-text="'Bad ERC20'"
+              />
             </div>
             <span>
               <span
@@ -46,6 +51,7 @@
 import { mapActions } from 'vuex';
 import { getAddress } from '@ethersproject/address';
 
+import config from '@/helpers/config';
 import { bnum, isValidAddress, normalizeBalance } from '@/helpers/utils';
 
 export default {
@@ -105,6 +111,9 @@ export default {
       'getAllowances'
     ]),
     selectToken(token) {
+      if (this.isDisabled(token)) {
+        return;
+      }
       this.$emit('input', token);
       this.close();
     },
@@ -131,6 +140,12 @@ export default {
         })
       ]);
       this.loading = false;
+    },
+    isDisabled(address) {
+      const noBool = config.errors.noBool.includes(address);
+      const transferFee = config.errors.transferFee.includes(address);
+      const scamToken = config.scams.includes(address);
+      return noBool || transferFee || scamToken;
     }
   }
 };
