@@ -1,11 +1,10 @@
 import Vue from 'vue';
-import { JsonRpcProvider, Web3Provider } from '@ethersproject/providers';
+import { Web3Provider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
 import { AddressZero } from '@ethersproject/constants';
 import { getAddress } from '@ethersproject/address';
 import { Interface } from '@ethersproject/abi';
 import abi from '@/helpers/abi';
-import BigNumber from '@/helpers/bignumber';
 import config from '@/helpers/config';
 import lock from '@/helpers/lock';
 import wsProvider from '@/helpers/ws';
@@ -429,11 +428,16 @@ const actions = {
     try {
       // @ts-ignore
       const [[, response], ethBalance] = await Promise.all(promises);
-      balances.ether = new BigNumber(ethBalance as any);
+      // @ts-ignore
+      balances.ether = ethBalance.toString();
       let i = 0;
       response.forEach(value => {
         if (tokensToFetch && tokensToFetch[i]) {
-          balances[tokensToFetch[i]] = new BigNumber(value);
+          const balanceNumber = testToken.decodeFunctionResult(
+            'balanceOf',
+            value
+          );
+          balances[tokensToFetch[i]] = balanceNumber.toString();
         }
         i++;
       });

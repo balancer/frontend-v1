@@ -270,7 +270,7 @@ export default {
       this.handleAmountChange(tokenAddress);
     },
     handleAmountChange(tokenAddress) {
-      const tokenPrice = this.subgraph.tokenPrices[tokenAddress];
+      const tokenPrice = this.price.values[tokenAddress];
       if (!tokenPrice) {
         return;
       }
@@ -286,7 +286,7 @@ export default {
           this.amounts[token] = '';
           continue;
         }
-        const tokenPrice = this.subgraph.tokenPrices[token];
+        const tokenPrice = this.price.values[token];
         if (!tokenPrice) {
           continue;
         }
@@ -343,7 +343,7 @@ export default {
       return true;
     },
     getValue(tokenAddress) {
-      const tokenPrice = this.subgraph.tokenPrices[tokenAddress];
+      const tokenPrice = this.price.values[tokenAddress];
       if (!tokenPrice || !this.amounts[tokenAddress]) {
         return '-';
       }

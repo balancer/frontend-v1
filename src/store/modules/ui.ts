@@ -29,9 +29,12 @@ const mutations = {
 const actions = {
   init: async ({ commit, dispatch }) => {
     commit('SET', { loading: true });
+    const tokenIds = Object.keys(config.tokens)
+      .map(tokenAddress => config.tokens[tokenAddress].id)
+      .filter(tokenId => !!tokenId);
     await Promise.all([
       dispatch('getBalancer'),
-      dispatch('getTokenPrices'),
+      dispatch('loadPricesById', tokenIds),
       dispatch('initTokenMetadata')
     ]);
     const connector = lsGet('connector');
