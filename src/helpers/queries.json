@@ -31,6 +31,7 @@
   "getPool": {
     "pool": {
       "id": true,
+      "controller": true,
       "publicSwap": true,
       "finalized": true,
       "swapFee": true,

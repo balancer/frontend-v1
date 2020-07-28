@@ -11,7 +11,7 @@ import Pool from '@/views/Pool.vue';
 import PoolTokens from '@/views/Pool/Tokens.vue';
 import PoolSwaps from '@/views/Pool/Swaps.vue';
 import PoolShares from '@/views/Pool/Shares.vue';
-import PoolSettings from '@/views/Pool/Settings.vue';
+import PoolAbout from '@/views/Pool/About.vue';
 
 Vue.use(VueRouter);
 
@@ -34,7 +34,7 @@ const routes: Array<RouteConfig> = [
       { path: '', name: 'pool', component: PoolTokens },
       { path: 'swaps', name: 'pool-swaps', component: PoolSwaps },
       { path: 'shares', name: 'pool-shares', component: PoolShares },
-      { path: 'settings', name: 'pool-settings', component: PoolSettings }
+      { path: 'about', name: 'pool-about', component: PoolAbout }
     ]
   },
   { path: '/*', name: 'error-404', beforeEnter: (to, from, next) => next('/') }
