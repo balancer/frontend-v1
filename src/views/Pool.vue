@@ -8,13 +8,6 @@
     >
       Pool not found
     </div>
-    <div
-      v-else-if="hasScamToken"
-      class="text-white text-center mt-8"
-      style="font-size: 24px;"
-    >
-      Pool unavailable
-    </div>
     <div v-else>
       <div class="d-flex flex-items-center flex-auto mb-4 px-4 px-md-0">
         <h3 class="flex-auto d-flex flex-items-center">
@@ -88,7 +81,11 @@ export default {
       return Object.keys(this.subgraph.poolShares).includes(this.id);
     },
     enableAddLiquidity() {
-      return this.pool.finalized && this.pool.totalShares !== '0';
+      return (
+        this.pool.finalized &&
+        this.pool.totalShares !== '0' &&
+        !this.hasScamToken
+      );
     }
   },
   methods: {
