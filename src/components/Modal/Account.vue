@@ -13,9 +13,9 @@
           <UiButton class="button-outline width-full v-align-middle">
             <img
               :src="require(`@/assets/connectors/${connector.id}.svg`)"
-              width="32"
-              height="32"
+              height="28"
               class="mr-2 v-align-middle"
+              style="max-width: 32px;"
             />
             {{ connector.name }}
           </UiButton>
