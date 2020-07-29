@@ -4,7 +4,6 @@
 
 <script>
 import { getAddress } from '@ethersproject/address';
-import config from '@/helpers/config';
 
 const unknownColors = [
   '#6f6776',

@@ -25,7 +25,7 @@
             <div class="flex-auto d-flex flex-items-center">
               <Token :address="i" class="mr-2" />
               {{ token.name }}
-              <span class="text-gray ml-2" v-text="token.symbol" />
+              <span class="ml-2" v-text="token.symbol" />
               <span
                 class="text-red ml-2"
                 v-if="isDisabled(i)"

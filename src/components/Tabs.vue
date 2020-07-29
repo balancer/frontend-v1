@@ -3,31 +3,35 @@
 </template>
 
 <script>
-import { clone } from '@/helpers/utils';
-
-const startItems = [
-  {
-    name: 'Balances',
-    to: { name: 'pool' }
-  },
-  {
-    name: 'Swaps',
-    to: { name: 'pool-swaps' }
-  },
-  {
-    name: 'Holders',
-    to: { name: 'pool-shares' }
-  }
-];
-
 export default {
   props: ['pool'],
   computed: {
     items() {
-      const items = clone(startItems);
-      items[0].count = this.pool.tokens.length;
-      items[1].count = this.pool.swapsCount;
+      const items = [
+        {
+          name: 'Balances',
+          to: { name: 'pool' },
+          count: this.pool.tokens.length
+        }
+      ];
+      if (this.pool.swapsCount > 0) {
+        items.push({
+          name: 'Swaps',
+          to: { name: 'pool-swaps' },
+          count: this.pool.swapsCount
+        });
+      }
       const myPoolArr = this.subgraph.myPools.map(myPool => myPool.id);
+      if (this.pool.finalized) {
+        items.push({
+          name: 'Holders',
+          to: { name: 'pool-shares' }
+        });
+      }
+      items.push({
+        name: 'About',
+        to: { name: 'pool-about' }
+      });
       if (myPoolArr.includes(this.pool.id)) {
         items.push({
           name: 'Settings',
