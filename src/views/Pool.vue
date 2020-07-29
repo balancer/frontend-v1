@@ -77,9 +77,6 @@ export default {
   },
   computed: {
     hasScamToken() {
-      if (!this.pool) {
-        return false;
-      }
       for (const token of this.pool.tokensList) {
         if (config.scams.includes(token)) {
           return true;
