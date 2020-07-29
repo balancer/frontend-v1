@@ -1,5 +1,5 @@
 <template>
-  <span class="d-inline-block circle border" :style="style" v-if="tokens" />
+  <UiPie :values="values" :colors="colors" :size="size" />
 </template>
 
 <script>
@@ -19,10 +19,12 @@ const unknownColors = [
 export default {
   props: ['tokens', 'size'],
   computed: {
-    style() {
-      let acum = 0;
+    values() {
+      return this.tokens.map(token => parseFloat(token.denormWeight));
+    },
+    colors() {
       let nextColor = 0;
-      const styles = this.tokens.map(token => {
+      return this.tokens.map(token => {
         const tokenConfig = this.config.tokens[getAddress(token.address)];
         let chartColor = unknownColors[nextColor];
         if (tokenConfig && tokenConfig.chartColor) {
@@ -30,23 +32,9 @@ export default {
         } else {
           nextColor++;
         }
-        return `${chartColor} 0 ${(acum += token.weightPercent)}%`;
+        return chartColor;
       });
-      return {
-        background: `conic-gradient( ${styles.join(',')} )`,
-        width: `${this.size || 44}px`,
-        height: `${this.size || 44}px`,
-        borderColor: '#21222c !important'
-      };
     }
   }
 };
 </script>
-
-<style scoped>
-@supports not (background: conic-gradient(red 50%, blue 50%)) {
-  span {
-    display: none !important;
-  }
-}
-</style>
