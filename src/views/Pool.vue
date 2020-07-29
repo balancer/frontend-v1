@@ -62,13 +62,7 @@
 import { mapActions } from 'vuex';
 
 import config from '@/helpers/config';
-
-function getTokenAddressBySymbol(symbol) {
-  const tokenAddresses = Object.keys(config.tokens);
-  return tokenAddresses.find(
-    tokenAddress => config.tokens[tokenAddress].symbol === symbol
-  );
-}
+import { getTokenBySymbol } from '@/helpers/utils';
 
 export default {
   data() {
@@ -83,7 +77,7 @@ export default {
   computed: {
     customTokenWarning() {
       const ampl = '0xD46bA6D942050d489DBd938a2C909A5d5039A161';
-      const yfi = getTokenAddressBySymbol('YFI');
+      const yfi = getTokenBySymbol('YFI').address;
       const warningMap = {
         [ampl]: `This is a risky pool. AMPL can change its balance inside the pool during rebase. That can lead to partial lose of pool's value. PLEASE SLOW DOWN AND DYOR.`,
         [yfi]:
