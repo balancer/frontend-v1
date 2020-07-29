@@ -27,6 +27,7 @@ export default {
       return etherscanLink(str, type);
     },
     _ticker(address: string): string {
+      if (address === 'ether') return 'ETH';
       // @ts-ignore
       const token = this.web3.tokenMetadata[address];
       return token ? token.symbol : this._shorten(address);

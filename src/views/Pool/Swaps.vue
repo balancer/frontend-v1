@@ -1,10 +1,13 @@
 <template>
   <UiTable>
     <UiTableTh>
-      <div v-text="'Time'" class="flex-auto text-left" />
+      <div
+        v-text="'Time'"
+        class="flex-auto text-left hide-sm hide-md hide-lg"
+      />
       <div v-text="'Trade In'" class="column-lg text-left" />
       <div v-text="'Trade Out'" class="column-lg text-left" />
-      <div v-text="'Transaction'" class="column" />
+      <div v-text="'Transaction'" class="column hide-sm hide-md" />
     </UiTableTh>
     <div
       v-infinite-scroll="loadMore"
@@ -15,7 +18,7 @@
         <UiTableTr v-for="(swap, i) in swaps" :key="i" :swap="swap">
           <div
             v-text="$d(new Date(swap.timestamp * 1e3), 'long')"
-            class="flex-auto text-left"
+            class="flex-auto text-left hide-sm hide-md hide-lg"
           />
           <div class="column-lg d-flex flex-items-center">
             <Token :address="swap.tokenIn" class="mr-2" />
@@ -27,7 +30,7 @@
             {{ $n(swap.tokenAmountOut) }}
             {{ swap.tokenOutSym }}
           </div>
-          <div class="column">
+          <div class="column hide-sm hide-md">
             <a
               :href="_etherscanLink(getTxHashFromId(swap.id), 'tx')"
               class="text-white"
@@ -42,10 +45,10 @@
       <ListLoading
         v-if="loading"
         :classes="[
-          'flex-auto text-left',
+          'flex-auto text-left hide-sm hide-md hide-lg',
           'column-lg text-left',
           'column-lg text-left',
-          'column'
+          'column hide-sm hide-md'
         ]"
       />
     </div>
