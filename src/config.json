@@ -3,7 +3,7 @@
     "network": "kovan",
     "chainId": 42,
     "defaultPrecision": 4,
-    "subgraphUrl": "https://api.thegraph.com/subgraphs/name/bonustrack/balancer-kovan",
+    "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-kovan",
     "alchemyWsUrl": "wss://eth-kovan.ws.alchemyapi.io/v2/C467LJc7Aa761LLxlcxXvhIG9HzDTtKw",
     "addresses": {
       "bFactory": "0x8f7F78080219d4066A8036ccD30D588B416a40DB",
@@ -138,7 +138,7 @@
     "network": "homestead",
     "chainId": 1,
     "defaultPrecision": 4,
-    "subgraphUrl": "https://api.thegraph.com/subgraphs/name/bonustrack/balancer",
+    "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer",
     "alchemyWsUrl": "wss://eth-mainnet.ws.alchemyapi.io/v2/Q08AP-nlA-yUiQnIiAVlyWK4tbXjRMmD",
     "addresses": {
       "bFactory": "0x9424B1412450D0f8Fc2255FAf6046b98213B76Bd",
