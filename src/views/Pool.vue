@@ -55,6 +55,11 @@
       :open="modalRemoveLiquidityOpen"
       @close="modalRemoveLiquidityOpen = false"
     />
+    <ModalCustomToken
+      v-if="hasCustomToken"
+      :open="modalCustomTokenOpen"
+      @close="modalCustomTokenOpen = false"
+    />
   </div>
 </template>
 
@@ -70,7 +75,8 @@ export default {
       pool: {},
       loading: false,
       modalAddLiquidityOpen: false,
-      modalRemoveLiquidityOpen: false
+      modalRemoveLiquidityOpen: false,
+      modalCustomTokenOpen: true
     };
   },
   computed: {
@@ -89,6 +95,18 @@ export default {
         }
       }
       return undefined;
+    },
+    hasCustomToken() {
+      if (!this.pool.tokens) {
+        return false;
+      }
+      for (const token of this.pool.tokens) {
+        const tokenMetadata = this.web3.tokenMetadata[token.checksum];
+        if (!tokenMetadata || !tokenMetadata.whitelisted) {
+          return true;
+        }
+      }
+      return false;
     },
     hasShares() {
       return Object.keys(this.subgraph.poolShares).includes(this.id);
