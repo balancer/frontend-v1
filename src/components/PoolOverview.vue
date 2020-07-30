@@ -15,24 +15,24 @@
       </span>
     </div>
     <div class="text-white">Swap fee: {{ $n(pool.swapFee, 'percent') }}</div>
-    <Pie :tokens="pool.tokens" size="64" class="mr-2" />
-    <div class="flex-auto text-left mt-3">
-      <div class="overflow-hidden" style="max-width: 320px;">
-        <div
-          v-for="token in pool.tokens"
-          :key="token.address"
-          class="d-flex flex-items-center flex-justify-center mr-2 text-white"
-          style="font-size: 12px; font-weight: 500"
-        >
-          <Icon
-            name="bullet"
-            size="4"
-            class="mr-1"
-            :style="`color: ${token.chartColor}`"
-          />
-          {{ $n(token.weightPercent.toFixed()) }}%
-          {{ token.symbol }}
-        </div>
+    <div
+      class="mt-2 d-flex flex-column flex-items-center flex-justify-center text-white"
+    >
+      <Pie :tokens="pool.tokens" size="96" />
+      <div
+        v-for="token in pool.tokens"
+        :key="token.address"
+        class="mt-1"
+        style="font-size: 12px; font-weight: 500"
+      >
+        <Icon
+          name="bullet"
+          size="4"
+          class="mr-1"
+          :style="`color: ${token.chartColor}`"
+        />
+        {{ $n(token.weightPercent.toFixed()) }}%
+        {{ token.symbol }}
       </div>
     </div>
   </div>
