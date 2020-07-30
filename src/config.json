@@ -121,8 +121,7 @@
       "transferFee": [
         "0xbef02f140BFb37a75Ed6510e8D85C9E9e7e0ff1e"
       ]
-    },
-    "scams": []
+    }
   },
   "homestead": {
     "network": "homestead",
@@ -1953,10 +1952,6 @@
         "0xeEEE2a622330E6d2036691e983DEe87330588603",
         "0xF0FAC7104aAC544e4a7CE1A55ADF2B5a25c65bD1"
       ]
-    },
-    "scams": [
-      "0xa1d0E215a23d7030842FC67cE582a6aFa3CCaB83",
-      "0xb81D3cB2708530ea990a287142b82D058725C092"
-    ]
+    }
   }
 }

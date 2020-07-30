@@ -21,8 +21,8 @@
         infinite-scroll-distance="5"
         class="overflow-hidden"
       >
-        <div v-if="legitPools.length > 0">
-          <ListPool v-for="(pool, i) in legitPools" :key="i" :pool="pool" />
+        <div v-if="pools.length > 0">
+          <ListPool v-for="(pool, i) in pools" :key="i" :pool="pool" />
         </div>
         <UiTableTr v-else-if="!loading">
           <div v-text="$t('messages.EMPTY_STATE')" />
@@ -70,18 +70,6 @@ export default {
       this.loading = true;
       this.pools = [];
       this.loadMore();
-    }
-  },
-  computed: {
-    legitPools() {
-      return this.pools.filter(pool => {
-        for (const token of pool.tokensList) {
-          if (config.scams.includes(token)) {
-            return false;
-          }
-        }
-        return true;
-      });
     }
   },
   methods: {

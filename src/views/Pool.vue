@@ -61,7 +61,6 @@
 <script>
 import { mapActions } from 'vuex';
 
-import config from '@/helpers/config';
 import { getTokenBySymbol } from '@/helpers/utils';
 
 export default {
@@ -91,23 +90,11 @@ export default {
       }
       return undefined;
     },
-    hasScamToken() {
-      for (const token of this.pool.tokensList) {
-        if (config.scams.includes(token)) {
-          return true;
-        }
-      }
-      return false;
-    },
     hasShares() {
       return Object.keys(this.subgraph.poolShares).includes(this.id);
     },
     enableAddLiquidity() {
-      return (
-        this.pool.finalized &&
-        this.pool.totalShares !== '0' &&
-        !this.hasScamToken
-      );
+      return this.pool.finalized && this.pool.totalShares !== '0';
     }
   },
   methods: {

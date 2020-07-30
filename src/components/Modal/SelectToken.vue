@@ -144,8 +144,7 @@ export default {
     isDisabled(address) {
       const noBool = config.errors.noBool.includes(address);
       const transferFee = config.errors.transferFee.includes(address);
-      const scamToken = config.scams.includes(address);
-      return noBool || transferFee || scamToken;
+      return noBool || transferFee;
     }
   }
 };
