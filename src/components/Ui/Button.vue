@@ -62,8 +62,8 @@ export default {
   }
 
   &.button-red {
-    background-color: $error;
     border-color: $error;
+    color: $error;
   }
 }
 </style>
