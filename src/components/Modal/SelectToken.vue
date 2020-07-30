@@ -9,7 +9,7 @@
           placeholder="Search name, symbol or address"
         />
       </template>
-      <VueLoadingIndicator v-if="loading" class="big" />
+      <VueLoadingIndicator v-if="loading" class="big py-3" />
       <ul v-else>
         <li
           class="py-3 text-center"
@@ -81,11 +81,17 @@ export default {
             ];
           })
           .filter(token => {
-            const tokenStr = `${token[0]} ${token[1].symbol}`.toLowerCase();
-            return (
-              tokenStr.includes(this.query.toLowerCase()) &&
-              !this.not.includes(token[0])
-            );
+            if (this.not.includes(token[0])) {
+              return false;
+            }
+            const query = this.query.toLowerCase();
+            if (isValidAddress(query)) {
+              const address = token[0].toLowerCase();
+              return address === query;
+            } else {
+              const symbol = token[1].symbol.toLowerCase();
+              return symbol.includes(query);
+            }
           })
           .sort((a, b) => {
             if (a[1].value && b[1].value) return b[1].value - a[1].value;
