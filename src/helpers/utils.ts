@@ -172,7 +172,7 @@ export const isTxRejected = error => {
   if (!error) {
     return false;
   }
-  return error.code === 4001;
+  return error.code === 4001 || error.code === -32603;
 };
 
 export const isTxReverted = error => {
