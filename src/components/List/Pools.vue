@@ -47,8 +47,6 @@
 <script>
 import { mapActions } from 'vuex';
 
-import config from '@/helpers/config';
-
 export default {
   props: ['query', 'title'],
   data() {
