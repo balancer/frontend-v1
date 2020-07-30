@@ -282,6 +282,7 @@ const actions = {
         provider.on('chainChanged', async () => {
           commit('HANDLE_CHAIN_CHANGED');
           if (state.active) {
+            await dispatch('logout');
             await dispatch('login');
           }
         });
@@ -300,6 +301,7 @@ const actions = {
         provider.on('networkChanged', async () => {
           commit('HANDLE_NETWORK_CHANGED');
           if (state.active) {
+            await dispatch('logout');
             await dispatch('login');
           }
         });
