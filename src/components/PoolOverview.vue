@@ -32,7 +32,7 @@
           :style="`color: ${token.chartColor}`"
         />
         {{ $n(token.weightPercent.toFixed()) }}%
-        {{ token.symbol }}
+        {{ _ticker(token.checksum) }}
       </div>
     </div>
   </div>
