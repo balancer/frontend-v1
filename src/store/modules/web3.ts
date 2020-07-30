@@ -39,9 +39,11 @@ const mutations = {
     Vue.set(_state, 'injectedLoaded', false);
     Vue.set(_state, 'injectedChainId', null);
     Vue.set(_state, 'account', null);
+    Vue.set(_state, 'dsProxyAddress', null);
     Vue.set(_state, 'name', null);
     Vue.set(_state, 'active', false);
     Vue.set(_state, 'balances', {});
+    Vue.set(_state, 'allowances', {});
     console.debug('LOGOUT');
   },
   LOAD_TOKEN_METADATA_REQUEST() {
@@ -200,6 +202,7 @@ const actions = {
       lsRemove('connector');
     }
     commit('LOGOUT');
+    commit('CLEAR_USER');
   },
   initTokenMetadata: async ({ commit }) => {
     const metadata = Object.fromEntries(
