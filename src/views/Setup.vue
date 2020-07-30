@@ -12,6 +12,7 @@
             v-if="!isInstanceReady"
             :loading="loading"
             :disabled="loading"
+            class="button-primary"
           >
             Setup
           </UiButton>

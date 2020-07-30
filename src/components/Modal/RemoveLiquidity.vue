@@ -79,7 +79,7 @@
         <UiButton
           :disabled="validationError || loading"
           type="submit"
-          class="ml-2"
+          class="button-primary ml-2"
           :loading="loading"
         >
           Remove Liquidity

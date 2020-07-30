@@ -10,7 +10,7 @@
           target="_blank"
           class="mb-2 d-block"
         >
-          <UiButton class="button-outline width-full v-align-middle">
+          <UiButton class="width-full v-align-middle">
             <img
               :src="require(`@/assets/connectors/${connector.id}.svg`)"
               height="28"
@@ -30,7 +30,7 @@
           target="_blank"
           class="mb-2 d-block"
         >
-          <UiButton class="button-outline width-full">
+          <UiButton class="width-full">
             <Avatar :address="web3.account" size="16" class="mr-2 ml-n1" />
             <span v-if="web3.name" v-text="web3.name" />
             <span v-else v-text="_shorten(web3.account)" />
@@ -39,13 +39,13 @@
         </a>
         <UiButton
           @click="step = 'connect'"
-          class="button-outline width-full mb-2"
+          class="width-full mb-2"
         >
           Connect wallet
         </UiButton>
         <UiButton
           @click="handleLogout"
-          class="button-outline width-full text-red mb-2"
+          class="width-full text-red mb-2"
         >
           Log out
         </UiButton>

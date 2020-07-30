@@ -29,7 +29,10 @@
               />
               <Token :address="token.address" class="mr-2" size="20" />
               <div class="text-white">{{ token.symbol }}</div>
-              <ButtonUnlock class="ml-2" :tokenAddress="token.checksum" />
+              <ButtonUnlock
+                class="button-primary ml-2"
+                :tokenAddress="token.checksum"
+              />
             </div>
             <div class="column text-left">
               {{
@@ -88,6 +91,7 @@
           class="mb-4"
         />
         <UiButton
+          class="button-primary"
           type="submit"
           :disabled="
             tokenError ||
