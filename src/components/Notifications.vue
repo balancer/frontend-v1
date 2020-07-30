@@ -7,7 +7,7 @@
       <div v-for="(item, key) in items" :key="key" class="mb-2">
         <UiButton
           class="d-inline-block anim-scale-in"
-          :class="`button-${item.type}`"
+          :class="`notification-${item.type}`"
           v-if="now < item.timestamp + duration && !item.hide"
           @click="item.hide = true"
         >

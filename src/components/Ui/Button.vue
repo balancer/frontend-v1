@@ -65,5 +65,15 @@ export default {
     border-color: $error;
     color: $error;
   }
+
+  &.notification-red {
+    background-color: $error;
+    border-color: $error;
+  }
+
+  &.notification-green {
+    background-color: $bg-green;
+    border-color: $bg-green;
+  }
 }
 </style>
