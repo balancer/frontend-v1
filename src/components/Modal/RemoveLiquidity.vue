@@ -11,7 +11,7 @@
           <UiTable>
             <UiTableTh>
               <div class="column-lg flex-auto text-left">Asset</div>
-              <div class="column text-left">My Pool Balance</div>
+              <div class="column">My Pool Balance</div>
               <div class="column-sm">Withdraw</div>
             </UiTableTh>
             <UiTableTr
@@ -33,15 +33,13 @@
                   "
                 />
                 <Token :address="token.address" class="mr-3" size="20" />
-                <div class="text-white">{{ token.symbol }}</div>
+                <div class="text-white">{{ _ticker(token.checksum) }}</div>
               </div>
-              <div class="text-left column">
+              <div class="column">
                 {{ $n(token.myBalance.toFixed(3)) }}
-                {{ token.symbol }}
               </div>
               <div class="column-sm">
                 {{ $n(getTokenAmountOut(token)) }}
-                {{ token.symbol }}
               </div>
             </UiTableTr>
           </UiTable>

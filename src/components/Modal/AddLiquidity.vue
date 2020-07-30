@@ -10,7 +10,7 @@
         <UiTable>
           <UiTableTh>
             <div class="column-lg flex-auto text-left">Asset</div>
-            <div class="column text-left">Wallet Balance</div>
+            <div class="column">Wallet Balance</div>
             <div class="column-sm">Deposit Amount</div>
           </UiTableTh>
           <UiTableTr v-for="token in pool.tokens" :key="token.checksum">
@@ -28,13 +28,13 @@
                 "
               />
               <Token :address="token.address" class="mr-2" size="20" />
-              <div class="text-white">{{ token.symbol }}</div>
+              <div class="text-white">{{ _ticker(token.checksum) }}</div>
               <ButtonUnlock
                 class="button-primary ml-2"
                 :tokenAddress="token.checksum"
               />
             </div>
-            <div class="column text-left">
+            <div class="column">
               {{
                 _trunc(
                   formatBalance(
@@ -44,7 +44,6 @@
                   2
                 )
               }}
-              {{ token.symbol }}
               <a @click="handleMax(token)" class="ml-1">
                 <UiLabel v-text="'Max'" />
               </a>
