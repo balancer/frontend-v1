@@ -330,7 +330,7 @@ const actions = {
         {}
       ];
       const tx = await dispatch('sendTransaction', params);
-      await tx.wait(1);
+      await tx.wait(2);
       await dispatch('getAllowances', { tokens: [token], spender });
       dispatch('notify', ['green', `You've successfully unlocked ${symbol}`]);
       commit('APPROVE_SUCCESS');
