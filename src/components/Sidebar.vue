@@ -18,7 +18,7 @@
               placeholder="0.0"
             />
           </div>
-          <UiButton class="button-outline ml-2 px-4" @click="wrapEther">
+          <UiButton class="ml-2 px-4" @click="wrapEther">
             Wrap
           </UiButton>
         </div>
@@ -36,7 +36,7 @@
               placeholder="0.0"
             />
           </div>
-          <UiButton class="button-outline ml-2 px-3" @click="unwrapEther">
+          <UiButton class="ml-2 px-3" @click="unwrapEther">
             Unwrap
           </UiButton>
         </div>

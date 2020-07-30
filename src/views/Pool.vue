@@ -24,7 +24,7 @@
         </h3>
         <div class="d-flex">
           <UiButton
-            class="ml-2"
+            class="button-primary ml-2"
             @click="openAddLiquidityModal"
             v-if="enableAddLiquidity"
           >
@@ -32,7 +32,7 @@
           </UiButton>
           <UiButton
             v-if="hasShares"
-            class="button-outline ml-2"
+            class="ml-2"
             @click="openRemoveLiquidityModal"
           >
             Remove Liquidity

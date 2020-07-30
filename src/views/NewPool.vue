@@ -25,7 +25,7 @@
             >
               <Icon name="arrow-down" />
             </a>
-            <ButtonUnlock class="ml-2" :tokenAddress="token" />
+            <ButtonUnlock class="button-primary ml-2" :tokenAddress="token" />
           </div>
           <div class="column-lg d-flex flex-items-center flex-justify-between">
             <input
@@ -58,7 +58,7 @@
         </UiTableTr>
       </div>
     </UiTable>
-    <UiButton class="button-outline mt-4" @click="addToken">
+    <UiButton class="mt-4" @click="addToken">
       Add Token
     </UiButton>
     <div class="d-flex flex-items-center px-4 px-md-0 my-4">
@@ -85,7 +85,7 @@
           hasLockedToken ||
           (hasCustomToken && !customTokenAccept)
       "
-      class="mt-4"
+      class="button-primary mt-4"
       @click="create"
     >
       Create

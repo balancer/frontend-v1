@@ -41,7 +41,7 @@
       </div>
       <UiButton
         type="button"
-        class="button-outline d-inline-block column mx-1"
+        class="d-inline-block column mx-1"
         @click="$emit('close')"
       >
         Close

@@ -9,6 +9,11 @@ const state = {
 };
 
 const mutations = {
+  CLEAR_USER(_state) {
+    Vue.set(_state, 'poolShares', {});
+    Vue.set(_state, 'myPools', []);
+    console.debug('CLEAR_USER');
+  },
   GET_BALANCER_REQUEST() {
     console.debug('GET_BALANCER_REQUEST');
   },
