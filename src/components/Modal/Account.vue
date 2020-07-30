@@ -37,16 +37,10 @@
             <Icon name="external-link" class="ml-1" />
           </UiButton>
         </a>
-        <UiButton
-          @click="step = 'connect'"
-          class="width-full mb-2"
-        >
+        <UiButton @click="step = 'connect'" class="width-full mb-2">
           Connect wallet
         </UiButton>
-        <UiButton
-          @click="handleLogout"
-          class="width-full text-red mb-2"
-        >
+        <UiButton @click="handleLogout" class="width-full text-red mb-2">
           Log out
         </UiButton>
       </div>
