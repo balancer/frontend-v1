@@ -104,14 +104,12 @@ import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { getAddress } from '@ethersproject/address';
 import config from '@/helpers/config';
-import { bnum, normalizeBalance, denormalizeBalance } from '@/helpers/utils';
-
-function getTokenAddressBySymbol(symbol) {
-  const tokenAddresses = Object.keys(config.tokens);
-  return tokenAddresses.find(
-    tokenAddress => config.tokens[tokenAddress].symbol === symbol
-  );
-}
+import {
+  bnum,
+  normalizeBalance,
+  denormalizeBalance,
+  getTokenBySymbol
+} from '@/helpers/utils';
 
 function getAnotherToken(tokens, selectedTokens) {
   const tokenAddresses = Object.keys(tokens);
@@ -139,8 +137,8 @@ export default {
     };
   },
   created() {
-    const dai = getTokenAddressBySymbol('DAI');
-    const usdc = getTokenAddressBySymbol('USDC');
+    const dai = getTokenBySymbol('DAI').address;
+    const usdc = getTokenBySymbol('USDC').address;
     this.tokens = [dai, usdc];
     Vue.set(this.weights, dai, '30');
     Vue.set(this.weights, usdc, '20');

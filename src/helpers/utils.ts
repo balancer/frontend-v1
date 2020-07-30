@@ -134,6 +134,14 @@ export function calcPoolTokensByRatio(ratio, totalShares) {
     .toString();
 }
 
+export function getTokenBySymbol(symbol) {
+  const tokenAddresses = Object.keys(config.tokens);
+  const tokenAddress = tokenAddresses.find(
+    tokenAddress => config.tokens[tokenAddress].symbol === symbol
+  );
+  return config.tokens[tokenAddress];
+}
+
 export function getTokenLogoUrl(address: string): string | null {
   let trustwalletId: string | null = null;
   if (address === 'ether') {

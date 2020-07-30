@@ -113,12 +113,18 @@ import {
   bnum,
   normalizeBalance,
   denormalizeBalance,
-  isTxReverted
+  isTxReverted,
+  getTokenBySymbol
 } from '@/helpers/utils';
 import { calcPoolOutGivenSingleIn } from '@/helpers/math';
 import { LiquidityType } from '@/components/SingleMultiToggle';
 
 const BALANCE_BUFFER = 0.01;
+
+function hasToken(pool, symbol) {
+  const tokenAddress = getTokenBySymbol(symbol).address;
+  return pool.tokensList.includes(tokenAddress);
+}
 
 export default {
   props: ['open', 'pool'],
@@ -245,11 +251,11 @@ export default {
       if (!this.transactionFailed) {
         return undefined;
       }
-      if (this.hasToken(this.pool, 'SNX')) {
+      if (hasToken(this.pool, 'SNX')) {
         return 'Adding liquidity failed as your SNX is locked in staking.';
       }
       const synths = ['sUSD', 'sBTC', 'sETH', 'sXAU', 'sXAG', 'sDEFI'];
-      if (synths.some(synth => this.hasToken(this.pool, synth))) {
+      if (synths.some(synth => hasToken(this.pool, synth))) {
         return 'Adding liquidity failed as your Synthetix position might go underwater. ';
       }
       const aTokens = [
@@ -271,7 +277,7 @@ export default {
         'aWBTC',
         'aZRX'
       ];
-      if (aTokens.some(aToken => this.hasToken(this.pool, aToken))) {
+      if (aTokens.some(aToken => hasToken(this.pool, aToken))) {
         return 'Adding liquidity failed as your Aave position might go underwater. ';
       }
       const cTokens = [
@@ -284,7 +290,7 @@ export default {
         'cBAT',
         'cWBTC'
       ];
-      if (cTokens.some(cToken => this.hasToken(this.pool, cToken))) {
+      if (cTokens.some(cToken => hasToken(this.pool, cToken))) {
         return 'Adding liquidity failed as your Compound position might go underwater. ';
       }
       return 'Adding liquidity failed as one of the underlying tokens blocked the transfer. ';
@@ -542,12 +548,6 @@ export default {
       const amountNumber = denormalizeBalance(amount, token.decimals);
       const balance = this.web3.balances[tokenAddress];
       return amountNumber.lte(balance);
-    },
-    hasToken(pool, symbol) {
-      const tokenAddress = Object.keys(this.web3.tokenMetadata).find(
-        tokenAddress => this.web3.tokenMetadata[tokenAddress].symbol === symbol
-      );
-      return pool.tokensList.includes(tokenAddress);
     },
     formatBalance(balanceString, tokenDecimals) {
       return normalizeBalance(balanceString, tokenDecimals);

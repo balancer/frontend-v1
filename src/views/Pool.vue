@@ -1,7 +1,19 @@
 <template>
   <div class="px-0 px-md-5 py-4">
     <VueLoadingIndicator v-if="loading" class="big" />
-    <div v-else-if="pool">
+    <div
+      v-else-if="!pool"
+      class="text-white text-center mt-8"
+      style="font-size: 24px;"
+    >
+      Pool not found
+    </div>
+    <div v-else>
+      <MessageWarning
+        v-if="customTokenWarning"
+        :text="customTokenWarning"
+        class="mb-4"
+      />
       <div class="d-flex flex-items-center flex-auto mb-4 px-4 px-md-0">
         <h3 class="flex-auto d-flex flex-items-center">
           <div>Pool {{ _shorten(pool.id) }}</div>
@@ -31,9 +43,6 @@
       <Tabs :pool="pool" />
       <router-view :key="$route.path" :pool="pool" />
     </div>
-    <div v-else class="text-white text-center mt-8" style="font-size: 24px;">
-      Pool not found
-    </div>
     <ModalAddLiquidity
       v-if="pool"
       :pool="pool"
@@ -46,11 +55,18 @@
       :open="modalRemoveLiquidityOpen"
       @close="modalRemoveLiquidityOpen = false"
     />
+    <ModalCustomToken
+      v-if="hasCustomToken"
+      :open="modalCustomTokenOpen"
+      @close="modalCustomTokenOpen = false"
+    />
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
+
+import { getTokenBySymbol } from '@/helpers/utils';
 
 export default {
   data() {
@@ -59,10 +75,39 @@ export default {
       pool: {},
       loading: false,
       modalAddLiquidityOpen: false,
-      modalRemoveLiquidityOpen: false
+      modalRemoveLiquidityOpen: false,
+      modalCustomTokenOpen: true
     };
   },
   computed: {
+    customTokenWarning() {
+      const ampl = '0xD46bA6D942050d489DBd938a2C909A5d5039A161';
+      const yfi = getTokenBySymbol('YFI').address;
+      const warningMap = {
+        [ampl]: `This is a risky pool. AMPL can change its balance inside the pool during rebase. That can lead to partial lose of pool's value. PLEASE SLOW DOWN AND DYOR.`,
+        [yfi]:
+          'This is a risky pool. If the YFI token is infinitely minted, a huge percent of the entire pool supply can be stolen. PLEASE SLOW DOWN AND DYOR.'
+      };
+      for (const token of this.pool.tokensList) {
+        const warning = warningMap[token];
+        if (warning) {
+          return warning;
+        }
+      }
+      return undefined;
+    },
+    hasCustomToken() {
+      if (!this.pool.tokens) {
+        return false;
+      }
+      for (const token of this.pool.tokens) {
+        const tokenMetadata = this.web3.tokenMetadata[token.checksum];
+        if (!tokenMetadata || !tokenMetadata.whitelisted) {
+          return true;
+        }
+      }
+      return false;
+    },
     hasShares() {
       return Object.keys(this.subgraph.poolShares).includes(this.id);
     },

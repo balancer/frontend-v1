@@ -1,5 +1,5 @@
 <template>
-  <div id="warning" class="p-4 text-left">
+  <div id="warning" class="d-flex flex-items-center p-4 text-left">
     <Icon name="warning" class="mr-4" />
     {{ text }}
   </div>
