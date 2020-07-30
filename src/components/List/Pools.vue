@@ -48,7 +48,7 @@
 import { mapActions } from 'vuex';
 
 export default {
-  props: ['query', 'title'],
+  props: ['query', 'limit', 'title'],
   data() {
     return {
       loading: false,
@@ -73,7 +73,11 @@ export default {
   methods: {
     ...mapActions(['getPools']),
     async loadMore() {
-      if (this.pools.length < this.page * 10) return;
+      if (
+        (this.limit && this.pools.length > this.limit) ||
+        this.pools.length < this.page * 10
+      )
+        return;
       this.loading = true;
       this.page++;
       const page = this.page;
