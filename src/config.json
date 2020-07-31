@@ -138,7 +138,7 @@
     "network": "homestead",
     "chainId": 1,
     "defaultPrecision": 4,
-    "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer",
+    "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-beta",
     "alchemyWsUrl": "wss://eth-mainnet.ws.alchemyapi.io/v2/Q08AP-nlA-yUiQnIiAVlyWK4tbXjRMmD",
     "addresses": {
       "bFactory": "0x9424B1412450D0f8Fc2255FAf6046b98213B76Bd",
