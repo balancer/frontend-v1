@@ -107,6 +107,7 @@ import {
   denormalizeBalance,
   getTokenBySymbol
 } from '@/helpers/utils';
+import { validateNumberInput, formatError } from '@/helpers/validation';
 
 function getAnotherToken(tokens, selectedTokens) {
   const tokenAddresses = Object.keys(tokens);
@@ -142,34 +143,17 @@ export default {
   },
   computed: {
     validationError() {
-      // Basic input validation
       for (const token of this.tokens) {
-        if (!this.amounts[token] || !this.weights[token]) {
-          return `Values can't be empty`;
-        }
+        const amountError = validateNumberInput(this.amounts[token]);
+        const amountErrorText = formatError(amountError);
+        if (amountErrorText) return amountErrorText;
+        const weightError = validateNumberInput(this.weights[token]);
+        const weightErrorText = formatError(weightError);
+        if (weightErrorText) return weightErrorText;
       }
-      if (!this.swapFee) {
-        return `Values can't be empty`;
-      }
-      for (const token of this.tokens) {
-        if (isNaN(this.amounts[token]) || isNaN(this.weights[token])) {
-          return 'Values should be numbers';
-        }
-      }
-      if (isNaN(this.swapFee)) {
-        return 'Values should be numbers';
-      }
-      for (const token of this.tokens) {
-        if (parseFloat(this.amounts[token]) <= 0) {
-          return 'Values should be positive numbers';
-        }
-        if (parseFloat(this.weights[token]) <= 0) {
-          return 'Values should be positive numbers';
-        }
-      }
-      if (parseFloat(this.swapFee) <= 0) {
-        return 'Values should be positive numbers';
-      }
+      const feeError = validateNumberInput(this.swapFee);
+      const feeErrorText = formatError(feeError);
+      if (feeErrorText) return feeErrorText;
       // Token count validation
       if (this.tokens.length < 2) {
         return 'Pool should contain at least 2 tokens';
