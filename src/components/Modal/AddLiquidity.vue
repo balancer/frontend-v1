@@ -73,10 +73,11 @@
           class="mb-4"
         />
         <MessageError v-if="transferError" :text="transferError" class="mb-4" />
-        <MessageCustomToken
-          v-if="hasCustomToken"
-          :accepted="customTokenAccept"
-          @toggle="customTokenAccept = !customTokenAccept"
+        <MessageCheckbox
+          v-if="!tokenError && !validationError"
+          :custom="hasCustomToken"
+          :accepted="checkboxAccept"
+          @toggle="checkboxAccept = !checkboxAccept"
           class="mb-4 text-left"
         />
         <MessageWarningRateChange
@@ -96,7 +97,7 @@
             tokenError ||
               validationError ||
               hasLockedToken ||
-              (hasCustomToken && !customTokenAccept) ||
+              !checkboxAccept ||
               transactionFailed
           "
           :loading="loading"
@@ -125,7 +126,11 @@ import { LiquidityType } from '@/components/SingleMultiToggle';
 const BALANCE_BUFFER = 0.01;
 
 function hasToken(pool, symbol) {
-  const tokenAddress = getTokenBySymbol(symbol).address;
+  const token = getTokenBySymbol(symbol);
+  if (!token) {
+    return false;
+  }
+  const tokenAddress = token.address;
   return pool.tokensList.includes(tokenAddress);
 }
 
@@ -138,7 +143,7 @@ export default {
       amounts: {},
       type: LiquidityType.MULTI_ASSET,
       activeToken: null,
-      customTokenAccept: false,
+      checkboxAccept: false,
       transactionFailed: false
     };
   },
@@ -153,7 +158,7 @@ export default {
       );
       this.type = LiquidityType.MULTI_ASSET;
       this.activeToken = this.pool.tokens[0].checksum;
-      this.customTokenAccept = false;
+      this.checkboxAccept = false;
       this.transactionFailed = false;
     }
   },

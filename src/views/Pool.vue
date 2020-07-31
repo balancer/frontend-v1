@@ -66,7 +66,7 @@
 <script>
 import { mapActions } from 'vuex';
 
-import { getTokenBySymbol } from '@/helpers/utils';
+import config from '@/helpers/config';
 
 export default {
   data() {
@@ -81,17 +81,10 @@ export default {
   },
   computed: {
     customTokenWarning() {
-      const ampl = '0xD46bA6D942050d489DBd938a2C909A5d5039A161';
-      const yfi = getTokenBySymbol('YFI').address;
-      const warningMap = {
-        [ampl]: `This is a risky pool. AMPL can change its balance inside the pool during rebase. That can lead to partial lose of pool's value. PLEASE SLOW DOWN AND DYOR.`,
-        [yfi]:
-          'This is a risky pool. If the YFI token is infinitely minted, a huge percent of the entire pool supply can be stolen. PLEASE SLOW DOWN AND DYOR.'
-      };
-      for (const token of this.pool.tokensList) {
-        const warning = warningMap[token];
-        if (warning) {
-          return warning;
+      const warnings = config.warnings;
+      for (const token in warnings) {
+        if (this.pool.tokensList.includes(token)) {
+          return warnings[token];
         }
       }
       return undefined;
