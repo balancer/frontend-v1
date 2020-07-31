@@ -76,12 +76,12 @@
     <MessageCheckbox
       v-if="!validationError"
       :custom="hasCustomToken"
-      :accepted="customTokenAccept"
-      @toggle="customTokenAccept = !customTokenAccept"
+      :accepted="checkboxAccept"
+      @toggle="checkboxAccept = !checkboxAccept"
       class="mt-4"
     />
     <UiButton
-      :disabled="validationError || hasLockedToken || !customTokenAccept"
+      :disabled="validationError || hasLockedToken || !checkboxAccept"
       class="button-primary mt-4"
       @click="create"
     >
@@ -130,7 +130,7 @@ export default {
       tokens: [],
       activeToken: 0,
       modalOpen: false,
-      customTokenAccept: false
+      checkboxAccept: false
     };
   },
   created() {

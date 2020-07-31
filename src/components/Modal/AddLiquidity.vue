@@ -76,8 +76,8 @@
         <MessageCheckbox
           v-if="!tokenError && !validationError"
           :custom="hasCustomToken"
-          :accepted="customTokenAccept"
-          @toggle="customTokenAccept = !customTokenAccept"
+          :accepted="checkboxAccept"
+          @toggle="checkboxAccept = !checkboxAccept"
           class="mb-4 text-left"
         />
         <MessageWarningRateChange
@@ -97,7 +97,7 @@
             tokenError ||
               validationError ||
               hasLockedToken ||
-              !customTokenAccept ||
+              !checkboxAccept ||
               transactionFailed
           "
           :loading="loading"
@@ -143,7 +143,7 @@ export default {
       amounts: {},
       type: LiquidityType.MULTI_ASSET,
       activeToken: null,
-      customTokenAccept: false,
+      checkboxAccept: false,
       transactionFailed: false
     };
   },
@@ -158,7 +158,7 @@ export default {
       );
       this.type = LiquidityType.MULTI_ASSET;
       this.activeToken = this.pool.tokens[0].checksum;
-      this.customTokenAccept = false;
+      this.checkboxAccept = false;
       this.transactionFailed = false;
     }
   },
