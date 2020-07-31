@@ -164,7 +164,8 @@ export default {
   },
   computed: {
     userShare() {
-      const poolSharesFrom = this.subgraph.poolShares[this.pool.id] || 0;
+      const poolSharesFrom =
+        parseFloat(this.subgraph.poolShares[this.pool.id]) || 0;
       const totalShares = parseFloat(this.pool.totalShares);
       const current = poolSharesFrom / totalShares;
       if (this.validationError) {
@@ -440,6 +441,11 @@ export default {
         );
         const amount = new BigNumber(this.amounts[tokenIn.checksum]);
 
+        const maxInRatio = 1 / 2;
+        if (amount.div(tokenIn.balance).gt(maxInRatio)) {
+          return;
+        }
+
         const tokenBalanceIn = denormalizeBalance(
           tokenIn.balance,
           tokenIn.decimals
@@ -470,7 +476,9 @@ export default {
         if (token.checksum === changedToken.checksum) {
           return;
         }
-        this.amounts[token.checksum] = ratio.times(token.balance).toString();
+        this.amounts[token.checksum] = ratio.isNaN()
+          ? ''
+          : ratio.times(token.balance).toString();
       });
     },
     handleMax(token) {

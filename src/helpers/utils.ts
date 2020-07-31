@@ -125,6 +125,9 @@ export function trunc(value: number, decimals = 0) {
 }
 
 export function calcPoolTokensByRatio(ratio, totalShares) {
+  if (ratio.isNaN()) {
+    return '0';
+  }
   // @TODO - fix calcs so no buffer is needed
   const buffer = bnum(100);
   return bnum(ratio)
