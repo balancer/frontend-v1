@@ -170,6 +170,13 @@ export default {
       if (parseFloat(this.swapFee) <= 0) {
         return 'Values should be positive numbers';
       }
+      // Token count validation
+      if (this.tokens.length < 2) {
+        return 'Pool should contain at least 2 tokens';
+      }
+      if (this.tokens.length > 8) {
+        return 'Pool should contain no more than 8 tokens';
+      }
       // Weight validation
       for (const token of this.tokens) {
         const weight = parseFloat(this.weights[token]);
