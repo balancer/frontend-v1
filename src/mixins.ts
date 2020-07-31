@@ -28,8 +28,7 @@ export default {
     },
     _ticker(address: string): string {
       if (address === 'ether') return 'ETH';
-      // @ts-ignore
-      const token = this.web3.tokenMetadata[address];
+      const token = config.tokens[address];
       return token ? token.symbol : this._shorten(address);
     },
     _precision(rawValue: number, address: string): number {

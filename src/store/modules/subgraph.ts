@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import { request } from '@/helpers/subgraph';
-import { formatPool } from '@/helpers/utils';
+import { formatPool, ITEMS_PER_PAGE } from '@/helpers/utils';
 
 const state = {
   balancer: {},
@@ -9,6 +9,11 @@ const state = {
 };
 
 const mutations = {
+  CLEAR_USER(_state) {
+    Vue.set(_state, 'poolShares', {});
+    Vue.set(_state, 'myPools', []);
+    console.debug('CLEAR_USER');
+  },
   GET_BALANCER_REQUEST() {
     console.debug('GET_BALANCER_REQUEST');
   },
@@ -121,7 +126,7 @@ const actions = {
   },
   getPools: async ({ commit }, payload) => {
     const {
-      first = 10,
+      first = ITEMS_PER_PAGE,
       page = 1,
       orderBy = 'liquidity',
       orderDirection = 'desc',
@@ -202,7 +207,7 @@ const actions = {
     commit('GET_POOLS_SWAPS_REQUEST');
     try {
       const {
-        first = 10,
+        first = ITEMS_PER_PAGE,
         page = 1,
         orderBy = 'timestamp',
         orderDirection = 'desc',
@@ -231,7 +236,7 @@ const actions = {
     commit('GET_POOLS_SHARES_REQUEST');
     try {
       const {
-        first = 10,
+        first = ITEMS_PER_PAGE,
         page = 1,
         orderBy = 'balance',
         orderDirection = 'desc',

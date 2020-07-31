@@ -18,7 +18,7 @@
       </UiTableTh>
       <div
         v-infinite-scroll="loadMore"
-        infinite-scroll-distance="5"
+        infinite-scroll-distance="10"
         class="overflow-hidden"
       >
         <div v-if="pools.length > 0">
@@ -46,6 +46,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { ITEMS_PER_PAGE } from '@/helpers/utils';
 
 export default {
   props: ['query', 'limit', 'title'],
@@ -75,7 +76,7 @@ export default {
     async loadMore() {
       if (
         (this.limit && this.pools.length > this.limit) ||
-        this.pools.length < this.page * 10
+        this.pools.length < this.page * ITEMS_PER_PAGE
       )
         return;
       this.loading = true;

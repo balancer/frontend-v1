@@ -1,7 +1,19 @@
 <template>
   <div class="px-0 px-md-5 py-4">
     <VueLoadingIndicator v-if="loading" class="big" />
-    <div v-else-if="pool">
+    <div
+      v-else-if="!pool"
+      class="text-white text-center mt-8"
+      style="font-size: 24px;"
+    >
+      Pool not found
+    </div>
+    <div v-else>
+      <MessageWarning
+        v-if="customTokenWarning"
+        :text="customTokenWarning"
+        class="mb-4"
+      />
       <div class="d-flex flex-items-center flex-auto mb-4 px-4 px-md-0">
         <h3 class="flex-auto d-flex flex-items-center">
           <div>Pool {{ _shorten(pool.id) }}</div>
@@ -12,7 +24,7 @@
         </h3>
         <div class="d-flex">
           <UiButton
-            class="ml-2"
+            class="button-primary ml-2"
             @click="openAddLiquidityModal"
             v-if="enableAddLiquidity"
           >
@@ -20,7 +32,7 @@
           </UiButton>
           <UiButton
             v-if="hasShares"
-            class="button-outline ml-2"
+            class="ml-2"
             @click="openRemoveLiquidityModal"
           >
             Remove Liquidity
@@ -30,9 +42,6 @@
       <PoolBoxes :pool="pool" />
       <Tabs :pool="pool" />
       <router-view :key="$route.path" :pool="pool" />
-    </div>
-    <div v-else class="text-white text-center mt-8" style="font-size: 24px;">
-      Pool not found
     </div>
     <ModalAddLiquidity
       v-if="pool"
@@ -46,11 +55,18 @@
       :open="modalRemoveLiquidityOpen"
       @close="modalRemoveLiquidityOpen = false"
     />
+    <ModalCustomToken
+      v-if="hasCustomToken"
+      :open="modalCustomTokenOpen"
+      @close="modalCustomTokenOpen = false"
+    />
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
+
+import config from '@/helpers/config';
 
 export default {
   data() {
@@ -59,10 +75,32 @@ export default {
       pool: {},
       loading: false,
       modalAddLiquidityOpen: false,
-      modalRemoveLiquidityOpen: false
+      modalRemoveLiquidityOpen: false,
+      modalCustomTokenOpen: true
     };
   },
   computed: {
+    customTokenWarning() {
+      const warnings = config.warnings;
+      for (const token in warnings) {
+        if (this.pool.tokensList.includes(token)) {
+          return warnings[token];
+        }
+      }
+      return undefined;
+    },
+    hasCustomToken() {
+      if (!this.pool.tokens) {
+        return false;
+      }
+      for (const token of this.pool.tokens) {
+        const tokenMetadata = this.web3.tokenMetadata[token.checksum];
+        if (!tokenMetadata || !tokenMetadata.whitelisted) {
+          return true;
+        }
+      }
+      return false;
+    },
     hasShares() {
       return Object.keys(this.subgraph.poolShares).includes(this.id);
     },

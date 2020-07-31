@@ -37,6 +37,7 @@ const actions = {
       dispatch('loadPricesById', tokenIds),
       dispatch('initTokenMetadata')
     ]);
+    await dispatch('loadBackupProvider');
     const connector = lsGet('connector');
     if (Object.keys(config.connectors).includes(connector)) {
       const lockConnector = lock.getConnector(connector);

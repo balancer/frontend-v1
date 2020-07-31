@@ -25,7 +25,7 @@
             >
               <Icon name="arrow-down" />
             </a>
-            <ButtonUnlock class="ml-2" :tokenAddress="token" />
+            <ButtonUnlock class="button-primary ml-2" :tokenAddress="token" />
           </div>
           <div class="column-lg d-flex flex-items-center flex-justify-between">
             <input
@@ -58,7 +58,7 @@
         </UiTableTr>
       </div>
     </UiTable>
-    <UiButton class="button-outline mt-4" @click="addToken">
+    <UiButton class="mt-4" @click="addToken">
       Add Token
     </UiButton>
     <div class="d-flex flex-items-center px-4 px-md-0 my-4">
@@ -81,19 +81,16 @@
       />
     </div>
     <MessageError v-if="validationError" :text="validationError" class="mt-4" />
-    <MessageCustomToken
-      v-if="hasCustomToken"
-      :accepted="customTokenAccept"
-      @toggle="customTokenAccept = !customTokenAccept"
+    <MessageCheckbox
+      v-if="!validationError"
+      :custom="hasCustomToken"
+      :accepted="checkboxAccept"
+      @toggle="checkboxAccept = !checkboxAccept"
       class="mt-4"
     />
     <UiButton
-      :disabled="
-        validationError ||
-          hasLockedToken ||
-          (hasCustomToken && !customTokenAccept)
-      "
-      class="mt-4"
+      :disabled="validationError || hasLockedToken || !checkboxAccept"
+      class="button-primary mt-4"
       @click="create"
     >
       Create
@@ -112,14 +109,12 @@ import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { getAddress } from '@ethersproject/address';
 import config from '@/helpers/config';
-import { bnum, normalizeBalance, denormalizeBalance } from '@/helpers/utils';
-
-function getTokenAddressBySymbol(symbol) {
-  const tokenAddresses = Object.keys(config.tokens);
-  return tokenAddresses.find(
-    tokenAddress => config.tokens[tokenAddress].symbol === symbol
-  );
-}
+import {
+  bnum,
+  normalizeBalance,
+  denormalizeBalance,
+  getTokenBySymbol
+} from '@/helpers/utils';
 
 function getAnotherToken(tokens, selectedTokens) {
   const tokenAddresses = Object.keys(tokens);
@@ -143,12 +138,12 @@ export default {
       tokens: [],
       activeToken: 0,
       modalOpen: false,
-      customTokenAccept: false
+      checkboxAccept: false
     };
   },
   created() {
-    const dai = getTokenAddressBySymbol('DAI');
-    const usdc = getTokenAddressBySymbol('USDC');
+    const dai = getTokenBySymbol('DAI').address;
+    const usdc = getTokenBySymbol('USDC').address;
     this.tokens = [dai, usdc];
     Vue.set(this.weights, dai, '30');
     Vue.set(this.weights, usdc, '20');
@@ -192,6 +187,13 @@ export default {
       }
       if (parseFloat(this.swapFee) <= 0) {
         return 'Values should be positive numbers';
+      }
+      // Token count validation
+      if (this.tokens.length < 2) {
+        return 'Pool should contain at least 2 tokens';
+      }
+      if (this.tokens.length > 8) {
+        return 'Pool should contain no more than 8 tokens';
       }
       // Weight validation
       for (const token of this.tokens) {
@@ -247,9 +249,6 @@ export default {
       return false;
     },
     hasCustomToken() {
-      if (this.validationError) {
-        return false;
-      }
       for (const token of this.tokens) {
         const tokenMetadata = this.web3.tokenMetadata[token];
         if (!tokenMetadata || !tokenMetadata.whitelisted) {

@@ -40,7 +40,7 @@
         <UiButton
           type="button"
           v-if="step !== 0"
-          class="button-outline d-inline-block column mx-1"
+          class="d-inline-block column mx-1"
           @click="step--"
         >
           Back

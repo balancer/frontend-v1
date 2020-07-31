@@ -3,7 +3,7 @@
     "network": "kovan",
     "chainId": 42,
     "defaultPrecision": 4,
-    "subgraphUrl": "https://api.thegraph.com/subgraphs/name/bonustrack/balancer-kovan",
+    "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-kovan",
     "alchemyWsUrl": "wss://eth-kovan.ws.alchemyapi.io/v2/C467LJc7Aa761LLxlcxXvhIG9HzDTtKw",
     "addresses": {
       "bFactory": "0x8f7F78080219d4066A8036ccD30D588B416a40DB",
@@ -101,7 +101,7 @@
       "0x86436BcE20258a6DcfE48C9512d4d49A30C4d8c4": {
         "address": "0x86436BcE20258a6DcfE48C9512d4d49A30C4d8c4",
         "symbol": "SNX",
-        "id": "synthetix-network-token",
+        "id": "havven",
         "decimals": 18,
         "precision": 2,
         "chartColor": "#ffffff"
@@ -123,6 +123,7 @@
         "chartColor": "#536DFE"
       }
     },
+    "warnings": {},
     "errors": {
       "noBool": [
         "0xEC4b4fFfb58B6c85D41025b07d93167B8192062E",
@@ -131,14 +132,13 @@
       "transferFee": [
         "0xbef02f140BFb37a75Ed6510e8D85C9E9e7e0ff1e"
       ]
-    },
-    "scams": []
+    }
   },
   "homestead": {
     "network": "homestead",
     "chainId": 1,
     "defaultPrecision": 4,
-    "subgraphUrl": "https://api.thegraph.com/subgraphs/name/bonustrack/balancer",
+    "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer",
     "alchemyWsUrl": "wss://eth-mainnet.ws.alchemyapi.io/v2/Q08AP-nlA-yUiQnIiAVlyWK4tbXjRMmD",
     "addresses": {
       "bFactory": "0x9424B1412450D0f8Fc2255FAf6046b98213B76Bd",
@@ -236,7 +236,7 @@
       "0xc00e94Cb662C3520282E6f5717214004A7f26888": {
         "address": "0xc00e94Cb662C3520282E6f5717214004A7f26888",
         "symbol": "COMP",
-        "id": "compound",
+        "id": "compound-governance-token",
         "decimals": 18,
         "precision": 2,
         "chartColor": "#387080"
@@ -252,7 +252,7 @@
       "0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643": {
         "address": "0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643",
         "symbol": "cDAI",
-        "id": "compound-dai",
+        "id": "cdai",
         "decimals": 8,
         "precision": 2,
         "chartColor": "#93a167"
@@ -308,7 +308,7 @@
       "0x80fB784B7eD66730e8b1DBd9820aFD29931aab03": {
         "address": "0x80fB784B7eD66730e8b1DBd9820aFD29931aab03",
         "symbol": "LEND",
-        "id": "aave",
+        "id": "ethlend",
         "decimals": 18,
         "precision": 2,
         "chartColor": "#c7bdf4"
@@ -452,7 +452,7 @@
       "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F": {
         "address": "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
         "symbol": "SNX",
-        "id": "synthetix-network-token",
+        "id": "havven",
         "decimals": 18,
         "precision": 2,
         "chartColor": "#8d6268"
@@ -460,7 +460,7 @@
       "0x57Ab1ec28D129707052df4dF418D58a2D46d5f51": {
         "address": "0x57Ab1ec28D129707052df4dF418D58a2D46d5f51",
         "symbol": "sUSD",
-        "id": "susd",
+        "id": "nusd",
         "decimals": 18,
         "precision": 2,
         "chartColor": "#416aa3"
@@ -620,7 +620,7 @@
       "0x408e41876cCCDC0F92210600ef50372656052a38": {
         "address": "0x408e41876cCCDC0F92210600ef50372656052a38",
         "symbol": "REN",
-        "id": "ren",
+        "id": "republic-protocol",
         "decimals": 18,
         "precision": 2,
         "chartColor": "#be955c"
@@ -644,7 +644,7 @@
       "0x4c327471C44B2dacD6E90525f9D629bd2e4f662C": {
         "address": "0x4c327471C44B2dacD6E90525f9D629bd2e4f662C",
         "symbol": "GHOST",
-        "id": "ghost",
+        "id": "ghost-by-mcafee",
         "decimals": 18,
         "precision": 2,
         "chartColor": "#557064"
@@ -692,7 +692,7 @@
       "0xF629cBd94d3791C9250152BD8dfBDF380E2a3B9c": {
         "address": "0xF629cBd94d3791C9250152BD8dfBDF380E2a3B9c",
         "symbol": "ENJ",
-        "id": "enjin-coin",
+        "id": "enjincoin",
         "decimals": 18,
         "precision": 2,
         "chartColor": "#387080"
@@ -828,7 +828,7 @@
       "0x4946Fcea7C692606e8908002e55A582af44AC121": {
         "address": "0x4946Fcea7C692606e8908002e55A582af44AC121",
         "symbol": "FOAM",
-        "id": "foam",
+        "id": "foam-protocol",
         "decimals": 18,
         "precision": 2,
         "chartColor": "#6e6962"
@@ -860,7 +860,7 @@
       "0xaaAEBE6Fe48E54f431b0C390CfaF0b017d09D42d": {
         "address": "0xaaAEBE6Fe48E54f431b0C390CfaF0b017d09D42d",
         "symbol": "CEL",
-        "id": "celsius-network-token",
+        "id": "celsius-degree-token",
         "decimals": 4,
         "precision": 2,
         "chartColor": "#7ca1c0"
@@ -876,7 +876,7 @@
       "0x4a220E6096B25EADb88358cb44068A3248254675": {
         "address": "0x4a220E6096B25EADb88358cb44068A3248254675",
         "symbol": "QNT",
-        "id": "quant",
+        "id": "quant-network",
         "decimals": 18,
         "precision": 2,
         "chartColor": "#666092"
@@ -916,7 +916,7 @@
       "0x6c6EE5e31d828De241282B9606C8e98Ea48526E2": {
         "address": "0x6c6EE5e31d828De241282B9606C8e98Ea48526E2",
         "symbol": "HOT",
-        "id": "holo",
+        "id": "holotoken",
         "decimals": 18,
         "precision": 2,
         "chartColor": "#9a9a97"
@@ -924,7 +924,7 @@
       "0xcD62b1C403fa761BAadFC74C525ce2B51780b184": {
         "address": "0xcD62b1C403fa761BAadFC74C525ce2B51780b184",
         "symbol": "ANJ",
-        "id": "aragon-court",
+        "id": "anj",
         "decimals": 18,
         "precision": 2,
         "chartColor": "#6f6776"
@@ -956,7 +956,7 @@
       "0xd15eCDCF5Ea68e3995b2D0527A0aE0a3258302F8": {
         "address": "0xd15eCDCF5Ea68e3995b2D0527A0aE0a3258302F8",
         "symbol": "MCX",
-        "id": "machi-x",
+        "id": "machix",
         "decimals": 18,
         "precision": 2,
         "chartColor": "#9d9f7f"
@@ -972,7 +972,7 @@
       "0xB705268213D593B8FD88d3FDEFF93AFF5CbDcfAE": {
         "address": "0xB705268213D593B8FD88d3FDEFF93AFF5CbDcfAE",
         "symbol": "IDEX",
-        "id": "idex",
+        "id": "aurora-dao",
         "decimals": 18,
         "precision": 2,
         "chartColor": "#93a167"
@@ -980,7 +980,7 @@
       "0xe2f2a5C287993345a840Db3B0845fbC70f5935a5": {
         "address": "0xe2f2a5C287993345a840Db3B0845fbC70f5935a5",
         "symbol": "mUSD",
-        "id": "mstable-usd",
+        "id": "musd",
         "decimals": 18,
         "precision": 2,
         "chartColor": "#6e6962"
@@ -1060,7 +1060,7 @@
       "0x1F573D6Fb3F13d689FF844B4cE37794d79a7FF1C": {
         "address": "0x1F573D6Fb3F13d689FF844B4cE37794d79a7FF1C",
         "symbol": "BNT",
-        "id": "bancor-network",
+        "id": "bancor",
         "decimals": 18,
         "precision": 2,
         "chartColor": "#c5ccb8"
@@ -1124,7 +1124,7 @@
       "0xaF1250fa68D7DECD34fD75dE8742Bc03B29BD58e": {
         "address": "0xaF1250fa68D7DECD34fD75dE8742Bc03B29BD58e",
         "symbol": "IHF",
-        "id": "invictus-hyperion-fund",
+        "id": "invictus-hyprion-fund",
         "decimals": 18,
         "precision": 2,
         "chartColor": "#c5ccb8"
@@ -1172,7 +1172,7 @@
       "0xaAAf91D9b90dF800Df4F55c205fd6989c977E73a": {
         "address": "0xaAAf91D9b90dF800Df4F55c205fd6989c977E73a",
         "symbol": "TKN",
-        "id": "monolith",
+        "id": "tokencard",
         "decimals": 8,
         "precision": 2,
         "chartColor": "#c28d75"
@@ -1180,7 +1180,7 @@
       "0x5Af2Be193a6ABCa9c8817001F45744777Db30756": {
         "address": "0x5Af2Be193a6ABCa9c8817001F45744777Db30756",
         "symbol": "VGX",
-        "id": "voyager-token",
+        "id": "ethos",
         "decimals": 8,
         "precision": 2,
         "chartColor": "#7ca1c0"
@@ -1412,7 +1412,7 @@
       "0x9ea463Ec4cE9E9E5bc9cFd0187C4Ac3a70DD951D": {
         "address": "0x9ea463Ec4cE9E9E5bc9cFd0187C4Ac3a70DD951D",
         "symbol": "ETH20SMACO",
-        "id": "eth-20-day-ma-crossover-set",
+        "id": "eth_20_day_ma_crossover_set",
         "decimals": 18,
         "precision": 2,
         "chartColor": "#9a9a97"
@@ -1724,7 +1724,7 @@
       "0xbE9375C6a420D2eEB258962efB95551A5b722803": {
         "address": "0xbE9375C6a420D2eEB258962efB95551A5b722803",
         "symbol": "STMX",
-        "id": "stormx",
+        "id": "storm",
         "decimals": 18,
         "precision": 2,
         "chartColor": "#666092"
@@ -1732,7 +1732,7 @@
       "0x3505F494c3f0fed0B594E01Fa41Dd3967645ca39": {
         "address": "0x3505F494c3f0fed0B594E01Fa41Dd3967645ca39",
         "symbol": "SWM",
-        "id": "swarm-fund",
+        "id": "swarm",
         "decimals": 18,
         "precision": 2,
         "chartColor": "#9a4f50"
@@ -1868,7 +1868,7 @@
       "0xB6eD7644C69416d67B522e20bC294A9a9B405B31": {
           "address": "0xB6eD7644C69416d67B522e20bC294A9a9B405B31",
           "symbol": "0xBTC",
-          "id": "0xbitcoin",
+          "id": "oxbitcoin",
           "decimals": 8,
           "precision": 4,
           "chartColor": "#6f6776"
@@ -1900,7 +1900,7 @@
       "0xdF5e0e81Dff6FAF3A7e52BA697820c5e32D806A8": {
           "address": "0xdF5e0e81Dff6FAF3A7e52BA697820c5e32D806A8",
           "symbol": "yCRV",
-          "id": "lp-ycurve",
+          "id": "curve-fi-ydai-yusdc-yusdt-ytusd",
           "decimals": 18,
           "precision": 2,
           "chartColor": "#c38890"
@@ -1913,6 +1913,10 @@
           "precision": 2,
           "chartColor": "#a593a5"
       }
+    },
+    "warnings": {
+      "0xD46bA6D942050d489DBd938a2C909A5d5039A161": "This is a risky pool. AMPL can change its balance inside the pool during rebase. That can lead to partial lose of pool's value. PLEASE SLOW DOWN AND DYOR.",
+      "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e": "This is a risky pool. If the YFI token is infinitely minted, a huge percent of the entire pool supply can be stolen. PLEASE SLOW DOWN AND DYOR."
     },
     "errors": {
       "noBool": [
@@ -1973,10 +1977,6 @@
         "0xeEEE2a622330E6d2036691e983DEe87330588603",
         "0xF0FAC7104aAC544e4a7CE1A55ADF2B5a25c65bD1"
       ]
-    },
-    "scams": [
-      "0xa1d0E215a23d7030842FC67cE582a6aFa3CCaB83",
-      "0xb81D3cB2708530ea990a287142b82D058725C092"
-    ]
+    }
   }
 }

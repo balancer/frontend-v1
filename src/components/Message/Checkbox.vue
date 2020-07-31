@@ -1,9 +1,7 @@
 <template>
-  <div id="error" class="d-flex flex-items-center px-4 py-2">
-    <div>
-      <UiCheckbox :checked="accepted" @change="$emit('toggle')" />
-    </div>
-    <div class="ml-4">
+  <div id="error" class="d-flex flex-items-center p-4">
+    <UiCheckbox :checked="accepted" @change="$emit('toggle')" />
+    <div class="ml-4" v-if="custom">
       <div>
         • Do not add <b>deflationary tokens</b> or tokens with transfer fees.
       </div>
@@ -11,13 +9,21 @@
       <div>
         • Any other <b>non-compliance from ERC20</b> may cause issues. DYOR!
       </div>
+      <div>
+        • By checking this box I agree that Balancer Labs is not liable for any
+        losses or issues I might have.
+      </div>
+    </div>
+    <div class="ml-4" v-else>
+      By checking this box I agree that Balancer Labs is not liable for any
+      losses or issues I might have.
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['accepted']
+  props: ['custom', 'accepted']
 };
 </script>
 

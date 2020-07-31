@@ -25,11 +25,7 @@
       </div>
       <div :key="web3.account">
         <template v-if="web3.account && !wrongNetwork">
-          <UiButton
-            @click="modalOpen = true"
-            :loading="loading"
-            class="button-outline"
-          >
+          <UiButton @click="modalOpen = true" :loading="loading">
             <Avatar :address="web3.account" size="16" class="mr-2 ml-n1" />
             <span v-if="web3.name" v-text="web3.name" />
             <span v-else v-text="_shorten(web3.account)" />
@@ -39,7 +35,12 @@
           <Icon name="warning" class="ml-n2 mr-1 v-align-middle" />
           Wrong Network
         </UiButton>
-        <UiButton v-if="showLogin" @click="modalOpen = true" :loading="loading">
+        <UiButton
+          v-if="showLogin"
+          @click="modalOpen = true"
+          :loading="loading"
+          class="button-primary"
+        >
           Connect Wallet
         </UiButton>
       </div>

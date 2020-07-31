@@ -6,7 +6,7 @@
         class="text-white d-flex"
       >
         <Token :address="token.address" :symbol="token.symbol" class="mr-3" />
-        {{ token.symbol }}
+        {{ _ticker(token.checksum) }}
       </router-link>
     </div>
     <div class="column">{{ $n(token.weightPercent.toFixed(2)) }}%</div>

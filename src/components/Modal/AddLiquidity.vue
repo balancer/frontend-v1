@@ -10,7 +10,7 @@
         <UiTable>
           <UiTableTh>
             <div class="column-lg flex-auto text-left">Asset</div>
-            <div class="column text-left">Wallet Balance</div>
+            <div class="column">Wallet Balance</div>
             <div class="column-sm">Deposit Amount</div>
           </UiTableTh>
           <UiTableTr v-for="token in pool.tokens" :key="token.checksum">
@@ -28,10 +28,13 @@
                 "
               />
               <Token :address="token.address" class="mr-2" size="20" />
-              <div class="text-white">{{ token.symbol }}</div>
-              <ButtonUnlock class="ml-2" :tokenAddress="token.checksum" />
+              <div class="text-white">{{ _ticker(token.checksum) }}</div>
+              <ButtonUnlock
+                class="button-primary ml-2"
+                :tokenAddress="token.checksum"
+              />
             </div>
-            <div class="column text-left">
+            <div class="column">
               {{
                 _trunc(
                   formatBalance(
@@ -41,7 +44,6 @@
                   2
                 )
               }}
-              {{ token.symbol }}
               <a @click="handleMax(token)" class="ml-1">
                 <UiLabel v-text="'Max'" />
               </a>
@@ -71,10 +73,11 @@
           class="mb-4"
         />
         <MessageError v-if="transferError" :text="transferError" class="mb-4" />
-        <MessageCustomToken
-          v-if="hasCustomToken"
-          :accepted="customTokenAccept"
-          @toggle="customTokenAccept = !customTokenAccept"
+        <MessageCheckbox
+          v-if="!tokenError && !validationError"
+          :custom="hasCustomToken"
+          :accepted="checkboxAccept"
+          @toggle="checkboxAccept = !checkboxAccept"
           class="mb-4 text-left"
         />
         <MessageWarningRateChange
@@ -88,12 +91,13 @@
           class="mb-4"
         />
         <UiButton
+          class="button-primary"
           type="submit"
           :disabled="
             tokenError ||
               validationError ||
               hasLockedToken ||
-              (hasCustomToken && !customTokenAccept) ||
+              !checkboxAccept ||
               transactionFailed
           "
           :loading="loading"
@@ -113,12 +117,22 @@ import {
   bnum,
   normalizeBalance,
   denormalizeBalance,
-  isTxReverted
+  isTxReverted,
+  getTokenBySymbol
 } from '@/helpers/utils';
 import { calcPoolOutGivenSingleIn } from '@/helpers/math';
 import { LiquidityType } from '@/components/SingleMultiToggle';
 
 const BALANCE_BUFFER = 0.01;
+
+function hasToken(pool, symbol) {
+  const token = getTokenBySymbol(symbol);
+  if (!token) {
+    return false;
+  }
+  const tokenAddress = token.address;
+  return pool.tokensList.includes(tokenAddress);
+}
 
 export default {
   props: ['open', 'pool'],
@@ -129,7 +143,7 @@ export default {
       amounts: {},
       type: LiquidityType.MULTI_ASSET,
       activeToken: null,
-      customTokenAccept: false,
+      checkboxAccept: false,
       transactionFailed: false
     };
   },
@@ -144,13 +158,14 @@ export default {
       );
       this.type = LiquidityType.MULTI_ASSET;
       this.activeToken = this.pool.tokens[0].checksum;
-      this.customTokenAccept = false;
+      this.checkboxAccept = false;
       this.transactionFailed = false;
     }
   },
   computed: {
     userShare() {
-      const poolSharesFrom = this.subgraph.poolShares[this.pool.id] || 0;
+      const poolSharesFrom =
+        parseFloat(this.subgraph.poolShares[this.pool.id]) || 0;
       const totalShares = parseFloat(this.pool.totalShares);
       const current = poolSharesFrom / totalShares;
       if (this.validationError) {
@@ -245,11 +260,11 @@ export default {
       if (!this.transactionFailed) {
         return undefined;
       }
-      if (this.hasToken(this.pool, 'SNX')) {
+      if (hasToken(this.pool, 'SNX')) {
         return 'Adding liquidity failed as your SNX is locked in staking.';
       }
       const synths = ['sUSD', 'sBTC', 'sETH', 'sXAU', 'sXAG', 'sDEFI'];
-      if (synths.some(synth => this.hasToken(this.pool, synth))) {
+      if (synths.some(synth => hasToken(this.pool, synth))) {
         return 'Adding liquidity failed as your Synthetix position might go underwater. ';
       }
       const aTokens = [
@@ -271,7 +286,7 @@ export default {
         'aWBTC',
         'aZRX'
       ];
-      if (aTokens.some(aToken => this.hasToken(this.pool, aToken))) {
+      if (aTokens.some(aToken => hasToken(this.pool, aToken))) {
         return 'Adding liquidity failed as your Aave position might go underwater. ';
       }
       const cTokens = [
@@ -284,7 +299,7 @@ export default {
         'cBAT',
         'cWBTC'
       ];
-      if (cTokens.some(cToken => this.hasToken(this.pool, cToken))) {
+      if (cTokens.some(cToken => hasToken(this.pool, cToken))) {
         return 'Adding liquidity failed as your Compound position might go underwater. ';
       }
       return 'Adding liquidity failed as one of the underlying tokens blocked the transfer. ';
@@ -426,6 +441,11 @@ export default {
         );
         const amount = new BigNumber(this.amounts[tokenIn.checksum]);
 
+        const maxInRatio = 1 / 2;
+        if (amount.div(tokenIn.balance).gt(maxInRatio)) {
+          return;
+        }
+
         const tokenBalanceIn = denormalizeBalance(
           tokenIn.balance,
           tokenIn.decimals
@@ -456,7 +476,9 @@ export default {
         if (token.checksum === changedToken.checksum) {
           return;
         }
-        this.amounts[token.checksum] = ratio.times(token.balance).toString();
+        this.amounts[token.checksum] = ratio.isNaN()
+          ? ''
+          : ratio.times(token.balance).toString();
       });
     },
     handleMax(token) {
@@ -542,12 +564,6 @@ export default {
       const amountNumber = denormalizeBalance(amount, token.decimals);
       const balance = this.web3.balances[tokenAddress];
       return amountNumber.lte(balance);
-    },
-    hasToken(pool, symbol) {
-      const tokenAddress = Object.keys(this.web3.tokenMetadata).find(
-        tokenAddress => this.web3.tokenMetadata[tokenAddress].symbol === symbol
-      );
-      return pool.tokensList.includes(tokenAddress);
     },
     formatBalance(balanceString, tokenDecimals) {
       return normalizeBalance(balanceString, tokenDecimals);

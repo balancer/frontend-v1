@@ -5,6 +5,7 @@ import config from '@/helpers/config';
 import trustwalletWhitelist from '@/helpers/trustwalletWhitelist.json';
 
 const LS_KEY = 'balancer-pool-management';
+export const ITEMS_PER_PAGE = 20;
 export const MAX_GAS = new BigNumber('0xffffffff');
 export const MAX_UINT = MaxUint256;
 export const POOL_TOKENS_DECIMALS = 18;
@@ -125,6 +126,9 @@ export function trunc(value: number, decimals = 0) {
 }
 
 export function calcPoolTokensByRatio(ratio, totalShares) {
+  if (ratio.isNaN()) {
+    return '0';
+  }
   // @TODO - fix calcs so no buffer is needed
   const buffer = bnum(100);
   return bnum(ratio)
@@ -132,6 +136,14 @@ export function calcPoolTokensByRatio(ratio, totalShares) {
     .integerValue(BigNumber.ROUND_DOWN)
     .minus(buffer)
     .toString();
+}
+
+export function getTokenBySymbol(symbol) {
+  const tokenAddresses = Object.keys(config.tokens);
+  const tokenAddress = tokenAddresses.find(
+    tokenAddress => config.tokens[tokenAddress].symbol === symbol
+  );
+  return config.tokens[tokenAddress];
 }
 
 export function getTokenLogoUrl(address: string): string | null {
@@ -172,7 +184,7 @@ export const isTxRejected = error => {
   if (!error) {
     return false;
   }
-  return error.code === 4001;
+  return error.code === 4001 || error.code === -32603;
 };
 
 export const isTxReverted = error => {

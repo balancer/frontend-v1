@@ -9,7 +9,7 @@
           placeholder="Search name, symbol or address"
         />
       </template>
-      <VueLoadingIndicator v-if="loading" class="big" />
+      <VueLoadingIndicator v-if="loading" class="big py-3" />
       <ul v-else>
         <li
           class="py-3 text-center"
@@ -24,7 +24,13 @@
           >
             <div class="flex-auto d-flex flex-items-center">
               <Token :address="i" class="mr-2" />
+              {{ token.name }}
               <span class="ml-2" v-text="token.symbol" />
+              <span
+                class="text-red ml-2"
+                v-if="isDisabled(i)"
+                v-text="'Bad ERC20'"
+              />
             </div>
             <span>
               <span
@@ -45,6 +51,7 @@
 import { mapActions } from 'vuex';
 import { getAddress } from '@ethersproject/address';
 
+import config from '@/helpers/config';
 import { bnum, isValidAddress, normalizeBalance } from '@/helpers/utils';
 
 export default {
@@ -81,11 +88,17 @@ export default {
             ];
           })
           .filter(token => {
-            const tokenStr = `${token[0]} ${token[1].symbol}`.toLowerCase();
-            return (
-              tokenStr.includes(this.query.toLowerCase()) &&
-              !this.not.includes(token[0])
-            );
+            if (this.not.includes(token[0])) {
+              return false;
+            }
+            const query = this.query.toLowerCase();
+            if (isValidAddress(query)) {
+              const address = token[0].toLowerCase();
+              return address === query;
+            } else {
+              const symbol = token[1].symbol.toLowerCase();
+              return symbol.includes(query);
+            }
           })
           .sort((a, b) => {
             if (a[1].value && b[1].value) return b[1].value - a[1].value;
@@ -104,6 +117,9 @@ export default {
       'getAllowances'
     ]),
     selectToken(token) {
+      if (this.isDisabled(token)) {
+        return;
+      }
       this.$emit('input', token);
       this.close();
     },
@@ -130,6 +146,11 @@ export default {
         })
       ]);
       this.loading = false;
+    },
+    isDisabled(address) {
+      const noBool = config.errors.noBool.includes(address);
+      const transferFee = config.errors.transferFee.includes(address);
+      return noBool || transferFee;
     }
   }
 };
