@@ -3,17 +3,8 @@
     <VueLoadingIndicator v-if="ui.loading || !ui.init" class="overlay big" />
     <div v-else>
       <Topnav />
-      <div
-        class="d-flex flex-row pb-6"
-        :style="ui.sidebarIsOpen && 'max-height: 100vh'"
-      >
-        <div
-          class="shell d-block d-xl-none"
-          :class="ui.sidebarIsOpen && 'sidebar-is-open'"
-          @click="toggleSidebar"
-        />
-        <Sidebar />
-        <router-view id="view" class="flex-auto" />
+      <div style="margin-top: 80px;">
+        <router-view class="pt-4" />
       </div>
     </div>
     <Notifications />
@@ -33,7 +24,6 @@ export default {
     ...mapActions(['init', 'toggleSidebar', 'hideSidebar'])
   },
   mounted() {
-    // const x = GIT_DESCRIBE;
     this.init();
   }
 };
@@ -41,15 +31,6 @@ export default {
 
 <style lang="scss">
 @import './vars';
-
-#view {
-  margin-left: 0;
-  margin-top: 80px;
-
-  @media (min-width: $width-xl) {
-    margin-left: 264px;
-  }
-}
 
 .shell {
   &.sidebar-is-open {

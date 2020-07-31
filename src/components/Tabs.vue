@@ -53,7 +53,6 @@ export default {
 
     li {
       display: inline-block;
-      font-size: 16px;
 
       a {
         line-height: 40px;

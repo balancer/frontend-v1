@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '@/views/Home.vue';
+import Explore from '@/views/Explore.vue';
 import Private from '@/views/Private.vue';
 import MyPools from '@/views/MyPools.vue';
 import Setup from '@/views/Setup.vue';
@@ -17,6 +18,7 @@ Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   { path: '/', name: 'home', component: Home },
+  { path: '/explore', name: 'explore', component: Explore },
   { path: '/private', name: 'private', component: Private },
   { path: '/my-pools', name: 'my-pools', component: MyPools },
   { path: '/setup', name: 'setup', component: Setup },

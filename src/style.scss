@@ -15,23 +15,9 @@ html, body, #app {
   outline: none !important;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4 {
   color: $white;
-  font-weight: 500;
-}
-
-h2 {
-  font-size: 20px;
-  font-weight: 500;
-}
-
-h3 {
-  font-size: 18px;
-}
-
-p {
-  font-size: 16px;
-  font-family: $font-weight-normal;
+  font-family: $font-weight-bold;
 }
 
 #app {
@@ -195,4 +181,9 @@ a {
 
 .border-bottom-0 {
   border-bottom: 0 !important;
+}
+
+input {
+  background: transparent;
+  border: none;
 }

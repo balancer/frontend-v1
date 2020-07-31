@@ -1,5 +1,5 @@
 <template>
-  <div class="px-0 px-md-5 py-4">
+  <Container>
     <VueLoadingIndicator v-if="loading" class="big" />
     <div
       v-else-if="!pool"
@@ -60,7 +60,7 @@
       :open="modalCustomTokenOpen"
       @close="modalCustomTokenOpen = false"
     />
-  </div>
+  </Container>
 </template>
 
 <script>

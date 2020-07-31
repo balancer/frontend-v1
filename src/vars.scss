@@ -53,14 +53,25 @@ $body-line-height: 1.4;
 $h2-size-mobile: 26px;
 $gray: $bg-gray;
 $text-gray: $gray;
-$h2-size: 26px;
+$blue: #7685d5;
+$blue-900: #41476b;
+
+$container-lg: 1080px;
 
 $gray-dark: #282a32;
 $bg-gray-dark: $gray-dark;
-$font-mktg: 'HarmoniaSansProCyrBold', Helvetica, Arial, sans-serif;
-$font-weight-bold: 'HarmoniaSansProCyrBold', Helvetica, Arial, sans-serif;
-$font-weight-normal: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
 
 $blue: #7685d5;
 $blue-900: #41476b;
 
+$body-font-size: 17px;
+$body-line-height: 1.4;
+$h1-size: 36px;
+$h2-size: 28px;
+$h3-size: 24px;
+$h4-size: 20px;
+
+$font-weight-normal: 'Calibre-Medium', -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+$font-weight-bold: 'Calibre-Semibold', -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+$body-font: $font-weight-normal;
+$font-mktg: $font-weight-bold;

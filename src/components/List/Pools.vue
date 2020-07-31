@@ -1,16 +1,12 @@
 <template>
   <div>
-    <div v-if="title" class="d-flex flex-items-center px-4 px-md-0 mb-4">
+    <div v-if="title" class="d-flex flex-items-center px-4 px-md-0 mb-3">
       <h3 class="flex-auto" v-text="title" />
       <Filters v-model="filters" />
     </div>
     <UiTable>
       <UiTableTh>
-        <div
-          v-text="'Pool address'"
-          class="column-sm text-left hide-sm hide-md hide-lg"
-        />
-        <div v-text="'Assets'" class="flex-auto text-left" />
+        <div v-text="'Pool'" class="flex-auto text-left" />
         <div v-text="'Swap Fee'" class="column hide-sm hide-md" />
         <div v-text="'Liquidity'" class="column" />
         <div v-text="'My Liquidity'" class="column hide-sm hide-md" />
@@ -30,7 +26,6 @@
         <ListLoading
           v-if="loading"
           :classes="[
-            'column-sm text-left hide-sm hide-md hide-lg',
             'flex-auto text-left',
             'column hide-sm hide-md',
             'column',

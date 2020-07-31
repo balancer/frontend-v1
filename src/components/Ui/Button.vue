@@ -24,6 +24,7 @@ export default {
   padding: 0 24px 3px;
   outline: none;
   height: 44px;
+  line-height: 45px;
   margin: 0;
 
   &:hover {

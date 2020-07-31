@@ -1,8 +1,5 @@
 <template>
   <UiTableTr :to="{ name: 'pool', params: { id: pool.id } }">
-    <div class="column-sm text-left hide-sm hide-md hide-lg">
-      {{ _shorten(pool.id) }}
-    </div>
     <div>
       <Pie :tokens="pool.tokens" class="mr-3" size="34" />
     </div>
@@ -12,16 +9,17 @@
           v-for="token in pool.tokens"
           :key="token.address"
           class="d-flex flex-items-center mr-2"
-          style="font-size: 12px; font-weight: 500"
         >
           <Icon
             name="bullet"
-            size="4"
-            class="mr-1"
+            size="8"
+            class="mr-1 pb-1"
             :style="`color: ${token.chartColor}`"
           />
-          {{ $n(token.weightPercent.toFixed()) }}%
-          {{ _ticker(token.checksum) }}
+          <span style="font-size: 16px;">
+            {{ $n(token.weightPercent.toFixed()) }}%
+            {{ _ticker(token.checksum) }}
+          </span>
         </div>
       </div>
     </div>

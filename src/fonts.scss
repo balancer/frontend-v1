@@ -1,57 +1,21 @@
 @import './assets/fonts/iconfont.css';
 
 @font-face {
-  font-family: 'HarmoniaSansProCyrBold';
-  src: url('./assets/fonts/HarmoniaSansProCyr-Bold.eot');
-  src: url('./assets/fonts/HarmoniaSansProCyr-Bold.eot?#iefix') format('embedded-opentype'),
-    url('./assets/fonts/HarmoniaSansProCyr-Bold.woff2') format('woff2'),
-    url('./assets/fonts/HarmoniaSansProCyr-Bold.woff') format('woff'),
-    url('./assets/fonts/HarmoniaSansProCyr-Bold.ttf') format('truetype'),
-    url('./assets/fonts/HarmoniaSansProCyr-Bold.svg#HarmoniaSansProCyr-Bold') format('svg');
-  font-weight: bold;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'HarmoniaSansProCyrLight';
-  src: url('./assets/fonts/HarmoniaSansProCyr-Light.eot');
-  src: url('./assets/fonts/HarmoniaSansProCyr-Light.eot?#iefix') format('embedded-opentype'),
-    url('./assets/fonts/HarmoniaSansProCyr-Light.woff2') format('woff2'),
-    url('./assets/fonts/HarmoniaSansProCyr-Light.woff') format('woff'),
-    url('./assets/fonts/HarmoniaSansProCyr-Light.ttf') format('truetype'),
-    url('./assets/fonts/HarmoniaSansProCyr-Light.svg#HarmoniaSansProCyr-Light') format('svg');
-  font-weight: 300;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'HarmoniaSansProCyrRegular';
-  src: url('./assets/fonts/HarmoniaSansProCyr-Regular.eot');
-  src: url('./assets/fonts/HarmoniaSansProCyr-Regular.eot?#iefix') format('embedded-opentype'),
-    url('./assets/fonts/HarmoniaSansProCyr-Regular.woff2') format('woff2'),
-    url('./assets/fonts/HarmoniaSansProCyr-Regular.woff') format('woff'),
-    url('./assets/fonts/HarmoniaSansProCyr-Regular.ttf') format('truetype'),
-    url('./assets/fonts/HarmoniaSansProCyr-Regular.svg#HarmoniaSansProCyr-Regular') format('svg');
+  font-family: 'Calibre-Medium';
+  src: url('./assets/fonts/Calibre-Medium.eot');
+  src: url('./assets/fonts/Calibre-Medium.eot?#iefix') format('embedded-opentype'),
+  url('./assets/fonts/Calibre-Medium.woff') format('woff'),
+  url('./assets/fonts/Calibre-Medium.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'HarmoniaSansProCyrBlack';
-  src: url('./assets/fonts/HarmoniaSansProCyr-Black.eot');
-  src: url('./assets/fonts/HarmoniaSansProCyr-Black.eot?#iefix') format('embedded-opentype'),
-    url('./assets/fonts/HarmoniaSansProCyr-Black.woff2') format('woff2'),
-    url('./assets/fonts/HarmoniaSansProCyr-Black.woff') format('woff'),
-    url('./assets/fonts/HarmoniaSansProCyr-Black.ttf') format('truetype'),
-    url('./assets/fonts/HarmoniaSansProCyr-Black.svg#HarmoniaSansProCyr-Black') format('svg');
-  font-weight: bold;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'HarmoniaSansProCyrSemiBd';
-  src: url('./assets/fonts/HarmoniaSansProCyr-SemiBd.otf');
-  src: url('./assets/fonts/HarmoniaSansProCyr-SemiBd.otf') format('opentype');
+  font-family: 'Calibre-Semibold';
+  src: url('./assets/fonts/Calibre-Semibold.eot');
+  src: url('./assets/fonts/Calibre-Semibold.eot?#iefix') format('embedded-opentype'),
+  url('./assets/fonts/Calibre-Semibold.woff') format('woff'),
+  url('./assets/fonts/Calibre-Semibold.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }

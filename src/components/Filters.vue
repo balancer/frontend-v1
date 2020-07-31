@@ -1,17 +1,13 @@
 <template>
   <div class="d-flex flex-items-center position-relative">
     Filter Token(s)
-    <div
-      v-for="(token, i) in input"
-      :key="i"
-      class="topic topic-action f6 ml-2"
-    >
+    <div v-for="(token, i) in input" :key="i" class="topic topic-action ml-2">
       <button class="delete-topic-button right-0" @click="deleteToken(i)">
         ×
       </button>
       {{ _ticker(token) }}
     </div>
-    <button @click="modalOpen = true" class="topic f6 ml-2">
+    <button @click="modalOpen = true" class="topic ml-2">
       +
     </button>
     <ModalSelectToken

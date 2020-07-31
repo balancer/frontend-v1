@@ -1,9 +1,9 @@
 <template>
-  <div class="px-0 px-md-5 py-4">
-    <div class="d-flex flex-items-center px-4 px-md-0 mb-4">
+  <Container>
+    <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
       <h3 class="flex-auto" v-text="'Tokens'" />
     </div>
-    <UiTable>
+    <UiTable class="mb-4">
       <UiTableTh>
         <div v-text="'Asset'" class="flex-auto text-left" />
         <div v-text="'Weight (total max: 100)'" class="column-lg" />
@@ -58,10 +58,10 @@
         </UiTableTr>
       </div>
     </UiTable>
-    <UiButton class="mt-4" @click="addToken">
+    <UiButton class="mb-4" @click="addToken">
       Add Token
     </UiButton>
-    <div class="d-flex flex-items-center px-4 px-md-0 my-4">
+    <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
       <h3 class="flex-auto" v-text="'Swap fee (%)'" />
     </div>
     <div>
@@ -93,7 +93,7 @@
       @input="changeToken"
       :not="tokens"
     />
-  </div>
+  </Container>
 </template>
 
 <script>

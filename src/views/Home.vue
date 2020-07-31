@@ -1,22 +1,12 @@
 <template>
-  <div>
-    <div class="px-0 px-md-5 pt-4">
-      <ListPools
-        title="My Liquidity"
-        v-if="Object.keys(subgraph.poolShares).length > 0"
-        :query="queryMyLiquidity"
-        class="mb-4"
-      />
-    </div>
-    <div class="px-0 px-md-5 pb-4">
-      <ListPools
-        title="Shared Pools"
-        :query="querySharedPools"
-        :key="JSON.stringify(querySharedPools)"
-        class="mb-4"
-      />
-    </div>
-  </div>
+  <Container slim="1">
+    <ListPools
+      title="My liquidity"
+      v-if="Object.keys(subgraph.poolShares).length > 0"
+      :query="queryMyLiquidity"
+      class="mb-4"
+    />
+  </Container>
 </template>
 
 <script>
@@ -30,14 +20,10 @@ export default {
           id_in: ids
         }
       };
-    },
-    querySharedPools() {
-      return {
-        where: {
-          finalized: true
-        }
-      };
     }
+  },
+  mounted() {
+    if (!this.web3.account) this.$router.push({ name: 'explore' });
   }
 };
 </script>
