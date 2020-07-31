@@ -123,6 +123,7 @@
         "chartColor": "#536DFE"
       }
     },
+    "warnings": {},
     "errors": {
       "noBool": [
         "0xEC4b4fFfb58B6c85D41025b07d93167B8192062E",
@@ -1912,6 +1913,10 @@
           "precision": 2,
           "chartColor": "#a593a5"
       }
+    },
+    "warnings": {
+      "0xD46bA6D942050d489DBd938a2C909A5d5039A161": "This is a risky pool. AMPL can change its balance inside the pool during rebase. That can lead to partial lose of pool's value. PLEASE SLOW DOWN AND DYOR.",
+      "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e": "This is a risky pool. If the YFI token is infinitely minted, a huge percent of the entire pool supply can be stolen. PLEASE SLOW DOWN AND DYOR."
     },
     "errors": {
       "noBool": [

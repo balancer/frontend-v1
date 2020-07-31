@@ -125,7 +125,11 @@ import { LiquidityType } from '@/components/SingleMultiToggle';
 const BALANCE_BUFFER = 0.01;
 
 function hasToken(pool, symbol) {
-  const tokenAddress = getTokenBySymbol(symbol).address;
+  const token = getTokenBySymbol(symbol);
+  if (!token) {
+    return false;
+  }
+  const tokenAddress = token.address;
   return pool.tokensList.includes(tokenAddress);
 }
 
