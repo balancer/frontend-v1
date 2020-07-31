@@ -73,8 +73,9 @@
           class="mb-4"
         />
         <MessageError v-if="transferError" :text="transferError" class="mb-4" />
-        <MessageCustomToken
-          v-if="hasCustomToken"
+        <MessageCheckbox
+          v-if="!tokenError && !validationError"
+          :custom="hasCustomToken"
           :accepted="customTokenAccept"
           @toggle="customTokenAccept = !customTokenAccept"
           class="mb-4 text-left"
@@ -96,7 +97,7 @@
             tokenError ||
               validationError ||
               hasLockedToken ||
-              (hasCustomToken && !customTokenAccept) ||
+              !customTokenAccept ||
               transactionFailed
           "
           :loading="loading"

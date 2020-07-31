@@ -73,18 +73,15 @@
       />
     </div>
     <MessageError v-if="validationError" :text="validationError" class="mt-4" />
-    <MessageCustomToken
-      v-if="hasCustomToken"
+    <MessageCheckbox
+      v-if="!validationError"
+      :custom="hasCustomToken"
       :accepted="customTokenAccept"
       @toggle="customTokenAccept = !customTokenAccept"
       class="mt-4"
     />
     <UiButton
-      :disabled="
-        validationError ||
-          hasLockedToken ||
-          (hasCustomToken && !customTokenAccept)
-      "
+      :disabled="validationError || hasLockedToken || !customTokenAccept"
       class="button-primary mt-4"
       @click="create"
     >
@@ -227,9 +224,6 @@ export default {
       return false;
     },
     hasCustomToken() {
-      if (this.validationError) {
-        return false;
-      }
       for (const token of this.tokens) {
         const tokenMetadata = this.web3.tokenMetadata[token];
         if (!tokenMetadata || !tokenMetadata.whitelisted) {
