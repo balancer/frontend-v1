@@ -5,6 +5,7 @@ import config from '@/helpers/config';
 import trustwalletWhitelist from '@/helpers/trustwalletWhitelist.json';
 
 const LS_KEY = 'balancer-pool-management';
+export const ITEMS_PER_PAGE = 20;
 export const MAX_GAS = new BigNumber('0xffffffff');
 export const MAX_UINT = MaxUint256;
 export const POOL_TOKENS_DECIMALS = 18;
