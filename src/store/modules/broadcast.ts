@@ -2,7 +2,7 @@ import { getAddress } from '@ethersproject/address';
 import { Interface } from '@ethersproject/abi';
 import { parseEther } from '@ethersproject/units';
 import abi from '@/helpers/abi';
-import config from '@/helpers/config';
+import config from '@/config';
 import {
   bnum,
   denormalizeBalance,
