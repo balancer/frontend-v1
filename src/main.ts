@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import autofocus from 'vue-autofocus-directive';
-import VueUi from '@vue/ui';
+import VueLoadingIndicator from '@vue/ui/src/components/VueLoadingIndicator.vue';
+import VueSwitch from '@vue/ui/src/components/VueSwitch.vue';
 import infiniteScroll from 'vue-infinite-scroll';
 import Jazzicon from 'vue-jazzicon';
 import upperFirst from 'lodash/upperFirst';
@@ -12,7 +13,6 @@ import mixins from '@/mixins';
 import i18n from '@/i18n';
 import '@/style.scss';
 
-Vue.use(VueUi);
 Vue.use(infiniteScroll);
 
 const requireComponent = require.context('@/components', true, /[\w-]+\.vue$/);
@@ -25,6 +25,8 @@ requireComponent.keys().forEach(fileName => {
 });
 
 Vue.component('jazzicon', Jazzicon);
+Vue.component('VueLoadingIndicator', VueLoadingIndicator);
+Vue.component('VueSwitch', VueSwitch);
 Vue.mixin(mixins);
 Vue.directive('autofocus', autofocus);
 

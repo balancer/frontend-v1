@@ -2,7 +2,7 @@
   <div class="text-center mx-auto p-4" style="max-width: 260px;">
     <template v-if="!confirmed">
       <h2 class="text-white">Waiting...</h2>
-      <VueLoadingIndicator class="loading-xl text-white py-6" />
+      <UiLoading class="loading-xl text-white py-6" />
       <h3 class="mb-3 text-white">Your transaction is being broadcasted</h3>
       <a
         :href="
