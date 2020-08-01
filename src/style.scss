@@ -61,10 +61,13 @@ a {
   max-width: 100%;
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+}
+
 ::-webkit-scrollbar-thumb {
   background-color: $panel-border;
   background-clip: padding-box;
-  border: 0;
   border-radius: 0;
 
   &:hover {
