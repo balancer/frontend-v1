@@ -127,6 +127,7 @@ import {
   getTokenBySymbol
 } from '@/helpers/utils';
 import { calcPoolOutGivenSingleIn } from '@/helpers/math';
+import { validateNumberInput, formatError } from '@/helpers/validation';
 
 const BALANCE_BUFFER = 0.01;
 
@@ -205,34 +206,16 @@ export default {
       if (this.tokenError) {
         return undefined;
       }
-      const tokens = this.pool.tokensList;
-      // Basic input validation
-      for (const token of tokens) {
+      for (const token of this.pool.tokensList) {
         if (!this.isMultiAsset && this.activeToken !== token) {
           continue;
         }
-        if (!this.amounts[token]) {
-          return `Values can't be empty`;
-        }
-      }
-      for (const token of tokens) {
-        if (!this.isMultiAsset && this.activeToken !== token) {
-          continue;
-        }
-        if (isNaN(this.amounts[token])) {
-          return 'Values should be numbers';
-        }
-      }
-      for (const token of tokens) {
-        if (!this.isMultiAsset && this.activeToken !== token) {
-          continue;
-        }
-        if (parseFloat(this.amounts[token]) <= 0) {
-          return 'Values should be positive numbers';
-        }
+        const amountError = validateNumberInput(this.amounts[token]);
+        const amountErrorText = formatError(amountError);
+        if (amountErrorText) return amountErrorText;
       }
       // Amount validation
-      for (const token of tokens) {
+      for (const token of this.pool.tokensList) {
         if (!this.isMultiAsset && this.activeToken !== token) {
           continue;
         }

@@ -97,6 +97,7 @@
 import { mapActions } from 'vuex';
 import { bnum, normalizeBalance, denormalizeBalance } from '@/helpers/utils';
 import { calcSingleOutGivenPoolIn } from '@/helpers/math';
+import { validateNumberInput, formatError } from '@/helpers/validation';
 
 export default {
   props: ['open', 'pool'],
@@ -145,17 +146,9 @@ export default {
       });
     },
     validationError() {
-      this.poolTokenBalance >= parseFloat(this.poolAmountIn);
-      // Basic input validation
-      if (!this.poolAmountIn) {
-        return `Value can't be empty`;
-      }
-      if (isNaN(this.poolAmountIn)) {
-        return 'Values should be numbers';
-      }
-      if (parseFloat(this.poolAmountIn) <= 0) {
-        return 'Value should be a positive number';
-      }
+      const amountError = validateNumberInput(this.poolAmountIn);
+      const amountErrorText = formatError(amountError);
+      if (amountErrorText) return amountErrorText;
       // Amount validation
       const amount = bnum(this.poolAmountIn);
       if (amount.gt(this.poolTokenBalance)) {
