@@ -44,6 +44,7 @@
       "liquidity": true,
       "tokensList": true,
       "swapsCount": true,
+      "holdersCount": true,
       "tokens": {
         "__args": {
           "orderBy": "denormWeight",
@@ -106,6 +107,12 @@
   },
   "getPools": {
     "pools": {
+      "__args": {
+        "where": {
+          "active": true,
+          "tokensCount_gt": 1
+        }
+      },
       "id": true,
       "publicSwap": true,
       "finalized": true,

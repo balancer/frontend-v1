@@ -49,7 +49,7 @@ import { mapActions } from 'vuex';
 import { ITEMS_PER_PAGE } from '@/helpers/utils';
 
 export default {
-  props: ['query', 'title'],
+  props: ['query', 'limit', 'title'],
   data() {
     return {
       loading: false,
@@ -74,7 +74,11 @@ export default {
   methods: {
     ...mapActions(['getPools']),
     async loadMore() {
-      if (this.pools.length < this.page * ITEMS_PER_PAGE) return;
+      if (
+        (this.limit && this.pools.length > this.limit) ||
+        this.pools.length < this.page * ITEMS_PER_PAGE
+      )
+        return;
       this.loading = true;
       this.page++;
       const page = this.page;

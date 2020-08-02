@@ -25,7 +25,8 @@ export default {
       if (this.pool.finalized) {
         items.push({
           name: 'Holders',
-          to: { name: 'pool-shares' }
+          to: { name: 'pool-shares' },
+          count: this.pool.holdersCount
         });
       }
       items.push({
