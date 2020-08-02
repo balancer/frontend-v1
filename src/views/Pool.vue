@@ -1,6 +1,6 @@
 <template>
   <div class="px-0 px-md-5 py-4">
-    <VueLoadingIndicator v-if="loading" class="big" />
+    <UiLoading v-if="loading" class="big" />
     <div
       v-else-if="!pool"
       class="text-white text-center mt-8"
@@ -66,8 +66,6 @@
 <script>
 import { mapActions } from 'vuex';
 
-import config from '@/helpers/config';
-
 export default {
   data() {
     return {
@@ -81,7 +79,7 @@ export default {
   },
   computed: {
     customTokenWarning() {
-      const warnings = config.warnings;
+      const warnings = this.config.warnings;
       for (const token in warnings) {
         if (this.pool.tokensList.includes(token)) {
           return warnings[token];

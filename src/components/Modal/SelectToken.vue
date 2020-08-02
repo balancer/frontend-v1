@@ -9,7 +9,7 @@
           placeholder="Search name, symbol or address"
         />
       </template>
-      <VueLoadingIndicator v-if="loading" class="big py-3" />
+      <UiLoading v-if="loading" class="big py-3" />
       <ul v-else>
         <li
           class="py-3 text-center"
@@ -50,8 +50,6 @@
 <script>
 import { mapActions } from 'vuex';
 import { getAddress } from '@ethersproject/address';
-
-import config from '@/helpers/config';
 import { bnum, isValidAddress, normalizeBalance } from '@/helpers/utils';
 
 export default {
@@ -148,8 +146,8 @@ export default {
       this.loading = false;
     },
     isDisabled(address) {
-      const noBool = config.errors.noBool.includes(address);
-      const transferFee = config.errors.transferFee.includes(address);
+      const noBool = this.config.errors.noBool.includes(address);
+      const transferFee = this.config.errors.transferFee.includes(address);
       return noBool || transferFee;
     }
   }

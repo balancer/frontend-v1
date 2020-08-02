@@ -40,7 +40,6 @@
 
 <script>
 // import { getAddress } from '@ethersproject/address';
-// import config from '@/helpers/config';
 // import { normalizeBalance } from '@/helpers/utils';
 
 export default {
@@ -55,7 +54,7 @@ export default {
       };
     }
     // tokenPrices() {
-    //   const ethPrice = this.getPrice(config.addresses.weth, 1);
+    //   const ethPrice = this.getPrice(this.config.addresses.weth, 1);
     //   return Object.fromEntries(
     //     Object.entries(this.subgraph.tokenPrices)
     //       .map(tokenPrice => {
