@@ -8,7 +8,7 @@
         <SingleMultiToggle
           action="remove"
           :selected="type"
-          :onSelect="onTypeSelect"
+          @select="handleSelectType"
         />
       </div>
       <div class="m-4 d-flex flex-justify-between">
@@ -97,7 +97,6 @@
 import { mapActions } from 'vuex';
 import { bnum, normalizeBalance, denormalizeBalance } from '@/helpers/utils';
 import { calcSingleOutGivenPoolIn } from '@/helpers/math';
-import { LiquidityType } from '@/components/SingleMultiToggle';
 
 export default {
   props: ['open', 'pool'],
@@ -105,7 +104,7 @@ export default {
     return {
       loading: false,
       poolAmountIn: '',
-      type: LiquidityType.MULTI_ASSET,
+      type: 'MULTI_ASSET',
       activeToken: null
     };
   },
@@ -113,7 +112,7 @@ export default {
     open() {
       this.poolAmountIn = '';
       this.loading = false;
-      this.type = LiquidityType.MULTI_ASSET;
+      this.type = 'MULTI_ASSET';
       this.activeToken = this.pool.tokens[0].address;
     }
   },
@@ -247,7 +246,7 @@ export default {
       return undefined;
     },
     isMultiAsset() {
-      return this.type === LiquidityType.MULTI_ASSET;
+      return this.type === 'MULTI_ASSET';
     }
   },
   methods: {
@@ -271,7 +270,7 @@ export default {
       }
       this.loading = false;
     },
-    onTypeSelect(type) {
+    handleSelectType(type) {
       this.type = type;
     },
     onTokenSelect(token) {

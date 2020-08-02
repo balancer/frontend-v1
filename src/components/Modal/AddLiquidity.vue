@@ -8,7 +8,7 @@
         <SingleMultiToggle
           action="add"
           :selected="type"
-          :onSelect="onTypeSelect"
+          @select="handleSelectType"
         />
       </div>
       <div class="m-4 d-flex flex-justify-between">
@@ -127,7 +127,6 @@ import {
   getTokenBySymbol
 } from '@/helpers/utils';
 import { calcPoolOutGivenSingleIn } from '@/helpers/math';
-import { LiquidityType } from '@/components/SingleMultiToggle';
 
 const BALANCE_BUFFER = 0.01;
 
@@ -147,7 +146,7 @@ export default {
       loading: false,
       poolTokens: null,
       amounts: {},
-      type: LiquidityType.MULTI_ASSET,
+      type: 'MULTI_ASSET',
       activeToken: null,
       checkboxAccept: false,
       transactionFailed: false
@@ -162,7 +161,7 @@ export default {
           return [token.checksum, ''];
         })
       );
-      this.type = LiquidityType.MULTI_ASSET;
+      this.type = 'MULTI_ASSET';
       this.activeToken = this.pool.tokens[0].checksum;
       this.checkboxAccept = false;
       this.transactionFailed = false;
@@ -432,7 +431,7 @@ export default {
       return maxRatioToken;
     },
     isMultiAsset() {
-      return this.type === LiquidityType.MULTI_ASSET;
+      return this.type === 'MULTI_ASSET';
     }
   },
   methods: {
@@ -503,7 +502,7 @@ export default {
       this.amounts[token.checksum] = normalizedAmount.toString();
       this.handleChange(normalizedAmount, token);
     },
-    onTypeSelect(type) {
+    handleSelectType(type) {
       this.type = type;
       this.poolTokens = null;
       this.amounts = Object.fromEntries(

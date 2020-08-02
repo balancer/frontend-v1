@@ -1,42 +1,29 @@
 <template>
   <span class="toggle mt-4">
     <UiButton
-      @click="onSelect(multiAsset)"
-      :class="selected === multiAsset && 'active'"
+      v-for="option in options"
+      :key="option"
+      @click="$emit('select', option)"
+      :class="selected === option && 'active'"
       class="border-0"
       type="button"
     >
-      {{ actionName }} all assets
-    </UiButton>
-    <UiButton
-      @click="onSelect(singleAsset)"
-      :class="selected === singleAsset && 'active'"
-      class="border-0"
-      type="button"
-    >
-      {{ actionName }} one asset
+      {{ action === 'add' ? 'Add' : 'Remove' }}
+      {{ option === 'MULTI_ASSET' ? 'all assets' : 'one asset' }}
     </UiButton>
   </span>
 </template>
 
-<script lang="ts">
-export enum LiquidityType {
-  MULTI_ASSET,
-  SINGLE_ASSET
-}
-
+<script>
 export default {
   props: ['selected', 'onSelect', 'action'],
-  computed: {
-    actionName() {
-      return this.action === 'add' ? 'Deposit' : 'Withdraw';
-    },
-    multiAsset() {
-      return LiquidityType.MULTI_ASSET;
-    },
-    singleAsset() {
-      return LiquidityType.SINGLE_ASSET;
-    }
+  data() {
+    return {
+      options: ['MULTI_ASSET', 'SINGLE_ASSET']
+    };
+  },
+  created() {
+    this.selected = this.options[0];
   }
 };
 </script>
