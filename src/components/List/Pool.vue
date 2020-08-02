@@ -12,12 +12,12 @@
           v-for="token in pool.tokens"
           :key="token.address"
           class="d-flex flex-items-center mr-2"
-          style="font-size: 12px; font-weight: 500"
+          style="font-size: 16px;"
         >
           <Icon
             name="bullet"
             size="4"
-            class="mr-1"
+            class="mr-1 pb-1"
             :style="`color: ${token.chartColor}`"
           />
           {{ $n(token.weightPercent.toFixed()) }}%
@@ -26,7 +26,7 @@
       </div>
     </div>
     <div class="column hide-sm hide-md">{{ $n(pool.swapFee, 'percent') }}</div>
-    <div class="column">{{ $n(poolLiquidity, 'currency') }}</div>
+    <div class="column">{{ $n(pool.liquidity, 'currency') }}</div>
     <div class="column hide-sm hide-md">{{ $n(myLiquidity, 'currency') }}</div>
     <div class="column hide-sm hide-md hide-lg">
       {{ $n(pool.lastSwapVolume, 'currency') }}
@@ -35,18 +35,13 @@
 </template>
 
 <script>
-import { getPoolLiquidity } from '@/helpers/price';
-
 export default {
   props: ['pool'],
   computed: {
-    poolLiquidity() {
-      return getPoolLiquidity(this.pool, this.price.values);
-    },
     myLiquidity() {
       const poolShares = this.subgraph.poolShares[this.pool.id];
       if (!this.pool.finalized || !poolShares) return 0;
-      return (this.poolLiquidity / this.pool.totalShares) * poolShares;
+      return (this.pool.liquidity / this.pool.totalShares) * poolShares;
     }
   }
 };
