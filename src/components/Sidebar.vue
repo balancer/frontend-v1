@@ -63,8 +63,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-
-import config from '@/helpers/config';
+import config from '@/config';
 import { clone, normalizeBalance, getTokenBySymbol } from '@/helpers/utils';
 
 const startItems = [

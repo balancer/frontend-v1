@@ -100,7 +100,6 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { getAddress } from '@ethersproject/address';
-import config from '@/helpers/config';
 import {
   bnum,
   normalizeBalance,
@@ -233,7 +232,7 @@ export default {
       Vue.set(this.amounts, tokenAddress, '');
     },
     addToken() {
-      const anotherToken = getAnotherToken(config.tokens, this.tokens);
+      const anotherToken = getAnotherToken(this.config.tokens, this.tokens);
       this.tokens.push(anotherToken);
       Vue.set(this.weights, anotherToken, '');
       Vue.set(this.amounts, anotherToken, '');

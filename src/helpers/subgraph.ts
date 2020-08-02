@@ -1,7 +1,7 @@
 import merge from 'lodash/merge';
 import cloneDeep from 'lodash/cloneDeep';
 import { jsonToGraphQLQuery } from 'json-to-graphql-query';
-import config from '@/helpers/config';
+import config from '@/config';
 import queries from '@/helpers/queries.json';
 
 export async function request(key: string | null, jsonQuery: any = {}) {

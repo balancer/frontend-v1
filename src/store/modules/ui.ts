@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import lock from '@/helpers/lock';
-import config from '@/helpers/config';
+import config from '@/config';
 import { lsGet } from '@/helpers/utils';
 
 const state = {

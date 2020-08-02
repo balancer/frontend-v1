@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import { getAddress } from '@ethersproject/address';
-import config from '@/helpers/config';
+import config from '@/config';
 
 const ENDPOINT = 'https://api.coingecko.com/api/v3';
 
