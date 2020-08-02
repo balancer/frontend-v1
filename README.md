@@ -2,19 +2,26 @@
 
 Pool management interface for users to add and remove liquidity to Balancer pools.
 
-## Development
-
--   Copy `.env.example` to `.env`
--   Configure supported network
-
+## Project setup
 ```
-# Network ID (e.g. homestead, kovan)
-VUE_APP_NETWORK=kovan
+npm install
 ```
 
--   Build & run locally
-
+### Compiles and hot-reloads for development
 ```
-npm run build
 npm run serve
 ```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+## License
+
+[GPL-3.0](LICENSE).

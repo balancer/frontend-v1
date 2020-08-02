@@ -1,7 +1,7 @@
 import { getAddress } from '@ethersproject/address';
 import { MaxUint256 } from '@ethersproject/constants';
 import BigNumber from '@/helpers/bignumber';
-import config from '@/helpers/config';
+import config from '@/config';
 import trustwalletWhitelist from '@/helpers/trustwalletWhitelist.json';
 
 const LS_KEY = 'balancer-pool-management';

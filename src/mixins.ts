@@ -1,6 +1,6 @@
 import store from '@/store';
 import { mapGetters, mapState } from 'vuex';
-import config from '@/helpers/config';
+import config from '@/config';
 import { shorten, trunc, etherscanLink } from '@/helpers/utils';
 
 // @ts-ignore

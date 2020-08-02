@@ -5,7 +5,7 @@ import { AddressZero } from '@ethersproject/constants';
 import { getAddress } from '@ethersproject/address';
 import { Interface } from '@ethersproject/abi';
 import abi from '@/helpers/abi';
-import config from '@/helpers/config';
+import config from '@/config';
 import lock from '@/helpers/lock';
 import wsProvider from '@/helpers/ws';
 import { lsSet, lsGet, lsRemove, isTxRejected } from '@/helpers/utils';
