@@ -19,12 +19,7 @@
       class="mt-2 d-flex flex-column flex-items-center flex-justify-center text-white"
     >
       <Pie :tokens="pool.tokens" size="96" />
-      <div
-        v-for="token in pool.tokens"
-        :key="token.address"
-        class="mt-1"
-        style="font-size: 12px; font-weight: 500"
-      >
+      <div v-for="token in pool.tokens" :key="token.address" class="mt-1">
         <Icon
           name="bullet"
           size="4"

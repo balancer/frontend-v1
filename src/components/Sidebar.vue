@@ -5,43 +5,7 @@
     :class="ui.sidebarIsOpen ? 'is-open' : 'is-closed'"
   >
     <Nav :items="items" class="flex-auto mb-4" />
-    <div class="p-4 border-top">
-      <div>
-        <div class="eyebrow mt-2">
-          ETH → WETH
-        </div>
-        <div class="d-flex">
-          <div class="input d-flex flex-justify-end">
-            <input
-              v-model="weth.wrapAmount"
-              class="flex-auto text-right text-white amount-input"
-              placeholder="0.0"
-            />
-          </div>
-          <UiButton class="ml-2 px-4" @click="wrapEther">
-            Wrap
-          </UiButton>
-        </div>
-        <div class="eyebrow mt-2">
-          WETH → ETH
-        </div>
-        <div class="d-flex">
-          <div class="input d-flex flex-items-center">
-            <a @click="handleMax()">
-              <UiLabel v-text="'Max'" />
-            </a>
-            <input
-              v-model="weth.unwrapAmount"
-              class="flex-auto text-right text-white amount-input ml-1"
-              placeholder="0.0"
-            />
-          </div>
-          <UiButton class="ml-2 px-3" @click="unwrapEther">
-            Unwrap
-          </UiButton>
-        </div>
-      </div>
-    </div>
+    <FormWrapper class="p-4 border-top" />
     <div class="p-4 border-top">
       <div class="eyebrow mb-4">
         My wallet
@@ -62,28 +26,19 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import config from '@/config';
 import { clone, normalizeBalance } from '@/helpers/utils';
 
 const startItems = [
   {
-    name: 'Shared Pools',
+    name: 'Shared pools',
     to: { name: 'home' }
   },
   {
-    name: 'Private Pools',
+    name: 'Private pools',
     to: { name: 'private' }
   }
 ];
-
-function getToken(symbol) {
-  const tokenAddresses = Object.keys(config.tokens);
-  const tokenAddress = tokenAddresses.find(
-    tokenAddress => config.tokens[tokenAddress].symbol === symbol
-  );
-  return config.tokens[tokenAddress];
-}
 
 export default {
   data() {
@@ -101,8 +56,8 @@ export default {
       items[1].count = this.subgraph.balancer.privatePoolCount;
       if (this.web3.account) {
         items.push({
-          name: 'Create a Pool',
-          to: { name: 'new-pool' }
+          name: 'Create a pool',
+          to: { name: 'create' }
         });
       }
       return items;
@@ -116,6 +71,7 @@ export default {
             const bValue = this.getTokenValue(b);
             return bValue - aValue;
           })
+          .slice(0, 5)
       );
       const target = { ether: balances.ether };
       target[config.addresses.weth] = balances[config.addresses.weth];
@@ -123,26 +79,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['wrap', 'unwrap']),
-    wrapEther() {
-      this.wrap(this.weth.wrapAmount);
-    },
-    unwrapEther() {
-      this.unwrap(this.weth.unwrapAmount);
-    },
-    handleMax() {
-      const weth = getToken('WETH');
-      const wethBalance = this.web3.balances[weth.address];
-      const balance = normalizeBalance(wethBalance, weth.decimals);
-      this.weth.unwrapAmount = balance.toString();
-    },
     getTokenValue(entry) {
       const address = entry[0];
       const balanceString = entry[1];
       const decimals =
         address === 'ether' ? 18 : this.web3.tokenMetadata[address].decimals;
       const balance = normalizeBalance(balanceString, decimals);
-      const weth = getToken('WETH');
+      const weth = this.config.tokens[this.config.addresses.weth];
       const price =
         address === 'ether'
           ? this.price.values[weth.address]
@@ -190,13 +133,5 @@ export default {
   &.is-open {
     left: 0 !important;
   }
-}
-</style>
-
-<style scoped>
-.amount-input {
-  width: 60%;
-  background-color: transparent;
-  border: none;
 }
 </style>

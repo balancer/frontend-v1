@@ -26,7 +26,7 @@ export default {
 
 .nav {
   ul > li > a {
-    font-size: 15px;
+    font-size: 19px;
     color: $white;
     display: block;
     padding: 24px 0 0;

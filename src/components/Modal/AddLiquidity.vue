@@ -4,7 +4,13 @@
       <template slot="header">
         <h3 class="text-white">Add Liquidity</h3>
       </template>
-      <SingleMultiToggle :selected="type" :onSelect="onTypeSelect" />
+      <div class="text-center m-4 mt-0">
+        <SingleMultiToggle
+          action="add"
+          :selected="type"
+          :onSelect="onTypeSelect"
+        />
+      </div>
       <div class="m-4 d-flex flex-justify-between">
         <PoolOverview :pool="pool" :userShare="userShare" style="width: 32%" />
         <UiTable>

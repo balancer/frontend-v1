@@ -32,14 +32,14 @@
                 v-text="'Bad ERC20'"
               />
             </div>
-            <span>
+            <div v-if="token.balance">
               <span
-                class="text-gray mr-2"
-                v-text="$n(token.value, 'currency')"
                 v-if="token.price"
+                v-text="$n(token.value, 'currency')"
+                class="text-gray mr-2"
               />
-              {{ $n(token.balance) }}
-            </span>
+              <span v-text="$n(token.balance)" />
+            </div>
           </a>
         </li>
       </ul>

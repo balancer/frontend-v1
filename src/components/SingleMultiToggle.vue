@@ -1,20 +1,22 @@
 <template>
-  <div class="d-flex flex-justify-center mt-4">
-    <div
-      class="d-flex flex-justify-center py-2 text-white rounded-left-1 option"
-      :class="{ selected: selected === multiAsset }"
+  <span class="toggle mt-4">
+    <UiButton
       @click="onSelect(multiAsset)"
+      :class="selected === multiAsset && 'active'"
+      class="border-0"
+      type="button"
     >
-      All Pool Assets
-    </div>
-    <div
-      class="d-flex flex-justify-center py-2 text-white rounded-right-1 option"
-      :class="{ selected: selected === singleAsset }"
+      {{ actionName }} all assets
+    </UiButton>
+    <UiButton
       @click="onSelect(singleAsset)"
+      :class="selected === singleAsset && 'active'"
+      class="border-0"
+      type="button"
     >
-      Single Asset
-    </div>
-  </div>
+      {{ actionName }} one asset
+    </UiButton>
+  </span>
 </template>
 
 <script lang="ts">
@@ -24,8 +26,11 @@ export enum LiquidityType {
 }
 
 export default {
-  props: ['selected', 'onSelect'],
+  props: ['selected', 'onSelect', 'action'],
   computed: {
+    actionName() {
+      return this.action === 'add' ? 'Deposit' : 'Withdraw';
+    },
     multiAsset() {
       return LiquidityType.MULTI_ASSET;
     },
@@ -39,9 +44,13 @@ export default {
 <style scoped lang="scss">
 @import '../vars';
 
-.option {
-  width: 140px;
-  border: 1px solid $panel-border;
-  cursor: pointer;
+.toggle {
+  border-radius: 22px;
+  display: inline-block;
+  background-color: $secondary-button-background;
+
+  .active {
+    background-color: $primary-button-background !important;
+  }
 }
 </style>

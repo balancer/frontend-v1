@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-items-center position-relative">
-    Filter Token(s)
+    <div class="pt-1">Filter by asset</div>
     <div
       v-for="(token, i) in input"
       :key="i"
@@ -49,12 +49,14 @@ export default {
 @import '../vars';
 
 .topic {
+  font-size: 16px !important;
   background-color: $blue-900;
   color: $white;
   border: 0;
   border-radius: 14px;
   padding: 0 10px;
-  line-height: 28px;
+  line-height: 32px;
+  height: 28px;
   position: relative;
 
   &.topic-action {
@@ -68,7 +70,8 @@ export default {
     border: 0;
     border-radius: 24px;
     padding: 0 6px;
-    line-height: 28px;
+    line-height: 32px;
+    height: 28px;
     width: 28px;
 
     &:hover {

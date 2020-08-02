@@ -44,7 +44,7 @@ export default {
     z-index: 999;
     margin: 0 auto;
     width: 100%;
-    max-height: 90%;
+    max-height: 80%;
 
     @media (max-width: 767px) {
       width: 100% !important;

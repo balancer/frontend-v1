@@ -2,7 +2,7 @@
   <div>
     <div class="px-0 px-md-5 pt-4">
       <ListPools
-        title="My Liquidity"
+        title="My liquidity"
         v-if="Object.keys(subgraph.poolShares).length > 0"
         :query="queryMyLiquidity"
         class="mb-4"
@@ -10,7 +10,7 @@
     </div>
     <div class="px-0 px-md-5 pb-4">
       <ListPools
-        title="Shared Pools"
+        title="Shared pools"
         :query="querySharedPools"
         :key="JSON.stringify(querySharedPools)"
         class="mb-4"
