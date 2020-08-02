@@ -64,12 +64,20 @@
     <div class="d-flex flex-items-center px-4 px-md-0 my-4">
       <h3 class="flex-auto" v-text="'Swap fee (%)'" />
     </div>
-    <div>
+    <div class="mb-4">
       <input
         class="input pool-input text-right"
         :class="isSwapFeeInputValid() ? 'text-white' : 'text-red'"
         v-model="swapFee"
         placeholder="0.00"
+      />
+    </div>
+    <div v-if="tokens.length > 1" class="mb-4">
+      <h3 class="mb-4">Similar pools</h3>
+      <ListPools
+        :key="JSON.stringify(suggestQuery)"
+        :limit="suggestQuery.first"
+        :query="suggestQuery"
       />
     </div>
     <MessageError v-if="validationError" :text="validationError" class="mt-4" />
@@ -140,6 +148,16 @@ export default {
     Vue.set(this.weights, usdc, '20');
   },
   computed: {
+    suggestQuery() {
+      return {
+        first: 5,
+        where: {
+          finalized: true,
+          tokensList_contains: this.tokens,
+          tokensCount: this.tokens.length
+        }
+      };
+    },
     validationError() {
       // Basic input validation
       for (const token of this.tokens) {
