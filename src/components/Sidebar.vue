@@ -64,7 +64,7 @@
 <script>
 import { mapActions } from 'vuex';
 import config from '@/config';
-import { clone, normalizeBalance } from '@/helpers/utils';
+import { clone, normalizeBalance, getTokenBySymbol } from '@/helpers/utils';
 
 const startItems = [
   {
@@ -76,14 +76,6 @@ const startItems = [
     to: { name: 'private' }
   }
 ];
-
-function getToken(symbol) {
-  const tokenAddresses = Object.keys(config.tokens);
-  const tokenAddress = tokenAddresses.find(
-    tokenAddress => config.tokens[tokenAddress].symbol === symbol
-  );
-  return config.tokens[tokenAddress];
-}
 
 export default {
   data() {
@@ -131,7 +123,7 @@ export default {
       this.unwrap(this.weth.unwrapAmount);
     },
     handleMax() {
-      const weth = getToken('WETH');
+      const weth = getTokenBySymbol('WETH');
       const wethBalance = this.web3.balances[weth.address];
       const balance = normalizeBalance(wethBalance, weth.decimals);
       this.weth.unwrapAmount = balance.toString();
@@ -142,7 +134,7 @@ export default {
       const decimals =
         address === 'ether' ? 18 : this.web3.tokenMetadata[address].decimals;
       const balance = normalizeBalance(balanceString, decimals);
-      const weth = getToken('WETH');
+      const weth = getTokenBySymbol('WETH');
       const price =
         address === 'ether'
           ? this.price.values[weth.address]
