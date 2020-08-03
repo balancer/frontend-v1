@@ -77,6 +77,15 @@ export default {
       modalCustomTokenOpen: true
     };
   },
+  watch: {
+    $route() {
+      const id = this.$route.params.id;
+      if (id !== this.id) {
+        this.id = id;
+        this.loadPool();
+      }
+    }
+  },
   computed: {
     customTokenWarning() {
       const warnings = this.config.warnings;
@@ -122,10 +131,8 @@ export default {
     },
     openRemoveLiquidityModal() {
       this.modalRemoveLiquidityOpen = true;
-    }
-  },
-  async created() {
-    if (Object.keys(this.pool).length === 0) {
+    },
+    async loadPool() {
       this.loading = true;
       this.pool = await this.getPool(this.id);
       if (!this.pool) {
@@ -150,6 +157,9 @@ export default {
       }
       this.loading = false;
     }
+  },
+  created() {
+    this.loadPool();
   }
 };
 </script>
