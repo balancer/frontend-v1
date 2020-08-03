@@ -43,6 +43,7 @@
   "tokens": {
     "0xd0A1E359811322d97991E03f863a0C30C2cF029C": {
       "address": "0xd0A1E359811322d97991E03f863a0C30C2cF029C",
+      "name": "Wrapped Ether",
       "symbol": "WETH",
       "id": "weth",
       "decimals": 18,
@@ -51,6 +52,7 @@
     },
     "0x1528F3FCc26d13F7079325Fb78D9442607781c8C": {
       "address": "0x1528F3FCc26d13F7079325Fb78D9442607781c8C",
+      "name": "Dai Stablecoin",
       "symbol": "DAI",
       "id": "dai",
       "decimals": 18,
@@ -59,6 +61,7 @@
     },
     "0xef13C0c8abcaf5767160018d268f9697aE4f5375": {
       "address": "0xef13C0c8abcaf5767160018d268f9697aE4f5375",
+      "name": "Maker",
       "symbol": "MKR",
       "id": "maker",
       "decimals": 18,
@@ -67,6 +70,7 @@
     },
     "0x2F375e94FC336Cdec2Dc0cCB5277FE59CBf1cAe5": {
       "address": "0x2F375e94FC336Cdec2Dc0cCB5277FE59CBf1cAe5",
+      "name": "USD Coin",
       "symbol": "USDC",
       "id": "usd-coin",
       "decimals": 6,
@@ -75,6 +79,7 @@
     },
     "0x8c9e6c40d3402480ACE624730524fACC5482798c": {
       "address": "0x8c9e6c40d3402480ACE624730524fACC5482798c",
+      "name": "Augur",
       "symbol": "REP",
       "id": "augur",
       "decimals": 18,
@@ -83,6 +88,7 @@
     },
     "0xe0C9275E44Ea80eF17579d33c55136b7DA269aEb": {
       "address": "0xe0C9275E44Ea80eF17579d33c55136b7DA269aEb",
+      "name": "Wrapped BTC",
       "symbol": "WBTC",
       "id": "wrapped-bitcoin",
       "decimals": 8,
@@ -91,6 +97,7 @@
     },
     "0x1f1f156E0317167c11Aa412E3d1435ea29Dc3cCE": {
       "address": "0x1f1f156E0317167c11Aa412E3d1435ea29Dc3cCE",
+      "name": "Basic Attention Token",
       "symbol": "BAT",
       "id": "basic-attention-token",
       "decimals": 18,
@@ -99,6 +106,7 @@
     },
     "0x86436BcE20258a6DcfE48C9512d4d49A30C4d8c4": {
       "address": "0x86436BcE20258a6DcfE48C9512d4d49A30C4d8c4",
+      "name": "Synthetix",
       "symbol": "SNX",
       "id": "havven",
       "decimals": 18,
@@ -107,6 +115,7 @@
     },
     "0x37f03a12241E9FD3658ad6777d289c3fb8512Bc9": {
       "address": "0x37f03a12241E9FD3658ad6777d289c3fb8512Bc9",
+      "name": "Aragon Network Token",
       "symbol": "ANT",
       "id": "aragon",
       "decimals": 18,
@@ -115,6 +124,7 @@
     },
     "0xccb0F4Cf5D3F97f4a55bb5f5cA321C3ED033f244": {
       "address": "0xccb0F4Cf5D3F97f4a55bb5f5cA321C3ED033f244",
+      "name": "0x Protocol Token",
       "symbol": "ZRX",
       "id": "0x",
       "decimals": 18,
