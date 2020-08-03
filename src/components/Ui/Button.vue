@@ -1,9 +1,7 @@
 <template>
-  <button @click="$emit('click')" class="button">
-    <span>
-      <VueLoadingIndicator v-if="loading" />
-      <slot v-else />
-    </span>
+  <button @click="$emit('click')" class="button" :disabled="loading">
+    <UiLoading v-if="loading" />
+    <slot v-else />
   </button>
 </template>
 
@@ -19,18 +17,23 @@ export default {
 @import '../../vars';
 
 .button {
-  background-color: $button-background;
-  color: $button-text;
-  border: 1px solid $button-border;
+  background-color: $secondary-button-background;
+  color: $secondary-button-text;
+  border: 1px solid $secondary-button-border;
   border-radius: 22px;
   padding: 0 24px 3px;
   outline: none;
   height: 44px;
   margin: 0;
 
+  &:hover {
+    background-color: $secondary-button-background-hover;
+  }
+
   &:disabled {
-    @extend .button-outline;
-    color: $text-gray !important;
+    background: $button-disabled;
+    border: 1px solid $button-disabled;
+    color: $button-disabled-text;
     cursor: not-allowed;
   }
 
@@ -41,18 +44,34 @@ export default {
     height: 36px;
   }
 
-  &.button-outline {
-    color: $link-text;
-    border: 1px solid $panel-border;
-    background-color: transparent;
+  &.button-primary {
+    background-color: $primary-button-background;
+    color: $primary-button-text;
+    border-color: $primary-button-border;
+
+    &:hover {
+      background-color: $primary-button-background-hover;
+    }
+
+    &:disabled {
+      background: $button-disabled;
+      border: 1px solid $button-disabled;
+      color: $button-disabled-text;
+      cursor: not-allowed;
+    }
   }
 
   &.button-red {
-    background-color: $bg-red;
-    border-color: $bg-red;
+    border-color: $error;
+    color: $error;
   }
 
-  &.button-green {
+  &.notification-red {
+    background-color: $error;
+    border-color: $error;
+  }
+
+  &.notification-green {
     background-color: $bg-green;
     border-color: $bg-green;
   }

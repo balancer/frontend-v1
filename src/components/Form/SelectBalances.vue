@@ -9,12 +9,12 @@
       <UiTableTr v-for="(token, i) in tokens" :key="token">
         <div class="flex-auto d-flex flex-items-center text-left d-flex">
           <Token :address="token" class="mr-2" size="20" />
-          <div class="text-white">{{ config.tokens[token].symbol }}</div>
+          <div class="text-white">{{ _ticker(token) }}</div>
           <ButtonUnlock class="ml-2" :tokenAddress="token" />
         </div>
         <div class="column text-left">
           {{ $n(web3.balances[token]) }}
-          {{ config.tokens[token].symbol }}
+          {{ _ticker(token) }}
           <a class="ml-1">
             <UiLabel v-text="'Max'" />
           </a>
@@ -43,13 +43,10 @@
 </template>
 
 <script>
-import config from '@/helpers/config';
-
 export default {
   props: ['value', 'tokens', 'startWeights'],
   data() {
     return {
-      config,
       startBalances: [],
       autoPricing: true
     };

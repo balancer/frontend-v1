@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-items-center position-relative">
-    Filter token(s)
+    Filter Token(s)
     <div
       v-for="(token, i) in input"
       :key="i"

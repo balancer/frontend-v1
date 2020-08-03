@@ -11,17 +11,14 @@
           class="column-sm text-left hide-sm hide-md hide-lg"
         />
         <div v-text="'Assets'" class="flex-auto text-left" />
-        <div v-text="'Swap fee'" class="column hide-sm hide-md" />
+        <div v-text="'Swap Fee'" class="column hide-sm hide-md" />
         <div v-text="'Liquidity'" class="column" />
-        <div v-text="'My liquidity'" class="column hide-sm hide-md" />
-        <div
-          v-text="'Trade vol. (24h)'"
-          class="column hide-sm hide-md hide-lg"
-        />
+        <div v-text="'My Liquidity'" class="column hide-sm hide-md" />
+        <div v-text="'Volume (24h)'" class="column hide-sm hide-md hide-lg" />
       </UiTableTh>
       <div
         v-infinite-scroll="loadMore"
-        infinite-scroll-distance="5"
+        infinite-scroll-distance="10"
         class="overflow-hidden"
       >
         <div v-if="pools.length > 0">
@@ -49,9 +46,10 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { ITEMS_PER_PAGE } from '@/helpers/utils';
 
 export default {
-  props: ['query', 'title'],
+  props: ['query', 'limit', 'title'],
   data() {
     return {
       loading: false,
@@ -76,7 +74,11 @@ export default {
   methods: {
     ...mapActions(['getPools']),
     async loadMore() {
-      if (this.pools.length < this.page * 10) return;
+      if (
+        (this.limit && this.pools.length > this.limit) ||
+        this.pools.length < this.page * ITEMS_PER_PAGE
+      )
+        return;
       this.loading = true;
       this.page++;
       const page = this.page;

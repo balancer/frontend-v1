@@ -1,23 +1,19 @@
 import Vue from 'vue';
 import { request } from '@/helpers/subgraph';
-import { formatPool } from '@/helpers/utils';
+import { formatPool, ITEMS_PER_PAGE } from '@/helpers/utils';
 
 const state = {
   balancer: {},
   poolShares: {},
-  myPools: [],
-  tokenPrices: {}
-};
-
-const getters = {
-  getPrice: state => (token, amount) => {
-    const tokenPrice = state.tokenPrices[token.toLowerCase()];
-    if (!tokenPrice) return 0;
-    return tokenPrice.price * amount;
-  }
+  myPools: []
 };
 
 const mutations = {
+  CLEAR_USER(_state) {
+    Vue.set(_state, 'poolShares', {});
+    Vue.set(_state, 'myPools', []);
+    console.debug('CLEAR_USER');
+  },
   GET_BALANCER_REQUEST() {
     console.debug('GET_BALANCER_REQUEST');
   },
@@ -27,16 +23,6 @@ const mutations = {
   },
   GET_BALANCER_FAILURE(_state, payload) {
     console.debug('GET_BALANCER_FAILURE', payload);
-  },
-  GET_TOKEN_PRICES_REQUEST() {
-    console.debug('GET_TOKEN_PRICES_REQUEST');
-  },
-  GET_TOKEN_PRICES_SUCCESS(_state, payload) {
-    Vue.set(_state, 'tokenPrices', payload);
-    console.debug('GET_TOKEN_PRICES_SUCCESS');
-  },
-  GET_TOKEN_PRICES_FAILURE(_state, payload) {
-    console.debug('GET_TOKEN_PRICES_FAILURE', payload);
   },
   GET_POOL_REQUEST() {
     console.debug('GET_POOL_REQUEST');
@@ -93,15 +79,6 @@ const mutations = {
   },
   GET_POOLS_SHARES_FAILURE(_state, payload) {
     console.debug('GET_POOLS_SHARES_FAILURE', payload);
-  },
-  GET_PRICE_HISTORY_REQUEST() {
-    console.debug('GET_PRICE_HISTORY_REQUEST');
-  },
-  GET_PRICE_HISTORY_SUCCESS() {
-    console.debug('GET_PRICE_HISTORY_SUCCESS');
-  },
-  GET_PRICE_HISTORY_FAILURE(_state, payload) {
-    console.debug('GET_PRICE_HISTORY_FAILURE', payload);
   }
 };
 
@@ -115,20 +92,6 @@ const actions = {
       commit('GET_BALANCER_SUCCESS', balancer);
     } catch (e) {
       commit('GET_BALANCER_FAILURE', e);
-    }
-  },
-  getTokenPrices: async ({ commit }) => {
-    commit('GET_TOKEN_PRICES_REQUEST');
-    try {
-      let { tokenPrices } = await request('getTokenPrices');
-      tokenPrices = Object.fromEntries(
-        tokenPrices
-          .sort((a, b) => b.poolLiquidity - a.poolLiquidity)
-          .map(tokenPrice => [tokenPrice.id, tokenPrice])
-      );
-      commit('GET_TOKEN_PRICES_SUCCESS', tokenPrices);
-    } catch (e) {
-      commit('GET_TOKEN_PRICES_FAILURE', e);
     }
   },
   getPool: async ({ commit }, payload) => {
@@ -151,6 +114,9 @@ const actions = {
     commit('GET_POOL_REQUEST');
     try {
       let { pool } = await request('getPool', query);
+      if (!pool) {
+        return;
+      }
       pool = formatPool(pool);
       commit('GET_POOL_SUCCESS');
       return pool;
@@ -160,7 +126,7 @@ const actions = {
   },
   getPools: async ({ commit }, payload) => {
     const {
-      first = 10,
+      first = ITEMS_PER_PAGE,
       page = 1,
       orderBy = 'liquidity',
       orderDirection = 'desc',
@@ -230,9 +196,7 @@ const actions = {
       };
       const { poolShares } = await request('getMyPoolShares', query);
       const balances: any = {};
-      poolShares.forEach(
-        share => (balances[share.poolId.id] = parseFloat(share.balance))
-      );
+      poolShares.forEach(share => (balances[share.poolId.id] = share.balance));
       commit('GET_MY_POOLS_SHARES_SUCCESS', balances);
       return poolShares;
     } catch (e) {
@@ -243,7 +207,7 @@ const actions = {
     commit('GET_POOLS_SWAPS_REQUEST');
     try {
       const {
-        first = 10,
+        first = ITEMS_PER_PAGE,
         page = 1,
         orderBy = 'timestamp',
         orderDirection = 'desc',
@@ -272,7 +236,7 @@ const actions = {
     commit('GET_POOLS_SHARES_REQUEST');
     try {
       const {
-        first = 10,
+        first = ITEMS_PER_PAGE,
         page = 1,
         orderBy = 'balance',
         orderDirection = 'desc',
@@ -296,38 +260,11 @@ const actions = {
     } catch (e) {
       commit('GET_POOLS_SHARES_FAILURE', e);
     }
-  },
-  getPriceHistory: async ({ commit }) => {
-    commit('GET_PRICE_HISTORY_REQUEST');
-    try {
-      let query = '{';
-      const ids = ['0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'];
-      const days = 10;
-      for (let i = 0; i < days; i++) {
-        query += `
-        _${i}: tokenPrices (
-          where: {
-            id_in: ${JSON.stringify(ids)}
-          }
-        ) {
-          id
-          price
-          symbol
-        }`;
-      }
-      query += '}';
-      const priceHistory = await request(null, query);
-      commit('GET_PRICE_HISTORY_SUCCESS');
-      return priceHistory;
-    } catch (e) {
-      commit('GET_PRICE_HISTORY_FAILURE', e);
-    }
   }
 };
 
 export default {
   state,
-  getters,
   mutations,
   actions
 };

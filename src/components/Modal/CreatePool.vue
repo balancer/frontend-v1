@@ -40,7 +40,7 @@
         <UiButton
           type="button"
           v-if="step !== 0"
-          class="button-outline d-inline-block column mx-1"
+          class="d-inline-block column mx-1"
           @click="step--"
         >
           Back
@@ -69,10 +69,10 @@ export default {
   data() {
     return {
       stepTitles: [
-        'Select tokens',
-        'Set the weights',
+        'Select Tokens',
+        'Set Weights',
         'Deposit',
-        'Set a swap fee',
+        'Set Swap Fee',
         'Preview'
       ],
       loading: false,

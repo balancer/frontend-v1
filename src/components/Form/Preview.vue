@@ -27,7 +27,7 @@
     </UiTable>
     <UiTable>
       <UiTableTh>
-        <div class="flex-auto text-left">Swap fee</div>
+        <div class="flex-auto text-left">Swap Fee</div>
         <div class="text-white" v-text="`${parseFloat(swapFee.toFixed(4))}%`" />
       </UiTableTh>
     </UiTable>
@@ -35,15 +35,8 @@
 </template>
 
 <script>
-import config from '@/helpers/config';
-
 export default {
   props: ['tokens', 'startWeights', 'startBalances', 'swapFee', 'rights'],
-  data() {
-    return {
-      config
-    };
-  },
   computed: {
     weightRatio() {
       return 100 / this.startWeights.reduce((a, b) => a + parseFloat(b), 0);

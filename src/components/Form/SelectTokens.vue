@@ -2,7 +2,7 @@
   <div>
     <div class="p-4 pb-0">
       <p class="mb-4">
-        Select up to height tokens you’d like to have in the pool.
+        Select up to 8 tokens you’d like to have in the pool.
       </p>
       <Search v-model="query" placeholder="Search name, symbol or address" />
     </div>
@@ -40,8 +40,6 @@
 </template>
 
 <script>
-import config from '@/helpers/config';
-
 export default {
   props: ['value'],
   data() {
@@ -53,7 +51,7 @@ export default {
   computed: {
     tokens() {
       return Object.fromEntries(
-        Object.entries(config.tokens)
+        Object.entries(this.config.tokens)
           .map(token => {
             token[1].balance = this.ui.balances[token[1].address];
             token[1].usdValue = this.getPrice(

@@ -7,14 +7,16 @@
     </UiTableTh>
     <div
       v-infinite-scroll="loadMore"
-      infinite-scroll-distance="5"
+      infinite-scroll-distance="10"
       class="overflow-hidden"
     >
       <div v-if="shares.length > 0">
         <UiTableTr v-for="(share, i) in shares" :key="i">
           <div class="text-left flex-auto">
             <a
-              :href="_etherscanLink(share.userAddress.id)"
+              :href="
+                `${_etherscanLink(pool.id, 'token')}?a=${share.userAddress.id}`
+              "
               target="_blank"
               class="text-white"
             >
@@ -44,6 +46,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { ITEMS_PER_PAGE } from '@/helpers/utils';
 
 export default {
   props: ['pool'],
@@ -57,7 +60,7 @@ export default {
   methods: {
     ...mapActions(['getPoolShares']),
     async loadMore() {
-      if (this.shares.length < this.page * 10) return;
+      if (this.shares.length < this.page * ITEMS_PER_PAGE) return;
       this.loading = true;
       this.page++;
       const page = this.page;

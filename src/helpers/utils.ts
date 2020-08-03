@@ -1,11 +1,13 @@
-import { ethers } from 'ethers';
-import { getAddress, bigNumberify, BigNumber as ethersBN } from 'ethers/utils';
+import { getAddress } from '@ethersproject/address';
+import { MaxUint256 } from '@ethersproject/constants';
 import BigNumber from '@/helpers/bignumber';
-import config from '@/helpers/config';
+import config from '@/config';
 import trustwalletWhitelist from '@/helpers/trustwalletWhitelist.json';
 
-export const MAX_GAS = bigNumberify('0xffffffff');
-export const MAX_UINT = bigNumberify(ethers.constants.MaxUint256);
+const LS_KEY = 'balancer-pool-management';
+export const ITEMS_PER_PAGE = 20;
+export const MAX_GAS = new BigNumber('0xffffffff');
+export const MAX_UINT = MaxUint256;
 export const POOL_TOKENS_DECIMALS = 18;
 
 export const unknownColors = [
@@ -19,11 +21,19 @@ export const unknownColors = [
   '#c28d75'
 ];
 
+export function jsonParse(input, fallback?) {
+  try {
+    return JSON.parse(input);
+  } catch (err) {
+    return fallback || {};
+  }
+}
+
 export function shorten(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
 }
 
-export function bnum(val: string | number | ethersBN | BigNumber): BigNumber {
+export function bnum(val: string | number | BigNumber): BigNumber {
   return new BigNumber(val.toString());
 }
 
@@ -33,16 +43,22 @@ export function scale(input: BigNumber, decimalPlaces: number): BigNumber {
   return input.times(scaleMul);
 }
 
-export function toWei(val: string | ethersBN | BigNumber): BigNumber {
+export function toWei(val: string | BigNumber): BigNumber {
   return scale(bnum(val.toString()), 18).integerValue();
 }
 
 export function denormalizeBalance(
   amount: BigNumber,
-  tokenAddress: string
+  tokenDecimals: number
 ): BigNumber {
-  const token = config.tokens[tokenAddress];
-  return scale(bnum(amount), token.decimals);
+  return scale(bnum(amount), tokenDecimals);
+}
+
+export function normalizeBalance(
+  amount: BigNumber,
+  tokenDecimals: number
+): BigNumber {
+  return scale(bnum(amount), -tokenDecimals);
 }
 
 export function formatPool(pool) {
@@ -62,11 +78,11 @@ export function formatPool(pool) {
   if (pool.shares) pool.holders = pool.shares.length;
   pool.tokensList = pool.tokensList.map(token => getAddress(token));
   pool.lastSwapVolume = 0;
-  if (pool.swaps && pool.swaps[0] && pool.swaps[0].poolTotalSwapVolume) {
-    pool.lastSwapVolume =
-      parseFloat(pool.totalSwapVolume) -
-      parseFloat(pool.swaps[0].poolTotalSwapVolume);
-  }
+  const poolTotalSwapVolume =
+    pool.swaps && pool.swaps[0] && pool.swaps[0].poolTotalSwapVolume
+      ? parseFloat(pool.swaps[0].poolTotalSwapVolume)
+      : 0;
+  pool.lastSwapVolume = parseFloat(pool.totalSwapVolume) - poolTotalSwapVolume;
   return pool;
 }
 
@@ -110,12 +126,24 @@ export function trunc(value: number, decimals = 0) {
 }
 
 export function calcPoolTokensByRatio(ratio, totalShares) {
+  if (ratio.isNaN()) {
+    return '0';
+  }
+  // @TODO - fix calcs so no buffer is needed
   const buffer = bnum(100);
   return bnum(ratio)
     .times(toWei(totalShares))
     .integerValue(BigNumber.ROUND_DOWN)
     .minus(buffer)
     .toString();
+}
+
+export function getTokenBySymbol(symbol) {
+  const tokenAddresses = Object.keys(config.tokens);
+  const tokenAddress = tokenAddresses.find(
+    tokenAddress => config.tokens[tokenAddress].symbol === symbol
+  );
+  return config.tokens[tokenAddress];
 }
 
 export function getTokenLogoUrl(address: string): string | null {
@@ -138,3 +166,30 @@ export function etherscanLink(str: string, type = 'address'): string {
   const network = config.network === 'homestead' ? '' : `${config.network}.`;
   return `https://${network}etherscan.io/${type}/${str}`;
 }
+
+export function lsSet(key: string, value: any) {
+  return localStorage.setItem(`${LS_KEY}.${key}`, JSON.stringify(value));
+}
+
+export function lsGet(key: string) {
+  const item = localStorage.getItem(`${LS_KEY}.${key}`);
+  return jsonParse(item, '');
+}
+
+export function lsRemove(key: string) {
+  return localStorage.removeItem(`${LS_KEY}.${key}`);
+}
+
+export const isTxRejected = error => {
+  if (!error) {
+    return false;
+  }
+  return error.code === 4001 || error.code === -32603;
+};
+
+export const isTxReverted = error => {
+  if (!error) {
+    return false;
+  }
+  return error.code === -32016;
+};

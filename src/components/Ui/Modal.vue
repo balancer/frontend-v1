@@ -39,12 +39,12 @@ export default {
   }
 
   .shell {
-    max-height: calc(100vh - 160px);
     display: flex;
     flex-direction: column;
     z-index: 999;
     margin: 0 auto;
     width: 100%;
+    max-height: 90%;
 
     @media (max-width: 767px) {
       width: 100% !important;

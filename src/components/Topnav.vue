@@ -23,59 +23,64 @@
           >
         </router-link>
       </div>
-      <div>
+      <div :key="web3.account">
         <template v-if="web3.account && !wrongNetwork">
-          <UiButton
-            class="button-outline"
-            :to="{
-              name: 'user',
-              params: { id: web3.name || web3.account }
-            }"
-          >
+          <UiButton @click="modalOpen = true" :loading="loading">
             <Avatar :address="web3.account" size="16" class="mr-2 ml-n1" />
             <span v-if="web3.name" v-text="web3.name" />
-            <span v-else>{{ _shorten(web3.account) }}</span>
+            <span v-else v-text="_shorten(web3.account)" />
           </UiButton>
         </template>
         <UiButton v-if="web3.injectedLoaded && wrongNetwork" class="button-red">
           <Icon name="warning" class="ml-n2 mr-1 v-align-middle" />
-          Wrong network
+          Wrong Network
         </UiButton>
         <UiButton
-          v-if="
-            (!web3.account && !web3.injectedLoaded) ||
-              (!web3.account && !wrongNetwork)
-          "
-          @click="handleLogin"
+          v-if="showLogin"
+          @click="modalOpen = true"
           :loading="loading"
-          v-text="'Connect wallet'"
-        />
+          class="button-primary"
+        >
+          Connect Wallet
+        </UiButton>
       </div>
     </div>
+    <ModalAccount
+      :open="modalOpen"
+      @close="modalOpen = false"
+      @login="handleLogin"
+    />
   </nav>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-import config from '@/helpers/config';
 
 export default {
   data() {
     return {
-      loading: false
+      loading: false,
+      modalOpen: false
     };
   },
   computed: {
     wrongNetwork() {
-      return config.chainId !== this.web3.injectedChainId;
+      return this.config.chainId !== this.web3.injectedChainId;
+    },
+    showLogin() {
+      return (
+        (!this.web3.account && !this.web3.injectedLoaded) ||
+        (!this.web3.account && !this.wrongNetwork)
+      );
     }
   },
   methods: {
     ...mapActions(['toggleSidebar']),
     ...mapActions(['login']),
-    async handleLogin() {
+    async handleLogin(connector) {
+      this.modalOpen = false;
       this.loading = true;
-      await this.login();
+      await this.login(connector);
       this.loading = false;
     }
   }

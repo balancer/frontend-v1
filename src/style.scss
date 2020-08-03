@@ -1,4 +1,3 @@
-@import '~@vue/ui/dist/vue-ui.css';
 @import './fonts';
 @import './vars';
 @import "~@primer/css/index.scss";
@@ -52,20 +51,23 @@ a {
 }
 
 .input {
-  padding: 8px 10px;
+  padding: 4px 10px;
   outline: none;
   color: $white;
-  font-size: 16px;
+  font-size: 14px;
   background-color: transparent;
   border: $border;
   border-radius: $border-radius;
   max-width: 100%;
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+}
+
 ::-webkit-scrollbar-thumb {
   background-color: $panel-border;
   background-clip: padding-box;
-  border: 0;
   border-radius: 0;
 
   &:hover {
@@ -82,7 +84,7 @@ a {
     background-color: $panel-background;
     padding-left: 0 !important;
     padding-right: 0 !important;
-    max-width: 540px;
+    max-width: 810px;
   }
 
   .modal-body {
@@ -99,6 +101,10 @@ a {
 
 .column {
   width: 140px;
+}
+
+.column-lg {
+  width: 180px;
 }
 
 .column-sm {
@@ -187,4 +193,8 @@ a {
 
 .selected {
   background-color: $blue-900;
+}
+
+.border-bottom-0 {
+  border-bottom: 0 !important;
 }

@@ -8,7 +8,7 @@
     <UiTable>
       <UiTableTh>
         <div class="flex-auto text-left">
-          Swap fee (%)
+          Swap Fee (%)
         </div>
         <input
           type="number"

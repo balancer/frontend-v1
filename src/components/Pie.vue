@@ -1,10 +1,9 @@
 <template>
-  <span class="d-inline-block circle border" :style="style" v-if="tokens" />
+  <UiPie :values="values" :colors="colors" :size="size" />
 </template>
 
 <script>
-import { getAddress } from 'ethers/utils';
-import config from '@/helpers/config';
+import { getAddress } from '@ethersproject/address';
 
 const unknownColors = [
   '#6f6776',
@@ -20,25 +19,21 @@ const unknownColors = [
 export default {
   props: ['tokens', 'size'],
   computed: {
-    style() {
-      let acum = 0;
+    values() {
+      return this.tokens.map(token => parseFloat(token.denormWeight));
+    },
+    colors() {
       let nextColor = 0;
-      const styles = this.tokens.map(token => {
-        const tokenConfig = config.tokens[getAddress(token.address)];
+      return this.tokens.map(token => {
+        const tokenConfig = this.config.tokens[getAddress(token.address)];
         let chartColor = unknownColors[nextColor];
         if (tokenConfig && tokenConfig.chartColor) {
           chartColor = tokenConfig.chartColor;
         } else {
           nextColor++;
         }
-        return `${chartColor} 0 ${(acum += token.weightPercent)}%`;
+        return chartColor;
       });
-      return {
-        background: `conic-gradient( ${styles.join(',')} )`,
-        width: `${this.size || 44}px`,
-        height: `${this.size || 44}px`,
-        borderColor: '#21222c !important'
-      };
     }
   }
 };
