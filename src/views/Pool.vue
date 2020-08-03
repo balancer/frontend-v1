@@ -88,7 +88,7 @@ export default {
       return undefined;
     },
     hasCustomToken() {
-      if (!this.pool.tokens) {
+      if (!this.pool || !this.pool.tokens) {
         return false;
       }
       for (const token of this.pool.tokens) {
