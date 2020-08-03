@@ -81,6 +81,118 @@
       "precision": 2,
       "chartColor": "#9d9f7f"
     },
+    "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599": {
+      "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+      "symbol": "WBTC",
+      "id": "wrapped-bitcoin",
+      "decimals": 8,
+      "precision": 4,
+      "chartColor": "#68aca9"
+    },
+    "0x04Fa0d235C4abf4BcF4787aF4CF447DE572eF828": {
+      "address": "0x04Fa0d235C4abf4BcF4787aF4CF447DE572eF828",
+      "symbol": "UMA",
+      "id": "uma",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#a593a5"
+    },
+    "0x514910771AF9Ca656af840dff83E8264EcF986CA": {
+      "address": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
+      "symbol": "LINK",
+      "id": "chainlink",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#387080"
+    },
+    "0x80fB784B7eD66730e8b1DBd9820aFD29931aab03": {
+      "address": "0x80fB784B7eD66730e8b1DBd9820aFD29931aab03",
+      "symbol": "LEND",
+      "id": "ethlend",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#c7bdf4"
+    },
+    "0x960b236A07cf122663c4303350609A66A7B288C0": {
+      "address": "0x960b236A07cf122663c4303350609A66A7B288C0",
+      "symbol": "ANT",
+      "id": "aragon",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#c28d75"
+    },
+    "0x0D8775F648430679A709E98d2b0Cb6250d2887EF": {
+      "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+      "symbol": "BAT",
+      "id": "basic-attention-token",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#be955c"
+    },
+    "0x408e41876cCCDC0F92210600ef50372656052a38": {
+      "address": "0x408e41876cCCDC0F92210600ef50372656052a38",
+      "symbol": "REN",
+      "id": "republic-protocol",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#be955c"
+    },
+    "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F": {
+      "address": "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
+      "symbol": "SNX",
+      "id": "havven",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#8d6268"
+    },
+    "0x57Ab1ec28D129707052df4dF418D58a2D46d5f51": {
+      "address": "0x57Ab1ec28D129707052df4dF418D58a2D46d5f51",
+      "symbol": "sUSD",
+      "id": "nusd",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#416aa3"
+    },
+    "0xfE18be6b3Bd88A2D2A7f928d00292E7a9963CfC6": {
+      "address": "0xfE18be6b3Bd88A2D2A7f928d00292E7a9963CfC6",
+      "symbol": "sBTC",
+      "id": "sbtc",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#6f6776"
+    },
+    "0x5e74C9036fb86BD7eCdcb084a0673EFc32eA31cb": {
+      "address": "0x5e74C9036fb86BD7eCdcb084a0673EFc32eA31cb",
+      "symbol": "sETH",
+      "id": "seth",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#557064"
+    },
+    "0x261EfCdD24CeA98652B9700800a13DfBca4103fF": {
+      "address": "0x261EfCdD24CeA98652B9700800a13DfBca4103fF",
+      "symbol": "sXAU",
+      "id": "sxau",
+      "decimals": 18,
+      "precision": 4,
+      "chartColor": "#6e6962"
+    },
+    "0xe1aFe1Fd76Fd88f78cBf599ea1846231B8bA3B6B": {
+      "address": "0xe1aFe1Fd76Fd88f78cBf599ea1846231B8bA3B6B",
+      "symbol": "sDEFI",
+      "id": "sdefi",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#8d6268"
+    },
+    "0x6A22e5e94388464181578Aa7A6B869e00fE27846": {
+      "address": "0x6A22e5e94388464181578Aa7A6B869e00fE27846",
+      "symbol": "sXAG",
+      "id": "sxag",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#be955c"
+    },
     "0x0327112423F3A68efdF1fcF402F6c5CB9f7C33fd": {
       "address": "0x0327112423F3A68efdF1fcF402F6c5CB9f7C33fd",
       "symbol": "BTC++",
@@ -168,14 +280,6 @@
       "decimals": 8,
       "precision": 4,
       "chartColor": "#be955c"
-    },
-    "0x80fB784B7eD66730e8b1DBd9820aFD29931aab03": {
-      "address": "0x80fB784B7eD66730e8b1DBd9820aFD29931aab03",
-      "symbol": "LEND",
-      "id": "ethlend",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#c7bdf4"
     },
     "0xfC1E690f61EFd961294b3e1Ce3313fBD8aa4f85d": {
       "address": "0xfC1E690f61EFd961294b3e1Ce3313fBD8aa4f85d",
@@ -313,62 +417,6 @@
       "precision": 2,
       "chartColor": "#7e9e99"
     },
-    "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F": {
-      "address": "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
-      "symbol": "SNX",
-      "id": "havven",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#8d6268"
-    },
-    "0x57Ab1ec28D129707052df4dF418D58a2D46d5f51": {
-      "address": "0x57Ab1ec28D129707052df4dF418D58a2D46d5f51",
-      "symbol": "sUSD",
-      "id": "nusd",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#416aa3"
-    },
-    "0xfE18be6b3Bd88A2D2A7f928d00292E7a9963CfC6": {
-      "address": "0xfE18be6b3Bd88A2D2A7f928d00292E7a9963CfC6",
-      "symbol": "sBTC",
-      "id": "sbtc",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#6f6776"
-    },
-    "0x5e74C9036fb86BD7eCdcb084a0673EFc32eA31cb": {
-      "address": "0x5e74C9036fb86BD7eCdcb084a0673EFc32eA31cb",
-      "symbol": "sETH",
-      "id": "seth",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#557064"
-    },
-    "0x261EfCdD24CeA98652B9700800a13DfBca4103fF": {
-      "address": "0x261EfCdD24CeA98652B9700800a13DfBca4103fF",
-      "symbol": "sXAU",
-      "id": "sxau",
-      "decimals": 18,
-      "precision": 4,
-      "chartColor": "#6e6962"
-    },
-    "0xe1aFe1Fd76Fd88f78cBf599ea1846231B8bA3B6B": {
-      "address": "0xe1aFe1Fd76Fd88f78cBf599ea1846231B8bA3B6B",
-      "symbol": "sDEFI",
-      "id": "sdefi",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#8d6268"
-    },
-    "0x6A22e5e94388464181578Aa7A6B869e00fE27846": {
-      "address": "0x6A22e5e94388464181578Aa7A6B869e00fE27846",
-      "symbol": "sXAG",
-      "id": "sxag",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#be955c"
-    },
     "0x1985365e9f78359a9B6AD760e32412f4a445E862": {
       "address": "0x1985365e9f78359a9B6AD760e32412f4a445E862",
       "symbol": "REP",
@@ -377,38 +425,6 @@
       "precision": 4,
       "chartColor": "#6e6962"
     },
-    "0x514910771AF9Ca656af840dff83E8264EcF986CA": {
-      "address": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
-      "symbol": "LINK",
-      "id": "chainlink",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#387080"
-    },
-    "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599": {
-      "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
-      "symbol": "WBTC",
-      "id": "wrapped-bitcoin",
-      "decimals": 8,
-      "precision": 4,
-      "chartColor": "#68aca9"
-    },
-    "0x0D8775F648430679A709E98d2b0Cb6250d2887EF": {
-      "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
-      "symbol": "BAT",
-      "id": "basic-attention-token",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#be955c"
-    },
-    "0x960b236A07cf122663c4303350609A66A7B288C0": {
-      "address": "0x960b236A07cf122663c4303350609A66A7B288C0",
-      "symbol": "ANT",
-      "id": "aragon",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#c28d75"
-    },
     "0xE41d2489571d322189246DaFA5ebDe1F4699F498": {
       "address": "0xE41d2489571d322189246DaFA5ebDe1F4699F498",
       "symbol": "ZRX",
@@ -416,6 +432,14 @@
       "decimals": 18,
       "precision": 2,
       "chartColor": "#9a4f50"
+    },
+    "0xEB4C2781e4ebA804CE9a9803C67d0893436bB27D": {
+      "address": "0xEB4C2781e4ebA804CE9a9803C67d0893436bB27D",
+      "symbol": "renBTC",
+      "id": "renbtc",
+      "decimals": 8,
+      "precision": 2,
+      "chartColor": "#9a9a97"
     },
     "0x3212b29E33587A00FB1C83346f5dBFA69A458923": {
       "address": "0x3212b29E33587A00FB1C83346f5dBFA69A458923",
@@ -440,14 +464,6 @@
       "decimals": 6,
       "precision": 2,
       "chartColor": "#666092"
-    },
-    "0x04Fa0d235C4abf4BcF4787aF4CF447DE572eF828": {
-      "address": "0x04Fa0d235C4abf4BcF4787aF4CF447DE572eF828",
-      "symbol": "UMA",
-      "id": "uma",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#a593a5"
     },
     "0x93ED3FBe21207Ec2E8f2d3c3de6e058Cb73Bc04d": {
       "address": "0x93ED3FBe21207Ec2E8f2d3c3de6e058Cb73Bc04d",
@@ -480,14 +496,6 @@
       "decimals": 18,
       "precision": 2,
       "chartColor": "#6e6962"
-    },
-    "0x408e41876cCCDC0F92210600ef50372656052a38": {
-      "address": "0x408e41876cCCDC0F92210600ef50372656052a38",
-      "symbol": "REN",
-      "id": "republic-protocol",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#be955c"
     },
     "0x04abEdA201850aC0124161F037Efd70c74ddC74C": {
       "address": "0x04abEdA201850aC0124161F037Efd70c74ddC74C",
@@ -568,14 +576,6 @@
       "decimals": 12,
       "precision": 2,
       "chartColor": "#387080"
-    },
-    "0xEB4C2781e4ebA804CE9a9803C67d0893436bB27D": {
-      "address": "0xEB4C2781e4ebA804CE9a9803C67d0893436bB27D",
-      "symbol": "renBTC",
-      "id": "renbtc",
-      "decimals": 8,
-      "precision": 2,
-      "chartColor": "#9a9a97"
     },
     "0x985dd3D42De1e256d09e1c10F112bCCB8015AD41": {
       "address": "0x985dd3D42De1e256d09e1c10F112bCCB8015AD41",
