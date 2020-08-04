@@ -2029,6 +2029,15 @@
       "decimals": 18,
       "precision": 2,
       "chartColor": "#a593a5"
+    },
+    "0xCc80C051057B774cD75067Dc48f8987C4Eb97A5e": {
+      "address": "0xCc80C051057B774cD75067Dc48f8987C4Eb97A5e",
+      "name": "Ethfinex Nectar Token",
+      "symbol": "NEC",
+      "id": "ethfinex-nectar-token",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#666092"
     }
   },
   "warnings": {
