@@ -1984,6 +1984,15 @@
       "decimals": 18,
       "precision": 2,
       "chartColor": "#6f6776"
+    },
+    "0xBA50933C268F567BDC86E1aC131BE072C6B0b71a": {
+      "address": "0xBA50933C268F567BDC86E1aC131BE072C6B0b71a",
+      "name": "ARPA Token",
+      "symbol": "ARPA",
+      "id": "arpa-token",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#9a9a97"
     }
   },
   "warnings": {
