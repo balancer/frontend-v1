@@ -127,6 +127,7 @@ export default {
     &.router-link-exact-active {
       background: $blue-900;
       border-left: 3px solid $blue;
+      padding-left: 21px;
     }
   }
 

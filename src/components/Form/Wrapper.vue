@@ -15,8 +15,12 @@
     </div>
     <div v-text="'WETH → ETH'" class="eyebrow mb-2" />
     <div class="d-flex mb-2">
-      <div class="input d-flex flex-items-center">
-        <a @click="handleMax()">
+      <div class="input d-flex flex-items-center position-relative">
+        <a
+          @click="handleMax()"
+          class="panel-background position-absolute left-0 top-0"
+          style="margin: 5px 10px;"
+        >
           <UiLabel v-text="'Max'" />
         </a>
         <input
