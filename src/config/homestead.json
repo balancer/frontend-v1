@@ -2002,6 +2002,15 @@
       "decimals": 18,
       "precision": 2,
       "chartColor": "#c5ccb8"
+    },
+    "0x954b890704693af242613edEf1B603825afcD708": {
+      "address": "0x954b890704693af242613edEf1B603825afcD708",
+      "name": "Cardstack",
+      "symbol": "CARD",
+      "id": "cardstack",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#8b5580"
     }
   },
   "warnings": {
