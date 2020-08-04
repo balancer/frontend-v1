@@ -6,11 +6,12 @@
         There are similar pools available:
       </div>
       <div v-for="pool in pools" :key="pool.id">
-        • {{ formatPool(pool) }}
         <router-link
           :to="{ name: 'pool', params: { id: pool.id } }"
-          class="link-icon"
+          class="link"
+          target="_blank"
         >
+          • {{ formatPool(pool) }}
           <Icon name="external-link" size="12" class="ml-1" />
         </router-link>
       </div>
@@ -156,7 +157,8 @@ export default {
   color: #7685d5;
 }
 
-.link-icon {
+.link {
   color: #7685d5;
+  cursor: pointer;
 }
 </style>
