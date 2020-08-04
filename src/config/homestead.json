@@ -2038,6 +2038,15 @@
       "decimals": 18,
       "precision": 2,
       "chartColor": "#666092"
+    },
+    "0x12f649A9E821F90BB143089a6e56846945892ffB": {
+      "address": "0x12f649A9E821F90BB143089a6e56846945892ffB",
+      "name": "uDOO",
+      "symbol": "uDOO",
+      "id": "udoo",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#9a4f50"
     }
   },
   "warnings": {
