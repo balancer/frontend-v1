@@ -79,7 +79,7 @@
       />
     </div>
     <div v-if="tokens.length > 1" class="mb-4">
-      <h3 class="mb-4">Similar pools</h3>
+      <h4 class="mb-3">Similar pools</h4>
       <ListPools
         :key="JSON.stringify(suggestQuery)"
         :limit="suggestQuery.first"

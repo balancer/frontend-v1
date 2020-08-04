@@ -27,7 +27,7 @@
 
 <script>
 import config from '@/config';
-import { clone, normalizeBalance, getTokenBySymbol } from '@/helpers/utils';
+import { clone, normalizeBalance } from '@/helpers/utils';
 
 const startItems = [
   {

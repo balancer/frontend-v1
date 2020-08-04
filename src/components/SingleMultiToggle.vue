@@ -8,7 +8,7 @@
       class="border-0"
       type="button"
     >
-      {{ action === 'add' ? 'Add' : 'Remove' }}
+      {{ action === 'add' ? 'Deposit' : 'Withdraw' }}
       {{ option === 'MULTI_ASSET' ? 'all assets' : 'one asset' }}
     </UiButton>
   </span>

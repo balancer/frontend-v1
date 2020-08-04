@@ -57,7 +57,7 @@ export default {
 
       a {
         line-height: 44px;
-        height: 42px;
+        height: 44px;
         overflow: hidden;
         padding: 0 16px;
         border-radius: $border-radius $border-radius 0 0;

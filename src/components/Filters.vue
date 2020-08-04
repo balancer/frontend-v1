@@ -1,19 +1,24 @@
 <template>
-  <div class="d-flex flex-items-center position-relative">
-    <div class="pt-1">Filter by asset</div>
-    <div
-      v-for="(token, i) in input"
-      :key="i"
-      class="topic topic-action f6 ml-2"
-    >
-      <button class="delete-topic-button right-0" @click="deleteToken(i)">
-        ×
+  <div class="d-flex flex-items-center">
+    <div class="pb-1">Filter by asset</div>
+    <div v-for="(token, i) in input" :key="i" class="topic ml-2">
+      <button
+        class="topic-button text-center line-height-0 position-absolute right-0"
+        @click="deleteToken(i)"
+      >
+        <Icon name="close" size="10" />
       </button>
-      {{ _ticker(token) }}
+      <span
+        class="ml-2 pl-1"
+        style="padding-right: 30px;"
+        v-text="_ticker(token)"
+      />
     </div>
-    <button @click="modalOpen = true" class="topic f6 ml-2">
-      +
-    </button>
+    <div class="topic ml-2">
+      <button @click="modalOpen = true" class="topic-button mb-1">
+        <Icon name="plus" size="13" />
+      </button>
+    </div>
     <ModalSelectToken
       :open="modalOpen"
       @close="modalOpen = false"
@@ -49,34 +54,26 @@ export default {
 @import '../vars';
 
 .topic {
-  font-size: 16px !important;
   background-color: $blue-900;
   color: $white;
   border: 0;
   border-radius: 14px;
-  padding: 0 10px;
-  line-height: 32px;
+  line-height: 28px;
   height: 28px;
   position: relative;
 
-  &.topic-action {
-    padding-right: 30px !important;
+  button:hover {
+    background-color: $blue !important;
   }
 
-  .delete-topic-button {
-    position: absolute;
+  .topic-button {
     background-color: $blue-900;
     color: $white;
     border: 0;
     border-radius: 24px;
     padding: 0 6px;
-    line-height: 32px;
     height: 28px;
     width: 28px;
-
-    &:hover {
-      background-color: $blue;
-    }
   }
 }
 </style>
