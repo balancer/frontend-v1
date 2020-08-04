@@ -1031,15 +1031,6 @@
       "precision": 2,
       "chartColor": "#c5ccb8"
     },
-    "0x9041Fe5B3FDEA0f5e4afDC17e75180738D877A01": {
-      "address": "0x9041Fe5B3FDEA0f5e4afDC17e75180738D877A01",
-      "name": "ProToken",
-      "symbol": "PRO",
-      "id": "prochain",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#9a9a97"
-    },
     "0x8A9C67fee641579dEbA04928c4BC45F66e26343A": {
       "address": "0x8A9C67fee641579dEbA04928c4BC45F66e26343A",
       "name": "Jarvis Reward Token",
