@@ -285,7 +285,7 @@ export default {
         }
         const tokenWeight = bnum(this.weights[token] || '');
         if (totalValue.isNaN() || tokenWeight.isNaN()) {
-          this.amounts[token] = '';
+          Vue.set(this.amounts, token, '');
           continue;
         }
         const tokenPrice = this.price.values[token];
@@ -294,7 +294,7 @@ export default {
         }
         const tokenValue = tokenWeight.times(totalValue);
         const tokenAmount = tokenValue.div(tokenPrice);
-        this.amounts[token] = tokenAmount.toString();
+        Vue.set(this.amounts, token, tokenAmount.toString());
       }
     },
     isWeightInputValid(tokenAddress) {
