@@ -43,6 +43,7 @@
   "tokens": {
     "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2": {
       "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      "name": "Wrapped Ether",
       "symbol": "WETH",
       "id": "weth",
       "decimals": 18,
@@ -51,6 +52,7 @@
     },
     "0xba100000625a3754423978a60c9317c58a424e3D": {
       "address": "0xba100000625a3754423978a60c9317c58a424e3D",
+      "name": "Balancer",
       "symbol": "BAL",
       "id": "balancer",
       "decimals": 18,
@@ -59,6 +61,7 @@
     },
     "0x6B175474E89094C44Da98b954EedeAC495271d0F": {
       "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+      "name": "Dai Stablecoin",
       "symbol": "DAI",
       "id": "dai",
       "decimals": 18,
@@ -67,6 +70,7 @@
     },
     "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2": {
       "address": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
+      "name": "Maker",
       "symbol": "MKR",
       "id": "maker",
       "decimals": 18,
@@ -75,246 +79,79 @@
     },
     "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48": {
       "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      "name": "USD Coin",
       "symbol": "USDC",
       "id": "usd-coin",
       "decimals": 6,
       "precision": 2,
       "chartColor": "#9d9f7f"
     },
-    "0x0327112423F3A68efdF1fcF402F6c5CB9f7C33fd": {
-      "address": "0x0327112423F3A68efdF1fcF402F6c5CB9f7C33fd",
-      "symbol": "BTC++",
-      "id": "piedao-btc",
-      "decimals": 18,
-      "precision": 6,
-      "chartColor": "#557064"
+    "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599": {
+      "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+      "name": "Wrapped BTC",
+      "symbol": "WBTC",
+      "id": "wrapped-bitcoin",
+      "decimals": 8,
+      "precision": 4,
+      "chartColor": "#68aca9"
     },
-    "0x9A48BD0EC040ea4f1D3147C025cd4076A2e71e3e": {
-      "address": "0x9A48BD0EC040ea4f1D3147C025cd4076A2e71e3e",
-      "symbol": "USD++",
-      "id": "piedao-usd",
+    "0x04Fa0d235C4abf4BcF4787aF4CF447DE572eF828": {
+      "address": "0x04Fa0d235C4abf4BcF4787aF4CF447DE572eF828",
+      "name": "UMA Voting Token v1",
+      "symbol": "UMA",
+      "id": "uma",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#a593a5"
+    },
+    "0x514910771AF9Ca656af840dff83E8264EcF986CA": {
+      "address": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
+      "name": "ChainLink Token",
+      "symbol": "LINK",
+      "id": "chainlink",
       "decimals": 18,
       "precision": 2,
       "chartColor": "#387080"
-    },
-    "0xc00e94Cb662C3520282E6f5717214004A7f26888": {
-      "address": "0xc00e94Cb662C3520282E6f5717214004A7f26888",
-      "symbol": "COMP",
-      "id": "compound-governance-token",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#387080"
-    },
-    "0x39AA39c021dfbaE8faC545936693aC917d5E7563": {
-      "address": "0x39AA39c021dfbaE8faC545936693aC917d5E7563",
-      "symbol": "cUSDC",
-      "id": "compound-usd-coin",
-      "decimals": 8,
-      "precision": 2,
-      "chartColor": "#6eaa78"
-    },
-    "0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643": {
-      "address": "0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643",
-      "symbol": "cDAI",
-      "id": "cdai",
-      "decimals": 8,
-      "precision": 2,
-      "chartColor": "#93a167"
-    },
-    "0x4Ddc2D193948926D02f9B1fE9e1daa0718270ED5": {
-      "address": "0x4Ddc2D193948926D02f9B1fE9e1daa0718270ED5",
-      "symbol": "cETH",
-      "id": "compound-ether",
-      "decimals": 8,
-      "precision": 4,
-      "chartColor": "#c28d75"
-    },
-    "0xf650C3d88D12dB855b8bf7D11Be6C55A4e07dCC9": {
-      "address": "0xf650C3d88D12dB855b8bf7D11Be6C55A4e07dCC9",
-      "symbol": "cUSDT",
-      "id": "compound-usdt",
-      "decimals": 8,
-      "precision": 2,
-      "chartColor": "#557064"
-    },
-    "0x158079Ee67Fce2f58472A96584A73C7Ab9AC95c1": {
-      "address": "0x158079Ee67Fce2f58472A96584A73C7Ab9AC95c1",
-      "symbol": "cREP",
-      "id": "compound-augur",
-      "decimals": 8,
-      "precision": 2,
-      "chartColor": "#220730"
-    },
-    "0xB3319f5D18Bc0D84dD1b4825Dcde5d5f7266d407": {
-      "address": "0xB3319f5D18Bc0D84dD1b4825Dcde5d5f7266d407",
-      "symbol": "cZRX",
-      "id": "compound-0x",
-      "decimals": 8,
-      "precision": 2,
-      "chartColor": "#9a4f50"
-    },
-    "0x6C8c6b02E7b2BE14d4fA6022Dfd6d75921D90E4E": {
-      "address": "0x6C8c6b02E7b2BE14d4fA6022Dfd6d75921D90E4E",
-      "symbol": "cBAT",
-      "id": "compound-basic-attention-token",
-      "decimals": 8,
-      "precision": 2,
-      "chartColor": "#666092"
-    },
-    "0xC11b1268C1A384e55C48c2391d8d480264A3A7F4": {
-      "address": "0xC11b1268C1A384e55C48c2391d8d480264A3A7F4",
-      "symbol": "cWBTC",
-      "id": "compound-wrapped-btc",
-      "decimals": 8,
-      "precision": 4,
-      "chartColor": "#be955c"
     },
     "0x80fB784B7eD66730e8b1DBd9820aFD29931aab03": {
       "address": "0x80fB784B7eD66730e8b1DBd9820aFD29931aab03",
+      "name": "Aave: LEND Token",
       "symbol": "LEND",
       "id": "ethlend",
       "decimals": 18,
       "precision": 2,
       "chartColor": "#c7bdf4"
     },
-    "0xfC1E690f61EFd961294b3e1Ce3313fBD8aa4f85d": {
-      "address": "0xfC1E690f61EFd961294b3e1Ce3313fBD8aa4f85d",
-      "symbol": "aDAI",
-      "id": "aave-dai",
+    "0x960b236A07cf122663c4303350609A66A7B288C0": {
+      "address": "0x960b236A07cf122663c4303350609A66A7B288C0",
+      "name": "Aragon Network Token",
+      "symbol": "ANT",
+      "id": "aragon",
       "decimals": 18,
       "precision": 2,
-      "chartColor": "#c38890"
+      "chartColor": "#c28d75"
     },
-    "0x71fc860F7D3A592A4a98740e39dB31d25db65ae8": {
-      "address": "0x71fc860F7D3A592A4a98740e39dB31d25db65ae8",
-      "symbol": "aUSDT",
-      "id": "aave-usdt",
-      "decimals": 6,
-      "precision": 2,
-      "chartColor": "#8b5580"
-    },
-    "0x9bA00D6856a4eDF4665BcA2C2309936572473B7E": {
-      "address": "0x9bA00D6856a4eDF4665BcA2C2309936572473B7E",
-      "symbol": "aUSDC",
-      "id": "aave-usdc",
-      "decimals": 6,
-      "precision": 2,
-      "chartColor": "#c5ccb8"
-    },
-    "0x625aE63000f46200499120B906716420bd059240": {
-      "address": "0x625aE63000f46200499120B906716420bd059240",
-      "symbol": "aSUSD",
-      "id": "aave-susd",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#9a9a97"
-    },
-    "0x4DA9b813057D04BAef4e5800E36083717b4a0341": {
-      "address": "0x4DA9b813057D04BAef4e5800E36083717b4a0341",
-      "symbol": "aTUSD",
-      "id": "aave-tusd",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#6f6776"
-    },
-    "0x6Ee0f7BB50a54AB5253dA0667B0Dc2ee526C30a8": {
-      "address": "0x6Ee0f7BB50a54AB5253dA0667B0Dc2ee526C30a8",
-      "symbol": "aBUSD",
-      "id": "aave-busd",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#93a167"
-    },
-    "0xE1BA0FB44CCb0D11b80F92f4f8Ed94CA3fF51D00": {
-      "address": "0xE1BA0FB44CCb0D11b80F92f4f8Ed94CA3fF51D00",
-      "symbol": "aBAT",
-      "id": "aave-bat",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#416aa3"
-    },
-    "0x3a3A65aAb0dd2A17E3F1947bA16138cd37d08c04": {
-      "address": "0x3a3A65aAb0dd2A17E3F1947bA16138cd37d08c04",
-      "symbol": "aETH",
-      "id": "aave-eth",
-      "decimals": 18,
-      "precision": 4,
-      "chartColor": "#8d6268"
-    },
-    "0x9D91BE44C06d373a8a226E1f3b146956083803eB": {
-      "address": "0x9D91BE44C06d373a8a226E1f3b146956083803eB",
-      "symbol": "aKNC",
-      "id": "aave-knc",
+    "0x0D8775F648430679A709E98d2b0Cb6250d2887EF": {
+      "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+      "name": "Basic Attention Token",
+      "symbol": "BAT",
+      "id": "basic-attention-token",
       "decimals": 18,
       "precision": 2,
       "chartColor": "#be955c"
     },
-    "0x7D2D3688Df45Ce7C552E19c27e007673da9204B8": {
-      "address": "0x7D2D3688Df45Ce7C552E19c27e007673da9204B8",
-      "symbol": "aLEND",
-      "id": "aave-lend",
+    "0x408e41876cCCDC0F92210600ef50372656052a38": {
+      "address": "0x408e41876cCCDC0F92210600ef50372656052a38",
+      "name": "Republic Token",
+      "symbol": "REN",
+      "id": "republic-protocol",
       "decimals": 18,
       "precision": 2,
-      "chartColor": "#68aca9"
-    },
-    "0xA64BD6C70Cb9051F6A9ba1F163Fdc07E0DfB5F84": {
-      "address": "0xA64BD6C70Cb9051F6A9ba1F163Fdc07E0DfB5F84",
-      "symbol": "aLINK",
-      "id": "aave-link",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#387080"
-    },
-    "0x6FCE4A401B6B80ACe52baAefE4421Bd188e76F6f": {
-      "address": "0x6FCE4A401B6B80ACe52baAefE4421Bd188e76F6f",
-      "symbol": "aMANA",
-      "id": "aave-mana",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#6e6962"
-    },
-    "0x7deB5e830be29F91E298ba5FF1356BB7f8146998": {
-      "address": "0x7deB5e830be29F91E298ba5FF1356BB7f8146998",
-      "symbol": "aMKR",
-      "id": "aave-mkr",
-      "decimals": 18,
-      "precision": 4,
-      "chartColor": "#93a167"
-    },
-    "0x71010A9D003445aC60C4e6A7017c1E89A477B438": {
-      "address": "0x71010A9D003445aC60C4e6A7017c1E89A477B438",
-      "symbol": "aREP",
-      "id": "aave-rep",
-      "decimals": 18,
-      "precision": 4,
-      "chartColor": "#6eaa78"
-    },
-    "0x328C4c80BC7aCa0834Db37e6600A6c49E12Da4DE": {
-      "address": "0x328C4c80BC7aCa0834Db37e6600A6c49E12Da4DE",
-      "symbol": "aSNX",
-      "id": "aave-snx",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#557064"
-    },
-    "0xFC4B8ED459e00e5400be803A9BB3954234FD50e3": {
-      "address": "0xFC4B8ED459e00e5400be803A9BB3954234FD50e3",
-      "symbol": "aWBTC",
-      "id": "aave-wbtc",
-      "decimals": 8,
-      "precision": 4,
-      "chartColor": "#9d9f7f"
-    },
-    "0x6Fb0855c404E09c47C3fBCA25f08d4E41f9F062f": {
-      "address": "0x6Fb0855c404E09c47C3fBCA25f08d4E41f9F062f",
-      "symbol": "aZRX",
-      "id": "aave-zrx",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#7e9e99"
+      "chartColor": "#be955c"
     },
     "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F": {
       "address": "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
+      "name": "Synthetix Network Token",
       "symbol": "SNX",
       "id": "havven",
       "decimals": 18,
@@ -323,6 +160,7 @@
     },
     "0x57Ab1ec28D129707052df4dF418D58a2D46d5f51": {
       "address": "0x57Ab1ec28D129707052df4dF418D58a2D46d5f51",
+      "name": "Synth sUSD",
       "symbol": "sUSD",
       "id": "nusd",
       "decimals": 18,
@@ -331,6 +169,7 @@
     },
     "0xfE18be6b3Bd88A2D2A7f928d00292E7a9963CfC6": {
       "address": "0xfE18be6b3Bd88A2D2A7f928d00292E7a9963CfC6",
+      "name": "Synth sBTC",
       "symbol": "sBTC",
       "id": "sbtc",
       "decimals": 18,
@@ -339,6 +178,7 @@
     },
     "0x5e74C9036fb86BD7eCdcb084a0673EFc32eA31cb": {
       "address": "0x5e74C9036fb86BD7eCdcb084a0673EFc32eA31cb",
+      "name": "Synth sETH",
       "symbol": "sETH",
       "id": "seth",
       "decimals": 18,
@@ -347,6 +187,7 @@
     },
     "0x261EfCdD24CeA98652B9700800a13DfBca4103fF": {
       "address": "0x261EfCdD24CeA98652B9700800a13DfBca4103fF",
+      "name": "Synth sXAU",
       "symbol": "sXAU",
       "id": "sxau",
       "decimals": 18,
@@ -355,6 +196,7 @@
     },
     "0xe1aFe1Fd76Fd88f78cBf599ea1846231B8bA3B6B": {
       "address": "0xe1aFe1Fd76Fd88f78cBf599ea1846231B8bA3B6B",
+      "name": "Synth sDEFI",
       "symbol": "sDEFI",
       "id": "sdefi",
       "decimals": 18,
@@ -363,62 +205,295 @@
     },
     "0x6A22e5e94388464181578Aa7A6B869e00fE27846": {
       "address": "0x6A22e5e94388464181578Aa7A6B869e00fE27846",
+      "name": "Synth sXAG",
       "symbol": "sXAG",
       "id": "sxag",
       "decimals": 18,
       "precision": 2,
       "chartColor": "#be955c"
     },
+    "0x0327112423F3A68efdF1fcF402F6c5CB9f7C33fd": {
+      "address": "0x0327112423F3A68efdF1fcF402F6c5CB9f7C33fd",
+      "name": "PieDAO BTC++",
+      "symbol": "BTC++",
+      "id": "piedao-btc",
+      "decimals": 18,
+      "precision": 6,
+      "chartColor": "#557064"
+    },
+    "0x9A48BD0EC040ea4f1D3147C025cd4076A2e71e3e": {
+      "address": "0x9A48BD0EC040ea4f1D3147C025cd4076A2e71e3e",
+      "name": "PieDAO USD++ Pool",
+      "symbol": "USD++",
+      "id": "piedao-usd",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#387080"
+    },
+    "0xc00e94Cb662C3520282E6f5717214004A7f26888": {
+      "address": "0xc00e94Cb662C3520282E6f5717214004A7f26888",
+      "name": "Compound",
+      "symbol": "COMP",
+      "id": "compound-governance-token",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#387080"
+    },
+    "0x39AA39c021dfbaE8faC545936693aC917d5E7563": {
+      "address": "0x39AA39c021dfbaE8faC545936693aC917d5E7563",
+      "name": "Compound USD Coin",
+      "symbol": "cUSDC",
+      "id": "compound-usd-coin",
+      "decimals": 8,
+      "precision": 2,
+      "chartColor": "#6eaa78"
+    },
+    "0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643": {
+      "address": "0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643",
+      "name": "Compound Dai",
+      "symbol": "cDAI",
+      "id": "cdai",
+      "decimals": 8,
+      "precision": 2,
+      "chartColor": "#93a167"
+    },
+    "0x4Ddc2D193948926D02f9B1fE9e1daa0718270ED5": {
+      "address": "0x4Ddc2D193948926D02f9B1fE9e1daa0718270ED5",
+      "name": "Compound Ether",
+      "symbol": "cETH",
+      "id": "compound-ether",
+      "decimals": 8,
+      "precision": 4,
+      "chartColor": "#c28d75"
+    },
+    "0xf650C3d88D12dB855b8bf7D11Be6C55A4e07dCC9": {
+      "address": "0xf650C3d88D12dB855b8bf7D11Be6C55A4e07dCC9",
+      "name": "Compound USDT",
+      "symbol": "cUSDT",
+      "id": "compound-usdt",
+      "decimals": 8,
+      "precision": 2,
+      "chartColor": "#557064"
+    },
+    "0x158079Ee67Fce2f58472A96584A73C7Ab9AC95c1": {
+      "address": "0x158079Ee67Fce2f58472A96584A73C7Ab9AC95c1",
+      "name": "Compound Augur",
+      "symbol": "cREP",
+      "id": "compound-augur",
+      "decimals": 8,
+      "precision": 2,
+      "chartColor": "#220730"
+    },
+    "0xB3319f5D18Bc0D84dD1b4825Dcde5d5f7266d407": {
+      "address": "0xB3319f5D18Bc0D84dD1b4825Dcde5d5f7266d407",
+      "name": "Compound 0x",
+      "symbol": "cZRX",
+      "id": "compound-0x",
+      "decimals": 8,
+      "precision": 2,
+      "chartColor": "#9a4f50"
+    },
+    "0x6C8c6b02E7b2BE14d4fA6022Dfd6d75921D90E4E": {
+      "address": "0x6C8c6b02E7b2BE14d4fA6022Dfd6d75921D90E4E",
+      "name": "Compound Basic Attention Token",
+      "symbol": "cBAT",
+      "id": "compound-basic-attention-token",
+      "decimals": 8,
+      "precision": 2,
+      "chartColor": "#666092"
+    },
+    "0xC11b1268C1A384e55C48c2391d8d480264A3A7F4": {
+      "address": "0xC11b1268C1A384e55C48c2391d8d480264A3A7F4",
+      "name": "Compound Wrapped BTC",
+      "symbol": "cWBTC",
+      "id": "compound-wrapped-btc",
+      "decimals": 8,
+      "precision": 4,
+      "chartColor": "#be955c"
+    },
+    "0xfC1E690f61EFd961294b3e1Ce3313fBD8aa4f85d": {
+      "address": "0xfC1E690f61EFd961294b3e1Ce3313fBD8aa4f85d",
+      "name": "Aave Interest bearing DAI",
+      "symbol": "aDAI",
+      "id": "aave-dai",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#c38890"
+    },
+    "0x71fc860F7D3A592A4a98740e39dB31d25db65ae8": {
+      "address": "0x71fc860F7D3A592A4a98740e39dB31d25db65ae8",
+      "name": "Aave Interest bearing USDT",
+      "symbol": "aUSDT",
+      "id": "aave-usdt",
+      "decimals": 6,
+      "precision": 2,
+      "chartColor": "#8b5580"
+    },
+    "0x9bA00D6856a4eDF4665BcA2C2309936572473B7E": {
+      "address": "0x9bA00D6856a4eDF4665BcA2C2309936572473B7E",
+      "name": "Aave Interest bearing USDC",
+      "symbol": "aUSDC",
+      "id": "aave-usdc",
+      "decimals": 6,
+      "precision": 2,
+      "chartColor": "#c5ccb8"
+    },
+    "0x625aE63000f46200499120B906716420bd059240": {
+      "address": "0x625aE63000f46200499120B906716420bd059240",
+      "name": "Aave Interest bearing SUSD",
+      "symbol": "aSUSD",
+      "id": "aave-susd",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#9a9a97"
+    },
+    "0x4DA9b813057D04BAef4e5800E36083717b4a0341": {
+      "address": "0x4DA9b813057D04BAef4e5800E36083717b4a0341",
+      "name": "Aave Interest bearing TUSD",
+      "symbol": "aTUSD",
+      "id": "aave-tusd",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#6f6776"
+    },
+    "0x6Ee0f7BB50a54AB5253dA0667B0Dc2ee526C30a8": {
+      "address": "0x6Ee0f7BB50a54AB5253dA0667B0Dc2ee526C30a8",
+      "name": "Aave Interest bearing Binance USD",
+      "symbol": "aBUSD",
+      "id": "aave-busd",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#93a167"
+    },
+    "0xE1BA0FB44CCb0D11b80F92f4f8Ed94CA3fF51D00": {
+      "address": "0xE1BA0FB44CCb0D11b80F92f4f8Ed94CA3fF51D00",
+      "name": "Aave Interest bearing BAT",
+      "symbol": "aBAT",
+      "id": "aave-bat",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#416aa3"
+    },
+    "0x3a3A65aAb0dd2A17E3F1947bA16138cd37d08c04": {
+      "address": "0x3a3A65aAb0dd2A17E3F1947bA16138cd37d08c04",
+      "name": "Aave Interest bearing ETH",
+      "symbol": "aETH",
+      "id": "aave-eth",
+      "decimals": 18,
+      "precision": 4,
+      "chartColor": "#8d6268"
+    },
+    "0x9D91BE44C06d373a8a226E1f3b146956083803eB": {
+      "address": "0x9D91BE44C06d373a8a226E1f3b146956083803eB",
+      "name": "Aave Interest bearing KNC",
+      "symbol": "aKNC",
+      "id": "aave-knc",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#be955c"
+    },
+    "0x7D2D3688Df45Ce7C552E19c27e007673da9204B8": {
+      "address": "0x7D2D3688Df45Ce7C552E19c27e007673da9204B8",
+      "name": "Aave Interest bearing LEND",
+      "symbol": "aLEND",
+      "id": "aave-lend",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#68aca9"
+    },
+    "0xA64BD6C70Cb9051F6A9ba1F163Fdc07E0DfB5F84": {
+      "address": "0xA64BD6C70Cb9051F6A9ba1F163Fdc07E0DfB5F84",
+      "name": "Aave Interest bearing LINK",
+      "symbol": "aLINK",
+      "id": "aave-link",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#387080"
+    },
+    "0x6FCE4A401B6B80ACe52baAefE4421Bd188e76F6f": {
+      "address": "0x6FCE4A401B6B80ACe52baAefE4421Bd188e76F6f",
+      "name": "Aave Interest bearing MANA",
+      "symbol": "aMANA",
+      "id": "aave-mana",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#6e6962"
+    },
+    "0x7deB5e830be29F91E298ba5FF1356BB7f8146998": {
+      "address": "0x7deB5e830be29F91E298ba5FF1356BB7f8146998",
+      "name": "Aave Interest bearing MKR",
+      "symbol": "aMKR",
+      "id": "aave-mkr",
+      "decimals": 18,
+      "precision": 4,
+      "chartColor": "#93a167"
+    },
+    "0x71010A9D003445aC60C4e6A7017c1E89A477B438": {
+      "address": "0x71010A9D003445aC60C4e6A7017c1E89A477B438",
+      "name": "Aave Interest bearing REP",
+      "symbol": "aREP",
+      "id": "aave-rep",
+      "decimals": 18,
+      "precision": 4,
+      "chartColor": "#6eaa78"
+    },
+    "0x328C4c80BC7aCa0834Db37e6600A6c49E12Da4DE": {
+      "address": "0x328C4c80BC7aCa0834Db37e6600A6c49E12Da4DE",
+      "name": "Aave Interest bearing SNX",
+      "symbol": "aSNX",
+      "id": "aave-snx",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#557064"
+    },
+    "0xFC4B8ED459e00e5400be803A9BB3954234FD50e3": {
+      "address": "0xFC4B8ED459e00e5400be803A9BB3954234FD50e3",
+      "name": "Aave Interest bearing WBTC",
+      "symbol": "aWBTC",
+      "id": "aave-wbtc",
+      "decimals": 8,
+      "precision": 4,
+      "chartColor": "#9d9f7f"
+    },
+    "0x6Fb0855c404E09c47C3fBCA25f08d4E41f9F062f": {
+      "address": "0x6Fb0855c404E09c47C3fBCA25f08d4E41f9F062f",
+      "name": "Aave Interest bearing ZRX",
+      "symbol": "aZRX",
+      "id": "aave-zrx",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#7e9e99"
+    },
     "0x1985365e9f78359a9B6AD760e32412f4a445E862": {
       "address": "0x1985365e9f78359a9B6AD760e32412f4a445E862",
+      "name": "Reputation",
       "symbol": "REP",
       "id": "augur",
       "decimals": 18,
       "precision": 4,
       "chartColor": "#6e6962"
     },
-    "0x514910771AF9Ca656af840dff83E8264EcF986CA": {
-      "address": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
-      "symbol": "LINK",
-      "id": "chainlink",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#387080"
-    },
-    "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599": {
-      "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
-      "symbol": "WBTC",
-      "id": "wrapped-bitcoin",
-      "decimals": 8,
-      "precision": 4,
-      "chartColor": "#68aca9"
-    },
-    "0x0D8775F648430679A709E98d2b0Cb6250d2887EF": {
-      "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
-      "symbol": "BAT",
-      "id": "basic-attention-token",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#be955c"
-    },
-    "0x960b236A07cf122663c4303350609A66A7B288C0": {
-      "address": "0x960b236A07cf122663c4303350609A66A7B288C0",
-      "symbol": "ANT",
-      "id": "aragon",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#c28d75"
-    },
     "0xE41d2489571d322189246DaFA5ebDe1F4699F498": {
       "address": "0xE41d2489571d322189246DaFA5ebDe1F4699F498",
+      "name": "0x Protocol Token",
       "symbol": "ZRX",
       "id": "0x",
       "decimals": 18,
       "precision": 2,
       "chartColor": "#9a4f50"
     },
+    "0xEB4C2781e4ebA804CE9a9803C67d0893436bB27D": {
+      "address": "0xEB4C2781e4ebA804CE9a9803C67d0893436bB27D",
+      "name": "renBTC",
+      "symbol": "renBTC",
+      "id": "renbtc",
+      "decimals": 8,
+      "precision": 2,
+      "chartColor": "#9a9a97"
+    },
     "0x3212b29E33587A00FB1C83346f5dBFA69A458923": {
       "address": "0x3212b29E33587A00FB1C83346f5dBFA69A458923",
+      "name": "The Tokenized Bitcoin",
       "symbol": "imBTC",
       "id": "the-tokenized-bitcoin",
       "decimals": 8,
@@ -427,6 +502,7 @@
     },
     "0x5228a22e72ccC52d415EcFd199F99D0665E7733b": {
       "address": "0x5228a22e72ccC52d415EcFd199F99D0665E7733b",
+      "name": "pTokens BTC",
       "symbol": "pBTC",
       "id": "ptokens-btc",
       "decimals": 18,
@@ -435,22 +511,16 @@
     },
     "0x9Cb2f26A23b8d89973F08c957C4d7cdf75CD341c": {
       "address": "0x9Cb2f26A23b8d89973F08c957C4d7cdf75CD341c",
+      "name": "Digital Rand",
       "symbol": "DZAR",
       "id": "digital-rand",
       "decimals": 6,
       "precision": 2,
       "chartColor": "#666092"
     },
-    "0x04Fa0d235C4abf4BcF4787aF4CF447DE572eF828": {
-      "address": "0x04Fa0d235C4abf4BcF4787aF4CF447DE572eF828",
-      "symbol": "UMA",
-      "id": "uma",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#a593a5"
-    },
     "0x93ED3FBe21207Ec2E8f2d3c3de6e058Cb73Bc04d": {
       "address": "0x93ED3FBe21207Ec2E8f2d3c3de6e058Cb73Bc04d",
+      "name": "Pinakion",
       "symbol": "PNK",
       "id": "kleros",
       "decimals": 18,
@@ -459,6 +529,7 @@
     },
     "0x27054b13b1B798B345b591a4d22e6562d47eA75a": {
       "address": "0x27054b13b1B798B345b591a4d22e6562d47eA75a",
+      "name": "AirSwap Token",
       "symbol": "AST",
       "id": "airswap",
       "decimals": 4,
@@ -467,6 +538,7 @@
     },
     "0xdd974D5C2e2928deA5F71b9825b8b646686BD200": {
       "address": "0xdd974D5C2e2928deA5F71b9825b8b646686BD200",
+      "name": "Kyber Network Crystal",
       "symbol": "KNC",
       "id": "kyber-network",
       "decimals": 18,
@@ -475,22 +547,16 @@
     },
     "0xBBbbCA6A901c926F240b89EacB641d8Aec7AEafD": {
       "address": "0xBBbbCA6A901c926F240b89EacB641d8Aec7AEafD",
+      "name": "LoopringCoin V2",
       "symbol": "LRC",
       "id": "loopring",
       "decimals": 18,
       "precision": 2,
       "chartColor": "#6e6962"
     },
-    "0x408e41876cCCDC0F92210600ef50372656052a38": {
-      "address": "0x408e41876cCCDC0F92210600ef50372656052a38",
-      "symbol": "REN",
-      "id": "republic-protocol",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#be955c"
-    },
     "0x04abEdA201850aC0124161F037Efd70c74ddC74C": {
       "address": "0x04abEdA201850aC0124161F037Efd70c74ddC74C",
+      "name": "NEST",
       "symbol": "NEST",
       "id": "nest",
       "decimals": 18,
@@ -499,6 +565,7 @@
     },
     "0xB4EFd85c19999D84251304bDA99E90B92300Bd93": {
       "address": "0xB4EFd85c19999D84251304bDA99E90B92300Bd93",
+      "name": "Rocket Pool",
       "symbol": "RPL",
       "id": "rocket-pool",
       "decimals": 18,
@@ -507,6 +574,7 @@
     },
     "0x4c327471C44B2dacD6E90525f9D629bd2e4f662C": {
       "address": "0x4c327471C44B2dacD6E90525f9D629bd2e4f662C",
+      "name": "GHOST",
       "symbol": "GHOST",
       "id": "ghost-by-mcafee",
       "decimals": 18,
@@ -515,6 +583,7 @@
     },
     "0x6810e776880C02933D47DB1b9fc05908e5386b96": {
       "address": "0x6810e776880C02933D47DB1b9fc05908e5386b96",
+      "name": "Gnosis Token",
       "symbol": "GNO",
       "id": "gnosis",
       "decimals": 18,
@@ -523,6 +592,7 @@
     },
     "0x543Ff227F64Aa17eA132Bf9886cAb5DB55DCAddf": {
       "address": "0x543Ff227F64Aa17eA132Bf9886cAb5DB55DCAddf",
+      "name": "DAOstack",
       "symbol": "GEN",
       "id": "daostack",
       "decimals": 18,
@@ -531,6 +601,7 @@
     },
     "0xa1d65E8fB6e87b60FECCBc582F7f97804B725521": {
       "address": "0xa1d65E8fB6e87b60FECCBc582F7f97804B725521",
+      "name": "DXdao",
       "symbol": "DXD",
       "id": "dxdao",
       "decimals": 18,
@@ -539,6 +610,7 @@
     },
     "0x06AF07097C9Eeb7fD685c692751D5C66dB49c215": {
       "address": "0x06AF07097C9Eeb7fD685c692751D5C66dB49c215",
+      "name": "Chai",
       "symbol": "CHAI",
       "id": "chai",
       "decimals": 18,
@@ -547,6 +619,7 @@
     },
     "0x1776e1F26f98b1A5dF9cD347953a26dd3Cb46671": {
       "address": "0x1776e1F26f98b1A5dF9cD347953a26dd3Cb46671",
+      "name": "Numeraire",
       "symbol": "NMR",
       "id": "numeraire",
       "decimals": 18,
@@ -555,6 +628,7 @@
     },
     "0xF629cBd94d3791C9250152BD8dfBDF380E2a3B9c": {
       "address": "0xF629cBd94d3791C9250152BD8dfBDF380E2a3B9c",
+      "name": "Enjin Coin",
       "symbol": "ENJ",
       "id": "enjincoin",
       "decimals": 18,
@@ -563,22 +637,16 @@
     },
     "0x12B19D3e2ccc14Da04FAe33e63652ce469b3F2FD": {
       "address": "0x12B19D3e2ccc14Da04FAe33e63652ce469b3F2FD",
+      "name": "GRID Token",
       "symbol": "GRID",
       "id": "grid",
       "decimals": 12,
       "precision": 2,
       "chartColor": "#387080"
     },
-    "0xEB4C2781e4ebA804CE9a9803C67d0893436bB27D": {
-      "address": "0xEB4C2781e4ebA804CE9a9803C67d0893436bB27D",
-      "symbol": "renBTC",
-      "id": "renbtc",
-      "decimals": 8,
-      "precision": 2,
-      "chartColor": "#9a9a97"
-    },
     "0x985dd3D42De1e256d09e1c10F112bCCB8015AD41": {
       "address": "0x985dd3D42De1e256d09e1c10F112bCCB8015AD41",
+      "name": "OceanToken",
       "symbol": "OCEAN",
       "id": "ocean-protocol",
       "decimals": 18,
@@ -587,6 +655,7 @@
     },
     "0xCeD4E93198734dDaFf8492d525Bd258D49eb388E": {
       "address": "0xCeD4E93198734dDaFf8492d525Bd258D49eb388E",
+      "name": "Eidoo Token",
       "symbol": "EDO",
       "id": "eidoo",
       "decimals": 18,
@@ -595,6 +664,7 @@
     },
     "0x8E870D67F660D95d5be530380D0eC0bd388289E1": {
       "address": "0x8E870D67F660D95d5be530380D0eC0bd388289E1",
+      "name": "Paxos Standard",
       "symbol": "PAX",
       "id": "paxos-standard",
       "decimals": 18,
@@ -603,6 +673,7 @@
     },
     "0x107c4504cd79C5d2696Ea0030a8dD4e92601B82e": {
       "address": "0x107c4504cd79C5d2696Ea0030a8dD4e92601B82e",
+      "name": "Bloom Token",
       "symbol": "BLT",
       "id": "bloom",
       "decimals": 18,
@@ -611,6 +682,7 @@
     },
     "0x41e5560054824eA6B0732E656E3Ad64E20e94E45": {
       "address": "0x41e5560054824eA6B0732E656E3Ad64E20e94E45",
+      "name": "Civic",
       "symbol": "CVC",
       "id": "civic",
       "decimals": 8,
@@ -619,6 +691,7 @@
     },
     "0x0F5D2fB29fb7d3CFeE444a200298f468908cC942": {
       "address": "0x0F5D2fB29fb7d3CFeE444a200298f468908cC942",
+      "name": "Decentraland MANA",
       "symbol": "MANA",
       "id": "decentraland",
       "decimals": 18,
@@ -627,6 +700,7 @@
     },
     "0x0Cf0Ee63788A0849fE5297F3407f701E122cC023": {
       "address": "0x0Cf0Ee63788A0849fE5297F3407f701E122cC023",
+      "name": "Streamr DATAcoin",
       "symbol": "DATA",
       "id": "streamr-datacoin",
       "decimals": 18,
@@ -635,6 +709,7 @@
     },
     "0x595832F8FC6BF59c85C527fEC3740A1b7a361269": {
       "address": "0x595832F8FC6BF59c85C527fEC3740A1b7a361269",
+      "name": "PowerLedger",
       "symbol": "POWR",
       "id": "power-ledger",
       "decimals": 6,
@@ -643,6 +718,7 @@
     },
     "0x0AbdAce70D3790235af448C88547603b945604ea": {
       "address": "0x0AbdAce70D3790235af448C88547603b945604ea",
+      "name": "district0x Network Token",
       "symbol": "DNT",
       "id": "district0x",
       "decimals": 18,
@@ -651,6 +727,7 @@
     },
     "0xe25b0BBA01Dc5630312B6A21927E578061A13f55": {
       "address": "0xe25b0BBA01Dc5630312B6A21927E578061A13f55",
+      "name": "ShipChain SHIP",
       "symbol": "SHIP",
       "id": "shipchain",
       "decimals": 18,
@@ -659,6 +736,7 @@
     },
     "0xaA7a9CA87d3694B5755f213B5D04094b8d0F0A6F": {
       "address": "0xaA7a9CA87d3694B5755f213B5D04094b8d0F0A6F",
+      "name": "Trace Token",
       "symbol": "TRAC",
       "id": "origintrail",
       "decimals": 18,
@@ -667,6 +745,7 @@
     },
     "0xE5F166c0D8872B68790061317BB6CcA04582C912": {
       "address": "0xE5F166c0D8872B68790061317BB6CcA04582C912",
+      "name": "TE-FOOD",
       "symbol": "TFD",
       "id": "te-food",
       "decimals": 18,
@@ -675,6 +754,7 @@
     },
     "0x5732046A883704404F284Ce41FfADd5b007FD668": {
       "address": "0x5732046A883704404F284Ce41FfADd5b007FD668",
+      "name": "Bluzelle Token",
       "symbol": "BLZ",
       "id": "bluzelle",
       "decimals": 18,
@@ -683,6 +763,7 @@
     },
     "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0": {
       "address": "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0",
+      "name": "Matic Token",
       "symbol": "MATIC",
       "id": "matic-network",
       "decimals": 18,
@@ -691,6 +772,7 @@
     },
     "0x4946Fcea7C692606e8908002e55A582af44AC121": {
       "address": "0x4946Fcea7C692606e8908002e55A582af44AC121",
+      "name": "FOAM Token",
       "symbol": "FOAM",
       "id": "foam-protocol",
       "decimals": 18,
@@ -699,6 +781,7 @@
     },
     "0xc719d010B63E5bbF2C0551872CD5316ED26AcD83": {
       "address": "0xc719d010B63E5bbF2C0551872CD5316ED26AcD83",
+      "name": "Decentralized Insurance Protocol",
       "symbol": "DIP",
       "id": "etherisc",
       "decimals": 18,
@@ -707,6 +790,7 @@
     },
     "0x0F4CA92660Efad97a9a70CB0fe969c755439772C": {
       "address": "0x0F4CA92660Efad97a9a70CB0fe969c755439772C",
+      "name": "Leverj",
       "symbol": "LEV",
       "id": "leverj",
       "decimals": 9,
@@ -715,6 +799,7 @@
     },
     "0x7b123f53421b1bF8533339BFBdc7C98aA94163db": {
       "address": "0x7b123f53421b1bF8533339BFBdc7C98aA94163db",
+      "name": "dfohub",
       "symbol": "BUIDL",
       "id": "dfohub",
       "decimals": 18,
@@ -723,6 +808,7 @@
     },
     "0xaaAEBE6Fe48E54f431b0C390CfaF0b017d09D42d": {
       "address": "0xaaAEBE6Fe48E54f431b0C390CfaF0b017d09D42d",
+      "name": "Celsius",
       "symbol": "CEL",
       "id": "celsius-degree-token",
       "decimals": 4,
@@ -731,6 +817,7 @@
     },
     "0x0Ba45A8b5d5575935B8158a88C631E9F9C95a2e5": {
       "address": "0x0Ba45A8b5d5575935B8158a88C631E9F9C95a2e5",
+      "name": "Tellor Tributes",
       "symbol": "TRB",
       "id": "tellor",
       "decimals": 18,
@@ -739,6 +826,7 @@
     },
     "0x4a220E6096B25EADb88358cb44068A3248254675": {
       "address": "0x4a220E6096B25EADb88358cb44068A3248254675",
+      "name": "Quant",
       "symbol": "QNT",
       "id": "quant-network",
       "decimals": 18,
@@ -747,6 +835,7 @@
     },
     "0x744d70FDBE2Ba4CF95131626614a1763DF805B9E": {
       "address": "0x744d70FDBE2Ba4CF95131626614a1763DF805B9E",
+      "name": "Status Network Token",
       "symbol": "SNT",
       "id": "status",
       "decimals": 18,
@@ -755,6 +844,7 @@
     },
     "0x3506424F91fD33084466F402d5D97f05F8e3b4AF": {
       "address": "0x3506424F91fD33084466F402d5D97f05F8e3b4AF",
+      "name": "chiliZ",
       "symbol": "CHZ",
       "id": "chiliz",
       "decimals": 18,
@@ -763,6 +853,7 @@
     },
     "0xec67005c4E498Ec7f55E092bd1d35cbC47C91892": {
       "address": "0xec67005c4E498Ec7f55E092bd1d35cbC47C91892",
+      "name": "Melon Token",
       "symbol": "MLN",
       "id": "melon",
       "decimals": 18,
@@ -771,6 +862,7 @@
     },
     "0x8762db106B2c2A0bccB3A80d1Ed41273552616E8": {
       "address": "0x8762db106B2c2A0bccB3A80d1Ed41273552616E8",
+      "name": "Reserve Rights",
       "symbol": "RSR",
       "id": "reserve-rights-token",
       "decimals": 18,
@@ -779,6 +871,7 @@
     },
     "0x6c6EE5e31d828De241282B9606C8e98Ea48526E2": {
       "address": "0x6c6EE5e31d828De241282B9606C8e98Ea48526E2",
+      "name": "HoloToken",
       "symbol": "HOT",
       "id": "holotoken",
       "decimals": 18,
@@ -787,6 +880,7 @@
     },
     "0xcD62b1C403fa761BAadFC74C525ce2B51780b184": {
       "address": "0xcD62b1C403fa761BAadFC74C525ce2B51780b184",
+      "name": "Aragon Network Juror",
       "symbol": "ANJ",
       "id": "anj",
       "decimals": 18,
@@ -795,6 +889,7 @@
     },
     "0x8400D94A5cb0fa0D041a3788e395285d61c9ee5e": {
       "address": "0x8400D94A5cb0fa0D041a3788e395285d61c9ee5e",
+      "name": "UniBright",
       "symbol": "UBT",
       "id": "unibright",
       "decimals": 8,
@@ -803,6 +898,7 @@
     },
     "0x419D0d8BdD9aF5e606Ae2232ed285Aff190E711b": {
       "address": "0x419D0d8BdD9aF5e606Ae2232ed285Aff190E711b",
+      "name": "FunFair",
       "symbol": "FUN",
       "id": "funfair",
       "decimals": 8,
@@ -811,6 +907,7 @@
     },
     "0xB64ef51C888972c908CFacf59B47C1AfBC0Ab8aC": {
       "address": "0xB64ef51C888972c908CFacf59B47C1AfBC0Ab8aC",
+      "name": "StorjToken",
       "symbol": "STORJ",
       "id": "storj",
       "decimals": 8,
@@ -819,6 +916,7 @@
     },
     "0xd15eCDCF5Ea68e3995b2D0527A0aE0a3258302F8": {
       "address": "0xd15eCDCF5Ea68e3995b2D0527A0aE0a3258302F8",
+      "name": "MachiX Token",
       "symbol": "MCX",
       "id": "machix",
       "decimals": 18,
@@ -827,6 +925,7 @@
     },
     "0xAcfa209Fb73bF3Dd5bBfb1101B9Bc999C49062a5": {
       "address": "0xAcfa209Fb73bF3Dd5bBfb1101B9Bc999C49062a5",
+      "name": "Blockchain Certified Data Token",
       "symbol": "BCDT",
       "id": "bcdiploma",
       "decimals": 18,
@@ -835,6 +934,7 @@
     },
     "0xB705268213D593B8FD88d3FDEFF93AFF5CbDcfAE": {
       "address": "0xB705268213D593B8FD88d3FDEFF93AFF5CbDcfAE",
+      "name": "IDEX Token",
       "symbol": "IDEX",
       "id": "aurora-dao",
       "decimals": 18,
@@ -843,6 +943,7 @@
     },
     "0xe2f2a5C287993345a840Db3B0845fbC70f5935a5": {
       "address": "0xe2f2a5C287993345a840Db3B0845fbC70f5935a5",
+      "name": "mStable USD",
       "symbol": "mUSD",
       "id": "musd",
       "decimals": 18,
@@ -851,6 +952,7 @@
     },
     "0xc12d099be31567add4e4e4d0D45691C3F58f5663": {
       "address": "0xc12d099be31567add4e4e4d0D45691C3F58f5663",
+      "name": "Auctus Token",
       "symbol": "AUC",
       "id": "auctus",
       "decimals": 18,
@@ -859,6 +961,7 @@
     },
     "0x1A5F9352Af8aF974bFC03399e3767DF6370d82e4": {
       "address": "0x1A5F9352Af8aF974bFC03399e3767DF6370d82e4",
+      "name": "OWL Token",
       "symbol": "OWL",
       "id": "owl",
       "decimals": 18,
@@ -867,6 +970,7 @@
     },
     "0x8eB24319393716668D768dCEC29356ae9CfFe285": {
       "address": "0x8eB24319393716668D768dCEC29356ae9CfFe285",
+      "name": "SingularityNET Token",
       "symbol": "AGI",
       "id": "singularitynet",
       "decimals": 8,
@@ -875,6 +979,7 @@
     },
     "0x58b6A8A3302369DAEc383334672404Ee733aB239": {
       "address": "0x58b6A8A3302369DAEc383334672404Ee733aB239",
+      "name": "Livepeer Token",
       "symbol": "LPT",
       "id": "livepeer",
       "decimals": 18,
@@ -883,6 +988,7 @@
     },
     "0x0000000000085d4780B73119b644AE5ecd22b376": {
       "address": "0x0000000000085d4780B73119b644AE5ecd22b376",
+      "name": "TrueUSD",
       "symbol": "TUSD",
       "id": "true-usd",
       "decimals": 18,
@@ -891,6 +997,7 @@
     },
     "0xEd91879919B71bB6905f23af0A68d231EcF87b14": {
       "address": "0xEd91879919B71bB6905f23af0A68d231EcF87b14",
+      "name": "DMM: Governance",
       "symbol": "DMG",
       "id": "dmm-governance",
       "decimals": 18,
@@ -899,6 +1006,7 @@
     },
     "0x0Ae055097C6d159879521C384F1D2123D1f195e6": {
       "address": "0x0Ae055097C6d159879521C384F1D2123D1f195e6",
+      "name": "STAKE",
       "symbol": "STAKE",
       "id": "xdai-stake",
       "decimals": 18,
@@ -907,6 +1015,7 @@
     },
     "0x607F4C5BB672230e8672085532f7e901544a7375": {
       "address": "0x607F4C5BB672230e8672085532f7e901544a7375",
+      "name": "iEx.ec Network Token",
       "symbol": "RLC",
       "id": "iexec-rlc",
       "decimals": 9,
@@ -915,6 +1024,7 @@
     },
     "0x8f8221aFbB33998d8584A2B05749bA73c37a938a": {
       "address": "0x8f8221aFbB33998d8584A2B05749bA73c37a938a",
+      "name": "Request Token",
       "symbol": "REQ",
       "id": "request-network",
       "decimals": 18,
@@ -923,6 +1033,7 @@
     },
     "0x1F573D6Fb3F13d689FF844B4cE37794d79a7FF1C": {
       "address": "0x1F573D6Fb3F13d689FF844B4cE37794d79a7FF1C",
+      "name": "Bancor Network Token",
       "symbol": "BNT",
       "id": "bancor",
       "decimals": 18,
@@ -931,6 +1042,7 @@
     },
     "0x9041Fe5B3FDEA0f5e4afDC17e75180738D877A01": {
       "address": "0x9041Fe5B3FDEA0f5e4afDC17e75180738D877A01",
+      "name": "ProToken",
       "symbol": "PRO",
       "id": "prochain",
       "decimals": 18,
@@ -939,6 +1051,7 @@
     },
     "0x8A9C67fee641579dEbA04928c4BC45F66e26343A": {
       "address": "0x8A9C67fee641579dEbA04928c4BC45F66e26343A",
+      "name": "Jarvis Reward Token",
       "symbol": "JRT",
       "id": "jarvis-reward-token",
       "decimals": 18,
@@ -947,6 +1060,7 @@
     },
     "0x261b45D85cCFeAbb11F022eBa346ee8D1cd488c0": {
       "address": "0x261b45D85cCFeAbb11F022eBa346ee8D1cd488c0",
+      "name": "Redeemable DAI",
       "symbol": "rDAI",
       "id": "rdai",
       "decimals": 18,
@@ -955,6 +1069,7 @@
     },
     "0x8Ab7404063Ec4DBcfd4598215992DC3F8EC853d7": {
       "address": "0x8Ab7404063Ec4DBcfd4598215992DC3F8EC853d7",
+      "name": "Akropolis",
       "symbol": "AKRO",
       "id": "akropolis",
       "decimals": 18,
@@ -963,6 +1078,7 @@
     },
     "0x2C537E5624e4af88A7ae4060C022609376C8D0EB": {
       "address": "0x2C537E5624e4af88A7ae4060C022609376C8D0EB",
+      "name": "BiLira",
       "symbol": "TRYb",
       "id": "bilira",
       "decimals": 6,
@@ -971,6 +1087,7 @@
     },
     "0x26E75307Fc0C021472fEb8F727839531F112f317": {
       "address": "0x26E75307Fc0C021472fEb8F727839531F112f317",
+      "name": "Crypto20",
       "symbol": "C20",
       "id": "crypto20",
       "decimals": 18,
@@ -979,6 +1096,7 @@
     },
     "0x4a57E687b9126435a9B19E4A802113e266AdeBde": {
       "address": "0x4a57E687b9126435a9B19E4A802113e266AdeBde",
+      "name": "Flexacoin",
       "symbol": "FXC",
       "id": "flexacoin",
       "decimals": 18,
@@ -987,6 +1105,7 @@
     },
     "0xaF1250fa68D7DECD34fD75dE8742Bc03B29BD58e": {
       "address": "0xaF1250fa68D7DECD34fD75dE8742Bc03B29BD58e",
+      "name": "Invictus Hyperion",
       "symbol": "IHF",
       "id": "invictus-hyprion-fund",
       "decimals": 18,
@@ -995,6 +1114,7 @@
     },
     "0x85Eee30c52B0b379b046Fb0F85F4f3Dc3009aFEC": {
       "address": "0x85Eee30c52B0b379b046Fb0F85F4f3Dc3009aFEC",
+      "name": "KEEP Token",
       "symbol": "KEEP",
       "id": "keep-network",
       "decimals": 18,
@@ -1003,6 +1123,7 @@
     },
     "0xDF2C7238198Ad8B389666574f2d8bc411A4b7428": {
       "address": "0xDF2C7238198Ad8B389666574f2d8bc411A4b7428",
+      "name": "Mainframe Token",
       "symbol": "MFT",
       "id": "mainframe",
       "decimals": 18,
@@ -1011,6 +1132,7 @@
     },
     "0x8207c1FfC5B6804F6024322CcF34F29c3541Ae26": {
       "address": "0x8207c1FfC5B6804F6024322CcF34F29c3541Ae26",
+      "name": "OriginToken",
       "symbol": "OGN",
       "id": "origin-protocol",
       "decimals": 18,
@@ -1019,6 +1141,7 @@
     },
     "0x9992eC3cF6A55b00978cdDF2b27BC6882d88D1eC": {
       "address": "0x9992eC3cF6A55b00978cdDF2b27BC6882d88D1eC",
+      "name": "Polymath",
       "symbol": "POLY",
       "id": "polymath-network",
       "decimals": 18,
@@ -1027,6 +1150,7 @@
     },
     "0x6De037ef9aD2725EB40118Bb1702EBb27e4Aeb24": {
       "address": "0x6De037ef9aD2725EB40118Bb1702EBb27e4Aeb24",
+      "name": "Render Token",
       "symbol": "RNDR",
       "id": "render-token",
       "decimals": 18,
@@ -1035,6 +1159,7 @@
     },
     "0xaAAf91D9b90dF800Df4F55c205fd6989c977E73a": {
       "address": "0xaAAf91D9b90dF800Df4F55c205fd6989c977E73a",
+      "name": "Monolith TKN",
       "symbol": "TKN",
       "id": "tokencard",
       "decimals": 8,
@@ -1043,6 +1168,7 @@
     },
     "0x5Af2Be193a6ABCa9c8817001F45744777Db30756": {
       "address": "0x5Af2Be193a6ABCa9c8817001F45744777Db30756",
+      "name": "Voyager",
       "symbol": "VGX",
       "id": "ethos",
       "decimals": 8,
@@ -1051,6 +1177,7 @@
     },
     "0xbf70A33A13fBe8D0106Df321Da0Cf654d2E9Ab50": {
       "address": "0xbf70A33A13fBe8D0106Df321Da0Cf654d2E9Ab50",
+      "name": "ETH/BTC RSI 70/30 Crossover",
       "symbol": "ETHBTCRSI7030",
       "id": "eth-btc-rsi-ratio-trading-set",
       "decimals": 18,
@@ -1059,6 +1186,7 @@
     },
     "0x136faE4333EA36A24bb751E2d505D6ca4Fd9f00b": {
       "address": "0x136faE4333EA36A24bb751E2d505D6ca4Fd9f00b",
+      "name": "ETH RSI 60/40 Yield",
       "symbol": "ETHRSIAPY",
       "id": "eth-rsi-60-40-yield-set",
       "decimals": 18,
@@ -1067,6 +1195,7 @@
     },
     "0xbF4a2DdaA16148a9D0fA2093FfAC450ADb7cd4aa": {
       "address": "0xbF4a2DdaA16148a9D0fA2093FfAC450ADb7cd4aa",
+      "name": "Ethereum Money",
       "symbol": "ETHMNY",
       "id": "ethereum-money",
       "decimals": 2,
@@ -1075,6 +1204,7 @@
     },
     "0x9f49ed43C90A540d1cF12f6170aCE8d0B88a14E6": {
       "address": "0x9f49ed43C90A540d1cF12f6170aCE8d0B88a14E6",
+      "name": "ETH RSI 60/40 Yield II",
       "symbol": "ETHRSIAPY2",
       "id": "eth-rsi-60-40-yield-set-ii",
       "decimals": 18,
@@ -1083,6 +1213,7 @@
     },
     "0xC7D79021CD127A2f35b1E26fe3c4aAD67f5c28b8": {
       "address": "0xC7D79021CD127A2f35b1E26fe3c4aAD67f5c28b8",
+      "name": "100 Waves",
       "symbol": "100W",
       "id": "100-waves-eth-usd-yield-set",
       "decimals": 18,
@@ -1091,6 +1222,7 @@
     },
     "0x54355Ae0485F9420e6cE4c00C10172dc8E5728A3": {
       "address": "0x54355Ae0485F9420e6cE4c00C10172dc8E5728A3",
+      "name": "100 Waves ETH/USD Ether Hoard",
       "symbol": "100WETH",
       "id": "100-waves-ethusd-ether-hoard-set",
       "decimals": 18,
@@ -1099,6 +1231,7 @@
     },
     "0x07509c281B55A1675D3f71F1c4ab67829eb731d3": {
       "address": "0x07509c281B55A1675D3f71F1c4ab67829eb731d3",
+      "name": "100 Waves ETH/BTC Set",
       "symbol": "100WRATIO",
       "id": "100-waves-eth-btc-set",
       "decimals": 18,
@@ -1107,6 +1240,7 @@
     },
     "0x0BF54992649C19bd8Db4080078a32383827352f3": {
       "address": "0x0BF54992649C19bd8Db4080078a32383827352f3",
+      "name": "Asian ETH Sentiment Set",
       "symbol": "ASETH",
       "id": "asian-eth-sentiment-set",
       "decimals": 18,
@@ -1115,6 +1249,7 @@
     },
     "0x58723C7Afcd33A2Db6Ae06C37521725D65F0cC15": {
       "address": "0x58723C7Afcd33A2Db6Ae06C37521725D65F0cC15",
+      "name": "BullBearBitcoin Set II",
       "symbol": "BBB",
       "id": "bullbearbitcoin-set-ii",
       "decimals": 18,
@@ -1123,6 +1258,7 @@
     },
     "0xF43B2f981eFC5a611a97951Ce4fd7d3Bd87f4902": {
       "address": "0xF43B2f981eFC5a611a97951Ce4fd7d3Bd87f4902",
+      "name": "BullBearEthereum Set II",
       "symbol": "BBE",
       "id": "bullbearethereum-set-ii",
       "decimals": 18,
@@ -1131,6 +1267,7 @@
     },
     "0x48ac44f4E29e602f851B84C271c22B85B9447251": {
       "address": "0x48ac44f4E29e602f851B84C271c22B85B9447251",
+      "name": "Bitcoin High Yield Set",
       "symbol": "BHY",
       "id": "bitcoin-high-yield-set",
       "decimals": 18,
@@ -1139,6 +1276,7 @@
     },
     "0xc7088fAc73c55bfaE5c2A963C3029B072c7dfF25": {
       "address": "0xc7088fAc73c55bfaE5c2A963C3029B072c7dfF25",
+      "name": "BTC AI Limit Loss",
       "symbol": "BLL",
       "id": "btc-ai-limit-loss",
       "decimals": 18,
@@ -1147,6 +1285,7 @@
     },
     "0xe6404a4472E5222b440F8faFb795553046000841": {
       "address": "0xe6404a4472E5222b440F8faFb795553046000841",
+      "name": "BTC Long-Only Alpha Portfolio",
       "symbol": "BLOAP",
       "id": "btc-long-only-alpha-portfolio",
       "decimals": 18,
@@ -1155,6 +1294,7 @@
     },
     "0xc39835d32428728cbDe6903f84c76750976C0323": {
       "address": "0xc39835d32428728cbDe6903f84c76750976C0323",
+      "name": "BTC OnChain Beta Portfolio",
       "symbol": "BOCBP",
       "id": "btc-on-chain-beta-portfolio-set",
       "decimals": 18,
@@ -1163,6 +1303,7 @@
     },
     "0x8abf3a95862619A55fA00CB3e4eeDBe113ff468C": {
       "address": "0x8abf3a95862619A55fA00CB3e4eeDBe113ff468C",
+      "name": "Money Printer Go Brrr",
       "symbol": "BRRR",
       "id": "money-printer-go-brrr-set",
       "decimals": 18,
@@ -1171,6 +1312,7 @@
     },
     "0x2409D6059e2A8130c099e49F3cb418fd6C3d9AFf": {
       "address": "0x2409D6059e2A8130c099e49F3cb418fd6C3d9AFf",
+      "name": "BTC Fund Active Trading Set",
       "symbol": "BTCFUND",
       "id": "btc-fund-active-trading-set",
       "decimals": 18,
@@ -1179,6 +1321,7 @@
     },
     "0xd218D75BA0fC45858a4E9EF57A257Ed9977dB5f4": {
       "address": "0xd218D75BA0fC45858a4E9EF57A257Ed9977dB5f4",
+      "name": "BTC TA Set",
       "symbol": "BTCTA",
       "id": "btc-ta-set-ii",
       "decimals": 18,
@@ -1187,6 +1330,7 @@
     },
     "0xAC8Ea871e2d5F4Be618905F36f73c760f8cFDC8E": {
       "address": "0xAC8Ea871e2d5F4Be618905F36f73c760f8cFDC8E",
+      "name": "BTC Network Demand Set",
       "symbol": "BYTE",
       "id": "btc-network-demand-set-ii",
       "decimals": 18,
@@ -1195,6 +1339,7 @@
     },
     "0x19F4a2f8E21915376F1429C26a3A9B9b1db5FF5A": {
       "address": "0x19F4a2f8E21915376F1429C26a3A9B9b1db5FF5A",
+      "name": "Chad Link Set",
       "symbol": "CHADLINK",
       "id": "chad-link-set",
       "decimals": 18,
@@ -1203,6 +1348,7 @@
     },
     "0xBddD682E63dd9f9fA3b97aEa88772E77cf3e5013": {
       "address": "0xBddD682E63dd9f9fA3b97aEa88772E77cf3e5013",
+      "name": "CoindicatorBTC Set",
       "symbol": "COINBTC",
       "id": "coindicatorbtc-set",
       "decimals": 18,
@@ -1211,6 +1357,7 @@
     },
     "0x253444bd9ECf11E5516d6D00974e91c9F0857CCB": {
       "address": "0x253444bd9ECf11E5516d6D00974e91c9F0857CCB",
+      "name": "ETHBTC Long-Only Alpha Portfolio",
       "symbol": "EBLOAP",
       "id": "eth-btc-long-only-alpha-portfolio",
       "decimals": 18,
@@ -1219,6 +1366,7 @@
     },
     "0x78481fB80CAabb252909218164266Ac83F815000": {
       "address": "0x78481fB80CAabb252909218164266Ac83F815000",
+      "name": "Ethereum High Yield Set",
       "symbol": "EHY",
       "id": "ethereum-high-yield-set",
       "decimals": 18,
@@ -1227,6 +1375,7 @@
     },
     "0x7E4d1Cd8927Ce41bcbfa4f32cADa1a6998cb5a51": {
       "address": "0x7E4d1Cd8927Ce41bcbfa4f32cADa1a6998cb5a51",
+      "name": "ETH AI Limit Loss",
       "symbol": "ELL",
       "id": "eth-ai-limit-loss",
       "decimals": 18,
@@ -1235,6 +1384,7 @@
     },
     "0xC19216eea17b2f4DD677f1024CdA59C7D142F189": {
       "address": "0xC19216eea17b2f4DD677f1024CdA59C7D142F189",
+      "name": "ETH Long-Only Alpha Portfolio",
       "symbol": "ELOAP",
       "id": "eth-long-only-alpha-portfolio",
       "decimals": 18,
@@ -1243,6 +1393,7 @@
     },
     "0x1003eC54F51565fF86Ac611184Ea23d6310CaE71": {
       "address": "0x1003eC54F51565fF86Ac611184Ea23d6310CaE71",
+      "name": "ETH Trending Alpha LT",
       "symbol": "ETA",
       "id": "eth-trending-alpha-lt-set-ii",
       "decimals": 18,
@@ -1251,6 +1402,7 @@
     },
     "0x856c4388C56c2a613c60507a4701af627157Fed6": {
       "address": "0x856c4388C56c2a613c60507a4701af627157Fed6",
+      "name": "ETH Trending Alpha ST Set",
       "symbol": "ETAS",
       "id": "eth-trending-alpha-st-set-ii",
       "decimals": 18,
@@ -1259,6 +1411,7 @@
     },
     "0xAbC754aC2161B557D28062F41DcC0fc18440ac7E": {
       "address": "0xAbC754aC2161B557D28062F41DcC0fc18440ac7E",
+      "name": "ETH Maximalist Set",
       "symbol": "ETH10K",
       "id": "eth-maximalist-set",
       "decimals": 18,
@@ -1267,6 +1420,7 @@
     },
     "0x2c5a9980B41861D91D30d0E0271d1c093452DcA5": {
       "address": "0x2c5a9980B41861D91D30d0E0271d1c093452DcA5",
+      "name": "ETH 12 EMA Crossover Set",
       "symbol": "ETH12EMACO",
       "id": "eth-12-day-ema-crossover-set",
       "decimals": 18,
@@ -1275,6 +1429,7 @@
     },
     "0x9ea463Ec4cE9E9E5bc9cFd0187C4Ac3a70DD951D": {
       "address": "0x9ea463Ec4cE9E9E5bc9cFd0187C4Ac3a70DD951D",
+      "name": "ETH 20 SMA Crossover Set",
       "symbol": "ETH20SMACO",
       "id": "eth_20_day_ma_crossover_set",
       "decimals": 18,
@@ -1283,6 +1438,7 @@
     },
     "0x614857C755739354d68AE0abD53849cf45d6A41D": {
       "address": "0x614857C755739354d68AE0abD53849cf45d6A41D",
+      "name": "ETH 26 EMA Crossover Set",
       "symbol": "ETH26EMACO",
       "id": "eth-26-day-ema-crossover-set",
       "decimals": 18,
@@ -1291,6 +1447,7 @@
     },
     "0xa360F2aF3F957906468c0FD7526391AeD08aE3DB": {
       "address": "0xa360F2aF3F957906468c0FD7526391AeD08aE3DB",
+      "name": "ETH 50 SMA Crossover Set",
       "symbol": "ETH50SMACO",
       "id": "eth-50-day-ma-crossover-set",
       "decimals": 18,
@@ -1299,6 +1456,7 @@
     },
     "0xB9FfE0b8Ee2d1Af94202FFED366520300748A4d8": {
       "address": "0xB9FfE0b8Ee2d1Af94202FFED366520300748A4d8",
+      "name": "ETH/BTC Ratio 26 EMA Crossover",
       "symbol": "ETHBTC26EMACO",
       "id": "eth-btc-ema-ratio-trading-set",
       "decimals": 18,
@@ -1307,6 +1465,7 @@
     },
     "0x1bcCA39aE82e53dede8eC5500c3BCd76Cd1e0072": {
       "address": "0x1bcCA39aE82e53dede8eC5500c3BCd76Cd1e0072",
+      "name": "ETH/BTC PA Candlestick",
       "symbol": "ETHBTCPA",
       "id": "ethbtc-price-action-candlestick-set",
       "decimals": 18,
@@ -1315,6 +1474,7 @@
     },
     "0xa12a696B9B11788076A6cb384CAc6986b82545E1": {
       "address": "0xa12a696B9B11788076A6cb384CAc6986b82545E1",
+      "name": "ETH Super Set",
       "symbol": "ETHDAIS",
       "id": "eth-super-set",
       "decimals": 18,
@@ -1323,6 +1483,7 @@
     },
     "0x54e8371C1EC43e58fB53D4ef4eD463C17Ba8a6bE": {
       "address": "0x54e8371C1EC43e58fB53D4ef4eD463C17Ba8a6bE",
+      "name": "ETH 26 EMA Crossover Yield II",
       "symbol": "ETHEMAAPY",
       "id": "eth-26-ma-crossover-yield-ii",
       "decimals": 18,
@@ -1331,6 +1492,7 @@
     },
     "0xB647a1D7633c6C4d434e22eE9756b36F2b219525": {
       "address": "0xB647a1D7633c6C4d434e22eE9756b36F2b219525",
+      "name": "ETH 20 MA Crossover Yield II",
       "symbol": "ETHMACOAPY",
       "id": "",
       "decimals": 18,
@@ -1339,6 +1501,7 @@
     },
     "0x98A25bA4c3793B9029652cBc1a8875cBe223dF13": {
       "address": "0x98A25bA4c3793B9029652cBc1a8875cBe223dF13",
+      "name": "ETH Momentum Trigger Set",
       "symbol": "ETHMO",
       "id": "eth-momentum-trigger-set",
       "decimals": 18,
@@ -1347,6 +1510,7 @@
     },
     "0xB1CA7E6714263a64659A3a89E1C313af30fD660A": {
       "address": "0xB1CA7E6714263a64659A3a89E1C313af30fD660A",
+      "name": "ETH Moonshot X Yield Set",
       "symbol": "ETHMOONX",
       "id": "eth-moonshot-x-yield-set",
       "decimals": 18,
@@ -1355,6 +1519,7 @@
     },
     "0x2Bf417FdA6E73B8Ea605DF0F33aD029F8d4b795A": {
       "address": "0x2Bf417FdA6E73B8Ea605DF0F33aD029F8d4b795A",
+      "name": "ETH Moonshot X Disc Yield Set",
       "symbol": "ETHMOONX2",
       "id": "eth-moonshot-x-discretionary-yield-set",
       "decimals": 18,
@@ -1363,6 +1528,7 @@
     },
     "0x09E4BDFb273245063eF5E800D891eFF7d04f9B83": {
       "address": "0x09E4BDFb273245063eF5E800D891eFF7d04f9B83",
+      "name": "ETH Price Action Candlestick Set",
       "symbol": "ETHPA",
       "id": "eth-price-action-candlestick-set",
       "decimals": 18,
@@ -1371,6 +1537,7 @@
     },
     "0x93E01899c10532d76C0E864537a1D26433dBbDdB": {
       "address": "0x93E01899c10532d76C0E864537a1D26433dBbDdB",
+      "name": "ETH RSI 60/40 Crossover Set",
       "symbol": "ETHRSI6040",
       "id": "eth-rsi-60-40-crossover-set",
       "decimals": 18,
@@ -1379,6 +1546,7 @@
     },
     "0x1Ce9200C98b6D9999B60bFf53860475A993a8b68": {
       "address": "0x1Ce9200C98b6D9999B60bFf53860475A993a8b68",
+      "name": "ETH TA Set",
       "symbol": "ETHTA",
       "id": "eth-ta-set-ii",
       "decimals": 18,
@@ -1387,6 +1555,7 @@
     },
     "0xB8243B4eeca27A4191e879760b88fE2270561796": {
       "address": "0xB8243B4eeca27A4191e879760b88fE2270561796",
+      "name": "ETHUSD ADL 4H Set",
       "symbol": "ETHUSDADL4",
       "id": "ethusd-adl-4h-set",
       "decimals": 18,
@@ -1395,6 +1564,7 @@
     },
     "0xffEE21B4Bb7084a9416205544101Ae9f472c7159": {
       "address": "0xffEE21B4Bb7084a9416205544101Ae9f472c7159",
+      "name": "Fart Set",
       "symbol": "FART",
       "id": "fart-set",
       "decimals": 18,
@@ -1403,6 +1573,7 @@
     },
     "0xCAE169AFDE69f297c7817ed5F4A6816C0E38137D": {
       "address": "0xCAE169AFDE69f297c7817ed5F4A6816C0E38137D",
+      "name": "Flex BTC Set",
       "symbol": "FLEXBTC",
       "id": "flexbtc-set-ii",
       "decimals": 18,
@@ -1411,6 +1582,7 @@
     },
     "0x654424F4b3ed6DE828C9CA30484dc1A626bb5fBA": {
       "address": "0x654424F4b3ed6DE828C9CA30484dc1A626bb5fBA",
+      "name": "Flex ETH Set",
       "symbol": "FLEXETH",
       "id": "flexeth-set-ii",
       "decimals": 18,
@@ -1419,6 +1591,7 @@
     },
     "0xdBf5c7D8ac5007667617a15DB2c1B1D616c9D302": {
       "address": "0xdBf5c7D8ac5007667617a15DB2c1B1D616c9D302",
+      "name": "FlexETH/BTC Set",
       "symbol": "FLEXETHBTC",
       "id": "flexeth-btc-set",
       "decimals": 18,
@@ -1427,6 +1600,7 @@
     },
     "0xF5c0E24ACA5217BcBAe662871caE1A86873F02db": {
       "address": "0xF5c0E24ACA5217BcBAe662871caE1A86873F02db",
+      "name": "Alligator + Fractal Set",
       "symbol": "GATOR",
       "id": "alligator-fractal-set",
       "decimals": 18,
@@ -1435,6 +1609,7 @@
     },
     "0x15822A64c8Cb27D7828C45E0aAFC3e6C5DeCd172": {
       "address": "0x15822A64c8Cb27D7828C45E0aAFC3e6C5DeCd172",
+      "name": "Fear & Greed Sentiment Set II",
       "symbol": "GREED",
       "id": "fear-greed-sentiment-set-ii",
       "decimals": 18,
@@ -1443,6 +1618,7 @@
     },
     "0x5cD487CE4dB7091292F2E914F7B31445Bd4A5E1b": {
       "address": "0x5cD487CE4dB7091292F2E914F7B31445Bd4A5E1b",
+      "name": "Inverse ETH 20 SMA Crossover",
       "symbol": "iETH20SMACO",
       "id": "",
       "decimals": 18,
@@ -1451,6 +1627,7 @@
     },
     "0xAC1565e473F69FAdA09661A6B4103FBbF801CeEE": {
       "address": "0xAC1565e473F69FAdA09661A6B4103FBbF801CeEE",
+      "name": "Inverse ETH 50 SMA Crossover",
       "symbol": "iETH50SMACO",
       "id": "inverse-eth-29-day-ma-crossover-set",
       "decimals": 18,
@@ -1459,6 +1636,7 @@
     },
     "0xB32c960c46f28059C2B5F1C3eCC2b9DD77aB0aA0": {
       "address": "0xB32c960c46f28059C2B5F1C3eCC2b9DD77aB0aA0",
+      "name": "Intelligent BTC Set",
       "symbol": "INTBTC",
       "id": "intelligent-btc-set-ii",
       "decimals": 18,
@@ -1467,6 +1645,7 @@
     },
     "0x89C0b027bD7cc2D17854B06F8322e29451192CE3": {
       "address": "0x89C0b027bD7cc2D17854B06F8322e29451192CE3",
+      "name": "Intelligent ETH Set",
       "symbol": "INTETH",
       "id": "intelligent-eth-set-ii",
       "decimals": 18,
@@ -1475,6 +1654,7 @@
     },
     "0xBA8Ea15b647F54D9ff849670FcaAcF35Df21A457": {
       "address": "0xBA8Ea15b647F54D9ff849670FcaAcF35Df21A457",
+      "name": "Intelligent Ratio Set",
       "symbol": "INTRATIO",
       "id": "intelligent-ratio-set",
       "decimals": 18,
@@ -1483,6 +1663,7 @@
     },
     "0xC166F976ce9926A3205b145Af104eB0E4b38b5C0": {
       "address": "0xC166F976ce9926A3205b145Af104eB0E4b38b5C0",
+      "name": "LINK/ETH Growth Alpha Set",
       "symbol": "LEGA",
       "id": "link-eth-growth-alpha-set",
       "decimals": 18,
@@ -1491,6 +1672,7 @@
     },
     "0x8a63bE90F095F6777be3Ed25D9fC7CD2a63DDb30": {
       "address": "0x8a63bE90F095F6777be3Ed25D9fC7CD2a63DDb30",
+      "name": "Long-Only Alpha Portfolio",
       "symbol": "LELOAP",
       "id": "link-eth-long-only-alpha-portfolio",
       "decimals": 18,
@@ -1499,6 +1681,7 @@
     },
     "0x542156d51D10Db5acCB99f9Db7e7C91B74E80a2c": {
       "address": "0x542156d51D10Db5acCB99f9Db7e7C91B74E80a2c",
+      "name": "ETH/LINK PA Candlestick Set",
       "symbol": "LINKETHPA",
       "id": "eth-link-price-action-candlestick-set",
       "decimals": 18,
@@ -1507,6 +1690,7 @@
     },
     "0x8933ea1Ce67B946BdF2436cE860fFBb53Ce814d2": {
       "address": "0x8933ea1Ce67B946BdF2436cE860fFBb53Ce814d2",
+      "name": "LINK/ETH RSI Ratio Trading",
       "symbol": "LINKETHRSI",
       "id": "link-eth-rsi-ratio-trading-set",
       "decimals": 18,
@@ -1515,6 +1699,7 @@
     },
     "0x78E29d35573beA6265aEDfCb9F45481B717EBFdE": {
       "address": "0x78E29d35573beA6265aEDfCb9F45481B717EBFdE",
+      "name": "LINK Profit Taker Set",
       "symbol": "LINKPT",
       "id": "link-profit-taker-set",
       "decimals": 18,
@@ -1523,6 +1708,7 @@
     },
     "0x0329d23fC7B1b1e6Cca57aFA3F0090F1189069e8": {
       "address": "0x0329d23fC7B1b1e6Cca57aFA3F0090F1189069e8",
+      "name": "LINK RSI Crossover Set",
       "symbol": "LINKRSICO",
       "id": "link-rsi-crossover-set",
       "decimals": 18,
@@ -1531,6 +1717,7 @@
     },
     "0x621E3b71D07b51242bcca167928e184235A4bb87": {
       "address": "0x621E3b71D07b51242bcca167928e184235A4bb87",
+      "name": "Mountains and Valleys ETH/BTC",
       "symbol": "MAVC",
       "id": "mountains-and-valleys-ethbtc-set",
       "decimals": 18,
@@ -1539,6 +1726,7 @@
     },
     "0x57e83505827788c9F92bCfd398A51A7b0C83DD8e": {
       "address": "0x57e83505827788c9F92bCfd398A51A7b0C83DD8e",
+      "name": "Chainlink Trading Set",
       "symbol": "CTS",
       "id": "chainlink-trading-set",
       "decimals": 18,
@@ -1547,6 +1735,7 @@
     },
     "0x924E26fEe8E10c20726006CC2Bd307A538B0eBE5": {
       "address": "0x924E26fEe8E10c20726006CC2Bd307A538B0eBE5",
+      "name": "BTC RSI Crossover Yield Set",
       "symbol": "BTCRSIAPY",
       "id": "btc-rsi-crossover-yield-set",
       "decimals": 18,
@@ -1555,6 +1744,7 @@
     },
     "0x77b1465b0e01ba085e515324e30fEe6555C623EA": {
       "address": "0x77b1465b0e01ba085e515324e30fEe6555C623EA",
+      "name": "Set of Sets Trailblazer Fund",
       "symbol": "MQSS",
       "id": "set-of-sets-trailblazer-fund",
       "decimals": 18,
@@ -1563,6 +1753,7 @@
     },
     "0x7510D6fac98A6eCa2DB7c9357619715a7f5049d4": {
       "address": "0x7510D6fac98A6eCa2DB7c9357619715a7f5049d4",
+      "name": "Holistic BTC Set",
       "symbol": "TCapBTCUSDC",
       "id": "holistic-btc-set",
       "decimals": 18,
@@ -1571,6 +1762,7 @@
     },
     "0x8e4dBF540Bf814c044785218B58C930B20a56BE1": {
       "address": "0x8e4dBF540Bf814c044785218B58C930B20a56BE1",
+      "name": "Holistic ETH",
       "symbol": "TCapETHDAI",
       "id": "holistic-eth-set",
       "decimals": 18,
@@ -1579,6 +1771,7 @@
     },
     "0x8DDF05C42C698329053c4F39B5bb05A350fd8132": {
       "address": "0x8DDF05C42C698329053c4F39B5bb05A350fd8132",
+      "name": "ETH Smart Beta Set",
       "symbol": "ETHSB",
       "id": "eth-smart-beta-set",
       "decimals": 18,
@@ -1587,6 +1780,7 @@
     },
     "0xbE9375C6a420D2eEB258962efB95551A5b722803": {
       "address": "0xbE9375C6a420D2eEB258962efB95551A5b722803",
+      "name": "StormX",
       "symbol": "STMX",
       "id": "storm",
       "decimals": 18,
@@ -1595,6 +1789,7 @@
     },
     "0x3505F494c3f0fed0B594E01Fa41Dd3967645ca39": {
       "address": "0x3505F494c3f0fed0B594E01Fa41Dd3967645ca39",
+      "name": "SWARM",
       "symbol": "SWM",
       "id": "swarm",
       "decimals": 18,
@@ -1603,6 +1798,7 @@
     },
     "0x0C6f5F7D555E7518f6841a79436BD2b1Eef03381": {
       "address": "0x0C6f5F7D555E7518f6841a79436BD2b1Eef03381",
+      "name": "CocosToken",
       "symbol": "COCOS",
       "id": "cocos-bcx",
       "decimals": 18,
@@ -1611,6 +1807,7 @@
     },
     "0x70861e862E1Ac0C96f853C8231826e469eAd37B1": {
       "address": "0x70861e862E1Ac0C96f853C8231826e469eAd37B1",
+      "name": "DOS Network Token",
       "symbol": "DOS",
       "id": "dos-network",
       "decimals": 18,
@@ -1619,6 +1816,7 @@
     },
     "0x255Aa6DF07540Cb5d3d297f0D0D4D84cb52bc8e6": {
       "address": "0x255Aa6DF07540Cb5d3d297f0D0D4D84cb52bc8e6",
+      "name": "Raiden Token",
       "symbol": "RDN",
       "id": "raiden-network",
       "decimals": 18,
@@ -1627,6 +1825,7 @@
     },
     "0x08d967bb0134F2d07f7cfb6E246680c53927DD30": {
       "address": "0x08d967bb0134F2d07f7cfb6E246680c53927DD30",
+      "name": "MATH Token",
       "symbol": "MATH",
       "id": "math",
       "decimals": 18,
@@ -1635,6 +1834,7 @@
     },
     "0x56d811088235F11C8920698a204A5010a788f4b3": {
       "address": "0x56d811088235F11C8920698a204A5010a788f4b3",
+      "name": "bZx Protocol Token",
       "symbol": "BZRX",
       "id": "bzx-protocol",
       "decimals": 18,
@@ -1643,6 +1843,7 @@
     },
     "0x940a2dB1B7008B6C776d4faaCa729d6d4A4AA551": {
       "address": "0x940a2dB1B7008B6C776d4faaCa729d6d4A4AA551",
+      "name": "Dusk Network",
       "symbol": "DUSK",
       "id": "dusk-network",
       "decimals": 18,
@@ -1651,6 +1852,7 @@
     },
     "0x4FbB350052Bca5417566f188eB2EBCE5b19BC964": {
       "address": "0x4FbB350052Bca5417566f188eB2EBCE5b19BC964",
+      "name": "Rigo Token",
       "symbol": "GRG",
       "id": "rigoblock",
       "decimals": 18,
@@ -1659,6 +1861,7 @@
     },
     "0x4e352cF164E64ADCBad318C3a1e222E9EBa4Ce42": {
       "address": "0x4e352cF164E64ADCBad318C3a1e222E9EBa4Ce42",
+      "name": "MCDEX Token",
       "symbol": "MCB",
       "id": "mcdex",
       "decimals": 18,
@@ -1667,6 +1870,7 @@
     },
     "0xa3BeD4E1c75D00fa6f4E5E6922DB7261B5E9AcD2": {
       "address": "0xa3BeD4E1c75D00fa6f4E5E6922DB7261B5E9AcD2",
+      "name": "Meta",
       "symbol": "MTA",
       "id": "meta",
       "decimals": 18,
@@ -1675,6 +1879,7 @@
     },
     "0xa645264C5603E96c3b0B078cdab68733794B0A71": {
       "address": "0xa645264C5603E96c3b0B078cdab68733794B0A71",
+      "name": "Mysterium",
       "symbol": "MYST",
       "id": "mysterium",
       "decimals": 8,
@@ -1683,6 +1888,7 @@
     },
     "0xd341d1680Eeee3255b8C4c75bCCE7EB57f144dAe": {
       "address": "0xd341d1680Eeee3255b8C4c75bCCE7EB57f144dAe",
+      "name": "onG",
       "symbol": "ONG",
       "id": "ong-social",
       "decimals": 18,
@@ -1691,6 +1897,7 @@
     },
     "0xFca59Cd816aB1eaD66534D82bc21E7515cE441CF": {
       "address": "0xFca59Cd816aB1eaD66534D82bc21E7515cE441CF",
+      "name": "Rarible",
       "symbol": "RARI",
       "id": "rarible",
       "decimals": 18,
@@ -1699,6 +1906,7 @@
     },
     "0xCC4304A31d09258b0029eA7FE63d032f52e44EFe": {
       "address": "0xCC4304A31d09258b0029eA7FE63d032f52e44EFe",
+      "name": "TrustSwap Token",
       "symbol": "SWAP",
       "id": "trustswap",
       "decimals": 18,
@@ -1707,6 +1915,7 @@
     },
     "0x70a72833d6bF7F508C8224CE59ea1Ef3d0Ea3A38": {
       "address": "0x70a72833d6bF7F508C8224CE59ea1Ef3d0Ea3A38",
+      "name": "UTRUST Token",
       "symbol": "UTRUST",
       "id": "utrust",
       "decimals": 18,
@@ -1715,6 +1924,7 @@
     },
     "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e": {
       "address": "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e",
+      "name": "yearn.finance",
       "symbol": "YFI",
       "id": "yearn-finance",
       "decimals": 18,
@@ -1723,6 +1933,7 @@
     },
     "0x0d438F3b5175Bebc262bF23753C1E53d03432bDE": {
       "address": "0x0d438F3b5175Bebc262bF23753C1E53d03432bDE",
+      "name": "Wrapped NXM",
       "symbol": "wNXM",
       "id": "wrapped-nxm",
       "decimals": 18,
@@ -1731,6 +1942,7 @@
     },
     "0xB6eD7644C69416d67B522e20bC294A9a9B405B31": {
       "address": "0xB6eD7644C69416d67B522e20bC294A9a9B405B31",
+      "name": "0xBitcoin Token",
       "symbol": "0xBTC",
       "id": "oxbitcoin",
       "decimals": 8,
@@ -1739,6 +1951,7 @@
     },
     "0x035dF12E0F3ac6671126525f1015E47D79dFEDDF": {
       "address": "0x035dF12E0F3ac6671126525f1015E47D79dFEDDF",
+      "name": "0xMonero",
       "symbol": "0xMR",
       "id": "0xmonero",
       "decimals": 18,
@@ -1747,6 +1960,7 @@
     },
     "0x1a7a8BD9106F2B8D977E08582DC7d24c723ab0DB": {
       "address": "0x1a7a8BD9106F2B8D977E08582DC7d24c723ab0DB",
+      "name": "AppCoins",
       "symbol": "APPC",
       "id": "appcoins",
       "decimals": 18,
@@ -1755,6 +1969,7 @@
     },
     "0xfc05987bd2be489ACCF0f509E44B0145d68240f7": {
       "address": "0xfc05987bd2be489ACCF0f509E44B0145d68240f7",
+      "name": "ESSENTIA",
       "symbol": "ESS",
       "id": "essentia",
       "decimals": 18,
@@ -1763,6 +1978,7 @@
     },
     "0xdF5e0e81Dff6FAF3A7e52BA697820c5e32D806A8": {
       "address": "0xdF5e0e81Dff6FAF3A7e52BA697820c5e32D806A8",
+      "name": "Curve.fi yDAI/yUSDC/yUSDT/yTUSD",
       "symbol": "yCRV",
       "id": "curve-fi-ydai-yusdc-yusdt-ytusd",
       "decimals": 18,
@@ -1771,6 +1987,7 @@
     },
     "0x81ab848898b5ffD3354dbbEfb333D5D183eEDcB5": {
       "address": "0x81ab848898b5ffD3354dbbEfb333D5D183eEDcB5",
+      "name": "yUSD Synthetic Token Expiring 1 September 2020",
       "symbol": "yUSD-SEP20",
       "id": "yusd-synthetic-token-expiring-1-september-2020",
       "decimals": 18,
