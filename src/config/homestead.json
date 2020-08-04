@@ -788,15 +788,6 @@
       "precision": 2,
       "chartColor": "#387080"
     },
-    "0x0F4CA92660Efad97a9a70CB0fe969c755439772C": {
-      "address": "0x0F4CA92660Efad97a9a70CB0fe969c755439772C",
-      "name": "Leverj",
-      "symbol": "LEV",
-      "id": "leverj",
-      "decimals": 9,
-      "precision": 2,
-      "chartColor": "#8d6268"
-    },
     "0x7b123f53421b1bF8533339BFBdc7C98aA94163db": {
       "address": "0x7b123f53421b1bF8533339BFBdc7C98aA94163db",
       "name": "dfohub",
