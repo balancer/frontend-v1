@@ -2011,6 +2011,15 @@
       "decimals": 18,
       "precision": 2,
       "chartColor": "#8b5580"
+    },
+    "0x13339fD07934CD674269726EdF3B5ccEE9DD93de": {
+      "address": "0x13339fD07934CD674269726EdF3B5ccEE9DD93de",
+      "name": "CurToken",
+      "symbol": "CUR",
+      "id": "cur-token",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#c38890"
     }
   },
   "warnings": {
