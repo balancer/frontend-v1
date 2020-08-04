@@ -5,9 +5,9 @@
         <h3 class="text-white">Add Liquidity</h3>
       </template>
       <div class="text-center m-4 mt-0">
-        <SingleMultiToggle
-          action="add"
-          :selected="type"
+        <Toggle
+          :value="type"
+          :options="toggleOptions"
           @select="handleSelectType"
         />
       </div>
@@ -124,7 +124,8 @@ import {
   normalizeBalance,
   denormalizeBalance,
   isTxReverted,
-  getTokenBySymbol
+  getTokenBySymbol,
+  toggleOptions
 } from '@/helpers/utils';
 import { calcPoolOutGivenSingleIn } from '@/helpers/math';
 import { validateNumberInput, formatError } from '@/helpers/validation';
@@ -144,6 +145,7 @@ export default {
   props: ['open', 'pool'],
   data() {
     return {
+      toggleOptions,
       loading: false,
       poolTokens: null,
       amounts: {},

@@ -5,9 +5,9 @@
         <h3 class="text-white">Remove Liquidity</h3>
       </template>
       <div class="text-center m-4 mt-0">
-        <SingleMultiToggle
-          action="remove"
-          :selected="type"
+        <Toggle
+          :value="type"
+          :options="toggleOptions"
           @select="handleSelectType"
         />
       </div>
@@ -95,7 +95,12 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { bnum, normalizeBalance, denormalizeBalance } from '@/helpers/utils';
+import {
+  bnum,
+  normalizeBalance,
+  denormalizeBalance,
+  toggleOptions
+} from '@/helpers/utils';
 import { calcSingleOutGivenPoolIn } from '@/helpers/math';
 import { validateNumberInput, formatError } from '@/helpers/validation';
 
@@ -103,6 +108,7 @@ export default {
   props: ['open', 'pool'],
   data() {
     return {
+      toggleOptions,
       loading: false,
       poolAmountIn: '',
       type: 'MULTI_ASSET',
