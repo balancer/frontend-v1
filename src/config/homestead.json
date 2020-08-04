@@ -1993,6 +1993,15 @@
       "decimals": 18,
       "precision": 2,
       "chartColor": "#9a9a97"
+    },
+    "0x44b6e3e85561ce054aB13Affa0773358D795D36D": {
+      "address": "0x44b6e3e85561ce054aB13Affa0773358D795D36D",
+      "name": "ethArt",
+      "symbol": "ARTE",
+      "id": "eth-art",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#c5ccb8"
     }
   },
   "warnings": {
