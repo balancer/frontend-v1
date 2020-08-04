@@ -2020,6 +2020,15 @@
       "decimals": 18,
       "precision": 2,
       "chartColor": "#c38890"
+    },
+    "0xBD6467a31899590474cE1e84F70594c53D628e46": {
+      "address": "0xBD6467a31899590474cE1e84F70594c53D628e46",
+      "name": "KardiaChain Token",
+      "symbol": "KAI",
+      "id": "kardiachain-token",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#a593a5"
     }
   },
   "warnings": {
