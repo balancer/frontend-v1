@@ -1,15 +1,19 @@
 <template>
   <div class="px-0 px-md-5 py-4">
-    <div class="d-flex flex-items-center px-4 px-md-0 mb-4">
-      <h3 class="flex-auto" v-text="'Tokens'" />
+    <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
+      <h3 class="flex-auto" v-text="'Create a pool'" />
     </div>
-    <UiTable>
+    <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
+      <h4 class="flex-auto" v-text="'Assets'" />
+    </div>
+    <UiTable class="mb-4">
       <UiTableTh>
         <div v-text="'Asset'" class="flex-auto text-left" />
-        <div v-text="'Weight (total max: 100)'" class="column-lg" />
+        <div v-text="'Weight'" class="column" />
+        <div v-text="'%'" class="column" />
         <div v-text="'Amount'" class="column" />
-        <div v-text="'Value'" class="column-lg" />
-        <div v-text="'Remove'" class="column" />
+        <div v-text="'Value'" class="column" />
+        <div class="column-xs" />
       </UiTableTh>
       <div v-for="(token, i) in tokens" :key="token">
         <UiTableTr>
@@ -27,14 +31,16 @@
             </a>
             <ButtonUnlock class="button-primary ml-2" :tokenAddress="token" />
           </div>
-          <div class="column-lg d-flex flex-items-center flex-justify-between">
+          <div class="column">
             <input
               class="input pool-input text-right"
               :class="isWeightInputValid(token) ? 'text-white' : 'text-red'"
               v-model="weights[token]"
               @input="handleWeightChange(token)"
             />
-            {{ $n(getRelativeWeight(token), 'percent') }}
+          </div>
+          <div class="column">
+            <div v-text="$n(getRelativeWeight(token), 'percent')" />
           </div>
           <div class="column">
             <input
@@ -44,10 +50,10 @@
               @input="handleAmountChange(token)"
             />
           </div>
-          <div class="column-lg">
-            {{ getValue(token) }}
-          </div>
           <div class="column">
+            <div v-text="$n(getValue(token), 'currency')" />
+          </div>
+          <div class="column-xs">
             <a
               class="d-flex flex-justify-end text-white"
               @click="removeToken(token)"
@@ -58,11 +64,11 @@
         </UiTableTr>
       </div>
     </UiTable>
-    <UiButton class="mt-4" @click="addToken">
+    <UiButton class="mb-4" @click="addToken">
       Add Token
     </UiButton>
-    <div class="d-flex flex-items-center px-4 px-md-0 my-4">
-      <h3 class="flex-auto" v-text="'Swap fee (%)'" />
+    <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
+      <h4 class="flex-auto" v-text="'Swap fee (%)'" />
     </div>
     <div class="mb-4">
       <input
@@ -73,7 +79,7 @@
       />
     </div>
     <div v-if="tokens.length > 1" class="mb-4">
-      <h3 class="mb-4">Similar pools</h3>
+      <h4 class="mb-3">Similar pools</h4>
       <ListPools
         :key="JSON.stringify(suggestQuery)"
         :limit="suggestQuery.first"
@@ -346,7 +352,7 @@ export default {
     getValue(tokenAddress) {
       const tokenPrice = this.price.values[tokenAddress];
       if (!tokenPrice || !this.amounts[tokenAddress]) {
-        return '-';
+        return 0;
       }
       return bnum(this.amounts[tokenAddress])
         .times(tokenPrice)

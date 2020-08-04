@@ -19,18 +19,8 @@
       class="mt-2 d-flex flex-column flex-items-center flex-justify-center text-white"
     >
       <Pie :tokens="pool.tokens" size="96" />
-      <div
-        v-for="token in pool.tokens"
-        :key="token.address"
-        class="mt-1"
-        style="font-size: 12px; font-weight: 500"
-      >
-        <Icon
-          name="bullet"
-          size="4"
-          class="mr-1"
-          :style="`color: ${token.chartColor}`"
-        />
+      <div v-for="token in pool.tokens" :key="token.address" class="mt-1">
+        <Icon name="bullet" size="16" :style="`color: ${token.chartColor}`" />
         {{ $n(token.weightPercent.toFixed()) }}%
         {{ _ticker(token.checksum) }}
       </div>

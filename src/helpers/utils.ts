@@ -10,6 +10,11 @@ export const MAX_GAS = new BigNumber('0xffffffff');
 export const MAX_UINT = MaxUint256;
 export const POOL_TOKENS_DECIMALS = 18;
 
+export const toggleOptions = {
+  MULTI_ASSET: 'Multi assets',
+  SINGLE_ASSET: 'Single asset'
+};
+
 export const unknownColors = [
   '#6f6776',
   '#9a9a97',

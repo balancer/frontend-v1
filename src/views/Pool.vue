@@ -1,6 +1,8 @@
 <template>
-  <div class="px-0 px-md-5 py-4">
-    <UiLoading v-if="loading" class="big" />
+  <div class="px-0 px-md-5 pt-4">
+    <div v-if="loading" class="text-center">
+      <UiLoading class="big" />
+    </div>
     <div
       v-else-if="!pool"
       class="text-white text-center mt-8"

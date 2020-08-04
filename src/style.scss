@@ -1,4 +1,4 @@
-@import './fonts';
+@import './assets/fonts/iconfont.css';
 @import './vars';
 @import "~@primer/css/index.scss";
 
@@ -14,23 +14,9 @@ html, body, #app {
   outline: none !important;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4 {
   color: $white;
-  font-weight: 500;
-}
-
-h2 {
-  font-size: 20px;
-  font-weight: 500;
-}
-
-h3 {
-  font-size: 18px;
-}
-
-p {
-  font-size: 16px;
-  font-family: $font-weight-normal;
+  font-family: $font-weight-bold;
 }
 
 #app {
@@ -51,18 +37,19 @@ a {
 }
 
 .input {
-  padding: 4px 10px;
+  padding: 0 14px;
   outline: none;
   color: $white;
-  font-size: 14px;
+  min-height: 38px;
+  line-height: 28px;
   background-color: transparent;
   border: $border;
-  border-radius: $border-radius;
+  border-radius: 22px;
   max-width: 100%;
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -95,12 +82,12 @@ a {
 .eyebrow {
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
 }
 
 .column {
-  width: 140px;
+  width: 130px;
 }
 
 .column-lg {
@@ -109,6 +96,10 @@ a {
 
 .column-sm {
   width: 120px;
+}
+
+.column-xs {
+  width: 60px;
 }
 
 .highlight:hover {
