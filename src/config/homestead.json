@@ -1975,6 +1975,15 @@
       "decimals": 18,
       "precision": 2,
       "chartColor": "#a593a5"
+    },
+    "0xC0134b5B924c2FCA106eFB33C45446c466FBe03e": {
+      "address": "0xC0134b5B924c2FCA106eFB33C45446c466FBe03e",
+      "name": "aleph.im",
+      "symbol": "ALEPH",
+      "id": "aleph-im",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#6f6776"
     }
   },
   "warnings": {
