@@ -72,15 +72,8 @@
         placeholder="0.00"
       />
     </div>
-    <div v-if="tokens.length > 1" class="mb-4">
-      <h3 class="mb-4">Similar pools</h3>
-      <ListPools
-        :key="JSON.stringify(suggestQuery)"
-        :limit="suggestQuery.first"
-        :query="suggestQuery"
-      />
-    </div>
     <MessageError v-if="validationError" :text="validationError" class="mt-4" />
+    <MessageSimilarPools v-if="pool" :pool="pool" class="mt-4" />
     <MessageCheckbox
       v-if="!validationError"
       :custom="hasCustomToken"
@@ -149,14 +142,22 @@ export default {
     Vue.set(this.weights, usdc, '20');
   },
   computed: {
-    suggestQuery() {
+    pool() {
+      if (this.validationError) {
+        return;
+      }
+      const tokens = this.tokens.map(token => {
+        return {
+          checksum: token,
+          weightPercent: 100 * this.getRelativeWeight(token)
+        };
+      });
+      const swapFee = (parseFloat(this.swapFee) / 100).toString();
+      const liquidity = '0';
       return {
-        first: 5,
-        where: {
-          finalized: true,
-          tokensList_contains: this.tokens,
-          tokensCount: this.tokens.length
-        }
+        tokens,
+        swapFee,
+        liquidity
       };
     },
     validationError() {
