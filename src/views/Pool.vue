@@ -16,6 +16,11 @@
         :text="customTokenWarning"
         class="mb-4"
       />
+      <MessageSimilarPools
+        v-if="pool.liquidity < 1e7"
+        :pool="pool"
+        class="mb-4"
+      />
       <div class="d-flex flex-items-center flex-auto mb-4 px-4 px-md-0">
         <h3 class="flex-auto d-flex flex-items-center">
           <div>Pool {{ _shorten(pool.id) }}</div>
