@@ -38,6 +38,7 @@ export default {
   },
   methods: {
     addToken(token) {
+      this.$router.push({ query: { token } });
       this.input.push(token);
       this.$emit('input', this.input);
     },

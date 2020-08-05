@@ -132,12 +132,12 @@ export default {
       for (const token of pool.tokens) {
         const ticker = this._ticker(token.address);
         const weight = token.weightPercent;
-        const tokenShare = `${this.$n(weight / 100, 'percent')} ${ticker}`;
+        const tokenShare = `${this._n(weight / 100, 'percent')} ${ticker}`;
         tokenShares.push(tokenShare);
       }
       const tokenString = tokenShares.join(' ');
-      const feeString = `fee: ${this.$n(pool.swapFee, 'percent')}`;
-      const liquidityString = `liquidity: ${this.$n(
+      const feeString = `fee: ${this._n(pool.swapFee, 'percent')}`;
+      const liquidityString = `liquidity: ${this._n(
         pool.liquidity,
         'currency'
       )}`;

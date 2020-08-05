@@ -1,5 +1,6 @@
-import store from '@/store';
+import numeral from 'numeral';
 import { mapGetters, mapState } from 'vuex';
+import store from '@/store';
 import config from '@/config';
 import { shorten, trunc, etherscanLink } from '@/helpers/utils';
 
@@ -17,6 +18,17 @@ export default {
     ...mapGetters(['hasProxy'])
   },
   methods: {
+    _n(number, key) {
+      let format = number > 1000 ? '(0.[00]a)' : '(0.[000]a)';
+      if (key === 'raw') format = '0.[000000]';
+      if (key === 'currency') format = '$(0.[00]a)';
+      if (key === 'price') format = '$(0.[00]a)';
+      if (key === 'percent') format = '(0.[00]a)%';
+      if (number < 0.0001) number = 0;
+      return numeral(number)
+        .format(format)
+        .toUpperCase();
+    },
     _shorten(str: string): string {
       return shorten(str);
     },

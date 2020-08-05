@@ -4,7 +4,7 @@
       <div
         class="border rounded-0 rounded-md-1 panel-background py-4 mx-0 mx-md-2"
       >
-        <h3 v-text="$n(pool.liquidity, 'currency')" />
+        <h3 v-text="_n(pool.liquidity, 'currency')" />
         <p class="mb-0">Liquidity</p>
       </div>
     </div>
@@ -12,7 +12,7 @@
       <div
         class="border rounded-0 rounded-md-1 panel-background py-4 mx-0 mx-md-2"
       >
-        <h3 v-text="$n(pool.lastSwapVolume, 'currency')" />
+        <h3 v-text="_n(pool.lastSwapVolume, 'currency')" />
         <p class="mb-0">Volume (24hr)</p>
       </div>
     </div>
@@ -20,7 +20,7 @@
       <div
         class="border rounded-0 rounded-md-1 panel-background py-4 mx-0 mx-md-2"
       >
-        <h3 v-text="$n(pool.swapFee, 'percent')" />
+        <h3 v-text="_n(pool.swapFee, 'percent')" />
         <p class="mb-0">Pool Swap Fee</p>
       </div>
     </div>
@@ -28,7 +28,7 @@
       <div
         class="border rounded-0 rounded-md-1 panel-background py-4 mx-0 mx-md-2"
       >
-        <h3 v-text="$n(poolSharePercent, 'percent')" />
+        <h3 v-text="_n(poolSharePercent, 'percent')" />
         <p class="mb-0">My Pool Share</p>
       </div>
     </div>

@@ -9,16 +9,14 @@
         {{ _ticker(token.checksum) }}
       </router-link>
     </div>
-    <div class="column">{{ $n(token.weightPercent.toFixed(2)) }}%</div>
-    <div class="column hide-sm">
-      {{ $n(tokenBalance) }}
-    </div>
-    <div class="column hide-sm hide-md">
-      {{ $n(myPoolBalance) }}
-    </div>
-    <div class="column hide-sm hide-md hide-lg">
-      {{ $n(myShareValue, 'currency') }}
-    </div>
+    <UiNum :value="token.weightPercent / 1e2" format="percent" class="column" />
+    <UiNum :value="tokenBalance" class="column hide-sm" />
+    <UiNum :value="myPoolBalance" class="column hide-sm hide-md" />
+    <UiNum
+      :value="myShareValue"
+      format="currency"
+      class="column hide-sm hide-md hide-lg"
+    />
   </UiTableTr>
 </template>
 

@@ -23,12 +23,12 @@
           />
           <div class="column-lg d-flex flex-items-center">
             <Token :address="swap.tokenIn" class="mr-2" />
-            {{ $n(swap.tokenAmountIn) }}
+            <UiNum :value="swap.tokenAmountIn" class="mr-1" />
             {{ swap.tokenInSym }}
           </div>
           <div class="column-lg d-flex flex-items-center">
             <Token :address="swap.tokenOut" class="mr-2" />
-            {{ $n(swap.tokenAmountOut) }}
+            <UiNum :value="swap.tokenAmountOut" class="mr-1" />
             {{ swap.tokenOutSym }}
           </div>
           <div class="column hide-sm hide-md">
@@ -42,7 +42,7 @@
             </a>
           </div>
           <div class="column hide-sm hide-md hide-lg">
-            {{ $n(parseFloat(swap.feeValue).toFixed(2), 'price') }}
+            <UiNum :value="swap.feeValue" format="price" />
           </div>
         </UiTableTr>
       </div>

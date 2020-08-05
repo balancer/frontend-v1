@@ -40,7 +40,7 @@
             />
           </div>
           <div class="column">
-            <div v-text="$n(getRelativeWeight(token), 'percent')" />
+            <div v-text="_n(getRelativeWeight(token), 'percent')" />
           </div>
           <div class="column">
             <input
@@ -51,7 +51,7 @@
             />
           </div>
           <div class="column">
-            <div v-text="$n(getValue(token), 'currency')" />
+            <div v-text="_n(getValue(token), 'currency')" />
           </div>
           <div class="column-xs">
             <a

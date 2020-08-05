@@ -15,7 +15,7 @@
           <Token :address="i" size="20" class="mr-2" />
           <div v-text="_ticker(i)" v-if="i !== 'ether'" class="flex-auto" />
           <div v-else class="flex-auto">ETH</div>
-          <div>{{ $n(formatBalance(balance, i)) }}</div>
+          <div v-text="_n(formatBalance(balance, i))" />
         </div>
       </div>
       <div v-else class="text-white mb-3">

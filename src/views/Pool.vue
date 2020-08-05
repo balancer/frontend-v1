@@ -35,14 +35,14 @@
             @click="openAddLiquidityModal"
             v-if="enableAddLiquidity"
           >
-            Add Liquidity
+            Add liquidity
           </UiButton>
           <UiButton
             v-if="hasShares"
             class="ml-2"
             @click="openRemoveLiquidityModal"
           >
-            Remove Liquidity
+            Remove liquidity
           </UiButton>
         </div>
       </div>

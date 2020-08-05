@@ -42,10 +42,10 @@
                 <div class="text-white">{{ _ticker(token.checksum) }}</div>
               </div>
               <div class="column">
-                {{ $n(token.myBalance.toFixed(3)) }}
+                {{ _n(token.myBalance.toFixed(3)) }}
               </div>
               <div class="column-sm">
-                {{ $n(getTokenAmountOut(token)) }}
+                {{ _n(getTokenAmountOut(token)) }}
               </div>
             </UiTableTr>
           </UiTable>
@@ -53,7 +53,7 @@
             <UiTableTh class="text-left flex-items-center text-white">
               <div class="flex-auto">BPT amount</div>
               <div class="ml-2 column text-left">
-                {{ $n(poolTokenBalance) }} BPT
+                {{ _n(poolTokenBalance) }} BPT
                 <a @click="setMax" class="link-text mr-3">
                   <UiLabel v-text="'Max'" />
                 </a>
