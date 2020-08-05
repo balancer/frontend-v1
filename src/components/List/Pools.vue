@@ -37,7 +37,7 @@
             'column hide-sm hide-md',
             'column hide-sm hide-md hide-lg'
           ]"
-          :height="36"
+          :height="29"
         />
       </div>
     </UiTable>
