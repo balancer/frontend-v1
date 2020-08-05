@@ -1,21 +1,9 @@
 @import '~primer-support';
 
-$background: #21222c;
-$body-text: #90a4ae;
-$exit-modal-color: #dfe3e9;
-$header-text: #fff;
-$app-header-text: #fafafa;
 $link-text: #82b1ff;
-$token-balance-text: #90a4ae;
 $warning: #ffc780;
 $error: #ff8a80;
-$address-color: #82b1ff;
-$input-text: #fafafa;
-$input-placeholder-text: #575860;
-$input-hover-background: #31313b;
-$input-hover-placeholder-text: #818187;
 $input-hover-border: #4c5480;
-
 $primary-button-background: #536dfe;
 $primary-button-background-hover: #455ff5;
 $primary-button-border: #3d5afe;
@@ -26,21 +14,14 @@ $secondary-button-border: #41476b;
 $secondary-button-text: #ffffff;
 $button-disabled: #414249;
 $button-disabled-text: #c5c5c5;
-
 $panel-border: #41476b;
 $panel-background: #282932;
 $panel-header-background: #282932;
-$panel-row-text: #fafafa;
-$slider-main: #8c9eff;
-$highlighted-selector-background: #41476b;
 $highlighted-selector-border: #7785d5;
-$highlighted-selector-text: #fff;
-$selector-background: #2e2f39;
 
-$border-radius: 4px;
+// PrimerCSS
 $black: #21222c;
 $border: 1px solid $panel-border;
-
 $bg-blue: #384AFF;
 $bg-blue-light: #F7F8FC;
 $bg-gray: #90a4ae;
@@ -48,19 +29,23 @@ $bg-green: #21b66f;
 $text-blue: #384AFF;
 $text-red: #ff8a80;
 $blue-100: #DCE2FF;
-$body-font-size: 14px;
-$body-line-height: 1.4;
-$h2-size-mobile: 26px;
 $gray: $bg-gray;
 $text-gray: $gray;
-$h2-size: 26px;
-
-$gray-dark: #282a32;
-$bg-gray-dark: $gray-dark;
-$font-mktg: 'HarmoniaSansProCyrBold', Helvetica, Arial, sans-serif;
-$font-weight-bold: 'HarmoniaSansProCyrBold', Helvetica, Arial, sans-serif;
-$font-weight-normal: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
-
 $blue: #7685d5;
 $blue-900: #41476b;
+$gray-dark: #282a32;
+$bg-gray-dark: $gray-dark;
 
+$border-radius: 4px;
+
+$body-font-size: 14px;
+$body-line-height: 1.4;
+$h1-size: 28px;
+$h2-size: 24px;
+$h3-size: 20px;
+$h4-size: 18px;
+
+$font-weight-normal: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+$font-weight-bold: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+$body-font: $font-weight-normal;
+$font-mktg: $font-weight-bold;

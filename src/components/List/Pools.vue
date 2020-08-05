@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="title" class="d-flex flex-items-center px-4 px-md-0 mb-4">
+    <div v-if="title" class="d-flex flex-items-center px-4 px-md-0 mb-3">
       <h3 class="flex-auto" v-text="title" />
       <Filters v-model="filters" />
     </div>
@@ -37,7 +37,7 @@
             'column hide-sm hide-md',
             'column hide-sm hide-md hide-lg'
           ]"
-          :height="30"
+          :height="36"
         />
       </div>
     </UiTable>

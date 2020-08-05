@@ -30,7 +30,7 @@ export default {
   computed: {
     style() {
       return {
-        height: `${this.height || 14}px`,
+        height: `${this.height || 17}px`,
         width: '40%'
       };
     }

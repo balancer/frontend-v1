@@ -12,7 +12,8 @@
   border-radius: 2em;
   border: 1px solid $highlighted-selector-border;
   color: $highlighted-selector-border;
-  padding: 0 7px;
-  line-height: 18px;
+  padding: 0 9px;
+  height: 24px;
+  line-height: 22px;
 }
 </style>

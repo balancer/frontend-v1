@@ -25,21 +25,21 @@
             <div class="flex-auto d-flex flex-items-center">
               <Token :address="i" class="mr-2" />
               {{ token.name }}
-              <span class="ml-2" v-text="token.symbol" />
+              <span class="ml-2 text-gray" v-text="token.symbol" />
               <span
                 class="text-red ml-2"
                 v-if="isDisabled(i)"
                 v-text="'Bad ERC20'"
               />
             </div>
-            <span>
+            <div v-if="token.balance">
               <span
-                class="text-gray mr-2"
-                v-text="$n(token.value, 'currency')"
                 v-if="token.price"
+                v-text="$n(token.value, 'currency')"
+                class="text-gray mr-2"
               />
-              {{ $n(token.balance) }}
-            </span>
+              <span v-text="$n(token.balance)" />
+            </div>
           </a>
         </li>
       </ul>
@@ -95,7 +95,8 @@ export default {
               return address === query;
             } else {
               const symbol = token[1].symbol.toLowerCase();
-              return symbol.includes(query);
+              const name = token[1].name.toLowerCase();
+              return symbol.includes(query) || name.includes(query);
             }
           })
           .sort((a, b) => {
