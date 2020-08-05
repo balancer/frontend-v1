@@ -85,7 +85,9 @@
       "tokenOutSym": true,
       "tokenAmountOut": true,
       "poolTotalSwapVolume": true,
-      "timestamp": true
+      "timestamp": true,
+      "value": true,
+      "feeValue": true
     }
   },
   "getPoolShares": {

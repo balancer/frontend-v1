@@ -26,7 +26,7 @@ export default new VueI18n({
         style: 'currency',
         currency: 'USD',
         minimumFractionDigits: 2,
-        maximumFractionDigits: 6
+        maximumFractionDigits: 2
       },
       percent: {
         style: 'percent',
