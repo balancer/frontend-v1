@@ -1,6 +1,6 @@
 <template>
   <div id="warning" class="d-flex flex-items-center p-4 text-left">
-    <Icon name="warning" class="mr-4" />
+    <Icon name="warning" size="22" class="mr-4" />
     <div>
       Adding liquidity might fail due to using max balance and a trade occuring
       before transaction is mined. Use high gas price or
