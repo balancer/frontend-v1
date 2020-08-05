@@ -788,15 +788,6 @@
       "precision": 2,
       "chartColor": "#387080"
     },
-    "0x0F4CA92660Efad97a9a70CB0fe969c755439772C": {
-      "address": "0x0F4CA92660Efad97a9a70CB0fe969c755439772C",
-      "name": "Leverj",
-      "symbol": "LEV",
-      "id": "leverj",
-      "decimals": 9,
-      "precision": 2,
-      "chartColor": "#8d6268"
-    },
     "0x7b123f53421b1bF8533339BFBdc7C98aA94163db": {
       "address": "0x7b123f53421b1bF8533339BFBdc7C98aA94163db",
       "name": "dfohub",
@@ -1039,15 +1030,6 @@
       "decimals": 18,
       "precision": 2,
       "chartColor": "#c5ccb8"
-    },
-    "0x9041Fe5B3FDEA0f5e4afDC17e75180738D877A01": {
-      "address": "0x9041Fe5B3FDEA0f5e4afDC17e75180738D877A01",
-      "name": "ProToken",
-      "symbol": "PRO",
-      "id": "prochain",
-      "decimals": 18,
-      "precision": 2,
-      "chartColor": "#9a9a97"
     },
     "0x8A9C67fee641579dEbA04928c4BC45F66e26343A": {
       "address": "0x8A9C67fee641579dEbA04928c4BC45F66e26343A",
@@ -1993,6 +1975,78 @@
       "decimals": 18,
       "precision": 2,
       "chartColor": "#a593a5"
+    },
+    "0xC0134b5B924c2FCA106eFB33C45446c466FBe03e": {
+      "address": "0xC0134b5B924c2FCA106eFB33C45446c466FBe03e",
+      "name": "aleph.im",
+      "symbol": "ALEPH",
+      "id": "aleph-im",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#6f6776"
+    },
+    "0xBA50933C268F567BDC86E1aC131BE072C6B0b71a": {
+      "address": "0xBA50933C268F567BDC86E1aC131BE072C6B0b71a",
+      "name": "ARPA Token",
+      "symbol": "ARPA",
+      "id": "arpa-token",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#9a9a97"
+    },
+    "0x44b6e3e85561ce054aB13Affa0773358D795D36D": {
+      "address": "0x44b6e3e85561ce054aB13Affa0773358D795D36D",
+      "name": "ethArt",
+      "symbol": "ARTE",
+      "id": "eth-art",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#c5ccb8"
+    },
+    "0x954b890704693af242613edEf1B603825afcD708": {
+      "address": "0x954b890704693af242613edEf1B603825afcD708",
+      "name": "Cardstack",
+      "symbol": "CARD",
+      "id": "cardstack",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#8b5580"
+    },
+    "0x13339fD07934CD674269726EdF3B5ccEE9DD93de": {
+      "address": "0x13339fD07934CD674269726EdF3B5ccEE9DD93de",
+      "name": "CurToken",
+      "symbol": "CUR",
+      "id": "cur-token",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#c38890"
+    },
+    "0xBD6467a31899590474cE1e84F70594c53D628e46": {
+      "address": "0xBD6467a31899590474cE1e84F70594c53D628e46",
+      "name": "KardiaChain Token",
+      "symbol": "KAI",
+      "id": "kardiachain-token",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#a593a5"
+    },
+    "0xCc80C051057B774cD75067Dc48f8987C4Eb97A5e": {
+      "address": "0xCc80C051057B774cD75067Dc48f8987C4Eb97A5e",
+      "name": "Ethfinex Nectar Token",
+      "symbol": "NEC",
+      "id": "ethfinex-nectar-token",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#666092"
+    },
+    "0x12f649A9E821F90BB143089a6e56846945892ffB": {
+      "address": "0x12f649A9E821F90BB143089a6e56846945892ffB",
+      "name": "uDOO",
+      "symbol": "uDOO",
+      "id": "udoo",
+      "decimals": 18,
+      "precision": 2,
+      "chartColor": "#9a4f50"
     }
   },
   "warnings": {
