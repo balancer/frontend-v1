@@ -56,7 +56,7 @@ export default {
       display: inline-block;
 
       a {
-        line-height: 44px;
+        line-height: 40px;
         height: 44px;
         overflow: hidden;
         padding: 0 16px;
