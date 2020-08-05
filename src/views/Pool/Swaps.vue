@@ -8,6 +8,7 @@
       <div v-text="'Trade In'" class="column-lg text-left" />
       <div v-text="'Trade Out'" class="column-lg text-left" />
       <div v-text="'Transaction'" class="column hide-sm hide-md" />
+      <div v-text="'Swap fee'" class="column hide-sm hide-md hide-lg" />
     </UiTableTh>
     <div
       v-infinite-scroll="loadMore"
@@ -40,6 +41,9 @@
               <Icon name="external-link" />
             </a>
           </div>
+          <div class="column hide-sm hide-md hide-lg">
+            {{ $n(parseFloat(swap.feeValue).toFixed(2), 'price') }}
+          </div>
         </UiTableTr>
       </div>
       <ListLoading
@@ -48,7 +52,8 @@
           'flex-auto text-left hide-sm hide-md hide-lg',
           'column-lg text-left',
           'column-lg text-left',
-          'column hide-sm hide-md'
+          'column hide-sm hide-md',
+          'column hide-sm hide-md hide-lg'
         ]"
       />
     </div>

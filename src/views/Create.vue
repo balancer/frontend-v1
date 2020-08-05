@@ -64,7 +64,7 @@
         </UiTableTr>
       </div>
     </UiTable>
-    <UiButton class="mb-4" @click="addToken">
+    <UiButton v-if="tokens.length < 8" class="mb-4" @click="addToken">
       Add Token
     </UiButton>
     <div class="d-flex flex-items-center px-4 px-md-0 mb-3">

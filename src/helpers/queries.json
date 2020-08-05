@@ -38,6 +38,7 @@
       "totalWeight": true,
       "totalShares": true,
       "totalSwapVolume": true,
+      "totalSwapFee": true,
       "createTime": true,
       "joinsCount": true,
       "exitsCount": true,
@@ -45,6 +46,7 @@
       "tokensList": true,
       "swapsCount": true,
       "holdersCount": true,
+      "tx": true,
       "tokens": {
         "__args": {
           "orderBy": "denormWeight",
@@ -83,7 +85,9 @@
       "tokenOutSym": true,
       "tokenAmountOut": true,
       "poolTotalSwapVolume": true,
-      "timestamp": true
+      "timestamp": true,
+      "value": true,
+      "feeValue": true
     }
   },
   "getPoolShares": {
