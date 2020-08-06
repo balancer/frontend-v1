@@ -4,12 +4,12 @@
     <div class="d-flex mb-3">
       <div class="input d-flex flex-justify-end">
         <input
-          v-model="weth.wrapAmount"
+          v-model="wrapAmount"
           class="flex-auto text-right text-white amount-input"
           placeholder="0.0"
         />
       </div>
-      <UiButton class="ml-2 px-4" @click="wrapEther">
+      <UiButton class="ml-2 px-4" @click="wrapEther" :loading="wrapLoading">
         Wrap
       </UiButton>
     </div>
@@ -24,12 +24,12 @@
           <UiLabel v-text="'Max'" />
         </a>
         <input
-          v-model="weth.unwrapAmount"
+          v-model="unwrapAmount"
           class="flex-auto text-right text-white amount-input ml-1"
           placeholder="0.0"
         />
       </div>
-      <UiButton class="ml-2 px-3" @click="unwrapEther">
+      <UiButton class="ml-2 px-3" @click="unwrapEther" :loading="unwrapLoading">
         Unwrap
       </UiButton>
     </div>
@@ -43,25 +43,29 @@ import { normalizeBalance } from '@/helpers/utils';
 export default {
   data() {
     return {
-      weth: {
-        wrapAmount: '',
-        unwrapAmount: ''
-      }
+      wrapAmount: '',
+      wrapLoading: false,
+      unwrapAmount: '',
+      unwrapLoading: false
     };
   },
   methods: {
     ...mapActions(['wrap', 'unwrap']),
-    wrapEther() {
-      this.wrap(this.weth.wrapAmount);
+    async wrapEther() {
+      this.wrapLoading = true;
+      await this.wrap(this.wrapAmount);
+      this.wrapLoading = false;
     },
-    unwrapEther() {
-      this.unwrap(this.weth.unwrapAmount);
+    async unwrapEther() {
+      this.unwrapLoading = true;
+      await this.unwrap(this.unwrapAmount);
+      this.unwrapLoading = false;
     },
     handleMax() {
       const weth = this.config.tokens[this.config.addresses.weth];
       const wethBalance = this.web3.balances[weth.address];
       const balance = normalizeBalance(wethBalance, weth.decimals);
-      this.weth.unwrapAmount = balance.toString();
+      this.unwrapAmount = balance.toString();
     }
   }
 };
