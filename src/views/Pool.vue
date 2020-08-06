@@ -31,14 +31,14 @@
         </h3>
         <div class="d-flex">
           <UiButton
+            v-if="enableAddLiquidity"
             class="button-primary ml-2"
             @click="openAddLiquidityModal"
-            v-if="enableAddLiquidity"
           >
             Add Liquidity
           </UiButton>
           <UiButton
-            v-if="hasShares"
+            v-if="enableRemoveLiquidity"
             class="ml-2"
             @click="openRemoveLiquidityModal"
           >
@@ -115,11 +115,20 @@ export default {
       }
       return false;
     },
-    hasShares() {
-      return Object.keys(this.subgraph.poolShares).includes(this.id);
-    },
     enableAddLiquidity() {
-      return this.pool.finalized && this.pool.totalShares !== '0';
+      return (
+        this.config.chainId === this.web3.injectedChainId &&
+        this.web3.account &&
+        this.pool.finalized &&
+        this.pool.totalShares !== '0'
+      );
+    },
+    enableRemoveLiquidity() {
+      return (
+        this.config.chainId === this.web3.injectedChainId &&
+        this.web3.account &&
+        Object.keys(this.subgraph.poolShares).includes(this.id)
+      );
     }
   },
   methods: {
