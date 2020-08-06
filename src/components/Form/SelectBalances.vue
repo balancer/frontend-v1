@@ -13,7 +13,7 @@
           <ButtonUnlock class="ml-2" :tokenAddress="token" />
         </div>
         <div class="column text-left">
-          {{ _n(web3.balances[token]) }}
+          {{ _num(web3.balances[token]) }}
           {{ _ticker(token) }}
           <a class="ml-1">
             <UiLabel v-text="'Max'" />

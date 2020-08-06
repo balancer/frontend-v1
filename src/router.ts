@@ -5,7 +5,7 @@ import Private from '@/views/Private.vue';
 import MyPools from '@/views/MyPools.vue';
 import Setup from '@/views/Setup.vue';
 import Wallet from '@/views/Wallet.vue';
-import Token from '@/views/Token.vue';
+import MyLiquidity from '@/views/MyLiquidity.vue';
 import Create from '@/views/Create.vue';
 import Pool from '@/views/Pool.vue';
 import PoolTokens from '@/views/Pool/Tokens.vue';
@@ -21,7 +21,7 @@ const routes: Array<RouteConfig> = [
   { path: '/my-pools', name: 'my-pools', component: MyPools },
   { path: '/setup', name: 'setup', component: Setup },
   { path: '/wallet', name: 'wallet', component: Wallet },
-  { path: '/token/:id', name: 'token', component: Token },
+  { path: '/my-liquidity', name: 'my-liquidity', component: MyLiquidity },
   { path: '/pool/new', name: 'create', component: Create },
   {
     path: '/pool/:id',

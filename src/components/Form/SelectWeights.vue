@@ -19,7 +19,7 @@
           class="column text-right"
           v-if="weightRatio * startWeights[i]"
           v-text="
-            _n(((weightRatio * startWeights[i]) / 100).toFixed(4), 'percent')
+            _num(((weightRatio * startWeights[i]) / 100).toFixed(4), 'percent')
           "
         />
         <div class="column-sm text-right">

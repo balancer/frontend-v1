@@ -17,7 +17,7 @@
           <UiTable>
             <UiTableTh>
               <div class="column-lg flex-auto text-left">Asset</div>
-              <div class="column">My Pool Balance</div>
+              <div class="column">My pool balance</div>
               <div class="column-sm">Withdraw</div>
             </UiTableTh>
             <UiTableTr
@@ -42,10 +42,10 @@
                 <div class="text-white">{{ _ticker(token.checksum) }}</div>
               </div>
               <div class="column">
-                {{ _n(token.myBalance.toFixed(3)) }}
+                {{ _num(token.myBalance.toFixed(3)) }}
               </div>
               <div class="column-sm">
-                {{ _n(getTokenAmountOut(token)) }}
+                {{ _num(getTokenAmountOut(token)) }}
               </div>
             </UiTableTr>
           </UiTable>
@@ -53,7 +53,7 @@
             <UiTableTh class="text-left flex-items-center text-white">
               <div class="flex-auto">BPT amount</div>
               <div class="ml-2 column text-left">
-                {{ _n(poolTokenBalance) }} BPT
+                {{ _num(poolTokenBalance) }} BPT
                 <a @click="setMax" class="link-text mr-3">
                   <UiLabel v-text="'Max'" />
                 </a>

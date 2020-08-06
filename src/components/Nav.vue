@@ -6,7 +6,7 @@
           <span>{{ item.name }}</span>
           <UiCounter
             v-if="item.count > 0"
-            v-text="_n(item.count)"
+            v-text="_num(item.count)"
             class="ml-2"
           />
         </router-link>

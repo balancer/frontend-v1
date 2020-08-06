@@ -33,6 +33,7 @@
     "body-parser": "^1.19.0",
     "core-js": "^3.6.5",
     "eslint": "^6.7.2",
+    "ipfs-deploy": "^8.0.1",
     "json-to-graphql-query": "^2.0.0",
     "lightweight-charts": "^3.0.0",
     "lodash": "^4.17.15",

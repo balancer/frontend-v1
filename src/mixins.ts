@@ -18,7 +18,7 @@ export default {
     ...mapGetters(['hasProxy'])
   },
   methods: {
-    _n(number, key) {
+    _num(number, key) {
       let format = number > 1000 ? '(0.[00]a)' : '(0.[000]a)';
       if (key === 'raw') format = '0.[000000]';
       if (key === 'currency') format = '$(0.[00]a)';

@@ -9,19 +9,19 @@
       {{ _shorten(pool.id) }}
     </div>
     <div class="text-white">
-      My share: {{ _n(userShare.current, 'percent') }}
+      My share: {{ _num(userShare.current, 'percent') }}
       <span v-if="userShare.future">
-        → {{ _n(userShare.future, 'percent') }}
+        → {{ _num(userShare.future, 'percent') }}
       </span>
     </div>
-    <div class="text-white">Swap fee: {{ _n(pool.swapFee, 'percent') }}</div>
+    <div class="text-white">Swap fee: {{ _num(pool.swapFee, 'percent') }}</div>
     <div
       class="mt-2 d-flex flex-column flex-items-center flex-justify-center text-white"
     >
       <Pie :tokens="pool.tokens" size="96" />
       <div v-for="token in pool.tokens" :key="token.address" class="mt-1">
         <Icon name="bullet" size="16" :style="`color: ${token.chartColor}`" />
-        {{ _n(token.weightPercent.toFixed()) }}%
+        {{ _num(token.weightPercent.toFixed()) }}%
         {{ _ticker(token.checksum) }}
       </div>
     </div>

@@ -1,12 +1,9 @@
 <template>
-  <span v-text="_n(value, format)" :title="_n(value, 'raw')" />
+  <span v-text="_num(value, format)" :title="_num(value, 'raw')" />
 </template>
 
 <script>
 export default {
-  props: {
-    value: Number,
-    format: String
-  }
+  props: ['value', 'format']
 };
 </script>

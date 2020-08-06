@@ -2,7 +2,7 @@
   <UiTableTr>
     <div class="flex-auto text-left">
       <router-link
-        :to="{ name: 'token', params: { id: token.address } }"
+        :to="{ name: 'home', params: { token: token.address } }"
         class="text-white d-flex"
       >
         <Token :address="token.address" :symbol="token.symbol" class="mr-3" />

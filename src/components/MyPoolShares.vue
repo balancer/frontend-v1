@@ -1,7 +1,7 @@
 <template>
   <div class="p-3 border text-white text-center rounded-1">
-    Your pool share will go from {{ _n(poolSharesPercentFrom, 'percent') }} to
-    {{ _n(poolSharesPercentTo, 'percent') }}
+    Your pool share will go from {{ _num(poolSharesPercentFrom, 'percent') }} to
+    {{ _num(poolSharesPercentTo, 'percent') }}
   </div>
 </template>
 

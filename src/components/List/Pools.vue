@@ -2,7 +2,7 @@
   <div>
     <div v-if="title" class="d-flex flex-items-center px-4 px-md-0 mb-3">
       <h3 class="flex-auto" v-text="title" />
-      <Filters v-model="filters" />
+      <Filters :value="filters" v-model="filters" />
     </div>
     <UiTable>
       <UiTableTh>
@@ -12,7 +12,7 @@
         />
         <div v-text="'Assets'" class="flex-auto text-left" />
         <div v-text="'Swap fee'" class="column hide-sm hide-md" />
-        <div v-text="'Marketcap'" class="column" />
+        <div v-text="'Market cap'" class="column" />
         <div v-text="'My liquidity'" class="column hide-sm hide-md hide-lg" />
         <div v-text="'Volume (24h)'" class="column hide-sm hide-md hide-lg" />
       </UiTableTh>
@@ -55,7 +55,7 @@ export default {
       loading: false,
       page: 0,
       pools: [],
-      filters: []
+      filters: this.$route.query || {}
     };
   },
   watch: {
@@ -68,6 +68,7 @@ export default {
       this.page = 0;
       this.loading = true;
       this.pools = [];
+      this.$router.push({ query: this.filters });
       this.loadMore();
     }
   },
@@ -79,8 +80,8 @@ export default {
       this.page++;
       const page = this.page;
       let query = this.query || {};
-      if (this.filters.length > 0)
-        query.where.tokensList_contains = this.filters;
+      if (this.filters.token && this.filters.token.length > 0)
+        query.where.tokensList_contains = this.filters.token;
       query = { ...query, page };
       const pools = await this.getPools(query);
       this.pools = this.pools.concat(pools);

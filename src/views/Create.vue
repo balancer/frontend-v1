@@ -40,7 +40,7 @@
             />
           </div>
           <div class="column">
-            <div v-text="_n(getRelativeWeight(token), 'percent')" />
+            <div v-text="_num(getRelativeWeight(token), 'percent')" />
           </div>
           <div class="column">
             <input
@@ -51,10 +51,11 @@
             />
           </div>
           <div class="column">
-            <div v-text="_n(getValue(token), 'currency')" />
+            <div v-text="_num(getValue(token), 'currency')" />
           </div>
           <div class="column-xs">
             <a
+              v-if="tokens.length > 1"
               class="d-flex flex-justify-end text-white"
               @click="removeToken(token)"
             >
