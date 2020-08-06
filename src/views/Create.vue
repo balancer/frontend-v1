@@ -278,7 +278,7 @@ export default {
       this.handleAmountChange(tokenAddress);
     },
     handleAmountChange(tokenAddress) {
-      const tokenPrice = this.price.values[tokenAddress];
+      const tokenPrice = this.subgraph.tokens[tokenAddress];
       if (!tokenPrice) {
         return;
       }
@@ -294,7 +294,7 @@ export default {
           Vue.set(this.amounts, token, '');
           continue;
         }
-        const tokenPrice = this.price.values[token];
+        const tokenPrice = this.subgraph.tokens[token];
         if (!tokenPrice) {
           continue;
         }
@@ -351,7 +351,7 @@ export default {
       return true;
     },
     getValue(tokenAddress) {
-      const tokenPrice = this.price.values[tokenAddress];
+      const tokenPrice = this.subgraph.tokens[tokenAddress];
       if (!tokenPrice || !this.amounts[tokenAddress]) {
         return 0;
       }
