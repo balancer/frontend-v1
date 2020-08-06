@@ -1,11 +1,13 @@
 import Vue from 'vue';
+import { getAddress } from '@ethersproject/address';
 import { request } from '@/helpers/subgraph';
 import { formatPool, ITEMS_PER_PAGE } from '@/helpers/utils';
 
 const state = {
   balancer: {},
   poolShares: {},
-  myPools: []
+  myPools: [],
+  tokens: {}
 };
 
 const mutations = {
@@ -79,6 +81,16 @@ const mutations = {
   },
   GET_POOLS_SHARES_FAILURE(_state, payload) {
     console.debug('GET_POOLS_SHARES_FAILURE', payload);
+  },
+  GET_TOKENS_REQUEST() {
+    console.debug('GET_TOKEN_PRICES_REQUEST');
+  },
+  GET_TOKENS_SUCCESS(_state, payload) {
+    Vue.set(_state, 'tokens', payload);
+    console.debug('GET_TOKEN_PRICES_SUCCESS');
+  },
+  GET_TOKENS_FAILURE(_state, payload) {
+    console.debug('GET_TOKEN_PRICES_FAILURE', payload);
   }
 };
 
@@ -259,6 +271,23 @@ const actions = {
       return poolShares;
     } catch (e) {
       commit('GET_POOLS_SHARES_FAILURE', e);
+    }
+  },
+  getTokens: async ({ commit }) => {
+    commit('GET_TOKENS_REQUEST');
+    try {
+      let { tokenPrices } = await request('getTokenPrices');
+      tokenPrices = Object.fromEntries(
+        tokenPrices
+          .sort((a, b) => b.poolLiquidity - a.poolLiquidity)
+          .map(tokenPrice => [
+            getAddress(tokenPrice.id),
+            parseFloat(tokenPrice.price)
+          ])
+      );
+      commit('GET_TOKENS_SUCCESS', tokenPrices);
+    } catch (e) {
+      commit('GET_TOKENS_FAILURE', e);
     }
   }
 };

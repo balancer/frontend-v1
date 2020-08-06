@@ -67,7 +67,7 @@ export default {
           .map(token => {
             const address = token[0];
             const decimals = token[1].decimals;
-            const price = bnum(this.price.values[address] || 0);
+            const price = bnum(this.subgraph.tokens[address] || 0);
             const balance = normalizeBalance(
               this.web3.balances[address] || 0,
               decimals
