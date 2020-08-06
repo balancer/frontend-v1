@@ -19,7 +19,10 @@
     },
     "walletconnect": {
       "id": "walletconnect",
-      "name": "WalletConnect"
+      "name": "WalletConnect",
+      "options": {
+        "infuraId": "93e3393c76ed4e1f940d0266e2fdbda2"
+      }
     },
     "portis": {
       "id": "portis",
