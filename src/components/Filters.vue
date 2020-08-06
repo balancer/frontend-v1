@@ -1,5 +1,5 @@
 <template>
-  <div :key="JSON.stringify(input)" class="d-flex flex-items-center">
+  <div class="d-flex flex-items-center">
     <div class="pb-1">Filter by asset</div>
     <div v-for="(token, i) in tokens" :key="i" class="topic ml-2">
       <button
