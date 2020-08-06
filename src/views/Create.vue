@@ -143,6 +143,9 @@ export default {
     };
   },
   created() {
+    if (!this.hasProxy) {
+      return this.$router.push({ name: 'setup' });
+    }
     const dai = getTokenBySymbol('DAI').address;
     const usdc = getTokenBySymbol('USDC').address;
     this.tokens = [dai, usdc];
