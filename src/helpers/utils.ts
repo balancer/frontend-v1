@@ -2,7 +2,6 @@ import { getAddress } from '@ethersproject/address';
 import { MaxUint256 } from '@ethersproject/constants';
 import BigNumber from '@/helpers/bignumber';
 import config from '@/config';
-import trustwalletWhitelist from '@/helpers/trustwalletWhitelist.json';
 
 const LS_KEY = 'balancer-pool-management';
 export const ITEMS_PER_PAGE = 20;
@@ -73,9 +72,9 @@ export function formatPool(pool) {
     token.weightPercent = (100 / pool.totalWeight) * token.denormWeight;
     const configToken = config.tokens[token.checksum];
     if (configToken) {
-      token.chartColor = configToken.chartColor;
+      token.color = configToken.color;
     } else {
-      token.chartColor = unknownColors[colorIndex];
+      token.color = unknownColors[colorIndex];
       colorIndex++;
     }
     return token;
@@ -157,9 +156,7 @@ export function getTokenLogoUrl(address: string): string | null {
     trustwalletId = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
   } else {
     const checksum = getAddress(address);
-    if (checksum === config.addresses.weth) {
-      trustwalletId = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
-    } else if (trustwalletWhitelist.includes(checksum)) {
+    if (config.tokens[checksum].hasIcon) {
       trustwalletId = checksum;
     }
   }

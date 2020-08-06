@@ -20,7 +20,7 @@
     >
       <Pie :tokens="pool.tokens" size="96" />
       <div v-for="token in pool.tokens" :key="token.address" class="mt-1">
-        <Icon name="bullet" size="16" :style="`color: ${token.chartColor}`" />
+        <Icon name="bullet" size="16" :style="`color: ${token.color}`" />
         {{ $n(token.weightPercent.toFixed()) }}%
         {{ _ticker(token.checksum) }}
       </div>
