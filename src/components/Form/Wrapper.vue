@@ -5,11 +5,17 @@
       <div class="input d-flex flex-justify-end">
         <input
           v-model="wrapAmount"
-          class="flex-auto text-right text-white amount-input"
+          class="flex-auto text-right amount-input"
+          :class="wrapInputValid ? 'text-white' : 'text-red'"
           placeholder="0.0"
         />
       </div>
-      <UiButton class="ml-2 px-4" @click="wrapEther" :loading="wrapLoading">
+      <UiButton
+        class="ml-2 px-4"
+        @click="wrapEther"
+        :loading="wrapLoading"
+        :disabled="!wrapInputValid"
+      >
         Wrap
       </UiButton>
     </div>
@@ -25,11 +31,17 @@
         </a>
         <input
           v-model="unwrapAmount"
-          class="flex-auto text-right text-white amount-input ml-1"
+          class="flex-auto text-right amount-input ml-1"
+          :class="unwrapInputValid ? 'text-white' : 'text-red'"
           placeholder="0.0"
         />
       </div>
-      <UiButton class="ml-2 px-3" @click="unwrapEther" :loading="unwrapLoading">
+      <UiButton
+        class="ml-2 px-3"
+        @click="unwrapEther"
+        :loading="unwrapLoading"
+        :disabled="!unwrapInputValid"
+      >
         Unwrap
       </UiButton>
     </div>
@@ -39,6 +51,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { normalizeBalance } from '@/helpers/utils';
+import { validateNumberInput, ValidationError } from '@/helpers/validation';
 
 export default {
   data() {
@@ -48,6 +61,32 @@ export default {
       unwrapAmount: '',
       unwrapLoading: false
     };
+  },
+  computed: {
+    wrapInputValid() {
+      const error = validateNumberInput(this.wrapAmount);
+      if (error !== ValidationError.NONE && error !== ValidationError.EMPTY) {
+        return false;
+      }
+      const ethBalance = this.web3.balances['ether'] || '0';
+      const balance = normalizeBalance(ethBalance, 18);
+      if (balance.lt(this.wrapAmount)) {
+        return false;
+      }
+      return true;
+    },
+    unwrapInputValid() {
+      const error = validateNumberInput(this.unwrapAmount);
+      if (error !== ValidationError.NONE && error !== ValidationError.EMPTY) {
+        return false;
+      }
+      const wethBalance = this.web3.balances[this.config.addresses.weth] || '0';
+      const balance = normalizeBalance(wethBalance, 18);
+      if (balance.lt(this.unwrapAmount)) {
+        return false;
+      }
+      return true;
+    }
   },
   methods: {
     ...mapActions(['wrap', 'unwrap']),
