@@ -24,16 +24,16 @@
         </h3>
         <div class="d-flex">
           <UiButton
-            class="button-primary ml-2"
-            @click="openAddLiquidityModal"
             v-if="enableAddLiquidity"
+            @click="openAddLiquidityModal"
+            class="button-primary ml-2"
           >
             Add Liquidity
           </UiButton>
           <UiButton
-            v-if="hasShares"
-            class="ml-2"
+            v-if="enableAddLiquidity"
             @click="openRemoveLiquidityModal"
+            class="ml-2"
           >
             Remove Liquidity
           </UiButton>
