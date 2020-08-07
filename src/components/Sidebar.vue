@@ -4,7 +4,11 @@
     class="d-flex flex-column bottom-0 top-0 overflow-y-auto animate"
     :class="ui.sidebarIsOpen ? 'is-open' : 'is-closed'"
   >
-    <Nav :items="items" class="flex-auto mb-4" />
+    <Nav
+      :key="$router.currentRoute.name"
+      :items="items"
+      class="flex-auto mb-4"
+    />
     <FormWrapper class="p-4 border-top" />
     <div class="p-4 border-top">
       <div class="eyebrow mb-4">
@@ -55,10 +59,6 @@ export default {
       items[0].count = this.subgraph.balancer.finalizedPoolCount;
       items[1].count = this.subgraph.balancer.privatePoolCount;
       if (this.web3.account) {
-        items.push({
-          name: 'My liquidity',
-          to: { name: 'my-liquidity' }
-        });
         items.push({
           name: 'Create a pool',
           to: { name: 'create' }
@@ -128,7 +128,7 @@ export default {
     color: $white;
     padding: 11px 24px;
 
-    &.router-link-exact-active {
+    &.active {
       background: $blue-900;
       border-left: 3px solid $blue;
       padding-left: 21px;

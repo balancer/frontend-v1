@@ -11,13 +11,17 @@
           @select="handleSelectType"
         />
       </div>
-      <div class="m-4 d-flex flex-justify-between">
-        <PoolOverview :pool="pool" :userShare="userShare" style="width: 32%" />
-        <div>
+      <div class="m-4 d-block d-sm-flex">
+        <PoolOverview
+          :pool="pool"
+          :userShare="userShare"
+          class="hide-sm hide-md col-3 float-left mb-4"
+        />
+        <div class="col-12 col-md-9 float-left mb-4 pl-0 pl-md-4">
           <UiTable>
             <UiTableTh>
               <div class="column-lg flex-auto text-left">Asset</div>
-              <div class="column">My pool balance</div>
+              <div class="column">My Pool Balance</div>
               <div class="column-sm">Withdraw</div>
             </UiTableTh>
             <UiTableTr
@@ -42,10 +46,10 @@
                 <div class="text-white">{{ _ticker(token.checksum) }}</div>
               </div>
               <div class="column">
-                {{ _num(token.myBalance.toFixed(3)) }}
+                {{ $n(token.myBalance.toFixed(3)) }}
               </div>
               <div class="column-sm">
-                {{ _num(getTokenAmountOut(token)) }}
+                {{ $n(getTokenAmountOut(token)) }}
               </div>
             </UiTableTr>
           </UiTable>
@@ -53,7 +57,7 @@
             <UiTableTh class="text-left flex-items-center text-white">
               <div class="flex-auto">BPT amount</div>
               <div class="ml-2 column text-left">
-                {{ _num(poolTokenBalance) }} BPT
+                {{ $n(poolTokenBalance) }} BPT
                 <a @click="setMax" class="link-text mr-3">
                   <UiLabel v-text="'Max'" />
                 </a>

@@ -19,7 +19,10 @@ export default {
   },
   methods: {
     _num(number, key) {
-      let format = number > 1000 ? '(0.[00]a)' : '(0.[000]a)';
+      let format = '(0.[00000]a)';
+      format = number > 1 ? '(0.[0000]a)' : format;
+      format = number > 10 ? '(0.[000]a)' : format;
+      format = number > 100 ? '(0.[00]a)' : format;
       if (key === 'raw') format = '0.[000000]';
       if (key === 'currency') format = '$(0.[00]a)';
       if (key === 'price') format = '$(0.[00]a)';

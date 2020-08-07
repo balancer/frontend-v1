@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import { formatFilters } from '@/helpers/utils';
+
 export default {
   props: ['value'],
   data() {
@@ -50,10 +52,8 @@ export default {
     }
   },
   created() {
-    const tokens = Array.isArray(this.value.token)
-      ? this.value.token
-      : [this.value.token];
-    this.tokens = this.value.token ? tokens : [];
+    const filters = formatFilters(this.value);
+    this.tokens = filters.token;
   }
 };
 </script>

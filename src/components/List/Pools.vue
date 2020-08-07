@@ -2,7 +2,7 @@
   <div>
     <div v-if="title" class="d-flex flex-items-center px-4 px-md-0 mb-3">
       <h3 class="flex-auto" v-text="title" />
-      <Filters :value="filters" v-model="filters" />
+      <Filters v-if="withFilters" :value="filters" v-model="filters" />
     </div>
     <UiTable>
       <UiTableTh>
@@ -46,16 +46,16 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { ITEMS_PER_PAGE } from '@/helpers/utils';
+import { formatFilters, ITEMS_PER_PAGE } from '@/helpers/utils';
 
 export default {
-  props: ['query', 'title'],
+  props: ['query', 'title', 'withFilters'],
   data() {
     return {
       loading: false,
       page: 0,
       pools: [],
-      filters: this.$route.query || {}
+      filters: formatFilters(this.$route.query)
     };
   },
   watch: {
@@ -65,10 +65,14 @@ export default {
       this.loadMore();
     },
     filters() {
+      if (!this.withFilters) return;
       this.page = 0;
       this.loading = true;
       this.pools = [];
-      this.$router.push({ query: this.filters });
+      let query = formatFilters(this.filters);
+      if (query.token && query.token.length === 0) query = {};
+      query.filter = 1;
+      this.$router.push({ query });
       this.loadMore();
     }
   },
@@ -80,8 +84,12 @@ export default {
       this.page++;
       const page = this.page;
       let query = this.query || {};
-      if (this.filters.token && this.filters.token.length > 0)
-        query.where.tokensList_contains = this.filters.token;
+      if (this.withFilters) {
+        const filters = formatFilters(this.filters);
+        if (filters.token && filters.token.length > 0) {
+          query.where.tokensList_contains = filters.token;
+        }
+      }
       query = { ...query, page };
       const pools = await this.getPools(query);
       this.pools = this.pools.concat(pools);
