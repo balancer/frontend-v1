@@ -7,6 +7,7 @@
         class="d-flex flex-row pb-6"
         :style="ui.sidebarIsOpen && 'max-height: 100vh'"
       >
+        Hi!
         <div
           class="shell d-block d-xl-none"
           :class="ui.sidebarIsOpen && 'sidebar-is-open'"
