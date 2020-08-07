@@ -35,10 +35,10 @@
             <div v-if="token.balance">
               <span
                 v-if="token.price"
-                v-text="$n(token.value, 'currency')"
+                v-text="_num(token.value, 'currency')"
                 class="text-gray mr-2"
               />
-              <span v-text="$n(token.balance)" />
+              <span v-text="_num(token.balance)" />
             </div>
           </a>
         </li>
@@ -67,7 +67,7 @@ export default {
           .map(token => {
             const address = token[0];
             const decimals = token[1].decimals;
-            const price = bnum(this.price.values[address] || 0);
+            const price = bnum(this.subgraph.tokens[address] || 0);
             const balance = normalizeBalance(
               this.web3.balances[address] || 0,
               decimals
@@ -147,9 +147,7 @@ export default {
       this.loading = false;
     },
     isDisabled(address) {
-      const noBool = this.config.errors.noBool.includes(address);
-      const transferFee = this.config.errors.transferFee.includes(address);
-      return noBool || transferFee;
+      return this.config.untrusted.includes(address);
     }
   }
 };

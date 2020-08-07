@@ -11,9 +11,9 @@
       Pool not found
     </div>
     <div v-else>
-      <MessageWarning
-        v-if="customTokenWarning"
-        :text="customTokenWarning"
+      <MessageSimilarPools
+        v-if="pool.liquidity < 1e7"
+        :pool="pool"
         class="mb-4"
       />
       <MessageSimilarPools
@@ -31,18 +31,18 @@
         </h3>
         <div class="d-flex">
           <UiButton
-            class="button-primary ml-2"
-            @click="openAddLiquidityModal"
             v-if="enableAddLiquidity"
+            @click="openAddLiquidityModal"
+            class="button-primary ml-2"
           >
-            Add Liquidity
+            Add liquidity
           </UiButton>
           <UiButton
-            v-if="hasShares"
-            class="ml-2"
+            v-if="enableAddLiquidity"
             @click="openRemoveLiquidityModal"
+            class="ml-2"
           >
-            Remove Liquidity
+            Remove liquidity
           </UiButton>
         </div>
       </div>
@@ -94,15 +94,6 @@ export default {
     }
   },
   computed: {
-    customTokenWarning() {
-      const warnings = this.config.warnings;
-      for (const token in warnings) {
-        if (this.pool.tokensList.includes(token)) {
-          return warnings[token];
-        }
-      }
-      return undefined;
-    },
     hasCustomToken() {
       if (!this.pool || !this.pool.tokens) {
         return false;

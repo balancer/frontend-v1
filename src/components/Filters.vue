@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-items-center">
     <div class="pb-1">Filter by asset</div>
-    <div v-for="(token, i) in input" :key="i" class="topic ml-2">
+    <div v-for="(token, i) in tokens" :key="i" class="topic ml-2">
       <button
         class="topic-button text-center line-height-0 position-absolute right-0"
         @click="deleteToken(i)"
@@ -23,29 +23,37 @@
       :open="modalOpen"
       @close="modalOpen = false"
       @input="addToken"
-      :not="input"
+      :not="tokens"
     />
   </div>
 </template>
 
 <script>
+import { formatFilters } from '@/helpers/utils';
+
 export default {
+  props: ['value'],
   data() {
     return {
-      input: [],
+      input: {},
+      tokens: [],
       modalOpen: false
     };
   },
   methods: {
     addToken(token) {
-      this.input.push(token);
-      this.$emit('input', this.input);
+      this.tokens.push(token);
+      this.$emit('input', { token: this.tokens });
     },
     deleteToken(i) {
-      delete this.input[i];
-      this.input = this.input.filter(String);
-      this.$emit('input', this.input);
+      delete this.tokens[i];
+      this.tokens = this.tokens.filter(() => true);
+      this.$emit('input', { token: this.tokens });
     }
+  },
+  created() {
+    const filters = formatFilters(this.value);
+    this.tokens = filters.token;
   }
 };
 </script>

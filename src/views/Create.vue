@@ -40,7 +40,7 @@
             />
           </div>
           <div class="column">
-            <div v-text="$n(getRelativeWeight(token), 'percent')" />
+            <div v-text="_num(getRelativeWeight(token), 'percent')" />
           </div>
           <div class="column">
             <input
@@ -51,10 +51,11 @@
             />
           </div>
           <div class="column">
-            <div v-text="$n(getValue(token), 'currency')" />
+            <div v-text="_num(getValue(token), 'currency')" />
           </div>
           <div class="column-xs">
             <a
+              v-if="tokens.length > 1"
               class="d-flex flex-justify-end text-white"
               @click="removeToken(token)"
             >
@@ -64,7 +65,7 @@
         </UiTableTr>
       </div>
     </UiTable>
-    <UiButton class="mb-4" @click="addToken">
+    <UiButton v-if="tokens.length < 8" class="mb-4" @click="addToken">
       Add Token
     </UiButton>
     <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
@@ -278,7 +279,7 @@ export default {
       this.handleAmountChange(tokenAddress);
     },
     handleAmountChange(tokenAddress) {
-      const tokenPrice = this.price.values[tokenAddress];
+      const tokenPrice = this.subgraph.tokens[tokenAddress];
       if (!tokenPrice) {
         return;
       }
@@ -294,7 +295,7 @@ export default {
           Vue.set(this.amounts, token, '');
           continue;
         }
-        const tokenPrice = this.price.values[token];
+        const tokenPrice = this.subgraph.tokens[token];
         if (!tokenPrice) {
           continue;
         }
@@ -351,7 +352,7 @@ export default {
       return true;
     },
     getValue(tokenAddress) {
-      const tokenPrice = this.price.values[tokenAddress];
+      const tokenPrice = this.subgraph.tokens[tokenAddress];
       if (!tokenPrice || !this.amounts[tokenAddress]) {
         return 0;
       }

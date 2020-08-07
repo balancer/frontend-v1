@@ -1,7 +1,7 @@
 {
   "network": "kovan",
   "chainId": 42,
-  "defaultPrecision": 4,
+  "defaultPrecision": 2,
   "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-kovan",
   "alchemyWsUrl": "wss://eth-kovan.ws.alchemyapi.io/v2/C467LJc7Aa761LLxlcxXvhIG9HzDTtKw",
   "addresses": {
@@ -19,7 +19,10 @@
     },
     "walletconnect": {
       "id": "walletconnect",
-      "name": "WalletConnect"
+      "name": "WalletConnect",
+      "options": {
+        "infuraId": "93e3393c76ed4e1f940d0266e2fdbda2"
+      }
     },
     "portis": {
       "id": "portis",
@@ -43,103 +46,108 @@
   "tokens": {
     "0xd0A1E359811322d97991E03f863a0C30C2cF029C": {
       "address": "0xd0A1E359811322d97991E03f863a0C30C2cF029C",
+      "id": "weth",
       "name": "Wrapped Ether",
       "symbol": "WETH",
-      "id": "weth",
       "decimals": 18,
       "precision": 4,
-      "chartColor": "#828384"
+      "color": "#828384",
+      "hasIcon": false
     },
     "0x1528F3FCc26d13F7079325Fb78D9442607781c8C": {
       "address": "0x1528F3FCc26d13F7079325Fb78D9442607781c8C",
+      "id": "dai",
       "name": "Dai Stablecoin",
       "symbol": "DAI",
-      "id": "dai",
       "decimals": 18,
       "precision": 2,
-      "chartColor": "#fab323"
+      "color": "#fab323",
+      "hasIcon": false
     },
     "0xef13C0c8abcaf5767160018d268f9697aE4f5375": {
       "address": "0xef13C0c8abcaf5767160018d268f9697aE4f5375",
+      "id": "maker",
       "name": "Maker",
       "symbol": "MKR",
-      "id": "maker",
       "decimals": 18,
       "precision": 4,
-      "chartColor": "#5eb8aa"
+      "color": "#5eb8aa",
+      "hasIcon": false
     },
     "0x2F375e94FC336Cdec2Dc0cCB5277FE59CBf1cAe5": {
       "address": "0x2F375e94FC336Cdec2Dc0cCB5277FE59CBf1cAe5",
+      "id": "usd-coin",
       "name": "USD Coin",
       "symbol": "USDC",
-      "id": "usd-coin",
       "decimals": 6,
       "precision": 2,
-      "chartColor": "#2875ca"
+      "color": "#2875ca",
+      "hasIcon": false
     },
     "0x8c9e6c40d3402480ACE624730524fACC5482798c": {
       "address": "0x8c9e6c40d3402480ACE624730524fACC5482798c",
+      "id": "augur",
       "name": "Augur",
       "symbol": "REP",
-      "id": "augur",
       "decimals": 18,
       "precision": 4,
-      "chartColor": "#422940"
+      "color": "#422940",
+      "hasIcon": false
     },
     "0xe0C9275E44Ea80eF17579d33c55136b7DA269aEb": {
       "address": "0xe0C9275E44Ea80eF17579d33c55136b7DA269aEb",
+      "id": "wrapped-bitcoin",
       "name": "Wrapped BTC",
       "symbol": "WBTC",
-      "id": "wrapped-bitcoin",
       "decimals": 8,
       "precision": 4,
-      "chartColor": "#779bc0"
+      "color": "#779bc0",
+      "hasIcon": false
     },
     "0x1f1f156E0317167c11Aa412E3d1435ea29Dc3cCE": {
       "address": "0x1f1f156E0317167c11Aa412E3d1435ea29Dc3cCE",
+      "id": "basic-attention-token",
       "name": "Basic Attention Token",
       "symbol": "BAT",
-      "id": "basic-attention-token",
       "decimals": 18,
       "precision": 2,
-      "chartColor": "#ff5700"
+      "color": "#ff5700",
+      "hasIcon": false
     },
     "0x86436BcE20258a6DcfE48C9512d4d49A30C4d8c4": {
       "address": "0x86436BcE20258a6DcfE48C9512d4d49A30C4d8c4",
+      "id": "havven",
       "name": "Synthetix",
       "symbol": "SNX",
-      "id": "havven",
       "decimals": 18,
       "precision": 2,
-      "chartColor": "#ffffff"
+      "color": "#ffffff",
+      "hasIcon": false
     },
     "0x37f03a12241E9FD3658ad6777d289c3fb8512Bc9": {
       "address": "0x37f03a12241E9FD3658ad6777d289c3fb8512Bc9",
+      "id": "aragon",
       "name": "Aragon Network Token",
       "symbol": "ANT",
-      "id": "aragon",
       "decimals": 18,
       "precision": 2,
-      "chartColor": "#E7983D"
+      "color": "#e7983d",
+      "hasIcon": false
     },
     "0xccb0F4Cf5D3F97f4a55bb5f5cA321C3ED033f244": {
       "address": "0xccb0F4Cf5D3F97f4a55bb5f5cA321C3ED033f244",
+      "id": "0x",
       "name": "0x Protocol Token",
       "symbol": "ZRX",
-      "id": "0x",
       "decimals": 18,
       "precision": 2,
-      "chartColor": "#536DFE"
+      "color": "#536dfe",
+      "hasIcon": false
     }
   },
-  "warnings": {},
-  "errors": {
-    "noBool": [
-      "0xEC4b4fFfb58B6c85D41025b07d93167B8192062E",
-      "0xe7d8E7742ca6906a14F7e46770Fdfe6B7014e62D"
-    ],
-    "transferFee": [
-      "0xbef02f140BFb37a75Ed6510e8D85C9E9e7e0ff1e"
-    ]
-  }
+  "untrusted": [
+    "0xbef02f140BFb37a75Ed6510e8D85C9E9e7e0ff1e",
+    "0xe7d8E7742ca6906a14F7e46770Fdfe6B7014e62D",
+    "0xEC4b4fFfb58B6c85D41025b07d93167B8192062E"
+  ]
 }

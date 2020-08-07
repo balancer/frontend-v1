@@ -11,65 +11,71 @@
           @select="handleSelectType"
         />
       </div>
-      <div class="m-4 d-flex flex-justify-between">
-        <PoolOverview :pool="pool" :userShare="userShare" style="width: 32%" />
-        <UiTable>
-          <UiTableTh>
-            <div class="column-lg flex-auto text-left">Asset</div>
-            <div class="column">Wallet Balance</div>
-            <div class="column-sm">Deposit Amount</div>
-          </UiTableTh>
-          <UiTableTr v-for="token in pool.tokens" :key="token.checksum">
-            <div
-              class="column-lg flex-auto d-flex flex-items-center text-left d-flex"
-            >
-              <UiRadio
-                class="mr-1"
-                v-if="!isMultiAsset"
-                :checked="activeToken === token.checksum"
-                :onChange="
-                  e => {
-                    onTokenSelect(token.checksum);
-                  }
-                "
-              />
-              <Token :address="token.address" class="mr-2" size="20" />
-              <div class="text-white">{{ _ticker(token.checksum) }}</div>
-              <ButtonUnlock
-                class="button-primary ml-2"
-                :tokenAddress="token.checksum"
-              />
-            </div>
-            <div class="column">
-              {{
-                _trunc(
-                  formatBalance(
-                    web3.balances[token.checksum] || '0',
-                    token.decimals
-                  ),
-                  2
-                )
-              }}
-              <a @click="handleMax(token)" class="ml-1">
-                <UiLabel v-text="'Max'" />
-              </a>
-            </div>
-            <div class="column-sm">
+      <div class="m-4 d-block d-sm-flex">
+        <PoolOverview
+          :pool="pool"
+          :userShare="userShare"
+          class="hide-sm hide-md col-3 float-left mb-4"
+        />
+        <div class="col-12 col-md-9 float-left mb-4 pl-0 pl-md-4">
+          <UiTable>
+            <UiTableTh>
+              <div class="column-lg flex-auto text-left">Asset</div>
+              <div class="column">Wallet Balance</div>
+              <div class="column-sm">Deposit Amount</div>
+            </UiTableTh>
+            <UiTableTr v-for="token in pool.tokens" :key="token.checksum">
               <div
-                class="flex-auto ml-3 text-left d-flex flex-items-center position-relative"
+                class="column-lg flex-auto d-flex flex-items-center text-left d-flex"
               >
-                <input
-                  v-model="amounts[token.checksum]"
-                  v-if="isMultiAsset || activeToken === token.checksum"
-                  class="input flex-auto text-right"
-                  :class="isInputValid(token) ? 'text-white' : 'text-red'"
-                  placeholder="0.0"
-                  @input="handleChange(amounts[token.checksum], token)"
+                <UiRadio
+                  class="mr-1"
+                  v-if="!isMultiAsset"
+                  :checked="activeToken === token.checksum"
+                  :onChange="
+                    e => {
+                      onTokenSelect(token.checksum);
+                    }
+                  "
+                />
+                <Token :address="token.address" class="mr-2" size="20" />
+                <div class="text-white">{{ _ticker(token.checksum) }}</div>
+                <ButtonUnlock
+                  class="button-primary ml-2"
+                  :tokenAddress="token.checksum"
                 />
               </div>
-            </div>
-          </UiTableTr>
-        </UiTable>
+              <div class="column">
+                {{
+                  _trunc(
+                    formatBalance(
+                      web3.balances[token.checksum] || '0',
+                      token.decimals
+                    ),
+                    2
+                  )
+                }}
+                <a @click="handleMax(token)" class="ml-1">
+                  <UiLabel v-text="'Max'" />
+                </a>
+              </div>
+              <div class="column-sm">
+                <div
+                  class="flex-auto ml-3 text-left d-flex flex-items-center position-relative"
+                >
+                  <input
+                    v-model="amounts[token.checksum]"
+                    v-if="isMultiAsset || activeToken === token.checksum"
+                    class="input flex-auto text-right"
+                    :class="isInputValid(token) ? 'text-white' : 'text-red'"
+                    placeholder="0.0"
+                    @input="handleChange(amounts[token.checksum], token)"
+                  />
+                </div>
+              </div>
+            </UiTableTr>
+          </UiTable>
+        </div>
       </div>
       <template slot="footer">
         <MessageError v-if="tokenError" :text="tokenError" class="mb-4" />
@@ -197,10 +203,10 @@ export default {
     tokenError() {
       if (
         this.pool.tokens.some(token =>
-          this.config.errors.transferFee.includes(token.checksum)
+          this.config.untrusted.includes(token.checksum)
         )
       ) {
-        return 'This pool contains a deflationary token that is likely to cause loss of funds. Do not deposit.';
+        return 'This pool contains untrusted token that may cause loss of funds. Do not deposit.';
       }
       return undefined;
     },

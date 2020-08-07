@@ -12,16 +12,19 @@
           {{ config.tokens[token].symbol }}
         </div>
         <div class="column text-left">
-          {{ $n(startWeights[i]) }}
+          {{ _num(startWeights[i]) }}
           <span
             class="text-gray ml-2"
             v-text="
-              $n(((weightRatio * startWeights[i]) / 100).toFixed(4), 'percent')
+              _num(
+                ((weightRatio * startWeights[i]) / 100).toFixed(4),
+                'percent'
+              )
             "
           />
         </div>
         <div class="column">
-          {{ $n(startBalances[i]) }} {{ config.tokens[token].symbol }}
+          {{ _num(startBalances[i]) }} {{ config.tokens[token].symbol }}
         </div>
       </UiTableTr>
     </UiTable>
