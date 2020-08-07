@@ -17,7 +17,7 @@
         class="mb-4"
       />
       <MessageSimilarPools
-        v-if="pool.liquidity < 1e7"
+        v-if="pool.liquidity < 1e7 && pool.finalized"
         :pool="pool"
         class="mb-4"
       />
