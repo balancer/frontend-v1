@@ -147,9 +147,7 @@ export default {
       this.loading = false;
     },
     isDisabled(address) {
-      const noBool = this.config.errors.noBool.includes(address);
-      const transferFee = this.config.errors.transferFee.includes(address);
-      return noBool || transferFee;
+      return this.config.untrusted.includes(address);
     }
   }
 };

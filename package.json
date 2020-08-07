@@ -35,7 +35,7 @@
     "eslint": "^6.7.2",
     "json-to-graphql-query": "^2.0.0",
     "lightweight-charts": "^3.0.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "numeral": "^2.0.6",
     "primer-support": "^5.0.0",
     "typescript": "~3.9.3",

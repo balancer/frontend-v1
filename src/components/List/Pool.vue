@@ -13,7 +13,7 @@
           :key="token.address"
           class="d-flex flex-items-center mr-2"
         >
-          <Icon name="bullet" size="16" :style="`color: ${token.chartColor}`" />
+          <Icon name="bullet" size="16" :style="`color: ${token.color}`" />
           {{ _num(token.weightPercent.toFixed()) }}%
           {{ _ticker(token.checksum) }}
         </div>
