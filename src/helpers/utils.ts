@@ -198,3 +198,10 @@ export const isTxReverted = error => {
   }
   return error.code === -32016;
 };
+
+export function formatFilters(filters, fb) {
+  if (!filters) return fb || {};
+  if (!filters.token) filters.token = [];
+  if (!Array.isArray(filters.token)) filters.token = [filters.token];
+  return filters;
+}
