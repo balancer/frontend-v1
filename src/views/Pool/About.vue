@@ -51,7 +51,7 @@
         </div>
         <div class="py-2 d-flex">
           <span v-text="'BPT total supply'" class="flex-auto text-left" />
-          <span v-text="$n(pool.totalShares)" class="text-white" />
+          <span v-text="_num(pool.totalShares)" class="text-white" />
         </div>
       </template>
       <div class="py-2 d-flex">
@@ -63,18 +63,18 @@
       </div>
       <div class="py-2 d-flex">
         <span v-text="'Swap fee'" class="flex-auto text-left" />
-        <span v-text="$n(pool.swapFee, 'percent')" class="text-white" />
+        <span v-text="_num(pool.swapFee, 'percent')" class="text-white" />
       </div>
       <div class="py-2 d-flex">
         <span v-text="'Total swap volume'" class="flex-auto text-left" />
         <span
-          v-text="$n(pool.totalSwapVolume, 'currency')"
+          v-text="_num(pool.totalSwapVolume, 'currency')"
           class="text-white"
         />
       </div>
       <div class="py-2 d-flex">
         <span v-text="'Total swap fee'" class="flex-auto text-left" />
-        <span v-text="$n(pool.totalSwapFee, 'currency')" class="text-white" />
+        <span v-text="_num(pool.totalSwapFee, 'currency')" class="text-white" />
       </div>
     </div>
   </UiTable>

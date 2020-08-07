@@ -11,9 +11,13 @@
           @select="handleSelectType"
         />
       </div>
-      <div class="m-4 d-flex flex-justify-between">
-        <PoolOverview :pool="pool" :userShare="userShare" style="width: 32%" />
-        <div>
+      <div class="m-4 d-block d-sm-flex">
+        <PoolOverview
+          :pool="pool"
+          :userShare="userShare"
+          class="hide-sm hide-md col-3 float-left mb-4"
+        />
+        <div class="col-12 col-md-9 float-left mb-4 pl-0 pl-md-4">
           <UiTable>
             <UiTableTh>
               <div class="column-lg flex-auto text-left">Asset</div>

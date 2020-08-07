@@ -6,7 +6,7 @@
   "alchemyWsUrl": "wss://eth-mainnet.ws.alchemyapi.io/v2/Q08AP-nlA-yUiQnIiAVlyWK4tbXjRMmD",
   "addresses": {
     "bFactory": "0x9424B1412450D0f8Fc2255FAf6046b98213B76Bd",
-    "bActions": "0x54b28bB7930976839C61f142746cADDBE819A742",
+    "bActions": "0xde4A25A0b9589689945d842c5ba0CF4f0D4eB3ac",
     "dsProxyRegistry": "0x4678f0a6958e4D2Bc4F1BAF7Bc52E8F3564f3fE4",
     "proxy": "0x2633Dc6F65f293FdC47206beEf1FC9BD6C63edFF",
     "weth": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
@@ -19,7 +19,10 @@
     },
     "walletconnect": {
       "id": "walletconnect",
-      "name": "WalletConnect"
+      "name": "WalletConnect",
+      "options": {
+        "infuraId": "93e3393c76ed4e1f940d0266e2fdbda2"
+      }
     },
     "portis": {
       "id": "portis",

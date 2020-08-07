@@ -19,7 +19,8 @@
   border-radius: 11px;
 }
 
-.router-link-exact-active {
+.router-link-exact-active,
+.active {
   .Counter {
     background-color: $blue;
   }
