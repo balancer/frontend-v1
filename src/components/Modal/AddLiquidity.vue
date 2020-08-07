@@ -91,9 +91,10 @@
           @lower="lowerAmounts"
           class="mb-4"
         />
-        <MessageWarning
-          v-if="slippageWarning"
-          :text="slippageWarning"
+        <MessageSlippage
+          v-if="slippage"
+          :value="slippage"
+          :isDeposit="true"
           class="mb-4"
         />
         <UiButton
@@ -345,14 +346,13 @@ export default {
         amountToBalanceRatio.lte(1)
       );
     },
-    slippageWarning() {
+    slippage() {
       if (this.validationError || this.tokenError) {
         return undefined;
       }
       if (this.isMultiAsset) {
         return undefined;
       }
-      const slippageThreshold = 0.01;
       const tokenInAddress = this.activeToken;
       if (!this.amounts[tokenInAddress]) {
         return undefined;
@@ -390,11 +390,7 @@ export default {
         .div(totalWeight);
       const one = bnum(1);
       const slippage = one.minus(poolAmountOut.div(expectedPoolAmountOut));
-      if (slippage.gte(slippageThreshold)) {
-        const slippageString = slippage.times(100).toFixed(2);
-        return `Adding liquidity will incur ${slippageString}% of slippage`;
-      }
-      return undefined;
+      return slippage;
     },
     findFrontrunnableToken() {
       if (this.validationError) {

@@ -75,9 +75,10 @@
           :text="validationError"
           class="mb-4"
         />
-        <MessageWarning
-          v-if="slippageWarning"
-          :text="slippageWarning"
+        <MessageSlippage
+          v-if="slippage"
+          :value="slippage"
+          :isDeposit="false"
           class="mb-4"
         />
         <UiButton
@@ -199,14 +200,13 @@ export default {
       }
       return undefined;
     },
-    slippageWarning() {
+    slippage() {
       if (this.validationError) {
         return undefined;
       }
       if (this.isMultiAsset) {
         return undefined;
       }
-      const slippageThreshold = 0.01;
       const tokenOutAddress = this.activeToken;
       const tokenOut = this.pool.tokens.find(
         token => token.address === tokenOutAddress
@@ -237,12 +237,7 @@ export default {
         .div(tokenWeightOut);
       const one = bnum(1);
       const slippage = one.minus(tokenAmountOut.div(expectedTokenAmountOut));
-
-      if (slippage.gte(slippageThreshold)) {
-        const slippageString = slippage.times(100).toFixed(2);
-        return `Removing liquidity will incur ${slippageString}% of slippage`;
-      }
-      return undefined;
+      return slippage;
     },
     isMultiAsset() {
       return this.type === 'MULTI_ASSET';
