@@ -1,4 +1,4 @@
-# Balancer Pool Management
+# Balancer pool management
 
 Pool management interface for users to add and remove liquidity to Balancer pools.
 
