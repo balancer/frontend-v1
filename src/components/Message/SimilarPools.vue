@@ -152,13 +152,13 @@ export default {
 @import '../../vars';
 
 #info {
-  border: 1px solid #7685d5;
+  border: 1px solid $info;
   border-radius: 4px;
-  color: #7685d5;
+  color: $info;
 }
 
 .link {
-  color: #7685d5;
+  color: $info;
   cursor: pointer;
 }
 </style>
