@@ -18,7 +18,7 @@
           />
           <span
             class="d-inline-block text-white"
-            style="letter-spacing: 1px; font-size: 13px;"
+            style="letter-spacing: 1px; font-size: 16px;"
             v-text="'Balancer'"
           />
         </router-link>

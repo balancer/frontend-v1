@@ -4,7 +4,11 @@
     class="d-flex flex-column bottom-0 top-0 overflow-y-auto animate"
     :class="ui.sidebarIsOpen ? 'is-open' : 'is-closed'"
   >
-    <Nav :items="items" class="flex-auto mb-4" />
+    <Nav
+      :key="$router.currentRoute.name"
+      :items="items"
+      class="flex-auto mb-4"
+    />
     <FormWrapper class="p-4 border-top" />
     <div class="p-4 border-top">
       <div class="eyebrow mb-4">
@@ -15,7 +19,7 @@
           <Token :address="i" size="20" class="mr-2" />
           <div v-text="_ticker(i)" v-if="i !== 'ether'" class="flex-auto" />
           <div v-else class="flex-auto">ETH</div>
-          <div>{{ $n(formatBalance(balance, i)) }}</div>
+          <div v-text="_num(formatBalance(balance, i))" />
         </div>
       </div>
       <div v-else class="text-white mb-3">
@@ -124,7 +128,7 @@ export default {
     color: $white;
     padding: 11px 24px;
 
-    &.router-link-exact-active {
+    &.active {
       background: $blue-900;
       border-left: 3px solid $blue;
       padding-left: 21px;

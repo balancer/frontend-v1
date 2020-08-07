@@ -26,13 +26,20 @@
               <Icon name="external-link" size="16" class="ml-1" />
             </a>
           </div>
-          <div class="column">{{ $n(share.balance) }} BPT</div>
-          <div class="column hide-sm">
-            {{ $n(bptValue * share.balance, 'price') }}
-          </div>
           <div class="column">
-            {{ $n((100 / pool.totalShares) * share.balance) }}%
+            <UiNum :value="share.balance" class="mr-1" />
+            BPT
           </div>
+          <UiNum
+            :value="bptValue * share.balance"
+            format="price"
+            class="column hide-sm"
+          />
+          <UiNum
+            :value="((100 / pool.totalShares) * share.balance) / 1e2"
+            format="percent"
+            class="column"
+          />
         </UiTableTr>
       </div>
       <ListLoading

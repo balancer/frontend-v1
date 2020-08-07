@@ -2,7 +2,7 @@
   <div>
     <div v-if="title" class="d-flex flex-items-center px-4 px-md-0 mb-3">
       <h3 class="flex-auto" v-text="title" />
-      <Filters v-model="filters" />
+      <Filters v-if="withFilters" :value="filters" v-model="filters" />
     </div>
     <UiTable>
       <UiTableTh>
@@ -11,9 +11,9 @@
           class="column-sm text-left hide-sm hide-md hide-lg"
         />
         <div v-text="'Assets'" class="flex-auto text-left" />
-        <div v-text="'Swap Fee'" class="column hide-sm hide-md" />
-        <div v-text="'Liquidity'" class="column" />
-        <div v-text="'My Liquidity'" class="column hide-sm hide-md" />
+        <div v-text="'Swap fee'" class="column hide-sm hide-md" />
+        <div v-text="'Market cap'" class="column" />
+        <div v-text="'My liquidity'" class="column hide-sm hide-md hide-lg" />
         <div v-text="'Volume (24h)'" class="column hide-sm hide-md hide-lg" />
       </UiTableTh>
       <div
@@ -34,7 +34,7 @@
             'flex-auto text-left',
             'column hide-sm hide-md',
             'column',
-            'column hide-sm hide-md',
+            'column hide-sm hide-md hide-lg',
             'column hide-sm hide-md hide-lg'
           ]"
           :height="29"
@@ -46,16 +46,16 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { ITEMS_PER_PAGE } from '@/helpers/utils';
+import { formatFilters, ITEMS_PER_PAGE } from '@/helpers/utils';
 
 export default {
-  props: ['query', 'title'],
+  props: ['query', 'title', 'withFilters'],
   data() {
     return {
       loading: false,
       page: 0,
       pools: [],
-      filters: []
+      filters: formatFilters(this.$route.query)
     };
   },
   watch: {
@@ -65,9 +65,14 @@ export default {
       this.loadMore();
     },
     filters() {
+      if (!this.withFilters) return;
       this.page = 0;
       this.loading = true;
       this.pools = [];
+      let query = formatFilters(this.filters);
+      if (query.token && query.token.length === 0) query = {};
+      query.filter = 1;
+      this.$router.push({ query });
       this.loadMore();
     }
   },
@@ -79,8 +84,12 @@ export default {
       this.page++;
       const page = this.page;
       let query = this.query || {};
-      if (this.filters.length > 0)
-        query.where.tokensList_contains = this.filters;
+      if (this.withFilters) {
+        const filters = formatFilters(this.filters);
+        if (filters.token && filters.token.length > 0) {
+          query.where.tokensList_contains = filters.token;
+        }
+      }
       query = { ...query, page };
       const pools = await this.getPools(query);
       this.pools = this.pools.concat(pools);

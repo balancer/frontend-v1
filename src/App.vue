@@ -12,7 +12,7 @@
           :class="ui.sidebarIsOpen && 'sidebar-is-open'"
           @click="toggleSidebar"
         />
-        <Sidebar />
+        <Sidebar :key="$router.currentRoute.fullPath" />
         <router-view id="view" class="flex-auto" />
       </div>
     </div>
