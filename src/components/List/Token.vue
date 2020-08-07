@@ -2,7 +2,7 @@
   <UiTableTr>
     <div class="flex-auto text-left">
       <router-link
-        :to="{ name: 'home', params: { token: token.address } }"
+        :to="{ name: 'home', query: { token: [checksum], filter: 1 } }"
         class="text-white d-flex"
       >
         <Token :address="token.address" :symbol="token.symbol" class="mr-3" />
@@ -21,9 +21,14 @@
 </template>
 
 <script>
+import { getAddress } from '@ethersproject/address';
+
 export default {
   props: ['pool', 'token'],
   computed: {
+    checksum() {
+      return getAddress(this.token.address);
+    },
     myShares() {
       if (!this.web3.account) return 0;
       return this.subgraph.poolShares[this.pool.id];
