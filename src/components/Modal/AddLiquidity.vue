@@ -15,9 +15,9 @@
         <PoolOverview
           :pool="pool"
           :userShare="userShare"
-          class="hide-sm hide-md col-3 float-left mb-4"
+          class="hide-sm hide-md col-3 float-left"
         />
-        <div class="col-12 col-md-9 float-left mb-4 pl-0 pl-md-4">
+        <div class="col-12 col-md-9 float-left pl-0 pl-md-4">
           <UiTable>
             <UiTableTh>
               <div class="column-lg flex-auto text-left">Asset</div>
@@ -77,7 +77,7 @@
           </UiTable>
         </div>
       </div>
-      <template slot="footer">
+      <div class="mx-4">
         <MessageError v-if="tokenError" :text="tokenError" class="mb-4" />
         <MessageError
           v-if="validationError"
@@ -103,6 +103,8 @@
           :isDeposit="true"
           class="mb-4"
         />
+      </div>
+      <template slot="footer">
         <UiButton
           class="button-primary"
           type="submit"
