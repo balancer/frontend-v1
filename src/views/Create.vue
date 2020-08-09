@@ -13,8 +13,8 @@
         <div v-text="'%'" class="column-sm hide-sm" />
         <div class="column">
           <span @click="togglePadlock">
-            <span v-if="padlock"><Icon name="lock" size="16" /></span>
-            <span v-else><Icon name="unlock" size="16" /></span>
+            <span v-if="padlock"><Icon name="lock" size="16"/></span>
+            <span v-else><Icon name="unlock" size="16"/></span>
           </span>
           Amount
         </div>
