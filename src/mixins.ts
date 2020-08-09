@@ -1,5 +1,5 @@
 import numeral from 'numeral';
-import { mapGetters, mapState } from 'vuex';
+import { mapState } from 'vuex';
 import store from '@/store';
 import config from '@/config';
 import { shorten, trunc, etherscanLink } from '@/helpers/utils';
@@ -14,8 +14,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(modules),
-    ...mapGetters(['hasProxy'])
+    ...mapState(modules)
   },
   methods: {
     _num(number, key) {

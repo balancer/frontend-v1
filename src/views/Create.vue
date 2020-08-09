@@ -144,7 +144,7 @@ export default {
     };
   },
   created() {
-    if (!this.hasProxy) {
+    if (!this.web3.dsProxyAddress) {
       return this.$router.push({ name: 'setup' });
     }
     const dai = getTokenBySymbol('DAI').address;
