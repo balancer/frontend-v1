@@ -1,5 +1,5 @@
 <template>
-  <div v-if="pools.length > 0" id="info" class="d-flex flex-items-center p-4">
+  <div v-if="pools.length > 0" id="info" class="d-flex flex-items-center px-4 py-2">
     <Icon name="warning" size="22" class="mr-4" />
     <div>
       <div>
@@ -152,13 +152,13 @@ export default {
 @import '../../vars';
 
 #info {
-  border: 1px solid #7685d5;
+  border: 1px solid $info;
   border-radius: 4px;
-  color: #7685d5;
+  color: $info;
 }
 
 .link {
-  color: #7685d5;
+  color: $info;
   cursor: pointer;
 }
 </style>
