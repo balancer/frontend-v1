@@ -1,85 +1,77 @@
-@font-face {font-family: "iconfont";
-  src: url('iconfont.eot?t=1596533284298'); /* IE9 */
-  src: url('iconfont.eot?t=1596533284298#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('data:application/x-font-woff2;charset=utf-8;base64,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') format('woff2'),
-  url('iconfont.woff?t=1596533284298') format('woff'),
-  url('iconfont.ttf?t=1596533284298') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
-  url('iconfont.svg?t=1596533284298#iconfont') format('svg'); /* iOS 4.1- */
+@font-face {
+    font-family: "iconfont";
+    src: url("./iconfont.eot?0ca472e8f63c5a7de3972af9d19267f7?#iefix") format("embedded-opentype"),
+url("./iconfont.woff2?0ca472e8f63c5a7de3972af9d19267f7") format("woff2"),
+url("./iconfont.woff?0ca472e8f63c5a7de3972af9d19267f7") format("woff"),
+url("./iconfont.ttf?0ca472e8f63c5a7de3972af9d19267f7") format("truetype"),
+url("./iconfont.svg?0ca472e8f63c5a7de3972af9d19267f7#iconfont") format("svg");
 }
 
-.iconfont {
-  font-family: "iconfont" !important;
-  font-size: 16px;
-  font-style: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+i[class^="icon-"]:before, i[class*=" icon-"]:before {
+    font-family: iconfont !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-.iconbullet:before {
-  content: "\e619";
+.icon-arrow-down:before {
+    content: "\f101";
 }
-
-.iconplus:before {
-  content: "\e727";
+.icon-arrow-up:before {
+    content: "\f102";
 }
-
-.iconwallet:before {
-  content: "\e97c";
+.icon-back:before {
+    content: "\f103";
 }
-
-.iconsignature:before {
-  content: "\e600";
+.icon-bullet:before {
+    content: "\f104";
 }
-
-.iconreceipt-outlined:before {
-  content: "\e8eb";
+.icon-check:before {
+    content: "\f105";
 }
-
-.iconcheck:before {
-  content: "\e679";
+.icon-close:before {
+    content: "\f106";
 }
-
-.iconwarning:before {
-  content: "\e62c";
+.icon-external-link:before {
+    content: "\f107";
 }
-
-.iconsearch:before {
-  content: "\e6f2";
+.icon-github:before {
+    content: "\f108";
 }
-
-.iconmenu:before {
-  content: "\e609";
+.icon-go:before {
+    content: "\f109";
 }
-
-.iconclose:before {
-  content: "\e63e";
+.icon-lock:before {
+    content: "\f10a";
 }
-
-.icongithub:before {
-  content: "\e667";
+.icon-menu:before {
+    content: "\f10b";
 }
-
-.iconexternal-link:before {
-  content: "\e636";
+.icon-plus:before {
+    content: "\f10c";
 }
-
-.icongo:before {
-  content: "\e6cb";
+.icon-receipt-outlined:before {
+    content: "\f10d";
 }
-
-.iconback:before {
-  content: "\e6cc";
+.icon-search:before {
+    content: "\f10e";
 }
-
-.iconuser:before {
-  content: "\e66f";
+.icon-signature:before {
+    content: "\f10f";
 }
-
-.iconarrow-up:before {
-  content: "\e75c";
+.icon-unlock:before {
+    content: "\f110";
 }
-
-.iconarrow-down:before {
-  content: "\e75d";
+.icon-user:before {
+    content: "\f111";
 }
-
+.icon-wallet:before {
+    content: "\f112";
+}
+.icon-warning:before {
+    content: "\f113";
+}
