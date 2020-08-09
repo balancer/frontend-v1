@@ -106,7 +106,7 @@
 
 <script>
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import { getAddress } from '@ethersproject/address';
 import {
   bnum,
@@ -142,6 +142,7 @@ export default {
     };
   },
   created() {
+    if (!this.hasProxy) return this.$router.push({ name: 'setup' });
     const dai = getTokenBySymbol('DAI').address;
     const usdc = getTokenBySymbol('USDC').address;
     this.tokens = [dai, usdc];
@@ -149,6 +150,7 @@ export default {
     Vue.set(this.weights, usdc, '20');
   },
   computed: {
+    ...mapGetters(['hasProxy']),
     suggestQuery() {
       return {
         first: 5,
