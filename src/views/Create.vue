@@ -58,7 +58,10 @@
             />
           </div>
           <div class="column-sm hide-sm">
-            <div v-text="_num(subgraph.tokens[token], 'currency')" v-if="padlock" />
+            <div
+              v-text="_num(subgraph.tokens[token], 'currency')"
+              v-if="padlock"
+            />
             <div v-text="'-'" v-else />
           </div>
           <div class="column hide-sm">
