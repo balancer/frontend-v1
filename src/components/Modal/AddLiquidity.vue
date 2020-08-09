@@ -43,6 +43,7 @@
                 <ButtonUnlock
                   class="button-primary ml-2"
                   :tokenAddress="token.checksum"
+                  :amount="amounts[token.checksum]"
                 />
               </div>
               <div class="column">
@@ -134,7 +135,8 @@ import {
   denormalizeBalance,
   isTxReverted,
   getTokenBySymbol,
-  toggleOptions
+  toggleOptions,
+  isLocked
 } from '@/helpers/utils';
 import { calcPoolOutGivenSingleIn } from '@/helpers/math';
 import { validateNumberInput, formatError } from '@/helpers/validation';
@@ -304,17 +306,16 @@ export default {
       return 'Adding liquidity failed as one of the underlying tokens blocked the transfer. ';
     },
     hasLockedToken() {
-      const proxyAddress = this.web3.dsProxyAddress;
       for (const token of this.pool.tokensList) {
-        if (!this.isMultiAsset && this.activeToken !== token) {
-          continue;
-        }
-        const tokenAllowance = this.web3.allowances[token];
-        if (!tokenAllowance || !tokenAllowance[proxyAddress]) {
-          return true;
-        }
-        const allowance = tokenAllowance[proxyAddress];
-        if (allowance === '0') {
+        if (
+          isLocked(
+            this.web3.allowances,
+            token,
+            this.web3.dsProxyAddress,
+            this.amounts[token],
+            this.web3.tokenMetadata[token].decimals
+          )
+        ) {
           return true;
         }
       }

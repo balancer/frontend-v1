@@ -3,7 +3,7 @@
     @click="handleSubmit"
     type="button"
     class="button-sm"
-    v-if="!allowance"
+    v-if="locked"
     :loading="loading"
   >
     Unlock
@@ -13,8 +13,10 @@
 <script>
 import { mapActions } from 'vuex';
 
+import { isLocked } from '@/helpers/utils';
+
 export default {
-  props: ['tokenAddress', 'spender'],
+  props: ['tokenAddress', 'amount'],
   data() {
     return {
       loading: false,
@@ -22,14 +24,14 @@ export default {
     };
   },
   computed: {
-    allowance() {
-      const proxyAddress = this.web3.dsProxyAddress;
-      const tokenAllowance = this.web3.allowances[this.tokenAddress];
-      if (!tokenAllowance || !tokenAllowance[proxyAddress]) {
-        return false;
-      }
-      const allowance = tokenAllowance[proxyAddress];
-      return allowance !== '0';
+    locked() {
+      return isLocked(
+        this.web3.allowances,
+        this.tokenAddress,
+        this.web3.dsProxyAddress,
+        this.amount,
+        this.web3.tokenMetadata[this.tokenAddress].decimals
+      );
     }
   },
   methods: {

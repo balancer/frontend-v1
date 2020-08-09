@@ -65,6 +65,24 @@ export function normalizeBalance(
   return scale(bnum(amount), -tokenDecimals);
 }
 
+export function isLocked(
+  allowances,
+  tokenAddress,
+  spender,
+  rawAmount,
+  decimals
+) {
+  const tokenAllowance = allowances[tokenAddress];
+  if (!tokenAllowance || !tokenAllowance[spender]) {
+    return true;
+  }
+  if (!rawAmount) {
+    return false;
+  }
+  const amount = denormalizeBalance(rawAmount, decimals);
+  return amount.gt(tokenAllowance[spender]);
+}
+
 export function formatPool(pool) {
   let colorIndex = 0;
   pool.tokens = pool.tokens.map(token => {

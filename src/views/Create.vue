@@ -29,7 +29,11 @@
             >
               <Icon name="arrow-down" />
             </a>
-            <ButtonUnlock class="button-primary ml-2" :tokenAddress="token" />
+            <ButtonUnlock
+              class="button-primary ml-2"
+              :tokenAddress="token"
+              :amount="amounts[token]"
+            />
           </div>
           <div class="column">
             <input
@@ -113,7 +117,8 @@ import {
   bnum,
   normalizeBalance,
   denormalizeBalance,
-  getTokenBySymbol
+  getTokenBySymbol,
+  isLocked
 } from '@/helpers/utils';
 import { validateNumberInput, formatError } from '@/helpers/validation';
 
@@ -232,14 +237,16 @@ export default {
       return undefined;
     },
     hasLockedToken() {
-      const proxyAddress = this.web3.dsProxyAddress;
       for (const token of this.tokens) {
-        const tokenAllowance = this.web3.allowances[token];
-        if (!tokenAllowance || !tokenAllowance[proxyAddress]) {
-          return true;
-        }
-        const allowance = tokenAllowance[proxyAddress];
-        if (allowance === '0') {
+        if (
+          isLocked(
+            this.web3.allowances,
+            token,
+            this.web3.dsProxyAddress,
+            this.amounts[token],
+            this.web3.tokenMetadata[token].decimals
+          )
+        ) {
           return true;
         }
       }
