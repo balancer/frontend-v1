@@ -165,11 +165,15 @@ export default {
     };
   },
   created() {
+    if (!this.hasProxy) {
+      return this.$router.push({ name: 'setup' });
+    }
     const dai = getTokenBySymbol('DAI').address;
     const usdc = getTokenBySymbol('USDC').address;
     this.tokens = [dai, usdc];
     Vue.set(this.weights, dai, '30');
     Vue.set(this.weights, usdc, '20');
+    this.loading = false;
   },
   computed: {
     pool() {
@@ -296,13 +300,15 @@ export default {
       const index = this.tokens.indexOf(tokenAddress);
       this.tokens.splice(index, 1);
     },
-    create() {
-      this.createPool({
+    async create() {
+      this.loading = true;
+      await this.createPool({
         tokens: this.tokens,
         startBalances: this.amounts,
         startWeights: this.weights,
         swapFee: this.swapFee
       });
+      this.loading = false;
     },
     handleWeightChange(tokenAddress) {
       this.handleAmountChange(tokenAddress);

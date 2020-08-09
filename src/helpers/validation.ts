@@ -1,4 +1,4 @@
-enum ValidationError {
+export enum ValidationError {
   NONE,
   EMPTY,
   NOT_A_NUMBER,
