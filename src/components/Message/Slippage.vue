@@ -3,6 +3,7 @@
     class="d-flex flex-items-center p-4"
     :class="{ 'info-box': value.lt(0.01), 'warning-box': value.gte(0.01) }"
   >
+    <Icon name="warning" size="22" class="mr-4" />
     {{ text }}
   </div>
 </template>
