@@ -1,5 +1,5 @@
 <template>
-  <div id="error" class="d-flex flex-items-center p-4">
+  <div id="error" class="d-flex flex-items-center px-4 py-2">
     <UiCheckbox :checked="accepted" @change="$emit('toggle')" />
     <div class="ml-4">
       <div v-if="custom">
