@@ -87,7 +87,7 @@
     "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48": {
       "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
       "id": "usd-coin",
-      "name": "USD//C",
+      "name": "USD Coin",
       "symbol": "USDC",
       "decimals": 6,
       "precision": 2,
@@ -190,7 +190,7 @@
       "name": "Synth sBTC",
       "symbol": "sBTC",
       "decimals": 18,
-      "precision": 2,
+      "precision": 4,
       "color": "#6f6776",
       "hasIcon": false
     },
@@ -540,7 +540,7 @@
       "name": "renBTC",
       "symbol": "renBTC",
       "decimals": 8,
-      "precision": 2,
+      "precision": 4,
       "color": "#9a9a97",
       "hasIcon": true
     },
@@ -560,7 +560,7 @@
       "name": "pTokens BTC",
       "symbol": "pBTC",
       "decimals": 18,
-      "precision": 2,
+      "precision": 4,
       "color": "#8b5580",
       "hasIcon": true
     },
@@ -2177,8 +2177,8 @@
     "0xdF5e0e81Dff6FAF3A7e52BA697820c5e32D806A8": {
       "address": "0xdF5e0e81Dff6FAF3A7e52BA697820c5e32D806A8",
       "id": "curve-fi-ydai-yusdc-yusdt-ytusd",
-      "name": "Curve.fi yDAI/yUSDC/yUSDT/yTUSD",
-      "symbol": "yDAI+yUSDC+yUSDT+yTUSD",
+      "name": "Curve.fi Y Pool Token",
+      "symbol": "yCRV",
       "decimals": 18,
       "precision": 2,
       "color": "#416aa3",
