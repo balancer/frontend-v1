@@ -1,5 +1,9 @@
 <template>
-  <div v-if="pools.length > 0" id="info" class="d-flex flex-items-center px-4 py-2">
+  <div
+    v-if="pools.length > 0"
+    id="info"
+    class="d-flex flex-items-center px-4 py-2"
+  >
     <Icon name="warning" size="22" class="mr-4" />
     <div>
       <div>
