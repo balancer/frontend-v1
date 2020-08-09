@@ -10,9 +10,16 @@
       <UiTableTh>
         <div v-text="'Asset'" class="flex-auto text-left" />
         <div v-text="'Weight'" class="column" />
-        <div v-text="'%'" class="column" />
-        <div v-text="'Amount'" class="column" />
-        <div v-text="'Value'" class="column" />
+        <div v-text="'%'" class="column-sm hide-sm" />
+        <div class="column">
+          <span @click="togglePadlock">
+            <span v-if="padlock">🔒</span>
+            <span v-else>🔓</span>
+          </span>
+          Amount
+        </div>
+        <div v-text="'Price'" class="column-sm hide-sm" />
+        <div v-text="'Total value'" class="column hide-sm" />
         <div class="column-xs" />
       </UiTableTh>
       <div v-for="(token, i) in tokens" :key="token">
@@ -23,7 +30,7 @@
             <a
               class="d-block text-white p-1"
               @click="
-                modalOpen = true;
+                tokenModalOpen = true;
                 activeToken = i;
               "
             >
@@ -39,7 +46,7 @@
               @input="handleWeightChange(token)"
             />
           </div>
-          <div class="column">
+          <div class="column-sm hide-sm">
             <div v-text="_num(getRelativeWeight(token), 'percent')" />
           </div>
           <div class="column">
@@ -50,8 +57,13 @@
               @input="handleAmountChange(token)"
             />
           </div>
-          <div class="column">
-            <div v-text="_num(getValue(token), 'currency')" />
+          <div class="column-sm hide-sm">
+            <div v-text="_num(subgraph.tokens[token], 'currency')" v-if="padlock" />
+            <div v-text="'-'" v-else />
+          </div>
+          <div class="column hide-sm">
+            <div v-text="_num(getValue(token), 'currency')" v-if="padlock" />
+            <div v-text="'-'" v-else />
           </div>
           <div class="column-xs">
             <a
@@ -91,15 +103,24 @@
     <UiButton
       :disabled="validationError || hasLockedToken || !checkboxAccept"
       class="button-primary mt-4"
-      @click="create"
+      @click="confirmModalOpen = true"
     >
       Create
     </UiButton>
     <ModalSelectToken
-      :open="modalOpen"
-      @close="modalOpen = false"
+      :open="tokenModalOpen"
+      @close="tokenModalOpen = false"
       @input="changeToken"
       :not="tokens"
+    />
+    <ModalPoolCreation
+      :open="confirmModalOpen"
+      :padlock="padlock"
+      :tokens="tokens"
+      :amounts="amounts"
+      :weights="weights"
+      @close="confirmModalOpen = false"
+      @create="create"
     />
   </div>
 </template>
@@ -137,7 +158,9 @@ export default {
       swapFee: '',
       tokens: [],
       activeToken: 0,
-      modalOpen: false,
+      tokenModalOpen: false,
+      confirmModalOpen: false,
+      padlock: true,
       checkboxAccept: false
     };
   },
@@ -251,6 +274,12 @@ export default {
   },
   methods: {
     ...mapActions(['createPool']),
+    togglePadlock() {
+      this.padlock = !this.padlock;
+      for (const token of this.tokens) {
+        Vue.set(this.amounts, token, '');
+      }
+    },
     changeToken(selectedToken) {
       const tokenAddress = getAddress(selectedToken);
       Vue.set(this.tokens, this.activeToken, tokenAddress);
@@ -287,7 +316,7 @@ export default {
       const totalValue = tokenValue.div(this.weights[tokenAddress]);
 
       for (const token of this.tokens) {
-        if (token === tokenAddress) {
+        if (token === tokenAddress || !this.padlock) {
           continue;
         }
         const tokenWeight = bnum(this.weights[token] || '');
