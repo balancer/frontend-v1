@@ -140,3 +140,11 @@ export default {
   }
 }
 </style>
+
+<style scoped>
+.amount-input {
+  width: 60%;
+  background-color: transparent;
+  border: none;
+}
+</style>

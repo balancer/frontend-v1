@@ -39,13 +39,18 @@
 </template>
 
 <script>
+import { getPoolLiquidity } from '@/helpers/price';
+
 export default {
   props: ['pool'],
   computed: {
+    poolLiquidity() {
+      return getPoolLiquidity(this.pool, this.price.values);
+    },
     myLiquidity() {
       const poolShares = this.subgraph.poolShares[this.pool.id];
       if (!this.pool.finalized || !poolShares) return 0;
-      return (this.pool.liquidity / this.pool.totalShares) * poolShares;
+      return (this.poolLiquidity / this.pool.totalShares) * poolShares;
     }
   }
 };

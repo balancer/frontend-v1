@@ -23,19 +23,19 @@
 <script>
 export default {
   computed: {
-    querySharedPools() {
-      return {
-        where: {
-          finalized: true
-        }
-      };
-    },
     queryMyLiquidity() {
       const poolShares = this.subgraph.poolShares;
       const ids = Object.keys(poolShares).map(share => share.toLowerCase());
       return {
         where: {
           id_in: ids
+        }
+      };
+    },
+    querySharedPools() {
+      return {
+        where: {
+          finalized: true
         }
       };
     }
