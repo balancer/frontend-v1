@@ -54,13 +54,12 @@ export default {
 
     li {
       display: inline-block;
-      font-size: 16px;
 
       a {
         line-height: 40px;
-        height: 42px;
+        height: 44px;
         overflow: hidden;
-        padding: 0 14px;
+        padding: 0 16px;
         border-radius: $border-radius $border-radius 0 0;
 
         &.router-link-exact-active {

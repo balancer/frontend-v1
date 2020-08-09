@@ -207,12 +207,13 @@ const actions = {
   initTokenMetadata: async ({ commit }) => {
     const metadata = Object.fromEntries(
       Object.entries(config.tokens).map(tokenEntry => {
-        const { decimals, symbol } = tokenEntry[1] as any;
+        const { decimals, symbol, name } = tokenEntry[1] as any;
         return [
           tokenEntry[0],
           {
             decimals,
             symbol,
+            name,
             whitelisted: true
           }
         ];
@@ -234,6 +235,8 @@ const actions = {
       calls.push([token, testToken.encodeFunctionData('decimals', [])]);
       // @ts-ignore
       calls.push([token, testToken.encodeFunctionData('symbol', [])]);
+      // @ts-ignore
+      calls.push([token, testToken.encodeFunctionData('name', [])]);
     });
     const tokenMetadata: any = {};
     try {
@@ -244,9 +247,11 @@ const actions = {
           response[0]
         );
         const [symbol] = testToken.decodeFunctionResult('symbol', response[1]);
+        const [name] = testToken.decodeFunctionResult('name', response[2]);
         tokenMetadata[tokens[i]] = {
           decimals,
-          symbol
+          symbol,
+          name
         };
       }
       commit('LOAD_TOKEN_METADATA_SUCCESS', tokenMetadata);

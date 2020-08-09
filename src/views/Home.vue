@@ -1,19 +1,20 @@
 <template>
   <div>
-    <div class="px-0 px-md-5 pt-4">
+    <div class="px-0 px-md-5">
       <ListPools
-        title="My Liquidity"
         v-if="Object.keys(subgraph.poolShares).length > 0"
         :query="queryMyLiquidity"
-        class="mb-4"
+        title="My liquidity"
+        class="pt-4"
       />
     </div>
-    <div class="px-0 px-md-5 pb-4">
+    <div class="px-0 px-md-5">
       <ListPools
-        title="Shared Pools"
         :query="querySharedPools"
         :key="JSON.stringify(querySharedPools)"
-        class="mb-4"
+        title="Shared pools"
+        withFilters="1"
+        class="mb-4 pt-4"
       />
     </div>
   </div>

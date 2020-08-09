@@ -10,14 +10,17 @@
 .Counter {
   display: inline-block;
   padding: 0 6px;
-  font-weight: 500;
-  line-height: 20px;
+  height: 22px;
+  line-height: 22px;
   color: $white;
+  min-width: 22px;
+  text-align: center;
   background-color: $panel-border;
-  border-radius: 2em;
+  border-radius: 11px;
 }
 
-.router-link-exact-active {
+.router-link-exact-active,
+.active {
   .Counter {
     background-color: $blue;
   }

@@ -4,7 +4,13 @@
       <template slot="header">
         <h3 class="text-white">Add Liquidity</h3>
       </template>
-      <SingleMultiToggle :selected="type" :onSelect="onTypeSelect" />
+      <div class="text-center m-4 mt-0">
+        <Toggle
+          :value="type"
+          :options="toggleOptions"
+          @select="handleSelectType"
+        />
+      </div>
       <div class="m-4 d-block d-sm-flex">
         <PoolOverview
           :pool="pool"
@@ -124,11 +130,11 @@ import {
   normalizeBalance,
   denormalizeBalance,
   isTxReverted,
-  getTokenBySymbol
+  getTokenBySymbol,
+  toggleOptions
 } from '@/helpers/utils';
 import { calcPoolOutGivenSingleIn } from '@/helpers/math';
 import { validateNumberInput, formatError } from '@/helpers/validation';
-import { LiquidityType } from '@/components/SingleMultiToggle';
 
 const BALANCE_BUFFER = 0.01;
 
@@ -145,10 +151,11 @@ export default {
   props: ['open', 'pool'],
   data() {
     return {
+      toggleOptions,
       loading: false,
       poolTokens: null,
       amounts: {},
-      type: LiquidityType.MULTI_ASSET,
+      type: 'MULTI_ASSET',
       activeToken: null,
       checkboxAccept: false,
       transactionFailed: false
@@ -163,7 +170,7 @@ export default {
           return [token.checksum, ''];
         })
       );
-      this.type = LiquidityType.MULTI_ASSET;
+      this.type = 'MULTI_ASSET';
       this.activeToken = this.pool.tokens[0].checksum;
       this.checkboxAccept = false;
       this.transactionFailed = false;
@@ -196,10 +203,10 @@ export default {
     tokenError() {
       if (
         this.pool.tokens.some(token =>
-          this.config.errors.transferFee.includes(token.checksum)
+          this.config.untrusted.includes(token.checksum)
         )
       ) {
-        return 'This pool contains a deflationary token that is likely to cause loss of funds. Do not deposit.';
+        return 'This pool contains untrusted token that may cause loss of funds. Do not deposit.';
       }
       return undefined;
     },
@@ -415,7 +422,7 @@ export default {
       return maxRatioToken;
     },
     isMultiAsset() {
-      return this.type === LiquidityType.MULTI_ASSET;
+      return this.type === 'MULTI_ASSET';
     }
   },
   methods: {
@@ -486,7 +493,7 @@ export default {
       this.amounts[token.checksum] = normalizedAmount.toString();
       this.handleChange(normalizedAmount, token);
     },
-    onTypeSelect(type) {
+    handleSelectType(type) {
       this.type = type;
       this.poolTokens = null;
       this.amounts = Object.fromEntries(

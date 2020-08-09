@@ -27,8 +27,33 @@
       </div>
       <div class="py-2 d-flex">
         <span v-text="'Creation date'" class="flex-auto text-left" />
-        <span v-text="$d(pool.createTime * 1e3, 'long')" class="text-white" />
+        <a
+          :href="_etherscanLink(pool.tx, 'tx')"
+          target="_blank"
+          class="text-white"
+        >
+          {{ $d(pool.createTime * 1e3, 'long') }}
+          <Icon name="external-link" size="16" class="ml-1" />
+        </a>
       </div>
+      <template v-if="pool.finalized">
+        <div class="py-2 d-flex">
+          <span v-text="'BPT asset'" class="flex-auto text-left" />
+          <a
+            :href="_etherscanLink(pool.id, 'token')"
+            target="_blank"
+            class="text-white"
+          >
+            <Token :address="pool.id" class="v-align-middle mr-1" />
+            {{ _shorten(pool.id) }}
+            <Icon name="external-link" size="16" class="ml-1" />
+          </a>
+        </div>
+        <div class="py-2 d-flex">
+          <span v-text="'BPT total supply'" class="flex-auto text-left" />
+          <span v-text="_num(pool.totalShares)" class="text-white" />
+        </div>
+      </template>
       <div class="py-2 d-flex">
         <span v-text="'Public swap'" class="flex-auto text-left" />
         <span
@@ -38,7 +63,18 @@
       </div>
       <div class="py-2 d-flex">
         <span v-text="'Swap fee'" class="flex-auto text-left" />
-        <span v-text="$n(pool.swapFee, 'percent')" class="text-white" />
+        <span v-text="_num(pool.swapFee, 'percent')" class="text-white" />
+      </div>
+      <div class="py-2 d-flex">
+        <span v-text="'Total swap volume'" class="flex-auto text-left" />
+        <span
+          v-text="_num(pool.totalSwapVolume, 'currency')"
+          class="text-white"
+        />
+      </div>
+      <div class="py-2 d-flex">
+        <span v-text="'Total swap fee'" class="flex-auto text-left" />
+        <span v-text="_num(pool.totalSwapFee, 'currency')" class="text-white" />
       </div>
     </div>
   </UiTable>

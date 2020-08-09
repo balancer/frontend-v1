@@ -8,6 +8,7 @@
       <div v-text="'Trade In'" class="column-lg text-left" />
       <div v-text="'Trade Out'" class="column-lg text-left" />
       <div v-text="'Transaction'" class="column hide-sm hide-md" />
+      <div v-text="'Swap fee'" class="column hide-sm hide-md hide-lg" />
     </UiTableTh>
     <div
       v-infinite-scroll="loadMore"
@@ -22,12 +23,12 @@
           />
           <div class="column-lg d-flex flex-items-center">
             <Token :address="swap.tokenIn" class="mr-2" />
-            {{ $n(swap.tokenAmountIn) }}
+            <UiNum :value="swap.tokenAmountIn" class="mr-1" />
             {{ swap.tokenInSym }}
           </div>
           <div class="column-lg d-flex flex-items-center">
             <Token :address="swap.tokenOut" class="mr-2" />
-            {{ $n(swap.tokenAmountOut) }}
+            <UiNum :value="swap.tokenAmountOut" class="mr-1" />
             {{ swap.tokenOutSym }}
           </div>
           <div class="column hide-sm hide-md">
@@ -40,6 +41,9 @@
               <Icon name="external-link" />
             </a>
           </div>
+          <div class="column hide-sm hide-md hide-lg">
+            <UiNum :value="swap.feeValue" format="price" />
+          </div>
         </UiTableTr>
       </div>
       <ListLoading
@@ -48,7 +52,8 @@
           'flex-auto text-left hide-sm hide-md hide-lg',
           'column-lg text-left',
           'column-lg text-left',
-          'column hide-sm hide-md'
+          'column hide-sm hide-md',
+          'column hide-sm hide-md hide-lg'
         ]"
       />
     </div>

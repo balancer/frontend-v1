@@ -4,7 +4,13 @@
       <template slot="header">
         <h3 class="text-white">Remove Liquidity</h3>
       </template>
-      <SingleMultiToggle :selected="type" :onSelect="onTypeSelect" />
+      <div class="text-center m-4 mt-0">
+        <Toggle
+          :value="type"
+          :options="toggleOptions"
+          @select="handleSelectType"
+        />
+      </div>
       <div class="m-4 d-block d-sm-flex">
         <PoolOverview
           :pool="pool"
@@ -93,18 +99,23 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { bnum, normalizeBalance, denormalizeBalance } from '@/helpers/utils';
+import {
+  bnum,
+  normalizeBalance,
+  denormalizeBalance,
+  toggleOptions
+} from '@/helpers/utils';
 import { calcSingleOutGivenPoolIn } from '@/helpers/math';
 import { validateNumberInput, formatError } from '@/helpers/validation';
-import { LiquidityType } from '@/components/SingleMultiToggle';
 
 export default {
   props: ['open', 'pool'],
   data() {
     return {
+      toggleOptions,
       loading: false,
       poolAmountIn: '',
-      type: LiquidityType.MULTI_ASSET,
+      type: 'MULTI_ASSET',
       activeToken: null
     };
   },
@@ -112,7 +123,7 @@ export default {
     open() {
       this.poolAmountIn = '';
       this.loading = false;
-      this.type = LiquidityType.MULTI_ASSET;
+      this.type = 'MULTI_ASSET';
       this.activeToken = this.pool.tokens[0].address;
     }
   },
@@ -238,7 +249,7 @@ export default {
       return undefined;
     },
     isMultiAsset() {
-      return this.type === LiquidityType.MULTI_ASSET;
+      return this.type === 'MULTI_ASSET';
     }
   },
   methods: {
@@ -262,7 +273,7 @@ export default {
       }
       this.loading = false;
     },
-    onTypeSelect(type) {
+    handleSelectType(type) {
       this.type = type;
     },
     onTokenSelect(token) {

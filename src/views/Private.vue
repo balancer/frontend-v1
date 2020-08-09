@@ -1,17 +1,27 @@
 <template>
-  <div class="px-0 px-md-5 py-4">
-    <ListPools title="Private Pools" :query="query" class="mb-4" />
+  <div>
+    <div class="px-0 px-md-5 pt-4">
+      <ListPools
+        :query="query"
+        :key="JSON.stringify(query)"
+        title="Private pools"
+        withFilters="1"
+        class="mb-4"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-const query = { where: { finalized: false } };
-
 export default {
-  data() {
-    return {
-      query
-    };
+  computed: {
+    query() {
+      return {
+        where: {
+          finalized: false
+        }
+      };
+    }
   }
 };
 </script>
