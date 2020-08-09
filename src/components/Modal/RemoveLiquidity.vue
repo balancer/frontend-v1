@@ -15,9 +15,9 @@
         <PoolOverview
           :pool="pool"
           :userShare="userShare"
-          class="hide-sm hide-md col-3 float-left mb-4"
+          class="hide-sm hide-md col-3 float-left"
         />
-        <div class="col-12 col-md-9 float-left mb-4 pl-0 pl-md-4">
+        <div class="col-12 col-md-9 float-left pl-0 pl-md-4">
           <UiTable>
             <UiTableTh>
               <div class="column-lg flex-auto text-left">Asset</div>
@@ -73,17 +73,20 @@
           </UiTable>
         </div>
       </div>
-      <template slot="footer">
+      <div class="mx-4">
         <MessageError
           v-if="validationError"
           :text="validationError"
           class="mb-4"
         />
-        <MessageWarning
-          v-if="slippageWarning"
-          :text="slippageWarning"
+        <MessageSlippage
+          v-if="slippage"
+          :value="slippage"
+          :isDeposit="false"
           class="mb-4"
         />
+      </div>
+      <template slot="footer">
         <UiButton
           :disabled="validationError || loading"
           type="submit"
@@ -203,14 +206,13 @@ export default {
       }
       return undefined;
     },
-    slippageWarning() {
+    slippage() {
       if (this.validationError) {
         return undefined;
       }
       if (this.isMultiAsset) {
         return undefined;
       }
-      const slippageThreshold = 0.01;
       const tokenOutAddress = this.activeToken;
       const tokenOut = this.pool.tokens.find(
         token => token.address === tokenOutAddress
@@ -241,12 +243,7 @@ export default {
         .div(tokenWeightOut);
       const one = bnum(1);
       const slippage = one.minus(tokenAmountOut.div(expectedTokenAmountOut));
-
-      if (slippage.gte(slippageThreshold)) {
-        const slippageString = slippage.times(100).toFixed(2);
-        return `Removing liquidity will incur ${slippageString}% of slippage`;
-      }
-      return undefined;
+      return slippage;
     },
     isMultiAsset() {
       return this.type === 'MULTI_ASSET';

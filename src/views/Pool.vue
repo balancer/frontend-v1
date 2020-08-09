@@ -12,7 +12,7 @@
     </div>
     <div v-else>
       <MessageSimilarPools
-        v-if="pool.liquidity < 1e7"
+        v-if="pool.liquidity < 1e7 && pool.finalized"
         :pool="pool"
         class="mb-4"
       />
@@ -27,15 +27,15 @@
         <div class="d-flex">
           <UiButton
             v-if="enableAddLiquidity"
-            @click="openAddLiquidityModal"
             class="button-primary ml-2"
+            @click="openAddLiquidityModal"
           >
             Add liquidity
           </UiButton>
           <UiButton
             v-if="enableAddLiquidity"
-            @click="openRemoveLiquidityModal"
             class="ml-2"
+            @click="openRemoveLiquidityModal"
           >
             Remove liquidity
           </UiButton>
@@ -101,11 +101,20 @@ export default {
       }
       return false;
     },
-    hasShares() {
-      return Object.keys(this.subgraph.poolShares).includes(this.id);
-    },
     enableAddLiquidity() {
-      return this.pool.finalized && this.pool.totalShares !== '0';
+      return (
+        this.config.chainId === this.web3.injectedChainId &&
+        this.web3.account &&
+        this.pool.finalized &&
+        this.pool.totalShares !== '0'
+      );
+    },
+    enableRemoveLiquidity() {
+      return (
+        this.config.chainId === this.web3.injectedChainId &&
+        this.web3.account &&
+        Object.keys(this.subgraph.poolShares).includes(this.id)
+      );
     }
   },
   methods: {
