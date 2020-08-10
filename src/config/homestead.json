@@ -2293,6 +2293,16 @@
       "precision": 2,
       "color": "#9a9a97",
       "hasIcon": true
+    },
+    "0x476c5E26a75bd202a9683ffD34359C0CC15be0fF": {
+      "address": "0x476c5E26a75bd202a9683ffD34359C0CC15be0fF",
+      "id": "",
+      "name": "Serum",
+      "symbol": "SRM",
+      "decimals": 6,
+      "precision": 4,
+      "color": "#a593a5",
+      "hasIcon": false
     }
   },
   "untrusted": [
