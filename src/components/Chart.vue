@@ -2,28 +2,39 @@
   <div>
     <div class="tabs">
       <ul class="d-flex list-style-none">
-        <li v-for="(item, i) in items" :key="i" @click="handleChangeTab(item.id)" class="tab" :class="{ active: activeTab === item.id }">
+        <li
+          v-for="(item, i) in items"
+          :key="i"
+          @click="handleChangeTab(item.id)"
+          class="tab"
+          :class="{ active: activeTab === item.id }"
+        >
           <span>{{ item.name }}</span>
         </li>
       </ul>
     </div>
-    <div ref="chartContainer" class="mb-4 border rounded-md-1 panel-background" style="height: 300px; border-top-left-radius: 0px !important;" />
+    <div
+      ref="chartContainer"
+      class="mb-4 border rounded-md-1 panel-background"
+      style="height: 300px; border-top-left-radius: 0px !important;"
+    />
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 import * as TV from 'lightweight-charts';
-import { getAddress } from '@ethersproject/address';
-import config from '@/config';
 
-const items = [{
-  name: 'Volume',
-  id: 'VOLUME',
-}, {
-  name: 'Fees',
-  id: 'FEES',
-}];
+const items = [
+  {
+    name: 'Volume',
+    id: 'VOLUME'
+  },
+  {
+    name: 'Fees',
+    id: 'FEES'
+  }
+];
 
 const options = {
   timeScale: {
@@ -79,7 +90,10 @@ export default {
       const data = this.getChartData();
       this.series.setData(data);
       window.onresize = () => {
-        this.chart.resize(chartContainer.offsetWidth, chartContainer.offsetHeight);
+        this.chart.resize(
+          chartContainer.offsetWidth,
+          chartContainer.offsetHeight
+        );
       };
     },
     getChartData() {
@@ -93,7 +107,9 @@ export default {
         let value = 0;
         if (this.activeTab === 'VOLUME') {
           const totalVolume = parseFloat(row[0].poolTotalSwapVolume);
-          const previousTotalVolume = parseFloat(previousRow[0].poolTotalSwapVolume);
+          const previousTotalVolume = parseFloat(
+            previousRow[0].poolTotalSwapVolume
+          );
           value = totalVolume - previousTotalVolume;
         }
         if (this.activeTab === 'FEES') {

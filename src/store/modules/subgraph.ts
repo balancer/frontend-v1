@@ -287,7 +287,7 @@ const actions = {
     try {
       const day = 24 * 60 * 60 * 1000;
       const now = Date.now();
-      const today = now - now % (24 * 60 * 60 * 1000);
+      const today = now - (now % (24 * 60 * 60 * 1000));
       const query = {};
       for (let i = 0; i < 31; i++) {
         const timestamp = today - i * day;
@@ -295,8 +295,8 @@ const actions = {
           __aliasFor: 'swaps',
           __args: {
             first: 1,
-            orderBy: "timestamp",
-            orderDirection: "asc",
+            orderBy: 'timestamp',
+            orderDirection: 'asc',
             where: {
               poolAddress: payload,
               timestamp_gt: timestamp / 1000
@@ -304,7 +304,7 @@ const actions = {
           },
           poolTotalSwapVolume: true,
           poolTotalSwapFee: true
-        }
+        };
       }
       const poolMetrics = await request('getPoolMetrics', query);
       commit('GET_POOLS_METRICS_SUCCESS');
