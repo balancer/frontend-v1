@@ -59,7 +59,7 @@ export default {
   },
   computed: {
     isInstanceReady() {
-      return this.hasProxy && !this.loading;
+      return this.web3.dsProxyAddress && !this.loading;
     }
   }
 };

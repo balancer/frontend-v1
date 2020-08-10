@@ -15,9 +15,9 @@
         <PoolOverview
           :pool="pool"
           :userShare="userShare"
-          class="hide-sm hide-md col-3 float-left mb-4"
+          class="hide-sm hide-md col-3 float-left"
         />
-        <div class="col-12 col-md-9 float-left mb-4 pl-0 pl-md-4">
+        <div class="col-12 col-md-9 float-left pl-0 pl-md-4">
           <UiTable>
             <UiTableTh>
               <div class="column-lg flex-auto text-left">Asset</div>
@@ -43,6 +43,7 @@
                 <ButtonUnlock
                   class="button-primary ml-2"
                   :tokenAddress="token.checksum"
+                  :amount="amounts[token.checksum]"
                 />
               </div>
               <div class="column">
@@ -77,7 +78,7 @@
           </UiTable>
         </div>
       </div>
-      <template slot="footer">
+      <div class="mx-4">
         <MessageError v-if="tokenError" :text="tokenError" class="mb-4" />
         <MessageError
           v-if="validationError"
@@ -97,11 +98,14 @@
           @lower="lowerAmounts"
           class="mb-4"
         />
-        <MessageWarning
-          v-if="slippageWarning"
-          :text="slippageWarning"
+        <MessageSlippage
+          v-if="slippage"
+          :value="slippage"
+          :isDeposit="true"
           class="mb-4"
         />
+      </div>
+      <template slot="footer">
         <UiButton
           class="button-primary"
           type="submit"
@@ -131,7 +135,8 @@ import {
   denormalizeBalance,
   isTxReverted,
   getTokenBySymbol,
-  toggleOptions
+  toggleOptions,
+  isLocked
 } from '@/helpers/utils';
 import { calcPoolOutGivenSingleIn } from '@/helpers/math';
 import { validateNumberInput, formatError } from '@/helpers/validation';
@@ -301,17 +306,16 @@ export default {
       return 'Adding liquidity failed as one of the underlying tokens blocked the transfer. ';
     },
     hasLockedToken() {
-      const proxyAddress = this.web3.dsProxyAddress;
       for (const token of this.pool.tokensList) {
-        if (!this.isMultiAsset && this.activeToken !== token) {
-          continue;
-        }
-        const tokenAllowance = this.web3.allowances[token];
-        if (!tokenAllowance || !tokenAllowance[proxyAddress]) {
-          return true;
-        }
-        const allowance = tokenAllowance[proxyAddress];
-        if (allowance === '0') {
+        if (
+          isLocked(
+            this.web3.allowances,
+            token,
+            this.web3.dsProxyAddress,
+            this.amounts[token],
+            this.web3.tokenMetadata[token].decimals
+          )
+        ) {
           return true;
         }
       }
@@ -351,14 +355,13 @@ export default {
         amountToBalanceRatio.lte(1)
       );
     },
-    slippageWarning() {
+    slippage() {
       if (this.validationError || this.tokenError) {
         return undefined;
       }
       if (this.isMultiAsset) {
         return undefined;
       }
-      const slippageThreshold = 0.01;
       const tokenInAddress = this.activeToken;
       if (!this.amounts[tokenInAddress]) {
         return undefined;
@@ -396,11 +399,7 @@ export default {
         .div(totalWeight);
       const one = bnum(1);
       const slippage = one.minus(poolAmountOut.div(expectedPoolAmountOut));
-      if (slippage.gte(slippageThreshold)) {
-        const slippageString = slippage.times(100).toFixed(2);
-        return `Adding liquidity will incur ${slippageString}% of slippage`;
-      }
-      return undefined;
+      return slippage;
     },
     findFrontrunnableToken() {
       if (this.validationError) {
