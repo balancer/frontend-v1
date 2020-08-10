@@ -10,7 +10,8 @@
     "express": "vue-cli-service express:watch",
     "express:run": "vue-cli-service express:run",
     "start": "vue-cli-service express:run",
-    "deploy": "ipfs-deploy dist -p pinata"
+    "deploy": "ipfs-deploy dist -p pinata",
+    "generate-icons": "icon-font-generator src/assets/fonts/icons/*.svg -o src/assets/fonts --name iconfont --html false"
   },
   "dependencies": {
     "@bonustrack/lock": "github:bonustrack/lock#e426b056bf375de046f6d1ce61da51a5bcbfd6ae",
@@ -60,6 +61,7 @@
     "@vue/eslint-config-typescript": "^5.0.2",
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-vue": "^6.2.2",
+    "icon-font-generator": "^2.1.10",
     "ipfs-deploy": "^8.0.1",
     "node-sass": "^4.12.0",
     "prettier": "^1.19.1",
