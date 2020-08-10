@@ -82,6 +82,15 @@ const mutations = {
   GET_POOLS_SHARES_FAILURE(_state, payload) {
     console.debug('GET_POOLS_SHARES_FAILURE', payload);
   },
+  GET_POOLS_METRICS_REQUEST() {
+    console.debug('GET_POOLS_METRICS_REQUEST');
+  },
+  GET_POOLS_METRICS_SUCCESS() {
+    console.debug('GET_POOLS_METRICS_SUCCESS');
+  },
+  GET_POOLS_METRICS_FAILURE(_state, payload) {
+    console.debug('GET_POOLS_METRICS_FAILURE', payload);
+  },
   GET_TOKENS_REQUEST() {
     console.debug('GET_TOKEN_PRICES_REQUEST');
   },
@@ -271,6 +280,37 @@ const actions = {
       return poolShares;
     } catch (e) {
       commit('GET_POOLS_SHARES_FAILURE', e);
+    }
+  },
+  getPoolMetrics: async ({ commit }, payload) => {
+    commit('GET_POOLS_METRICS_REQUEST');
+    try {
+      const day = 24 * 60 * 60 * 1000;
+      const now = Date.now();
+      const today = now - now % (24 * 60 * 60 * 1000);
+      const query = {};
+      for (let i = 0; i < 31; i++) {
+        const timestamp = today - i * day;
+        query[`metrics_${timestamp}`] = {
+          __aliasFor: 'swaps',
+          __args: {
+            first: 1,
+            orderBy: "timestamp",
+            orderDirection: "asc",
+            where: {
+              poolAddress: payload,
+              timestamp_gt: timestamp / 1000
+            }
+          },
+          poolTotalSwapVolume: true,
+          poolTotalSwapFee: true
+        }
+      }
+      const poolMetrics = await request('getPoolMetrics', query);
+      commit('GET_POOLS_METRICS_SUCCESS');
+      return poolMetrics;
+    } catch (e) {
+      commit('GET_POOLS_METRICS_FAILURE', e);
     }
   },
   getTokens: async ({ commit }) => {
