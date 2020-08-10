@@ -42,6 +42,7 @@
         </div>
       </div>
       <PoolBoxes :pool="pool" />
+      <Chart :pool="pool" />
       <Tabs :pool="pool" />
       <router-view :key="$route.path" :pool="pool" />
     </div>
