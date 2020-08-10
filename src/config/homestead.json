@@ -1779,6 +1779,14 @@
       "decimals": 18,
       "precision": 2,
       "chartColor": "#a593a5"
+    },
+    "0x476c5E26a75bd202a9683ffD34359C0CC15be0fF": {
+      "address": "0x476c5E26a75bd202a9683ffD34359C0CC15be0fF",
+      "symbol": "SRM",
+      "id": "",
+      "decimals": 6,
+      "precision": 4,
+      "chartColor": "#a593a5"
     }
   },
   "warnings": {
