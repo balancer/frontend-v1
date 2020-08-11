@@ -87,11 +87,17 @@ export default {
       const data = [];
       const rowKeys = Object.keys(this.metrics);
       for (let i = 1; i < rowKeys.length; i++) {
-        const row = this.metrics[rowKeys[i]];
-        const previousRow = this.metrics[rowKeys[i - 1]];
         const timestamp = parseFloat(rowKeys[i].split('_')[1]);
         const date = new Date(timestamp);
-        let value = 0;
+        const row = this.metrics[rowKeys[i]];
+        const previousRow = this.metrics[rowKeys[i - 1]];
+        if (row.length === 0 || previousRow.length === 0) {
+          data.push({
+            time: date.toISOString()
+          });
+          continue;
+        }
+        let value;
         if (this.activeTab === 'LIQUIDITY') {
           value = parseFloat(row[0].poolLiquidity);
         }
@@ -109,11 +115,10 @@ export default {
           const liquidity = parseFloat(row[0].poolLiquidity);
           value = (dailyFee / liquidity) * 365;
         }
-        const dataItem = {
+        data.push({
           time: date.toISOString(),
           value
-        };
-        data.push(dataItem);
+        });
       }
       return data;
     }
@@ -135,8 +140,10 @@ export default {
       }
       const color = '#ffffff';
       if (this.activeTab === 'LIQUIDITY') {
-        this.series = this.chart.addLineSeries({
-          color,
+        this.series = this.chart.addAreaSeries({
+          lineColor: color,
+          topColor: `${color}ff`,
+          bottomColor: `${color}00`,
           priceLineVisible: false,
           priceFormat: {
             type: 'custom',

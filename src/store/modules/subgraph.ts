@@ -299,7 +299,8 @@ const actions = {
             orderDirection: 'asc',
             where: {
               poolAddress: payload,
-              timestamp_gt: timestamp / 1000
+              timestamp_gt: timestamp / 1000,
+              timestamp_lt: (timestamp + day) / 1000
             }
           },
           poolTotalSwapVolume: true,
