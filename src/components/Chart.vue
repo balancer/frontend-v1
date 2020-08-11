@@ -37,8 +37,8 @@ const items = [
     id: 'VOLUME'
   },
   {
-    name: 'APY',
-    id: 'APY'
+    name: 'Fee returns',
+    id: 'FEE_RETURNS'
   }
 ];
 
@@ -95,7 +95,7 @@ export default {
           );
           value = totalVolume - previousTotalVolume;
         }
-        if (this.activeTab === 'APY') {
+        if (this.activeTab === 'FEE_RETURNS') {
           const totalFee = parseFloat(row[0].poolTotalSwapFee);
           const previousTotalFee = parseFloat(previousRow[0].poolTotalSwapFee);
           const dailyFee = totalFee - previousTotalFee;
@@ -146,13 +146,13 @@ export default {
           }
         });
       }
-      if (this.activeTab === 'APY') {
+      if (this.activeTab === 'FEE_RETURNS') {
         this.series = this.chart.addLineSeries({
           color,
           priceLineVisible: false,
           priceFormat: {
             type: 'custom',
-            formatter: value => `${(value * 100).toFixed(2)}%`
+            formatter: value => `${this._num(value, 'percent')}`
           }
         });
       }
