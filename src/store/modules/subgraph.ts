@@ -303,7 +303,8 @@ const actions = {
             }
           },
           poolTotalSwapVolume: true,
-          poolTotalSwapFee: true
+          poolTotalSwapFee: true,
+          poolLiquidity: true
         };
       }
       const poolMetrics = await request('getPoolMetrics', query);
