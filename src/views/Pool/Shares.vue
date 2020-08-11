@@ -3,6 +3,7 @@
     <UiTableTh>
       <div v-text="'Holder'" class="flex-auto text-left" />
       <div v-text="'Balance'" class="column" />
+      <div v-text="'Value'" class="column hide-sm" />
       <div v-text="'Shares'" class="column" />
     </UiTableTh>
     <div
@@ -25,15 +26,25 @@
               <Icon name="external-link" size="16" class="ml-1" />
             </a>
           </div>
-          <div class="column">{{ $n(share.balance) }} BPT</div>
           <div class="column">
-            {{ $n((100 / pool.totalShares) * share.balance) }}%
+            <UiNum :value="share.balance" class="mr-1" />
+            BPT
           </div>
+          <UiNum
+            :value="bptValue * share.balance"
+            format="price"
+            class="column hide-sm"
+          />
+          <UiNum
+            :value="((100 / pool.totalShares) * share.balance) / 1e2"
+            format="percent"
+            class="column"
+          />
         </UiTableTr>
       </div>
       <ListLoading
         v-if="loading"
-        :classes="['flex-auto text-left', 'column', 'column']"
+        :classes="['flex-auto text-left', 'column', 'column hide-sm', 'column']"
       />
     </div>
     <div
@@ -56,6 +67,11 @@ export default {
       page: 0,
       shares: []
     };
+  },
+  computed: {
+    bptValue() {
+      return this.pool.liquidity / this.pool.totalShares;
+    }
   },
   methods: {
     ...mapActions(['getPoolShares']),

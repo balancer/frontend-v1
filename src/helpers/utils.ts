@@ -2,13 +2,17 @@ import { getAddress } from '@ethersproject/address';
 import { MaxUint256 } from '@ethersproject/constants';
 import BigNumber from '@/helpers/bignumber';
 import config from '@/config';
-import trustwalletWhitelist from '@/helpers/trustwalletWhitelist.json';
 
 const LS_KEY = 'balancer-pool-management';
 export const ITEMS_PER_PAGE = 20;
 export const MAX_GAS = new BigNumber('0xffffffff');
 export const MAX_UINT = MaxUint256;
 export const POOL_TOKENS_DECIMALS = 18;
+
+export const toggleOptions = {
+  MULTI_ASSET: 'Multi assets',
+  SINGLE_ASSET: 'Single asset'
+};
 
 export const unknownColors = [
   '#6f6776',
@@ -61,6 +65,24 @@ export function normalizeBalance(
   return scale(bnum(amount), -tokenDecimals);
 }
 
+export function isLocked(
+  allowances,
+  tokenAddress,
+  spender,
+  rawAmount,
+  decimals
+) {
+  const tokenAllowance = allowances[tokenAddress];
+  if (!tokenAllowance || !tokenAllowance[spender]) {
+    return true;
+  }
+  if (!rawAmount) {
+    return false;
+  }
+  const amount = denormalizeBalance(rawAmount, decimals);
+  return amount.gt(tokenAllowance[spender]);
+}
+
 export function formatPool(pool) {
   let colorIndex = 0;
   pool.tokens = pool.tokens.map(token => {
@@ -68,9 +90,9 @@ export function formatPool(pool) {
     token.weightPercent = (100 / pool.totalWeight) * token.denormWeight;
     const configToken = config.tokens[token.checksum];
     if (configToken) {
-      token.chartColor = configToken.chartColor;
+      token.color = configToken.color;
     } else {
-      token.chartColor = unknownColors[colorIndex];
+      token.color = unknownColors[colorIndex];
       colorIndex++;
     }
     return token;
@@ -152,9 +174,8 @@ export function getTokenLogoUrl(address: string): string | null {
     trustwalletId = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
   } else {
     const checksum = getAddress(address);
-    if (checksum === config.addresses.weth) {
-      trustwalletId = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
-    } else if (trustwalletWhitelist.includes(checksum)) {
+    const token = config.tokens[checksum];
+    if (token && token.hasIcon) {
       trustwalletId = checksum;
     }
   }
@@ -193,3 +214,10 @@ export const isTxReverted = error => {
   }
   return error.code === -32016;
 };
+
+export function formatFilters(filters, fb) {
+  if (!filters) return fb || {};
+  if (!filters.token) filters.token = [];
+  if (!Array.isArray(filters.token)) filters.token = [filters.token];
+  return filters;
+}

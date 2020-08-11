@@ -27,13 +27,6 @@ const state = {
   tokenMetadata: {}
 };
 
-const getters = {
-  hasProxy: state => {
-    const proxyAddress = state.dsProxyAddress;
-    return !!proxyAddress && proxyAddress !== AddressZero;
-  }
-};
-
 const mutations = {
   LOGOUT(_state) {
     Vue.set(_state, 'injectedLoaded', false);
@@ -176,7 +169,8 @@ const mutations = {
     console.debug('GET_PROXY_REQUEST');
   },
   GET_PROXY_SUCCESS(_state, payload) {
-    Vue.set(_state, 'dsProxyAddress', payload);
+    const proxyAddress = payload === AddressZero ? '' : payload;
+    Vue.set(_state, 'dsProxyAddress', proxyAddress);
     console.debug('GET_PROXY_SUCCESS');
   },
   GET_PROXY_FAILURE(_state, payload) {
@@ -207,12 +201,13 @@ const actions = {
   initTokenMetadata: async ({ commit }) => {
     const metadata = Object.fromEntries(
       Object.entries(config.tokens).map(tokenEntry => {
-        const { decimals, symbol } = tokenEntry[1] as any;
+        const { decimals, symbol, name } = tokenEntry[1] as any;
         return [
           tokenEntry[0],
           {
             decimals,
             symbol,
+            name,
             whitelisted: true
           }
         ];
@@ -234,6 +229,8 @@ const actions = {
       calls.push([token, testToken.encodeFunctionData('decimals', [])]);
       // @ts-ignore
       calls.push([token, testToken.encodeFunctionData('symbol', [])]);
+      // @ts-ignore
+      calls.push([token, testToken.encodeFunctionData('name', [])]);
     });
     const tokenMetadata: any = {};
     try {
@@ -244,9 +241,11 @@ const actions = {
           response[0]
         );
         const [symbol] = testToken.decodeFunctionResult('symbol', response[1]);
+        const [name] = testToken.decodeFunctionResult('name', response[2]);
         tokenMetadata[tokens[i]] = {
           decimals,
-          symbol
+          symbol,
+          name
         };
       }
       commit('LOAD_TOKEN_METADATA_SUCCESS', tokenMetadata);
@@ -455,6 +454,9 @@ const actions = {
   },
   getAllowances: async ({ commit }, { tokens, spender }) => {
     commit('GET_ALLOWANCES_REQUEST');
+    if (!spender) {
+      return;
+    }
     const address = state.account;
     const promises: any = [];
     const multi = new Contract(
@@ -518,7 +520,6 @@ const actions = {
 
 export default {
   state,
-  getters,
   mutations,
   actions
 };

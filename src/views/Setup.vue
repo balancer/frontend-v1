@@ -4,7 +4,8 @@
       <div class="p-4 panel-background border rounded-1 d-flex flex-column">
         <h3 class="mb-4 px-4 px-md-0">Setup Proxy</h3>
         <div>
-          Create proxy contract to manage liquidity on Balancer.
+          Create proxy contract to manage liquidity on Balancer. This is a
+          one-time action and will save you gas in the long-term.
         </div>
         <div class="mt-4 d-flex flex-justify-center">
           <UiButton
@@ -19,7 +20,8 @@
           <UiButton @click="goBack()" v-else>Next</UiButton>
         </div>
         <div class="mt-2" v-if="loading">
-          Waiting for 10 block confirmations…
+          Waiting for confirmations to protect from chain reorganizations:
+          {{ confirmations }}/10
         </div>
       </div>
     </div>
@@ -32,7 +34,8 @@ import { mapActions } from 'vuex';
 export default {
   data() {
     return {
-      loading: false
+      loading: false,
+      confirmations: 0
     };
   },
   methods: {
@@ -44,7 +47,10 @@ export default {
         this.loading = false;
         return;
       }
-      await tx.wait(10);
+      for (let i = 0; i < 10; i++) {
+        await tx.wait(i);
+        this.confirmations++;
+      }
       this.loading = false;
     },
     goBack() {
@@ -53,7 +59,7 @@ export default {
   },
   computed: {
     isInstanceReady() {
-      return this.hasProxy && !this.loading;
+      return this.web3.dsProxyAddress && !this.loading;
     }
   }
 };

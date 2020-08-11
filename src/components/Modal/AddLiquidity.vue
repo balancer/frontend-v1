@@ -4,14 +4,20 @@
       <template slot="header">
         <h3 class="text-white">Add Liquidity</h3>
       </template>
-      <SingleMultiToggle :selected="type" :onSelect="onTypeSelect" />
+      <div class="text-center m-4 mt-0">
+        <Toggle
+          :value="type"
+          :options="toggleOptions"
+          @select="handleSelectType"
+        />
+      </div>
       <div class="m-4 d-block d-sm-flex">
         <PoolOverview
           :pool="pool"
           :userShare="userShare"
-          class="hide-sm hide-md col-3 float-left mb-4"
+          class="hide-sm hide-md col-3 float-left"
         />
-        <div class="col-12 col-md-9 float-left mb-4 pl-0 pl-md-4">
+        <div class="col-12 col-md-9 float-left pl-0 pl-md-4">
           <UiTable>
             <UiTableTh>
               <div class="column-lg flex-auto text-left">Asset</div>
@@ -37,6 +43,7 @@
                 <ButtonUnlock
                   class="button-primary ml-2"
                   :tokenAddress="token.checksum"
+                  :amount="amounts[token.checksum]"
                 />
               </div>
               <div class="column">
@@ -71,7 +78,7 @@
           </UiTable>
         </div>
       </div>
-      <template slot="footer">
+      <div class="mx-4">
         <MessageError v-if="tokenError" :text="tokenError" class="mb-4" />
         <MessageError
           v-if="validationError"
@@ -91,11 +98,14 @@
           @lower="lowerAmounts"
           class="mb-4"
         />
-        <MessageWarning
-          v-if="slippageWarning"
-          :text="slippageWarning"
+        <MessageSlippage
+          v-if="slippage"
+          :value="slippage"
+          :isDeposit="true"
           class="mb-4"
         />
+      </div>
+      <template slot="footer">
         <UiButton
           class="button-primary"
           type="submit"
@@ -124,11 +134,12 @@ import {
   normalizeBalance,
   denormalizeBalance,
   isTxReverted,
-  getTokenBySymbol
+  getTokenBySymbol,
+  toggleOptions,
+  isLocked
 } from '@/helpers/utils';
 import { calcPoolOutGivenSingleIn } from '@/helpers/math';
 import { validateNumberInput, formatError } from '@/helpers/validation';
-import { LiquidityType } from '@/components/SingleMultiToggle';
 
 const BALANCE_BUFFER = 0.01;
 
@@ -145,10 +156,11 @@ export default {
   props: ['open', 'pool'],
   data() {
     return {
+      toggleOptions,
       loading: false,
       poolTokens: null,
       amounts: {},
-      type: LiquidityType.MULTI_ASSET,
+      type: 'MULTI_ASSET',
       activeToken: null,
       checkboxAccept: false,
       transactionFailed: false
@@ -163,7 +175,7 @@ export default {
           return [token.checksum, ''];
         })
       );
-      this.type = LiquidityType.MULTI_ASSET;
+      this.type = 'MULTI_ASSET';
       this.activeToken = this.pool.tokens[0].checksum;
       this.checkboxAccept = false;
       this.transactionFailed = false;
@@ -196,10 +208,10 @@ export default {
     tokenError() {
       if (
         this.pool.tokens.some(token =>
-          this.config.errors.transferFee.includes(token.checksum)
+          this.config.untrusted.includes(token.checksum)
         )
       ) {
-        return 'This pool contains a deflationary token that is likely to cause loss of funds. Do not deposit.';
+        return 'This pool contains untrusted token that may cause loss of funds. Do not deposit.';
       }
       return undefined;
     },
@@ -294,17 +306,16 @@ export default {
       return 'Adding liquidity failed as one of the underlying tokens blocked the transfer. ';
     },
     hasLockedToken() {
-      const proxyAddress = this.web3.dsProxyAddress;
       for (const token of this.pool.tokensList) {
-        if (!this.isMultiAsset && this.activeToken !== token) {
-          continue;
-        }
-        const tokenAllowance = this.web3.allowances[token];
-        if (!tokenAllowance || !tokenAllowance[proxyAddress]) {
-          return true;
-        }
-        const allowance = tokenAllowance[proxyAddress];
-        if (allowance === '0') {
+        if (
+          isLocked(
+            this.web3.allowances,
+            token,
+            this.web3.dsProxyAddress,
+            this.amounts[token],
+            this.web3.tokenMetadata[token].decimals
+          )
+        ) {
           return true;
         }
       }
@@ -344,14 +355,13 @@ export default {
         amountToBalanceRatio.lte(1)
       );
     },
-    slippageWarning() {
+    slippage() {
       if (this.validationError || this.tokenError) {
         return undefined;
       }
       if (this.isMultiAsset) {
         return undefined;
       }
-      const slippageThreshold = 0.01;
       const tokenInAddress = this.activeToken;
       if (!this.amounts[tokenInAddress]) {
         return undefined;
@@ -389,11 +399,7 @@ export default {
         .div(totalWeight);
       const one = bnum(1);
       const slippage = one.minus(poolAmountOut.div(expectedPoolAmountOut));
-      if (slippage.gte(slippageThreshold)) {
-        const slippageString = slippage.times(100).toFixed(2);
-        return `Adding liquidity will incur ${slippageString}% of slippage`;
-      }
-      return undefined;
+      return slippage;
     },
     findFrontrunnableToken() {
       if (this.validationError) {
@@ -415,7 +421,7 @@ export default {
       return maxRatioToken;
     },
     isMultiAsset() {
-      return this.type === LiquidityType.MULTI_ASSET;
+      return this.type === 'MULTI_ASSET';
     }
   },
   methods: {
@@ -486,7 +492,7 @@ export default {
       this.amounts[token.checksum] = normalizedAmount.toString();
       this.handleChange(normalizedAmount, token);
     },
-    onTypeSelect(type) {
+    handleSelectType(type) {
       this.type = type;
       this.poolTokens = null;
       this.amounts = Object.fromEntries(

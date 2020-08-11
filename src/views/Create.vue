@@ -1,15 +1,26 @@
 <template>
   <div class="px-0 px-md-5 py-4">
-    <div class="d-flex flex-items-center px-4 px-md-0 mb-4">
-      <h3 class="flex-auto" v-text="'Tokens'" />
+    <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
+      <h3 class="flex-auto" v-text="'Create a pool'" />
     </div>
-    <UiTable>
+    <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
+      <h4 class="flex-auto" v-text="'Assets'" />
+    </div>
+    <UiTable class="mb-4">
       <UiTableTh>
         <div v-text="'Asset'" class="flex-auto text-left" />
-        <div v-text="'Weight (total max: 100)'" class="column-lg" />
-        <div v-text="'Amount'" class="column" />
-        <div v-text="'Value'" class="column-lg" />
-        <div v-text="'Remove'" class="column" />
+        <div v-text="'Weight'" class="column" />
+        <div v-text="'%'" class="column-sm hide-sm" />
+        <div class="column">
+          <span @click="togglePadlock">
+            <span v-if="padlock"><Icon name="lock" size="16"/></span>
+            <span v-else><Icon name="unlock" size="16"/></span>
+          </span>
+          Amount
+        </div>
+        <div v-text="'Price'" class="column-sm hide-sm" />
+        <div v-text="'Total value'" class="column hide-sm" />
+        <div class="column-xs" />
       </UiTableTh>
       <div v-for="(token, i) in tokens" :key="token">
         <UiTableTr>
@@ -19,22 +30,28 @@
             <a
               class="d-block text-white p-1"
               @click="
-                modalOpen = true;
+                tokenModalOpen = true;
                 activeToken = i;
               "
             >
               <Icon name="arrow-down" />
             </a>
-            <ButtonUnlock class="button-primary ml-2" :tokenAddress="token" />
+            <ButtonUnlock
+              class="button-primary ml-2"
+              :tokenAddress="token"
+              :amount="amounts[token]"
+            />
           </div>
-          <div class="column-lg d-flex flex-items-center flex-justify-between">
+          <div class="column">
             <input
               class="input pool-input text-right"
               :class="isWeightInputValid(token) ? 'text-white' : 'text-red'"
               v-model="weights[token]"
               @input="handleWeightChange(token)"
             />
-            {{ $n(getRelativeWeight(token), 'percent') }}
+          </div>
+          <div class="column-sm hide-sm">
+            <div v-text="_num(getRelativeWeight(token), 'percent')" />
           </div>
           <div class="column">
             <input
@@ -44,11 +61,20 @@
               @input="handleAmountChange(token)"
             />
           </div>
-          <div class="column-lg">
-            {{ getValue(token) }}
+          <div class="column-sm hide-sm">
+            <div
+              v-text="_num(subgraph.tokens[token], 'currency')"
+              v-if="padlock"
+            />
+            <div v-text="'-'" v-else />
           </div>
-          <div class="column">
+          <div class="column hide-sm">
+            <div v-text="_num(getValue(token), 'currency')" v-if="padlock" />
+            <div v-text="'-'" v-else />
+          </div>
+          <div class="column-xs">
             <a
+              v-if="tokens.length > 1"
               class="d-flex flex-justify-end text-white"
               @click="removeToken(token)"
             >
@@ -58,11 +84,11 @@
         </UiTableTr>
       </div>
     </UiTable>
-    <UiButton class="mt-4" @click="addToken">
+    <UiButton v-if="tokens.length < 8" class="mb-4" @click="addToken">
       Add Token
     </UiButton>
-    <div class="d-flex flex-items-center px-4 px-md-0 my-4">
-      <h3 class="flex-auto" v-text="'Swap fee (%)'" />
+    <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
+      <h4 class="flex-auto" v-text="'Swap fee (%)'" />
     </div>
     <div class="mb-4">
       <input
@@ -72,15 +98,8 @@
         placeholder="0.00"
       />
     </div>
-    <div v-if="tokens.length > 1" class="mb-4">
-      <h3 class="mb-4">Similar pools</h3>
-      <ListPools
-        :key="JSON.stringify(suggestQuery)"
-        :limit="suggestQuery.first"
-        :query="suggestQuery"
-      />
-    </div>
     <MessageError v-if="validationError" :text="validationError" class="mt-4" />
+    <MessageSimilarPools v-if="pool" :pool="pool" class="mt-4" />
     <MessageCheckbox
       v-if="!validationError"
       :custom="hasCustomToken"
@@ -91,28 +110,38 @@
     <UiButton
       :disabled="validationError || hasLockedToken || !checkboxAccept"
       class="button-primary mt-4"
-      @click="create"
+      @click="confirmModalOpen = true"
     >
       Create
     </UiButton>
     <ModalSelectToken
-      :open="modalOpen"
-      @close="modalOpen = false"
+      :open="tokenModalOpen"
+      @close="tokenModalOpen = false"
       @input="changeToken"
       :not="tokens"
+    />
+    <ModalPoolCreation
+      :open="confirmModalOpen"
+      :padlock="padlock"
+      :tokens="tokens"
+      :amounts="amounts"
+      :weights="weights"
+      @close="confirmModalOpen = false"
+      @create="create"
     />
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 import { getAddress } from '@ethersproject/address';
 import {
   bnum,
   normalizeBalance,
   denormalizeBalance,
-  getTokenBySymbol
+  getTokenBySymbol,
+  isLocked
 } from '@/helpers/utils';
 import { validateNumberInput, formatError } from '@/helpers/validation';
 
@@ -137,28 +166,40 @@ export default {
       swapFee: '',
       tokens: [],
       activeToken: 0,
-      modalOpen: false,
+      tokenModalOpen: false,
+      confirmModalOpen: false,
+      padlock: true,
       checkboxAccept: false
     };
   },
   created() {
-    if (!this.hasProxy) return this.$router.push({ name: 'setup' });
+    if (!this.web3.dsProxyAddress) {
+      return this.$router.push({ name: 'setup' });
+    }
     const dai = getTokenBySymbol('DAI').address;
     const usdc = getTokenBySymbol('USDC').address;
     this.tokens = [dai, usdc];
     Vue.set(this.weights, dai, '30');
     Vue.set(this.weights, usdc, '20');
+    this.loading = false;
   },
   computed: {
-    ...mapGetters(['hasProxy']),
-    suggestQuery() {
+    pool() {
+      if (this.validationError) {
+        return;
+      }
+      const tokens = this.tokens.map(token => {
+        return {
+          checksum: token,
+          weightPercent: 100 * this.getRelativeWeight(token)
+        };
+      });
+      const swapFee = (parseFloat(this.swapFee) / 100).toString();
+      const liquidity = '0';
       return {
-        first: 5,
-        where: {
-          finalized: true,
-          tokensList_contains: this.tokens,
-          tokensCount: this.tokens.length
-        }
+        tokens,
+        swapFee,
+        liquidity
       };
     },
     validationError() {
@@ -220,14 +261,16 @@ export default {
       return undefined;
     },
     hasLockedToken() {
-      const proxyAddress = this.web3.dsProxyAddress;
       for (const token of this.tokens) {
-        const tokenAllowance = this.web3.allowances[token];
-        if (!tokenAllowance || !tokenAllowance[proxyAddress]) {
-          return true;
-        }
-        const allowance = tokenAllowance[proxyAddress];
-        if (allowance === '0') {
+        if (
+          isLocked(
+            this.web3.allowances,
+            token,
+            this.web3.dsProxyAddress,
+            this.amounts[token],
+            this.web3.tokenMetadata[token].decimals
+          )
+        ) {
           return true;
         }
       }
@@ -245,6 +288,12 @@ export default {
   },
   methods: {
     ...mapActions(['createPool']),
+    togglePadlock() {
+      this.padlock = !this.padlock;
+      for (const token of this.tokens) {
+        Vue.set(this.amounts, token, '');
+      }
+    },
     changeToken(selectedToken) {
       const tokenAddress = getAddress(selectedToken);
       Vue.set(this.tokens, this.activeToken, tokenAddress);
@@ -261,19 +310,21 @@ export default {
       const index = this.tokens.indexOf(tokenAddress);
       this.tokens.splice(index, 1);
     },
-    create() {
-      this.createPool({
+    async create() {
+      this.loading = true;
+      await this.createPool({
         tokens: this.tokens,
         startBalances: this.amounts,
         startWeights: this.weights,
         swapFee: this.swapFee
       });
+      this.loading = false;
     },
     handleWeightChange(tokenAddress) {
       this.handleAmountChange(tokenAddress);
     },
     handleAmountChange(tokenAddress) {
-      const tokenPrice = this.price.values[tokenAddress];
+      const tokenPrice = this.subgraph.tokens[tokenAddress];
       if (!tokenPrice) {
         return;
       }
@@ -281,21 +332,21 @@ export default {
       const totalValue = tokenValue.div(this.weights[tokenAddress]);
 
       for (const token of this.tokens) {
-        if (token === tokenAddress) {
+        if (token === tokenAddress || !this.padlock) {
           continue;
         }
         const tokenWeight = bnum(this.weights[token] || '');
         if (totalValue.isNaN() || tokenWeight.isNaN()) {
-          this.amounts[token] = '';
+          Vue.set(this.amounts, token, '');
           continue;
         }
-        const tokenPrice = this.price.values[token];
+        const tokenPrice = this.subgraph.tokens[token];
         if (!tokenPrice) {
           continue;
         }
         const tokenValue = tokenWeight.times(totalValue);
         const tokenAmount = tokenValue.div(tokenPrice);
-        this.amounts[token] = tokenAmount.toString();
+        Vue.set(this.amounts, token, tokenAmount.toString());
       }
     },
     isWeightInputValid(tokenAddress) {
@@ -346,9 +397,9 @@ export default {
       return true;
     },
     getValue(tokenAddress) {
-      const tokenPrice = this.price.values[tokenAddress];
+      const tokenPrice = this.subgraph.tokens[tokenAddress];
       if (!tokenPrice || !this.amounts[tokenAddress]) {
-        return '-';
+        return 0;
       }
       return bnum(this.amounts[tokenAddress])
         .times(tokenPrice)

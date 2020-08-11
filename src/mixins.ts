@@ -1,5 +1,6 @@
+import numeral from 'numeral';
+import { mapState } from 'vuex';
 import store from '@/store';
-import { mapGetters, mapState } from 'vuex';
 import config from '@/config';
 import { shorten, trunc, etherscanLink } from '@/helpers/utils';
 
@@ -13,10 +14,23 @@ export default {
     };
   },
   computed: {
-    ...mapState(modules),
-    ...mapGetters(['hasProxy'])
+    ...mapState(modules)
   },
   methods: {
+    _num(number, key) {
+      let format = '(0.[00000]a)';
+      format = number > 1 ? '(0.[0000]a)' : format;
+      format = number > 10 ? '(0.[000]a)' : format;
+      format = number > 100 ? '(0.[00]a)' : format;
+      if (key === 'raw') format = '0.[000000]';
+      if (key === 'currency') format = '$(0.[00]a)';
+      if (key === 'price') format = '$(0.[00]a)';
+      if (key === 'percent') format = '(0.[00]a)%';
+      if (number < 0.0001) number = 0;
+      return numeral(number)
+        .format(format)
+        .toUpperCase();
+    },
     _shorten(str: string): string {
       return shorten(str);
     },

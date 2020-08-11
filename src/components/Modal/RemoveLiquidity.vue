@@ -4,14 +4,20 @@
       <template slot="header">
         <h3 class="text-white">Remove Liquidity</h3>
       </template>
-      <SingleMultiToggle :selected="type" :onSelect="onTypeSelect" />
+      <div class="text-center m-4 mt-0">
+        <Toggle
+          :value="type"
+          :options="toggleOptions"
+          @select="handleSelectType"
+        />
+      </div>
       <div class="m-4 d-block d-sm-flex">
         <PoolOverview
           :pool="pool"
           :userShare="userShare"
-          class="hide-sm hide-md col-3 float-left mb-4"
+          class="hide-sm hide-md col-3 float-left"
         />
-        <div class="col-12 col-md-9 float-left mb-4 pl-0 pl-md-4">
+        <div class="col-12 col-md-9 float-left pl-0 pl-md-4">
           <UiTable>
             <UiTableTh>
               <div class="column-lg flex-auto text-left">Asset</div>
@@ -67,17 +73,20 @@
           </UiTable>
         </div>
       </div>
-      <template slot="footer">
+      <div class="mx-4">
         <MessageError
           v-if="validationError"
           :text="validationError"
           class="mb-4"
         />
-        <MessageWarning
-          v-if="slippageWarning"
-          :text="slippageWarning"
+        <MessageSlippage
+          v-if="slippage"
+          :value="slippage"
+          :isDeposit="false"
           class="mb-4"
         />
+      </div>
+      <template slot="footer">
         <UiButton
           :disabled="validationError || loading"
           type="submit"
@@ -93,18 +102,23 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { bnum, normalizeBalance, denormalizeBalance } from '@/helpers/utils';
+import {
+  bnum,
+  normalizeBalance,
+  denormalizeBalance,
+  toggleOptions
+} from '@/helpers/utils';
 import { calcSingleOutGivenPoolIn } from '@/helpers/math';
 import { validateNumberInput, formatError } from '@/helpers/validation';
-import { LiquidityType } from '@/components/SingleMultiToggle';
 
 export default {
   props: ['open', 'pool'],
   data() {
     return {
+      toggleOptions,
       loading: false,
       poolAmountIn: '',
-      type: LiquidityType.MULTI_ASSET,
+      type: 'MULTI_ASSET',
       activeToken: null
     };
   },
@@ -112,7 +126,7 @@ export default {
     open() {
       this.poolAmountIn = '';
       this.loading = false;
-      this.type = LiquidityType.MULTI_ASSET;
+      this.type = 'MULTI_ASSET';
       this.activeToken = this.pool.tokens[0].address;
     }
   },
@@ -192,14 +206,13 @@ export default {
       }
       return undefined;
     },
-    slippageWarning() {
+    slippage() {
       if (this.validationError) {
         return undefined;
       }
       if (this.isMultiAsset) {
         return undefined;
       }
-      const slippageThreshold = 0.01;
       const tokenOutAddress = this.activeToken;
       const tokenOut = this.pool.tokens.find(
         token => token.address === tokenOutAddress
@@ -230,15 +243,10 @@ export default {
         .div(tokenWeightOut);
       const one = bnum(1);
       const slippage = one.minus(tokenAmountOut.div(expectedTokenAmountOut));
-
-      if (slippage.gte(slippageThreshold)) {
-        const slippageString = slippage.times(100).toFixed(2);
-        return `Removing liquidity will incur ${slippageString}% of slippage`;
-      }
-      return undefined;
+      return slippage;
     },
     isMultiAsset() {
-      return this.type === LiquidityType.MULTI_ASSET;
+      return this.type === 'MULTI_ASSET';
     }
   },
   methods: {
@@ -262,7 +270,7 @@ export default {
       }
       this.loading = false;
     },
-    onTypeSelect(type) {
+    handleSelectType(type) {
       this.type = type;
     },
     onTokenSelect(token) {

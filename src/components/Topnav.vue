@@ -18,9 +18,9 @@
           />
           <span
             class="d-inline-block text-white"
-            style="font-weight: 500; letter-spacing: 1px; font-size: 15px;"
-            >Balancer</span
-          >
+            style="letter-spacing: 1px; font-size: 16px;"
+            v-text="'Balancer'"
+          />
         </router-link>
       </div>
       <div :key="web3.account">
