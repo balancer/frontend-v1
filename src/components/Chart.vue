@@ -60,6 +60,13 @@ const options = {
   layout: {
     backgroundColor: 'transparent',
     textColor: 'white'
+  },
+  handleScroll: {
+    mouseWheel: false
+  },
+  handleScale: {
+    mouseWheel: false,
+    pinch: false
   }
 };
 
