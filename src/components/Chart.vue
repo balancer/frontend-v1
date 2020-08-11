@@ -17,7 +17,9 @@
       ref="chartContainer"
       class="mb-4 border rounded-md-1 panel-background"
       style="height: 300px; border-top-left-radius: 0px !important;"
-    />
+    >
+      <UiLoading v-if="loading" class="d-flex height-full" />
+    </div>
   </div>
 </template>
 
@@ -27,21 +29,24 @@ import * as TV from 'lightweight-charts';
 
 const items = [
   {
+    name: 'Liquidity',
+    id: 'LIQUIDITY'
+  },
+  {
     name: 'Volume',
     id: 'VOLUME'
   },
   {
-    name: 'Fees',
-    id: 'FEES'
+    name: 'APY',
+    id: 'APY'
   }
 ];
 
 const options = {
   timeScale: {
-    barSpacing: 30,
+    barSpacing: 40,
     drawTicks: false,
     borderVisible: false,
-    fixLeftEdge: true,
     fixRightEdge: true
   },
   grid: {
@@ -62,12 +67,49 @@ export default {
   props: ['pool'],
   data() {
     return {
-      activeTab: 'VOLUME',
+      loading: false,
+      activeTab: 'LIQUIDITY',
       items,
       metrics: {},
       chart: null,
       series: null
     };
+  },
+  computed: {
+    chartData() {
+      const data = [];
+      const rowKeys = Object.keys(this.metrics);
+      for (let i = 1; i < rowKeys.length; i++) {
+        const row = this.metrics[rowKeys[i]];
+        const previousRow = this.metrics[rowKeys[i - 1]];
+        const timestamp = parseFloat(rowKeys[i].split('_')[1]);
+        const date = new Date(timestamp);
+        let value = 0;
+        if (this.activeTab === 'LIQUIDITY') {
+          value = parseFloat(row[0].poolLiquidity);
+        }
+        if (this.activeTab === 'VOLUME') {
+          const totalVolume = parseFloat(row[0].poolTotalSwapVolume);
+          const previousTotalVolume = parseFloat(
+            previousRow[0].poolTotalSwapVolume
+          );
+          value = totalVolume - previousTotalVolume;
+        }
+        if (this.activeTab === 'APY') {
+          const totalFee = parseFloat(row[0].poolTotalSwapFee);
+          const previousTotalFee = parseFloat(previousRow[0].poolTotalSwapFee);
+          const dailyFee = totalFee - previousTotalFee;
+          const liquidity = parseFloat(row[0].poolLiquidity);
+          value = (dailyFee / liquidity) * 365;
+        }
+        const dataItem = {
+          time: date.toISOString(),
+          value
+        };
+        data.push(dataItem);
+      }
+      return data;
+    }
   },
   methods: {
     ...mapActions(['getPoolMetrics']),
@@ -81,53 +123,52 @@ export default {
         options.width = chartContainer.offsetWidth;
         options.height = chartContainer.offsetHeight;
         this.chart = TV.createChart(chartContainer, options);
-        const color = '#ffffff';
+      } else {
+        this.chart.removeSeries(this.series);
+      }
+      const color = '#ffffff';
+      if (this.activeTab === 'LIQUIDITY') {
         this.series = this.chart.addLineSeries({
           color,
-          priceLineVisible: false
+          priceLineVisible: false,
+          priceFormat: {
+            type: 'custom',
+            formatter: value => `${this._num(value, 'currency')}`
+          }
         });
       }
-      const data = this.getChartData();
-      this.series.setData(data);
+      if (this.activeTab === 'VOLUME') {
+        this.series = this.chart.addHistogramSeries({
+          color,
+          priceFormat: {
+            type: 'custom',
+            formatter: value => `${this._num(value, 'currency')}`
+          }
+        });
+      }
+      if (this.activeTab === 'APY') {
+        this.series = this.chart.addLineSeries({
+          color,
+          priceLineVisible: false,
+          priceFormat: {
+            type: 'custom',
+            formatter: value => `${(value * 100).toFixed(2)}%`
+          }
+        });
+      }
+      this.series.setData(this.chartData);
       window.onresize = () => {
         this.chart.resize(
           chartContainer.offsetWidth,
           chartContainer.offsetHeight
         );
       };
-    },
-    getChartData() {
-      const data = [];
-      const rowKeys = Object.keys(this.metrics);
-      for (let i = 1; i < rowKeys.length; i++) {
-        const row = this.metrics[rowKeys[i]];
-        const previousRow = this.metrics[rowKeys[i - 1]];
-        const timestamp = parseFloat(rowKeys[i].split('_')[1]);
-        const date = new Date(timestamp);
-        let value = 0;
-        if (this.activeTab === 'VOLUME') {
-          const totalVolume = parseFloat(row[0].poolTotalSwapVolume);
-          const previousTotalVolume = parseFloat(
-            previousRow[0].poolTotalSwapVolume
-          );
-          value = totalVolume - previousTotalVolume;
-        }
-        if (this.activeTab === 'FEES') {
-          const totalFee = parseFloat(row[0].poolTotalSwapFee);
-          const previousTotalFee = parseFloat(previousRow[0].poolTotalSwapFee);
-          value = totalFee - previousTotalFee;
-        }
-        const dataItem = {
-          time: date.toISOString(),
-          value
-        };
-        data.push(dataItem);
-      }
-      return data;
     }
   },
   async mounted() {
+    this.loading = true;
     this.metrics = await this.getPoolMetrics(this.pool.id);
+    this.loading = false;
     await this.loadChart();
   }
 };
