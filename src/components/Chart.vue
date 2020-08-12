@@ -18,7 +18,7 @@
       class="mb-4 border rounded-md-1 panel-background"
       style="height: 300px; border-top-left-radius: 0px !important;"
     >
-      <UiLoading v-if="loading" class="d-flex height-full" />
+      <UiLoading v-if="loading" class="big d-flex height-full" />
     </div>
   </div>
 </template>
