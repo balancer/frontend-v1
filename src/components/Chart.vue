@@ -139,6 +139,13 @@ export default {
         options.width = chartContainer.offsetWidth;
         options.height = chartContainer.offsetHeight;
         this.chart = TV.createChart(chartContainer, options);
+        window.onresize = () => {
+          const width = Math.min(
+            document.body.offsetWidth,
+            chartContainer.offsetWidth
+          );
+          this.chart.resize(width, chartContainer.offsetHeight);
+        };
       } else {
         this.chart.removeSeries(this.series);
       }
@@ -177,12 +184,6 @@ export default {
         });
       }
       this.series.setData(this.chartData);
-      window.onresize = () => {
-        this.chart.resize(
-          chartContainer.offsetWidth,
-          chartContainer.offsetHeight
-        );
-      };
     }
   },
   async mounted() {
