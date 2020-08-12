@@ -165,8 +165,10 @@ export default {
         });
       }
       if (this.activeTab === 'FEE_RETURNS') {
-        this.series = this.chart.addLineSeries({
-          color,
+        this.series = this.chart.addAreaSeries({
+          lineColor: color,
+          topColor: `${color}ff`,
+          bottomColor: `${color}00`,
           priceLineVisible: false,
           priceFormat: {
             type: 'custom',
