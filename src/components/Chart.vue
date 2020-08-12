@@ -66,7 +66,11 @@ const options = {
   },
   handleScale: {
     mouseWheel: false,
-    pinch: false
+    pinch: false,
+    axisPressedMouseMove: {
+      time: false,
+      price: false
+    }
   }
 };
 
@@ -188,13 +192,15 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '../vars';
+
 .tab {
   line-height: 40px;
   height: 44px;
   overflow: hidden;
   padding: 0 16px;
-  border-radius: 4px 4px 0 0;
+  border-radius: $border-radius $border-radius 0 0;
   font-size: 16px;
   color: #fff;
   display: block;
@@ -202,6 +208,6 @@ export default {
 }
 
 .tab.active {
-  background-color: #41476b;
+  background-color: $blue-900;
 }
 </style>

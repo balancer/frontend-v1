@@ -287,7 +287,7 @@ const actions = {
     try {
       const day = 24 * 60 * 60 * 1000;
       const now = Date.now();
-      const today = now - (now % (24 * 60 * 60 * 1000));
+      const today = now - (now % day);
       const query = {};
       for (let i = 0; i < 31; i++) {
         const timestamp = today - i * day;
@@ -296,7 +296,7 @@ const actions = {
           __args: {
             first: 1,
             orderBy: 'timestamp',
-            orderDirection: 'asc',
+            orderDirection: 'desc',
             where: {
               poolAddress: payload,
               timestamp_gt: timestamp / 1000,
