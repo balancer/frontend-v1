@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { getAddress } from '@ethersproject/address';
+import config from '@/config';
 
 const ENDPOINT = 'https://api.coingecko.com/api/v3';
 
@@ -21,6 +22,28 @@ const mutations = {
 };
 
 const actions = {
+    loadPricesById: async ({ commit }, payload) => {
+      commit('GET_PRICE_REQUEST');
+      const idString = payload.join('%2C');
+      const url = `${ENDPOINT}/simple/price?ids=${idString}&vs_currencies=usd`;
+      const response = await fetch(url);
+      const data = await response.json();
+      const idToAddressMap = {};
+      for (const address in config.tokens) {
+        const id = config.tokens[address].id;
+        if (!id) {
+          continue;
+        }
+        idToAddressMap[id] = address;
+      }
+      const prices = {};
+      for (const id in data) {
+        const price = data[id].usd;
+        const address = idToAddressMap[id];
+        prices[address] = price;
+      }
+      commit('GET_PRICE_SUCCESS', prices);
+  },
   loadPricesByAddress: async ({ commit }, payload) => {
     commit('GET_PRICE_REQUEST');
     const contractString = payload.join('%2C');

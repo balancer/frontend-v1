@@ -33,7 +33,7 @@ export default {
       if (this.padlock) {
         return this.tokens.map(token => {
           const symbol = this._ticker(token);
-          const price = this._num(this.subgraph.tokens[token] || 0, 'currency');
+          const price = this._num(this.price.values[token] || 0, 'currency');
           return `1 ${symbol} = ${price}`;
         });
       } else {
