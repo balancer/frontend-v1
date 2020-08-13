@@ -22,32 +22,32 @@ const mutations = {
 };
 
 const actions = {
-    loadPricesById: async ({ commit }, payload) => {
-      commit('GET_PRICE_REQUEST');
-      const idString = payload.join('%2C');
-      let data;
-      try {
-        const url = `${ENDPOINT}/simple/price?ids=${idString}&vs_currencies=usd`;
-        const response = await fetch(url);
-        data = await response.json();
-      } catch(e) {
-        return;
+  loadPricesById: async ({ commit }, payload) => {
+    commit('GET_PRICE_REQUEST');
+    const idString = payload.join('%2C');
+    let data;
+    try {
+      const url = `${ENDPOINT}/simple/price?ids=${idString}&vs_currencies=usd`;
+      const response = await fetch(url);
+      data = await response.json();
+    } catch (e) {
+      return;
+    }
+    const idToAddressMap = {};
+    for (const address in config.tokens) {
+      const id = config.tokens[address].id;
+      if (!id) {
+        continue;
       }
-      const idToAddressMap = {};
-      for (const address in config.tokens) {
-        const id = config.tokens[address].id;
-        if (!id) {
-          continue;
-        }
-        idToAddressMap[id] = address;
-      }
-      const prices = {};
-      for (const id in data) {
-        const price = data[id].usd;
-        const address = idToAddressMap[id];
-        prices[address] = price;
-      }
-      commit('GET_PRICE_SUCCESS', prices);
+      idToAddressMap[id] = address;
+    }
+    const prices = {};
+    for (const id in data) {
+      const price = data[id].usd;
+      const address = idToAddressMap[id];
+      prices[address] = price;
+    }
+    commit('GET_PRICE_SUCCESS', prices);
   },
   loadPricesByAddress: async ({ commit }, payload) => {
     commit('GET_PRICE_REQUEST');
@@ -57,7 +57,7 @@ const actions = {
       const url = `${ENDPOINT}/simple/token_price/ethereum?contract_addresses=${contractString}&vs_currencies=usd`;
       const response = await fetch(url);
       data = await response.json();
-    } catch(e) {
+    } catch (e) {
       return;
     }
     const prices = {};
