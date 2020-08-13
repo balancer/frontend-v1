@@ -25,9 +25,14 @@ const actions = {
     loadPricesById: async ({ commit }, payload) => {
       commit('GET_PRICE_REQUEST');
       const idString = payload.join('%2C');
-      const url = `${ENDPOINT}/simple/price?ids=${idString}&vs_currencies=usd`;
-      const response = await fetch(url);
-      const data = await response.json();
+      let data;
+      try {
+        const url = `${ENDPOINT}/simple/price?ids=${idString}&vs_currencies=usd`;
+        const response = await fetch(url);
+        data = await response.json();
+      } catch(e) {
+        return;
+      }
       const idToAddressMap = {};
       for (const address in config.tokens) {
         const id = config.tokens[address].id;
@@ -47,9 +52,14 @@ const actions = {
   loadPricesByAddress: async ({ commit }, payload) => {
     commit('GET_PRICE_REQUEST');
     const contractString = payload.join('%2C');
-    const url = `${ENDPOINT}/simple/token_price/ethereum?contract_addresses=${contractString}&vs_currencies=usd`;
-    const response = await fetch(url);
-    const data = await response.json();
+    let data;
+    try {
+      const url = `${ENDPOINT}/simple/token_price/ethereum?contract_addresses=${contractString}&vs_currencies=usd`;
+      const response = await fetch(url);
+      data = await response.json();
+    } catch(e) {
+      return;
+    }
     const prices = {};
     for (const address in data) {
       const price = data[address].usd;
