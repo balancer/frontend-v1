@@ -92,8 +92,8 @@ export default {
       const weth = this.config.tokens[this.config.addresses.weth];
       const price =
         address === 'ether'
-          ? this.subgraph.tokens[weth.address]
-          : this.subgraph.tokens[address];
+          ? this.price.values[weth.address]
+          : this.price.values[address];
       return balance.times(price).toNumber();
     },
     formatBalance(balanceString, address) {

@@ -63,7 +63,7 @@
           </div>
           <div class="column-sm hide-sm">
             <div
-              v-text="_num(subgraph.tokens[token], 'currency')"
+              v-text="_num(price.values[token], 'currency')"
               v-if="padlock"
             />
             <div v-text="'-'" v-else />
@@ -324,7 +324,7 @@ export default {
       this.handleAmountChange(tokenAddress);
     },
     handleAmountChange(tokenAddress) {
-      const tokenPrice = this.subgraph.tokens[tokenAddress];
+      const tokenPrice = this.price.values[tokenAddress];
       if (!tokenPrice) {
         return;
       }
@@ -340,7 +340,7 @@ export default {
           Vue.set(this.amounts, token, '');
           continue;
         }
-        const tokenPrice = this.subgraph.tokens[token];
+        const tokenPrice = this.price.values[token];
         if (!tokenPrice) {
           continue;
         }
@@ -397,7 +397,7 @@ export default {
       return true;
     },
     getValue(tokenAddress) {
-      const tokenPrice = this.subgraph.tokens[tokenAddress];
+      const tokenPrice = this.price.values[tokenAddress];
       if (!tokenPrice || !this.amounts[tokenAddress]) {
         return 0;
       }
