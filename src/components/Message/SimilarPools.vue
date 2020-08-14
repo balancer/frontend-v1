@@ -4,7 +4,7 @@
     id="info"
     class="d-flex flex-items-center px-4 py-2"
   >
-    <Icon name="warning" size="22" class="mr-4" />
+    <Icon name="info" size="22" class="mr-4" />
     <div>
       <div>
         There are similar pools available:
