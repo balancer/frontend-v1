@@ -14,7 +14,7 @@
       <div class="m-4 d-block d-sm-flex">
         <PoolOverview
           :pool="pool"
-          :userShare="userShare"
+          :userShare="userLiquidity.relative"
           class="hide-sm hide-md col-3 float-left"
         />
         <div class="col-12 col-md-9 float-left pl-0 pl-md-4">
@@ -75,6 +75,18 @@
                 </div>
               </div>
             </UiTableTr>
+          </UiTable>
+          <UiTable class="mt-4">
+            <UiTableTh class="text-left flex-items-center text-white">
+              <div class="flex-auto">BPT amount</div>
+              <div class="flex-auto text-right">
+                {{ _num(userLiquidity.absolute.current) }}
+                <span v-if="userLiquidity.absolute.future">
+                  → {{ _num(userLiquidity.absolute.future) }}
+                </span>
+                BPT
+              </div>
+            </UiTableTh>
           </UiTable>
         </div>
       </div>
@@ -182,14 +194,19 @@ export default {
     }
   },
   computed: {
-    userShare() {
+    userLiquidity() {
       const poolSharesFrom =
         parseFloat(this.subgraph.poolShares[this.pool.id]) || 0;
       const totalShares = parseFloat(this.pool.totalShares);
       const current = poolSharesFrom / totalShares;
       if (this.validationError) {
         return {
-          current
+          absolute: {
+            current: poolSharesFrom
+          },
+          relative: {
+            current
+          }
         };
       }
 
@@ -199,11 +216,17 @@ export default {
             .toNumber()
         : 0;
       const future = (poolSharesFrom + poolTokens) / (totalShares + poolTokens);
-      const userShare = {
-        current,
-        future
+      const userLiquidity = {
+        absolute: {
+          current: poolSharesFrom,
+          future: poolSharesFrom + poolTokens
+        },
+        relative: {
+          current,
+          future
+        }
       };
-      return userShare;
+      return userLiquidity;
     },
     tokenError() {
       if (

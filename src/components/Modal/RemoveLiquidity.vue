@@ -14,7 +14,7 @@
       <div class="m-4 d-block d-sm-flex">
         <PoolOverview
           :pool="pool"
-          :userShare="userShare"
+          :userShare="userLiquidity.relative"
           class="hide-sm hide-md col-3 float-left"
         />
         <div class="col-12 col-md-9 float-left pl-0 pl-md-4">
@@ -134,23 +134,34 @@ export default {
     poolTokenBalance() {
       return this.subgraph.poolShares[this.pool.id] || 0;
     },
-    userShare() {
+    userLiquidity() {
       const poolSharesFrom = this.subgraph.poolShares[this.pool.id] || 0;
       const totalShares = parseFloat(this.pool.totalShares);
       const current = poolSharesFrom / totalShares;
       if (this.validationError) {
         return {
-          current
+          absolute: {
+            current: poolSharesFrom
+          },
+          relative: {
+            current
+          }
         };
       }
 
       const poolTokens = parseFloat(this.poolAmountIn);
       const future = (poolSharesFrom - poolTokens) / (totalShares - poolTokens);
-      const userShare = {
-        current,
-        future
+      const userLiquidity = {
+        absolute: {
+          current: poolSharesFrom,
+          future: poolSharesFrom + poolTokens
+        },
+        relative: {
+          current,
+          future
+        }
       };
-      return userShare;
+      return userLiquidity;
     },
     tokens() {
       return this.pool.tokens.map(token => {
