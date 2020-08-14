@@ -43,6 +43,7 @@ export default {
     border-radius: 19px;
     padding: 0 14px;
     height: 36px;
+    line-height: 34px;
   }
 
   &.button-primary {
