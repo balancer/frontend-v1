@@ -13,9 +13,9 @@ export default {
   props: ['value', 'isDeposit'],
   computed: {
     text() {
-      const percent = this.value.times(100).toFixed(2);
       const action = this.isDeposit ? 'Adding' : 'Removing';
-      return `${action} liquidity will incur ${percent}% of slippage`;
+      const percentage = this._num(this.value, 'percent');
+      return `${action} liquidity will incur ${percentage} of slippage`;
     }
   }
 };
