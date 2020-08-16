@@ -1,9 +1,10 @@
 <template>
   <div
     class="d-flex flex-items-center p-4"
-    :class="{ 'info-box': value.lt(0.01), 'warning-box': value.gte(0.01) }"
+    :class="{ 'info-box': !isWarning, 'warning-box': isWarning }"
   >
-    <Icon name="warning" size="22" class="mr-4" />
+    <Icon v-if="isWarning" name="warning" size="22" class="mr-4" />
+    <Icon v-else name="info" size="22" class="mr-4" />
     {{ text }}
   </div>
 </template>
@@ -13,9 +14,12 @@ export default {
   props: ['value', 'isDeposit'],
   computed: {
     text() {
-      const percent = this.value.times(100).toFixed(2);
       const action = this.isDeposit ? 'Adding' : 'Removing';
-      return `${action} liquidity will incur ${percent}% of slippage`;
+      const percentage = this._num(this.value, 'percent');
+      return `${action} liquidity will incur ${percentage} of slippage`;
+    },
+    isWarning() {
+      return this.value.gte(0.01);
     }
   }
 };

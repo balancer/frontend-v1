@@ -238,10 +238,16 @@ const actions = {
       for (let i = 0; i < tokens.length; i++) {
         const [decimals] = testToken.decodeFunctionResult(
           'decimals',
-          response[0]
+          response[3 * i]
         );
-        const [symbol] = testToken.decodeFunctionResult('symbol', response[1]);
-        const [name] = testToken.decodeFunctionResult('name', response[2]);
+        const [symbol] = testToken.decodeFunctionResult(
+          'symbol',
+          response[3 * i + 1]
+        );
+        const [name] = testToken.decodeFunctionResult(
+          'name',
+          response[3 * i + 2]
+        );
         tokenMetadata[tokens[i]] = {
           decimals,
           symbol,
