@@ -14,7 +14,7 @@
     "generate-icons": "icon-font-generator src/assets/fonts/icons/*.svg -o src/assets/fonts --name iconfont --html false"
   },
   "dependencies": {
-    "@bonustrack/lock": "github:bonustrack/lock#e426b056bf375de046f6d1ce61da51a5bcbfd6ae",
+    "@bonustrack/lock": "github:bonustrack/lock#e66d69d728e4003c4fcf5b124387bb16c37cbfe1",
     "@ethersproject/abi": "^5.0.1",
     "@ethersproject/address": "^5.0.1",
     "@ethersproject/constants": "^5.0.1",
@@ -34,6 +34,7 @@
     "body-parser": "^1.19.0",
     "core-js": "^3.6.5",
     "eslint": "^6.7.2",
+    "fortmatic": "^2.0.6",
     "json-to-graphql-query": "^2.0.0",
     "lightweight-charts": "^3.1.5",
     "lodash": "^4.17.19",
