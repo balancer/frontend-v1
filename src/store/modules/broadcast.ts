@@ -32,6 +32,15 @@ const mutations = {
   CREATE_POOL_FAILURE(_state, payload) {
     console.debug('CREATE_POOL_FAILURE', payload);
   },
+  CREATE_SMART_POOL_REQUEST() {
+    console.debug('CREATE_SMART_POOL_REQUEST');
+  },
+  CREATE_SMART_POOL_SUCCESS() {
+    console.debug('CREATE_SMART_POOL_SUCCESS');
+  },
+  CREATE_SMART_POOL_FAILURE(_state, payload) {
+    console.debug('CREATE_SMART_POOL_FAILURE', payload);
+  },
   JOIN_POOL_REQUEST() {
     console.debug('JOIN_POOL_REQUEST');
   },
@@ -145,13 +154,17 @@ const actions = {
       swapFee = toWei(swapFee)
         .div(100)
         .toString();
+      const poolParams = {
+        tokens,
+        balances: startBalances,
+        weights: startWeights,
+        swapFee,
+      };
+
       const iface = new Interface(abi.BActions);
       const data = iface.encodeFunctionData('create', [
         config.addresses.bFactory,
-        tokens,
-        startBalances,
-        startWeights,
-        swapFee,
+        poolParams,
         true
       ]);
       const params = [
@@ -170,6 +183,63 @@ const actions = {
       }
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('CREATE_POOL_FAILURE', e);
+    }
+  },
+  createSmartPool: async (
+    { commit, dispatch, rootState },
+    { tokens, balances, weights, swapFee, rights, symbol }
+  ) => {
+    commit('CREATE_SMART_POOL_REQUEST');
+    const dsProxyAddress = rootState.web3.dsProxyAddress;
+    try {
+      balances = tokens.map(token => {
+        const amountInput = balances[token];
+        const amount = bnum(amountInput);
+        const tokenMetadata = rootState.web3.tokenMetadata[token];
+        const decimals = tokenMetadata ? tokenMetadata.decimals : null;
+        return denormalizeBalance(amount, decimals)
+          .integerValue(BigNumber.ROUND_DOWN)
+          .toString();
+      });
+      weights = tokens.map(token => {
+        return toWei(weights[token])
+          .div(2)
+          .toString();
+      });
+      swapFee = toWei(swapFee)
+        .div(100)
+        .toString();
+      const poolParams = {
+        tokens,
+        balances,
+        weights,
+        swapFee,
+      };
+
+      const iface = new Interface(abi.BActions);
+      const data = iface.encodeFunctionData('createSmartPool', [
+        config.addresses.crpFactory,
+        config.addresses.bFactory,
+        symbol,
+        poolParams,
+        rights
+      ]);
+      const params = [
+        'DSProxy',
+        dsProxyAddress,
+        'execute',
+        [config.addresses.bActions, data],
+        {}
+      ];
+      await dispatch('sendTransaction', params);
+      dispatch('notify', ['green', "You've successfully created a pool"]);
+      commit('CREATE_SMART_POOL_SUCCESS');
+    } catch (e) {
+      if (!e || isTxReverted(e)) {
+        return e;
+      }
+      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      commit('CREATE_SMART_POOL_FAILURE', e);
     }
   },
   joinPool: async (
