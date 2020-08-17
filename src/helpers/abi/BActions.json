@@ -32,7 +32,7 @@
               "type": "uint256"
             }
           ],
-          "internalType": "struct Pool.Params",
+          "internalType": "struct Params.Pool",
           "name": "params",
           "type": "tuple"
         },
@@ -95,8 +95,30 @@
               "type": "uint256"
             }
           ],
-          "internalType": "struct Pool.Params",
-          "name": "params",
+          "internalType": "struct Params.Pool",
+          "name": "poolParams",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "initialSupply",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minimumWeightChangeBlockPeriod",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "addTokenTimeLockInBlocks",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Params.CRP",
+          "name": "crpParams",
           "type": "tuple"
         },
         {

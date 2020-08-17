@@ -180,7 +180,7 @@ const poolRights = {
   poolPauseSwapping: 'can pause swapping',
   poolChangeSwapFee: 'can change swap fee',
   poolChangeWeights: 'can change weights',
-  poolAddRemoveTokens: 'can change tokens',
+  poolAddRemoveTokens: 'can add and remove tokens',
   poolWhitelistLPs: 'can whitelist LPs',
   poolChangeCap: 'can change pool cap'
 };

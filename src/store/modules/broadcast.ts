@@ -215,6 +215,11 @@ const actions = {
         weights,
         swapFee
       };
+      const crpParams = {
+        initialSupply: toWei(100).toString(),
+        minimumWeightChangeBlockPeriod: 10,
+        addTokenTimeLockInBlocks: 10,
+      };
 
       const iface = new Interface(abi.BActions);
       const data = iface.encodeFunctionData('createSmartPool', [
@@ -222,6 +227,7 @@ const actions = {
         config.addresses.bFactory,
         symbol,
         poolParams,
+        crpParams,
         rights
       ]);
       const params = [

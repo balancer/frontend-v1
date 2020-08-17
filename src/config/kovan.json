@@ -6,7 +6,7 @@
   "alchemyWsUrl": "wss://eth-kovan.ws.alchemyapi.io/v2/C467LJc7Aa761LLxlcxXvhIG9HzDTtKw",
   "addresses": {
     "bFactory": "0x8f7F78080219d4066A8036ccD30D588B416a40DB",
-    "bActions": "0x9Aaa72446a82C1a6ad790bdd3e35C9Fb6f35EEaC",
+    "bActions": "0x0AC238dF3EbaD3170dD0cFfcfB5eF26ed772f5C9",
     "dsProxyRegistry": "0x130767E0cf05469CF11Fa3fcf270dfC1f52b9072",
     "proxy": "0x2641f150669739986CDa3ED6860DeD44BC3Cda5d",
     "crpFactory": "0xb076eaF6dBC8680FD3a11D4A817c177eFF0D55D7",
