@@ -521,16 +521,6 @@
       "color": "#7e9e99",
       "hasIcon": true
     },
-    "0x1985365e9f78359a9B6AD760e32412f4a445E862": {
-      "address": "0x1985365e9f78359a9B6AD760e32412f4a445E862",
-      "id": "augur",
-      "name": "Reputation",
-      "symbol": "REP",
-      "decimals": 18,
-      "precision": 4,
-      "color": "#6e6962",
-      "hasIcon": true
-    },
     "0xE41d2489571d322189246DaFA5ebDe1F4699F498": {
       "address": "0xE41d2489571d322189246DaFA5ebDe1F4699F498",
       "id": "0x",
@@ -2299,6 +2289,99 @@
       "decimals": 18,
       "precision": 2,
       "color": "#9a9a97",
+      "decimals": 18,
+      "precision": 2,
+      "color": "#5d2e9a",
+      "hasIcon": true
+    },
+    "0x954b890704693af242613edEf1B603825afcD708": {
+      "address": "0x954b890704693af242613edEf1B603825afcD708",
+      "id": "",
+      "name": "Cardstack",
+      "symbol": "CARD",
+      "decimals": 18,
+      "precision": 2,
+      "color": "#387080",
+      "hasIcon": true
+    },
+    "0x13339fD07934CD674269726EdF3B5ccEE9DD93de": {
+      "address": "0x13339fD07934CD674269726EdF3B5ccEE9DD93de",
+      "id": "",
+      "name": "CurToken",
+      "symbol": "CUR",
+      "decimals": 18,
+      "precision": 2,
+      "color": "#c28d75",
+      "hasIcon": true
+    },
+    "0xBD6467a31899590474cE1e84F70594c53D628e46": {
+      "address": "0xBD6467a31899590474cE1e84F70594c53D628e46",
+      "id": "",
+      "name": "KardiaChain Token",
+      "symbol": "KAI",
+      "decimals": 18,
+      "precision": 2,
+      "color": "#557064",
+      "hasIcon": true
+    },
+    "0xCc80C051057B774cD75067Dc48f8987C4Eb97A5e": {
+      "address": "0xCc80C051057B774cD75067Dc48f8987C4Eb97A5e",
+      "id": "",
+      "name": "Ethfinex Nectar Token",
+      "symbol": "NEC",
+      "decimals": 18,
+      "precision": 2,
+      "color": "#6eaa78",
+      "hasIcon": true
+    },
+    "0x12f649A9E821F90BB143089a6e56846945892ffB": {
+      "address": "0x12f649A9E821F90BB143089a6e56846945892ffB",
+      "id": "",
+      "name": "uDOO",
+      "symbol": "uDOO",
+      "decimals": 18,
+      "precision": 2,
+      "color": "#c38890",
+      "hasIcon": true
+    },
+    "0x880873a96ce38c7fd39dc714592902b069bde048": {
+      "address": "0x880873a96ce38c7fd39dc714592902b069bde048",
+      "id": "",
+      "name": "PieDAO DEFI++",
+      "symbol": "DEFI++",
+      "decimals": 18,
+      "precision": 2,
+      "color": "#7ca1c0",
+      "hasIcon": false
+    },
+    "0x24d1917c1ae6c085e6b68b6c1a41b8f9de5bd441": {
+      "address": "0x24d1917c1ae6c085e6b68b6c1a41b8f9de5bd441",
+      "id": "",
+      "name": "PieDAO DEFI Large Cap",
+      "symbol": "DEFI+L",
+      "decimals": 18,
+      "precision": 2,
+      "color": "#c7bdf4",
+      "hasIcon": false
+    },
+    "0xad6a626ae2b43dcb1b39430ce496d2fa0365ba9c": {
+      "address": "0xad6a626ae2b43dcb1b39430ce496d2fa0365ba9c",
+      "id": "",
+      "name": "PieDAO DEFI Small Cap",
+      "symbol": "DEFI+S",
+      "decimals": 18,
+      "precision": 2,
+      "color": "#be955c",
+      "hasIcon": false
+    },
+    "0x221657776846890989a759BA2973e427DfF5C9bB": {
+      "address": "0x221657776846890989a759BA2973e427DfF5C9bB",
+      "id": "",
+      "name": "Reputation",
+      "symbol": "REPv2",
+      "decimals": 18,
+      "precision": 2,
+      "color": "#7ca1c0",
       "hasIcon": true
     },
     "0x476c5E26a75bd202a9683ffD34359C0CC15be0fF": {
@@ -2307,9 +2390,49 @@
       "name": "Serum",
       "symbol": "SRM",
       "decimals": 6,
+      "precision": 2,
+      "color": "#8d6268",
+      "hasIcon": true
+    },
+    "0xD46bA6D942050d489DBd938a2C909A5d5039A161": {
+      "address": "0xD46bA6D942050d489DBd938a2C909A5d5039A161",
+      "id": "",
+      "name": "Ampleforth",
+      "symbol": "AMPL",
+      "decimals": 9,
+      "precision": 2,
+      "color": "#8d6268",
+      "hasIcon": true
+    },
+    "0x9041Fe5B3FDEA0f5e4afDC17e75180738D877A01": {
+      "address": "0x9041Fe5B3FDEA0f5e4afDC17e75180738D877A01",
+      "id": "prochain",
+      "name": "ProToken",
+      "symbol": "PRO",
+      "decimals": 18,
+      "precision": 2,
+      "color": "#9a9a97",
+      "hasIcon": true
+    },
+    "0x1985365e9f78359a9B6AD760e32412f4a445E862": {
+      "address": "0x1985365e9f78359a9B6AD760e32412f4a445E862",
+      "id": "augur",
+      "name": "Reputation",
+      "symbol": "REP",
+      "decimals": 18,
       "precision": 4,
-      "color": "#a593a5",
-      "hasIcon": false
+      "color": "#6e6962",
+      "hasIcon": true
+    },
+    "0xD533a949740bb3306d119CC777fa900bA034cd52": {
+      "address": "0xD533a949740bb3306d119CC777fa900bA034cd52",
+      "id": "",
+      "name": "Curve DAO Token",
+      "symbol": "CRV",
+      "decimals": 18,
+      "precision": 2,
+      "color": "#c5ccb8",
+      "hasIcon": true
     }
   },
   "untrusted": [
