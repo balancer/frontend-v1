@@ -14,13 +14,17 @@ export default {
 input {
   appearance: none;
   background-color: $panel-background;
-  border: 2px solid $error;
+  border: 2px solid $info;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
     inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
   padding: 9px;
   border-radius: 3px;
   display: inline-block;
   position: relative;
+
+  &.error {
+    border-color: $error;
+  }
 
   &:active,
   &:checked:active {
@@ -29,12 +33,15 @@ input {
   }
 
   &:checked {
-    background-color: $error;
-    border: 2px solid $error;
+    background-color: $info;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
       inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05),
       inset 15px 10px -12px rgba(255, 255, 255, 0.1);
     color: #99a1a7;
+
+    &.error {
+      background-color: $error;
+    }
   }
 
   &:checked:after {
