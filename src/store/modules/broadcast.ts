@@ -158,7 +158,7 @@ const actions = {
         tokens,
         balances: startBalances,
         weights: startWeights,
-        swapFee,
+        swapFee
       };
 
       const iface = new Interface(abi.BActions);
@@ -213,7 +213,7 @@ const actions = {
         tokens,
         balances,
         weights,
-        swapFee,
+        swapFee
       };
 
       const iface = new Interface(abi.BActions);
