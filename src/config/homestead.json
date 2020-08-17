@@ -21,7 +21,9 @@
       "id": "walletconnect",
       "name": "WalletConnect",
       "options": {
-        "infuraId": "237c3102f39b4940abbe12dc49165cd6"
+        "rpc": {
+          "1": "https://eth-mainnet.alchemyapi.io/v2/Q08AP-nlA-yUiQnIiAVlyWK4tbXjRMmD"
+        }
       }
     },
     "portis": {
@@ -1626,7 +1628,7 @@
     },
     "0xB647a1D7633c6C4d434e22eE9756b36F2b219525": {
       "address": "0xB647a1D7633c6C4d434e22eE9756b36F2b219525",
-      "id": "",
+      "id": "eth-20-ma-crossover-yield-set-ii",
       "name": "ETH 20 MA Crossover Yield II",
       "symbol": "ETHMACOAPY",
       "decimals": 18,
@@ -1766,7 +1768,7 @@
     },
     "0x5cD487CE4dB7091292F2E914F7B31445Bd4A5E1b": {
       "address": "0x5cD487CE4dB7091292F2E914F7B31445Bd4A5E1b",
-      "id": "",
+      "id": "inverse-eth-29-day-ma-crossover-set",
       "name": "Inverse ETH 20 SMA Crossover",
       "symbol": "iETH20SMACO",
       "decimals": 18,
@@ -2186,7 +2188,7 @@
     },
     "0xC0134b5B924c2FCA106eFB33C45446c466FBe03e": {
       "address": "0xC0134b5B924c2FCA106eFB33C45446c466FBe03e",
-      "id": "",
+      "id": "aleph",
       "name": "aleph.im",
       "symbol": "ALEPH",
       "decimals": 18,
@@ -2196,7 +2198,7 @@
     },
     "0xBA50933C268F567BDC86E1aC131BE072C6B0b71a": {
       "address": "0xBA50933C268F567BDC86E1aC131BE072C6B0b71a",
-      "id": "",
+      "id": "arpa-chain",
       "name": "ARPA Token",
       "symbol": "ARPA",
       "decimals": 18,
@@ -2216,7 +2218,7 @@
     },
     "0x954b890704693af242613edEf1B603825afcD708": {
       "address": "0x954b890704693af242613edEf1B603825afcD708",
-      "id": "",
+      "id": "cardstack",
       "name": "Cardstack",
       "symbol": "CARD",
       "decimals": 18,
@@ -2226,7 +2228,7 @@
     },
     "0x13339fD07934CD674269726EdF3B5ccEE9DD93de": {
       "address": "0x13339fD07934CD674269726EdF3B5ccEE9DD93de",
-      "id": "",
+      "id": "curio",
       "name": "CurToken",
       "symbol": "CUR",
       "decimals": 18,
@@ -2236,7 +2238,7 @@
     },
     "0xBD6467a31899590474cE1e84F70594c53D628e46": {
       "address": "0xBD6467a31899590474cE1e84F70594c53D628e46",
-      "id": "",
+      "id": "kardiachain",
       "name": "KardiaChain Token",
       "symbol": "KAI",
       "decimals": 18,
@@ -2246,7 +2248,7 @@
     },
     "0xCc80C051057B774cD75067Dc48f8987C4Eb97A5e": {
       "address": "0xCc80C051057B774cD75067Dc48f8987C4Eb97A5e",
-      "id": "",
+      "id": "nectar-token",
       "name": "Ethfinex Nectar Token",
       "symbol": "NEC",
       "decimals": 18,
@@ -2256,7 +2258,7 @@
     },
     "0x12f649A9E821F90BB143089a6e56846945892ffB": {
       "address": "0x12f649A9E821F90BB143089a6e56846945892ffB",
-      "id": "",
+      "id": "howdoo",
       "name": "uDOO",
       "symbol": "uDOO",
       "decimals": 18,
@@ -2316,7 +2318,7 @@
     },
     "0xD46bA6D942050d489DBd938a2C909A5d5039A161": {
       "address": "0xD46bA6D942050d489DBd938a2C909A5d5039A161",
-      "id": "",
+      "id": "ampleforth",
       "name": "Ampleforth",
       "symbol": "AMPL",
       "decimals": 9,
@@ -2346,7 +2348,7 @@
     },
     "0xD533a949740bb3306d119CC777fa900bA034cd52": {
       "address": "0xD533a949740bb3306d119CC777fa900bA034cd52",
-      "id": "",
+      "id": "curve-dao-token",
       "name": "Curve DAO Token",
       "symbol": "CRV",
       "decimals": 18,

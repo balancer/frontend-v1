@@ -21,7 +21,9 @@
       "id": "walletconnect",
       "name": "WalletConnect",
       "options": {
-        "infuraId": "237c3102f39b4940abbe12dc49165cd6"
+        "rpc": {
+          "42": "https://eth-kovan.alchemyapi.io/v2/C467LJc7Aa761LLxlcxXvhIG9HzDTtKw"
+        }
       }
     },
     "portis": {
