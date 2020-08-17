@@ -10,24 +10,31 @@
           "type": "address"
         },
         {
-          "internalType": "address[]",
-          "name": "tokens",
-          "type": "address[]"
-        },
-        {
-          "internalType": "uint256[]",
-          "name": "balances",
-          "type": "uint256[]"
-        },
-        {
-          "internalType": "uint256[]",
-          "name": "denorms",
-          "type": "uint256[]"
-        },
-        {
-          "internalType": "uint256",
-          "name": "swapFee",
-          "type": "uint256"
+          "components": [
+            {
+              "internalType": "address[]",
+              "name": "tokens",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "balances",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "weights",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "swapFee",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Pool.Params",
+          "name": "params",
+          "type": "tuple"
         },
         {
           "internalType": "bool",
@@ -39,6 +46,101 @@
       "outputs": [
         {
           "internalType": "contract BPool",
+          "name": "pool",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "contract CRPFactory",
+          "name": "factory",
+          "type": "address"
+        },
+        {
+          "internalType": "contract BFactory",
+          "name": "bFactory",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "components": [
+            {
+              "internalType": "address[]",
+              "name": "tokens",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "balances",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "weights",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "swapFee",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Pool.Params",
+          "name": "params",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "bool",
+              "name": "canPauseSwapping",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "canChangeSwapFee",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "canChangeWeights",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "canAddRemoveTokens",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "canWhitelistLPs",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "canChangeCap",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct RightsManager.Rights",
+          "name": "rights",
+          "type": "tuple"
+        }
+      ],
+      "name": "createSmartPool",
+      "outputs": [
+        {
+          "internalType": "contract ConfigurableRightsPool",
           "name": "pool",
           "type": "address"
         }
@@ -126,36 +228,6 @@
           "type": "address"
         },
         {
-          "internalType": "address[]",
-          "name": "tokens",
-          "type": "address[]"
-        },
-        {
-          "internalType": "uint256[]",
-          "name": "balances",
-          "type": "uint256[]"
-        },
-        {
-          "internalType": "uint256[]",
-          "name": "denorms",
-          "type": "uint256[]"
-        }
-      ],
-      "name": "rebind",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "internalType": "contract BPool",
-          "name": "pool",
-          "type": "address"
-        },
-        {
           "internalType": "address",
           "name": "newController",
           "type": "address"
@@ -202,6 +274,36 @@
         }
       ],
       "name": "setSwapFee",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "contract BPool",
+          "name": "pool",
+          "type": "address"
+        },
+        {
+          "internalType": "address[]",
+          "name": "tokens",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "balances",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "denorms",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "setTokens",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
