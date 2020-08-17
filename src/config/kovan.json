@@ -21,7 +21,7 @@
       "id": "walletconnect",
       "name": "WalletConnect",
       "options": {
-        "infuraId": "93e3393c76ed4e1f940d0266e2fdbda2"
+        "infuraId": "237c3102f39b4940abbe12dc49165cd6"
       }
     },
     "portis": {
@@ -36,7 +36,7 @@
       "id": "walletlink",
       "name": "Coinbase",
       "options": {
-        "appName": "Balancer Pool Management",
+        "appName": "Pool management - Balancer",
         "darkMode": true,
         "chainId": 42,
         "ethJsonrpcUrl": "https://eth-kovan.alchemyapi.io/v2/C467LJc7Aa761LLxlcxXvhIG9HzDTtKw"
