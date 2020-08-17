@@ -9,7 +9,7 @@ export const MAX_GAS = new BigNumber('0xffffffff');
 export const MAX_UINT = MaxUint256;
 export const POOL_TOKENS_DECIMALS = 18;
 
-export const toggleOptions = {
+export const liquidityToggleOptions = {
   MULTI_ASSET: 'Multi assets',
   SINGLE_ASSET: 'Single asset'
 };

@@ -7,8 +7,9 @@
       <div class="text-center m-4 mt-0">
         <Toggle
           :value="type"
-          :options="toggleOptions"
+          :options="liquidityToggleOptions"
           @select="handleSelectType"
+          class="mt-4"
         />
       </div>
       <div class="m-4 d-block d-sm-flex">
@@ -147,7 +148,7 @@ import {
   denormalizeBalance,
   isTxReverted,
   getTokenBySymbol,
-  toggleOptions,
+  liquidityToggleOptions,
   isLocked
 } from '@/helpers/utils';
 import { calcPoolOutGivenSingleIn } from '@/helpers/math';
@@ -168,7 +169,7 @@ export default {
   props: ['open', 'pool'],
   data() {
     return {
-      toggleOptions,
+      liquidityToggleOptions,
       loading: false,
       poolTokens: null,
       amounts: {},
