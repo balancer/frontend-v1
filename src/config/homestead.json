@@ -2264,54 +2264,54 @@
       "color": "#c38890",
       "hasIcon": true
     },
-    "0x880873a96ce38c7fd39dc714592902b069bde048": {
-      "address": "0x880873a96ce38c7fd39dc714592902b069bde048",
+    "0x880873A96ce38c7fD39dc714592902B069BdE048": {
+      "address": "0x880873A96ce38c7fD39dc714592902B069BdE048",
       "id": "",
       "name": "PieDAO DEFI++",
       "symbol": "DEFI++",
       "decimals": 18,
       "precision": 2,
-      "color": "#7ca1c0",
+      "color": "#7e9e99",
       "hasIcon": false
     },
-    "0x24d1917c1ae6c085e6b68b6c1a41b8f9de5bd441": {
-      "address": "0x24d1917c1ae6c085e6b68b6c1a41b8f9de5bd441",
+    "0x24D1917c1ae6C085e6b68B6c1A41B8f9dE5bd441": {
+      "address": "0x24D1917c1ae6C085e6b68B6c1A41B8f9dE5bd441",
       "id": "",
       "name": "PieDAO DEFI Large Cap",
       "symbol": "DEFI+L",
       "decimals": 18,
       "precision": 2,
-      "color": "#c7bdf4",
+      "color": "#9d9f7f",
       "hasIcon": false
     },
-    "0xad6a626ae2b43dcb1b39430ce496d2fa0365ba9c": {
-      "address": "0xad6a626ae2b43dcb1b39430ce496d2fa0365ba9c",
+    "0xaD6A626aE2B43DCb1B39430Ce496d2FA0365BA9C": {
+      "address": "0xaD6A626aE2B43DCb1B39430Ce496d2FA0365BA9C",
       "id": "",
       "name": "PieDAO DEFI Small Cap",
       "symbol": "DEFI+S",
       "decimals": 18,
       "precision": 2,
-      "color": "#be955c",
+      "color": "#68aca9",
       "hasIcon": false
     },
     "0x221657776846890989a759BA2973e427DfF5C9bB": {
       "address": "0x221657776846890989a759BA2973e427DfF5C9bB",
-      "id": "",
+      "id": "augur",
       "name": "Reputation",
       "symbol": "REPv2",
       "decimals": 18,
-      "precision": 2,
-      "color": "#7ca1c0",
+      "precision": 4,
+      "color": "#6e6962",
       "hasIcon": true
     },
     "0x476c5E26a75bd202a9683ffD34359C0CC15be0fF": {
       "address": "0x476c5E26a75bd202a9683ffD34359C0CC15be0fF",
-      "id": "",
+      "id": "serum",
       "name": "Serum",
       "symbol": "SRM",
       "decimals": 6,
       "precision": 2,
-      "color": "#8d6268",
+      "color": "#5d6872",
       "hasIcon": true
     },
     "0xD46bA6D942050d489DBd938a2C909A5d5039A161": {
