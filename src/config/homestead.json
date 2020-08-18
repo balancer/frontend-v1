@@ -41,6 +41,13 @@
         "chainId": 1,
         "ethJsonrpcUrl": "https://eth-mainnet.alchemyapi.io/v2/Q08AP-nlA-yUiQnIiAVlyWK4tbXjRMmD"
       }
+    },
+    "fortmatic": {
+      "id": "fortmatic",
+      "name": "Fortmatic",
+      "options": {
+        "apiKey": "pk_live_9CE8FD92E54684ED"
+      }
     }
   },
   "tokens": {
@@ -2209,6 +2216,79 @@
       "id": "",
       "name": "ethArt",
       "symbol": "ARTE",
+      "decimals": 18,
+      "precision": 2,
+      "color": "#5d2e9a",
+      "hasIcon": true
+    },
+    "0x954b890704693af242613edEf1B603825afcD708": {
+      "address": "0x954b890704693af242613edEf1B603825afcD708",
+      "id": "",
+      "name": "Cardstack",
+      "symbol": "CARD",
+      "decimals": 18,
+      "precision": 2,
+      "color": "#387080",
+      "hasIcon": true
+    },
+    "0x13339fD07934CD674269726EdF3B5ccEE9DD93de": {
+      "address": "0x13339fD07934CD674269726EdF3B5ccEE9DD93de",
+      "id": "",
+      "name": "CurToken",
+      "symbol": "CUR",
+      "decimals": 18,
+      "precision": 2,
+      "color": "#c28d75",
+      "hasIcon": true
+    },
+    "0xBD6467a31899590474cE1e84F70594c53D628e46": {
+      "address": "0xBD6467a31899590474cE1e84F70594c53D628e46",
+      "id": "",
+      "name": "KardiaChain Token",
+      "symbol": "KAI",
+      "decimals": 18,
+      "precision": 2,
+      "color": "#557064",
+      "hasIcon": true
+    },
+    "0xCc80C051057B774cD75067Dc48f8987C4Eb97A5e": {
+      "address": "0xCc80C051057B774cD75067Dc48f8987C4Eb97A5e",
+      "id": "",
+      "name": "Ethfinex Nectar Token",
+      "symbol": "NEC",
+      "decimals": 18,
+      "precision": 2,
+      "color": "#6eaa78",
+      "hasIcon": true
+    },
+    "0x12f649A9E821F90BB143089a6e56846945892ffB": {
+      "address": "0x12f649A9E821F90BB143089a6e56846945892ffB",
+      "id": "",
+      "name": "uDOO",
+      "symbol": "uDOO",
+      "decimals": 18,
+      "precision": 2,
+      "color": "#c38890",
+      "hasIcon": true
+    },
+    "0xD46bA6D942050d489DBd938a2C909A5d5039A161": {
+      "address": "0xD46bA6D942050d489DBd938a2C909A5d5039A161",
+      "id": "",
+      "name": "Ampleforth",
+      "symbol": "AMPL",
+      "decimals": 9,
+      "precision": 2,
+      "color": "#8d6268",
+      "hasIcon": true
+    },
+    "0x9041Fe5B3FDEA0f5e4afDC17e75180738D877A01": {
+      "address": "0x9041Fe5B3FDEA0f5e4afDC17e75180738D877A01",
+      "id": "prochain",
+      "name": "ProToken",
+      "symbol": "PRO",
+      "decimals": 18,
+      "precision": 2,
+      "color": "#9a9a97",
       "decimals": 18,
       "precision": 2,
       "color": "#5d2e9a",

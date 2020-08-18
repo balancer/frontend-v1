@@ -10,8 +10,12 @@
       </div>
       <div class="mt-2">
         If these {{ type }}s are not correct you may incur in a loss of funds
-        due to arbitrage. By continuing you agree that Balancer Labs is not
-        liable for any losses you may have.
+        due to arbitrage. You can click on <Icon name="lock" size="16" />
+        to toggle manual input.
+      </div>
+      <div class="mt-2">
+        By continuing you agree that Balancer Labs is not liable for any losses
+        you may have.
       </div>
       <div class="mt-4 d-flex flex-items-center flex-justify-center">
         <UiButton class="button-primary" @click="$emit('create')">
@@ -33,7 +37,7 @@ export default {
       if (this.padlock) {
         return this.tokens.map(token => {
           const symbol = this._ticker(token);
-          const price = this._num(this.subgraph.tokens[token] || 0, 'currency');
+          const price = this._num(this.price.values[token] || 0, 'currency');
           return `1 ${symbol} = ${price}`;
         });
       } else {

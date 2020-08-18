@@ -20,7 +20,7 @@
     >
       <div v-for="token in pool.tokens" :key="token.address" class="mt-1">
         <Icon name="bullet" size="16" :style="`color: ${token.color}`" />
-        {{ _num(token.weightPercent.toFixed()) }}%
+        {{ _num(token.weightPercent / 100, 'percent') }}
         {{ _ticker(token.checksum) }}
       </div>
     </div>

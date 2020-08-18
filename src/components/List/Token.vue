@@ -40,7 +40,7 @@ export default {
       return this._precision(balance, this.token.checksum);
     },
     myShareValue() {
-      const price = this.subgraph.tokens[this.token.checksum];
+      const price = this.price.values[this.token.checksum];
       return price * this.myPoolBalance;
     },
     tokenBalance() {

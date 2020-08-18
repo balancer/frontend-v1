@@ -6,9 +6,8 @@ import { getAddress } from '@ethersproject/address';
 import { Interface } from '@ethersproject/abi';
 import abi from '@/helpers/abi';
 import config from '@/config';
-import lock from '@/helpers/lock';
 import wsProvider from '@/helpers/ws';
-import { lsSet, lsGet, lsRemove, isTxRejected } from '@/helpers/utils';
+import { isTxRejected } from '@/helpers/utils';
 
 const GAS_LIMIT_BUFFER = 0.1;
 
@@ -180,21 +179,14 @@ const mutations = {
 
 const actions = {
   login: async ({ dispatch }, connector = 'injected') => {
-    const lockConnector = lock.getConnector(connector);
-    provider = await lockConnector.connect();
+    provider = await Vue.prototype.$auth.login(connector);
     if (provider) {
       web3 = new Web3Provider(provider);
       await dispatch('loadWeb3');
-      if (state.account) lsSet('connector', connector);
     }
   },
   logout: async ({ commit }) => {
-    const connector = lsGet('connector');
-    if (connector) {
-      const lockConnector = lock.getConnector(connector);
-      await lockConnector.logout();
-      lsRemove('connector');
-    }
+    Vue.prototype.$auth.logout();
     commit('LOGOUT');
     commit('CLEAR_USER');
   },
@@ -238,10 +230,16 @@ const actions = {
       for (let i = 0; i < tokens.length; i++) {
         const [decimals] = testToken.decodeFunctionResult(
           'decimals',
-          response[0]
+          response[3 * i]
         );
-        const [symbol] = testToken.decodeFunctionResult('symbol', response[1]);
-        const [name] = testToken.decodeFunctionResult('name', response[2]);
+        const [symbol] = testToken.decodeFunctionResult(
+          'symbol',
+          response[3 * i + 1]
+        );
+        const [name] = testToken.decodeFunctionResult(
+          'name',
+          response[3 * i + 2]
+        );
         tokenMetadata[tokens[i]] = {
           decimals,
           symbol,

@@ -21,12 +21,10 @@
     </div>
     <div v-text="'WETH → ETH'" class="eyebrow mb-2" />
     <div class="d-flex mb-2">
-      <div class="input d-flex flex-items-center position-relative">
-        <a
-          @click="handleMax()"
-          class="panel-background position-absolute left-0 top-0"
-          style="margin: 5px 10px;"
-        >
+      <div
+        class="input d-flex flex-items-center flex-justify-between position-relative"
+      >
+        <a @click="handleMax()">
           <UiLabel v-text="'Max'" />
         </a>
         <input
@@ -112,7 +110,7 @@ export default {
 
 <style lang="scss">
 .amount-input {
-  width: 60%;
+  width: 50%;
   background-color: transparent;
   border: none;
 }

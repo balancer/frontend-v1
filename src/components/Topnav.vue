@@ -24,7 +24,7 @@
         </router-link>
       </div>
       <div :key="web3.account">
-        <template v-if="web3.account && !wrongNetwork">
+        <template v-if="$auth.isAuthenticated && !wrongNetwork">
           <UiButton @click="modalOpen = true" :loading="loading">
             <Avatar :address="web3.account" size="16" class="mr-2 ml-n1" />
             <span v-if="web3.name" v-text="web3.name" />
@@ -33,7 +33,7 @@
         </template>
         <UiButton v-if="web3.injectedLoaded && wrongNetwork" class="button-red">
           <Icon name="warning" class="ml-n2 mr-1 v-align-middle" />
-          Wrong Network
+          Wrong network
         </UiButton>
         <UiButton
           v-if="showLogin"
@@ -41,7 +41,10 @@
           :loading="loading"
           class="button-primary"
         >
-          Connect Wallet
+          Connect wallet
+        </UiButton>
+        <UiButton @click="modalAboutOpen = true" class="ml-2">
+          <span v-text="'?'" class="ml-n1 mr-n1" />
         </UiButton>
       </div>
     </div>
@@ -50,6 +53,7 @@
       @close="modalOpen = false"
       @login="handleLogin"
     />
+    <ModalAbout :open="modalAboutOpen" @close="modalAboutOpen = false" />
   </nav>
 </template>
 
@@ -60,7 +64,8 @@ export default {
   data() {
     return {
       loading: false,
-      modalOpen: false
+      modalOpen: false,
+      modalAboutOpen: false
     };
   },
   computed: {
@@ -69,8 +74,8 @@ export default {
     },
     showLogin() {
       return (
-        (!this.web3.account && !this.web3.injectedLoaded) ||
-        (!this.web3.account && !this.wrongNetwork)
+        (!this.$auth.isAuthenticated && !this.web3.injectedLoaded) ||
+        (!this.$auth.isAuthenticated && !this.wrongNetwork)
       );
     }
   },
