@@ -216,9 +216,9 @@ const actions = {
         swapFee
       };
       const crpParams = {
-        initialSupply: toWei(100).toString(),
+        initialSupply: toWei('100').toString(),
         minimumWeightChangeBlockPeriod: 10,
-        addTokenTimeLockInBlocks: 10,
+        addTokenTimeLockInBlocks: 10
       };
 
       const iface = new Interface(abi.BActions);
