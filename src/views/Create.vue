@@ -177,12 +177,12 @@ const poolTypes = {
 };
 
 const poolRights = {
-  poolPauseSwapping: 'can pause swapping',
-  poolChangeSwapFee: 'can change swap fee',
-  poolChangeWeights: 'can change weights',
-  poolAddRemoveTokens: 'can add and remove tokens',
-  poolWhitelistLPs: 'can whitelist LPs',
-  poolChangeCap: 'can change pool cap'
+  canPauseSwapping: 'can pause swapping',
+  canChangeSwapFee: 'can change swap fee',
+  canChangeWeights: 'can change weights',
+  canAddRemoveTokens: 'can add and remove tokens',
+  canWhitelistLPs: 'can whitelist LPs',
+  canChangeCap: 'can change pool cap'
 };
 
 function getAnotherToken(tokens, selectedTokens) {
@@ -377,7 +377,7 @@ export default {
           balances: this.amounts,
           weights: this.weights,
           swapFee: this.swapFee,
-          rights: this.poolRights,
+          rights: this.rights,
           symbol: this.tokenSymbol
         });
       }
