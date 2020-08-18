@@ -1,5 +1,5 @@
 {
-  "contractName": "BPool",
+  "contractName": "CRPFactory",
   "abi": [
      {
       "anonymous": false,
