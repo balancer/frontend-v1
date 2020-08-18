@@ -43,6 +43,13 @@
         "chainId": 1,
         "ethJsonrpcUrl": "https://eth-mainnet.alchemyapi.io/v2/Q08AP-nlA-yUiQnIiAVlyWK4tbXjRMmD"
       }
+    },
+    "fortmatic": {
+      "id": "fortmatic",
+      "name": "Fortmatic",
+      "options": {
+        "apiKey": "pk_live_9CE8FD92E54684ED"
+      }
     }
   },
   "tokens": {
@@ -2218,7 +2225,7 @@
     },
     "0x954b890704693af242613edEf1B603825afcD708": {
       "address": "0x954b890704693af242613edEf1B603825afcD708",
-      "id": "cardstack",
+      "id": "",
       "name": "Cardstack",
       "symbol": "CARD",
       "decimals": 18,
@@ -2228,7 +2235,7 @@
     },
     "0x13339fD07934CD674269726EdF3B5ccEE9DD93de": {
       "address": "0x13339fD07934CD674269726EdF3B5ccEE9DD93de",
-      "id": "curio",
+      "id": "",
       "name": "CurToken",
       "symbol": "CUR",
       "decimals": 18,
@@ -2238,7 +2245,7 @@
     },
     "0xBD6467a31899590474cE1e84F70594c53D628e46": {
       "address": "0xBD6467a31899590474cE1e84F70594c53D628e46",
-      "id": "kardiachain",
+      "id": "",
       "name": "KardiaChain Token",
       "symbol": "KAI",
       "decimals": 18,
@@ -2248,7 +2255,7 @@
     },
     "0xCc80C051057B774cD75067Dc48f8987C4Eb97A5e": {
       "address": "0xCc80C051057B774cD75067Dc48f8987C4Eb97A5e",
-      "id": "nectar-token",
+      "id": "",
       "name": "Ethfinex Nectar Token",
       "symbol": "NEC",
       "decimals": 18,
@@ -2258,7 +2265,7 @@
     },
     "0x12f649A9E821F90BB143089a6e56846945892ffB": {
       "address": "0x12f649A9E821F90BB143089a6e56846945892ffB",
-      "id": "howdoo",
+      "id": "",
       "name": "uDOO",
       "symbol": "uDOO",
       "decimals": 18,

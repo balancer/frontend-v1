@@ -1,7 +1,5 @@
 import Vue from 'vue';
-import lock from '@/helpers/lock';
 import config from '@/config';
-import { lsGet } from '@/helpers/utils';
 
 const state = {
   init: false,
@@ -29,18 +27,17 @@ const mutations = {
 const actions = {
   init: async ({ commit, dispatch }) => {
     commit('SET', { loading: true });
+    const tokenIds = Object.keys(config.tokens)
+      .map(tokenAddress => config.tokens[tokenAddress].id)
+      .filter(tokenId => !!tokenId);
     await Promise.all([
       dispatch('getBalancer'),
-      dispatch('getTokens'),
+      dispatch('loadPricesById', tokenIds),
       dispatch('initTokenMetadata')
     ]);
     await dispatch('loadBackupProvider');
-    const connector = lsGet('connector');
-    if (Object.keys(config.connectors).includes(connector)) {
-      const lockConnector = lock.getConnector(connector);
-      const isLoggedIn = await lockConnector.isLoggedIn();
-      if (isLoggedIn) await dispatch('login', connector);
-    }
+    const connector = await Vue.prototype.$auth.getConnector();
+    if (connector) await dispatch('login', connector);
     commit('SET', { loading: false, init: true });
   },
   loading: ({ commit }, payload) => {

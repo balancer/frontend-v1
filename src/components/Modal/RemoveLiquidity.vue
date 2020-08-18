@@ -14,7 +14,7 @@
       <div class="m-4 d-block d-sm-flex">
         <PoolOverview
           :pool="pool"
-          :userShare="userShare"
+          :userShare="userLiquidity.relative"
           class="hide-sm hide-md col-3 float-left"
         />
         <div class="col-12 col-md-9 float-left pl-0 pl-md-4">
@@ -46,10 +46,10 @@
                 <div class="text-white">{{ _ticker(token.checksum) }}</div>
               </div>
               <div class="column">
-                {{ $n(token.myBalance.toFixed(3)) }}
+                {{ _num(token.myBalance) }}
               </div>
               <div class="column-sm">
-                {{ $n(getTokenAmountOut(token)) }}
+                {{ _num(getTokenAmountOut(token)) }}
               </div>
             </UiTableTr>
           </UiTable>
@@ -57,7 +57,7 @@
             <UiTableTh class="text-left flex-items-center text-white">
               <div class="flex-auto">BPT amount</div>
               <div class="ml-2 column text-left">
-                {{ $n(poolTokenBalance) }} BPT
+                {{ _num(poolTokenBalance) }} BPT
                 <a @click="setMax" class="link-text mr-3">
                   <UiLabel v-text="'Max'" />
                 </a>
@@ -134,23 +134,34 @@ export default {
     poolTokenBalance() {
       return this.subgraph.poolShares[this.pool.id] || 0;
     },
-    userShare() {
+    userLiquidity() {
       const poolSharesFrom = this.subgraph.poolShares[this.pool.id] || 0;
       const totalShares = parseFloat(this.pool.totalShares);
       const current = poolSharesFrom / totalShares;
       if (this.validationError) {
         return {
-          current
+          absolute: {
+            current: poolSharesFrom
+          },
+          relative: {
+            current
+          }
         };
       }
 
       const poolTokens = parseFloat(this.poolAmountIn);
       const future = (poolSharesFrom - poolTokens) / (totalShares - poolTokens);
-      const userShare = {
-        current,
-        future
+      const userLiquidity = {
+        absolute: {
+          current: poolSharesFrom,
+          future: poolSharesFrom + poolTokens
+        },
+        relative: {
+          current,
+          future
+        }
       };
-      return userShare;
+      return userLiquidity;
     },
     tokens() {
       return this.pool.tokens.map(token => {

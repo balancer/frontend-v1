@@ -14,7 +14,7 @@
           class="d-flex flex-items-center mr-2"
         >
           <Icon name="bullet" size="16" :style="`color: ${token.color}`" />
-          {{ _num(token.weightPercent.toFixed()) }}%
+          {{ _num(token.weightPercent / 100, 'percent') }}
           {{ _ticker(token.checksum) }}
         </div>
       </div>

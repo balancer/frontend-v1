@@ -12,10 +12,12 @@
         >
           <UiButton class="width-full v-align-middle">
             <img
-              :src="require(`@/assets/connectors/${connector.id}.svg`)"
+              :src="
+                `https://raw.githubusercontent.com/bonustrack/lock/master/connectors/assets/${connector.id}.png`
+              "
               height="28"
+              width="28"
               class="mr-2 v-align-middle"
-              style="max-width: 32px;"
             />
             {{ connector.name }}
           </UiButton>
