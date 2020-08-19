@@ -61,6 +61,7 @@ export default {
     items() {
       const items = clone(startItems);
       items[0].count = this.subgraph.balancer.finalizedPoolCount;
+      items[1].count = this.subgraph.balancer.crpCount;
       items[2].count = this.subgraph.balancer.privatePoolCount;
       if (this.web3.account) {
         items.push({

@@ -8,6 +8,7 @@
       "color": true,
       "poolCount": true,
       "finalizedPoolCount": true,
+      "crpCount": true,
       "txCount": true
     }
   },
