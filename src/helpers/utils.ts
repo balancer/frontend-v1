@@ -7,6 +7,7 @@ export const ITEMS_PER_PAGE = 20;
 export const MAX_GAS = new BigNumber('0xffffffff');
 export const MAX_UINT = MaxUint256;
 export const POOL_TOKENS_DECIMALS = 18;
+export const GAS_LIMIT_BUFFER = 0.1;
 
 export const liquidityToggleOptions = {
   MULTI_ASSET: 'Multi assets',

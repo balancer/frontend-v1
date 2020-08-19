@@ -10,7 +10,7 @@ import router from '@/router';
 import store from '@/store';
 import mixins from '@/mixins';
 import i18n from '@/i18n';
-import '@/auth';
+import '@/lock';
 import '@/style.scss';
 
 Vue.use(infiniteScroll);
