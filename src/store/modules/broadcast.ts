@@ -77,6 +77,96 @@ const mutations = {
   EXITSWAP_POOL_AMOUNT_IN_FAILURE(_state, payload) {
     console.debug('EXITSWAP_POOL_AMOUNT_IN_FAILURE', payload);
   },
+  SET_PUBLIC_SWAP_REQUEST() {
+    console.debug('SET_PUBLIC_SWAP_REQUEST');
+  },
+  SET_PUBLIC_SWAP_SUCCESS() {
+    console.debug('SET_PUBLIC_SWAP_SUCCESS');
+  },
+  SET_PUBLIC_SWAP_FAILURE(_state, payload) {
+    console.debug('SET_PUBLIC_SWAP_FAILURE', payload);
+  },
+  SET_SWAP_FEE_REQUEST() {
+    console.debug('SET_SWAP_FEE_REQUEST');
+  },
+  SET_SWAP_FEE_SUCCESS() {
+    console.debug('SET_SWAP_FEE_SUCCESS');
+  },
+  SET_SWAP_FEE_FAILURE(_state, payload) {
+    console.debug('SET_SWAP_FEE_FAILURE', payload);
+  },
+  UPDATE_WEIGHT_REQUEST() {
+    console.debug('UPDATE_WEIGHT_REQUEST');
+  },
+  UPDATE_WEIGHT_SUCCESS() {
+    console.debug('UPDATE_WEIGHT_SUCCESS');
+  },
+  UPDATE_WEIGHT_FAILURE(_state, payload) {
+    console.debug('UPDATE_WEIGHT_FAILURE', payload);
+  },
+  UPDATE_WEIGHTS_GRADUALLY_REQUEST() {
+    console.debug('UPDATE_WEIGHTS_GRADUALLY_REQUEST');
+  },
+  UPDATE_WEIGHTS_GRADUALLY_SUCCESS() {
+    console.debug('UPDATE_WEIGHTS_GRADUALLY_SUCCESS');
+  },
+  UPDATE_WEIGHTS_GRADUALLY_FAILURE(_state, payload) {
+    console.debug('UPDATE_WEIGHTS_GRADUALLY_FAILURE', payload);
+  },
+  SET_CAP_REQUEST() {
+    console.debug('SET_CAP_REQUEST');
+  },
+  SET_CAP_SUCCESS() {
+    console.debug('SET_CAP_SUCCESS');
+  },
+  SET_CAP_FAILURE(_state, payload) {
+    console.debug('SET_CAP_FAILURE', payload);
+  },
+  COMMIT_ADD_TOKEN_REQUEST() {
+    console.debug('COMMIT_ADD_TOKEN_REQUEST');
+  },
+  COMMIT_ADD_TOKEN_SUCCESS() {
+    console.debug('COMMIT_ADD_TOKEN_SUCCESS');
+  },
+  COMMIT_ADD_TOKEN_FAILURE(_state, payload) {
+    console.debug('COMMIT_ADD_TOKEN_FAILURE', payload);
+  },
+  APPLY_ADD_TOKEN_REQUEST() {
+    console.debug('APPLY_ADD_TOKEN_REQUEST');
+  },
+  APPLY_ADD_TOKEN_SUCCESS() {
+    console.debug('APPLY_ADD_TOKEN_SUCCESS');
+  },
+  APPLY_ADD_TOKEN_FAILURE(_state, payload) {
+    console.debug('APPLY_ADD_TOKEN_FAILURE', payload);
+  },
+  REMOVE_TOKEN_REQUEST() {
+    console.debug('REMOVE_TOKEN_REQUEST');
+  },
+  REMOVE_TOKEN_SUCCESS() {
+    console.debug('REMOVE_TOKEN_SUCCESS');
+  },
+  REMOVE_TOKEN_FAILURE(_state, payload) {
+    console.debug('REMOVE_TOKEN_FAILURE', payload);
+  },
+  WHITELIST_LP_REQUEST() {
+    console.debug('WHITELIST_LP_REQUEST');
+  },
+  WHITELIST_LP_SUCCESS() {
+    console.debug('WHITELIST_LP_SUCCESS');
+  },
+  WHITELIST_LP_FAILURE(_state, payload) {
+    console.debug('WHITELIST_LP_FAILURE', payload);
+  },
+  REMOVE_WHITELISTED_LP_REQUEST() {
+    console.debug('REMOVE_WHITELISTED_LP_REQUEST');
+  },
+  REMOVE_WHITELISTED_LP_SUCCESS() {
+    console.debug('REMOVE_WHITELISTED_LP_SUCCESS');
+  },
+  REMOVE_WHITELISTED_LP_FAILURE(_state, payload) {
+    console.debug('REMOVE_WHITELISTED_LP_FAILURE', payload);
+  },
   APPROVE_REQUEST() {
     console.debug('APPROVE_REQUEST');
   },
@@ -390,6 +480,241 @@ const actions = {
       }
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('EXITSWAP_POOL_AMOUNT_IN_FAILURE', e);
+    }
+  },
+  setPublicSwap: async ({ commit, dispatch }, { poolAddress, publicSwap }) => {
+    commit('SET_PUBLIC_SWAP_REQUEST');
+    try {
+      const params = [
+        'ConfigurableRightsPool',
+        poolAddress,
+        'setPublicSwap',
+        [publicSwap],
+        {}
+      ];
+      await dispatch('sendTransaction', params);
+      commit('SET_PUBLIC_SWAP_SUCCESS');
+    } catch (e) {
+      if (!e || isTxReverted(e)) {
+        return e;
+      }
+      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      commit('SET_PUBLIC_SWAP_FAILURE', e);
+    }
+  },
+  setSwapFee: async ({ commit, dispatch }, { poolAddress, swapFee }) => {
+    commit('SET_SWAP_FEE_REQUEST');
+    try {
+      swapFee = toWei(swapFee)
+        .div(100)
+        .toString();
+      const params = [
+        'ConfigurableRightsPool',
+        poolAddress,
+        'setSwapFee',
+        [swapFee],
+        {}
+      ];
+      await dispatch('sendTransaction', params);
+      commit('SET_SWAP_FEE_SUCCESS');
+    } catch (e) {
+      if (!e || isTxReverted(e)) {
+        return e;
+      }
+      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      commit('SET_SWAP_FEE_FAILURE', e);
+    }
+  },
+  updateWeight: async (
+    { commit, dispatch },
+    { poolAddress, token, newWeight }
+  ) => {
+    commit('UPDATE_WEIGHT_REQUEST');
+    try {
+      newWeight = toWei(newWeight)
+        .div(2)
+        .toString();
+      const params = [
+        'ConfigurableRightsPool',
+        poolAddress,
+        'updateWeight',
+        [token, newWeight],
+        {}
+      ];
+      await dispatch('sendTransaction', params);
+      commit('UPDATE_WEIGHT_SUCCESS');
+    } catch (e) {
+      if (!e || isTxReverted(e)) {
+        return e;
+      }
+      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      commit('UPDATE_WEIGHT_FAILURE', e);
+    }
+  },
+  updateWeightsGradually: async (
+    { commit, dispatch },
+    { poolAddress, newWeights, startBlock, endBlock }
+  ) => {
+    commit('UPDATE_WEIGHTS_GRADUALLY_REQUEST');
+    try {
+      newWeights = Object.keys(newWeights).map(token => {
+        return toWei(newWeights[token])
+          .div(2)
+          .toString();
+      });
+      const params = [
+        'ConfigurableRightsPool',
+        poolAddress,
+        'updateWeightsGradually',
+        [newWeights, startBlock, endBlock],
+        {}
+      ];
+      await dispatch('sendTransaction', params);
+      commit('UPDATE_WEIGHTS_GRADUALLY_SUCCESS');
+    } catch (e) {
+      if (!e || isTxReverted(e)) {
+        return e;
+      }
+      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      commit('UPDATE_WEIGHTS_GRADUALLY_FAILURE', e);
+    }
+  },
+  setCap: async ({ commit, dispatch }, { poolAddress, newCap }) => {
+    commit('SET_CAP_REQUEST');
+    try {
+      newCap = toWei(newCap).toString();
+      const params = [
+        'ConfigurableRightsPool',
+        poolAddress,
+        'setCap',
+        [newCap],
+        {}
+      ];
+      await dispatch('sendTransaction', params);
+      commit('SET_CAP_SUCCESS');
+    } catch (e) {
+      if (!e || isTxReverted(e)) {
+        return e;
+      }
+      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      commit('SET_CAP_FAILURE', e);
+    }
+  },
+  commitAddToken: async (
+    { commit, dispatch, rootState },
+    { poolAddress, token, balance, denormalizedWeight }
+  ) => {
+    commit('COMMIT_ADD_TOKEN_REQUEST');
+    try {
+      const tokenMetadata = rootState.web3.tokenMetadata[token];
+      const decimals = tokenMetadata ? tokenMetadata.decimals : null;
+      balance = denormalizeBalance(balance, decimals)
+        .integerValue(BigNumber.ROUND_DOWN)
+        .toString();
+      denormalizedWeight = toWei(denormalizedWeight)
+        .div(2)
+        .toString();
+      const params = [
+        'ConfigurableRightsPool',
+        poolAddress,
+        'commitAddToken',
+        [token, balance, denormalizedWeight],
+        {}
+      ];
+      await dispatch('sendTransaction', params);
+      commit('COMMIT_ADD_TOKEN_SUCCESS');
+    } catch (e) {
+      if (!e || isTxReverted(e)) {
+        return e;
+      }
+      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      commit('COMMIT_ADD_TOKEN_FAILURE', e);
+    }
+  },
+  applyAddToken: async ({ commit, dispatch }, { poolAddress }) => {
+    commit('APPLY_ADD_TOKEN_REQUEST');
+    try {
+      const params = [
+        'ConfigurableRightsPool',
+        poolAddress,
+        'applyAddToken',
+        [],
+        {}
+      ];
+      await dispatch('sendTransaction', params);
+      commit('APPLY_ADD_TOKEN_SUCCESS');
+    } catch (e) {
+      if (!e || isTxReverted(e)) {
+        return e;
+      }
+      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      commit('APPLY_ADD_TOKEN_FAILURE', e);
+    }
+  },
+  removeToken: async ({ commit, dispatch }, { poolAddress, token }) => {
+    commit('REMOVE_TOKEN_REQUEST');
+    try {
+      const params = [
+        'ConfigurableRightsPool',
+        poolAddress,
+        'removeToken',
+        [token],
+        {}
+      ];
+      await dispatch('sendTransaction', params);
+      commit('REMOVE_TOKEN_SUCCESS');
+    } catch (e) {
+      if (!e || isTxReverted(e)) {
+        return e;
+      }
+      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      commit('REMOVE_TOKEN_FAILURE', e);
+    }
+  },
+  whitelistLiquidityProvider: async (
+    { commit, dispatch },
+    { poolAddress, provider }
+  ) => {
+    commit('WHITELIST_LP_REQUEST');
+    try {
+      const params = [
+        'ConfigurableRightsPool',
+        poolAddress,
+        'whitelistLiquidityProvider',
+        [provider],
+        {}
+      ];
+      await dispatch('sendTransaction', params);
+      commit('WHITELIST_LP_SUCCESS');
+    } catch (e) {
+      if (!e || isTxReverted(e)) {
+        return e;
+      }
+      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      commit('WHITELIST_LP_FAILURE', e);
+    }
+  },
+  removeWhitelistedLiquidityProvider: async (
+    { commit, dispatch },
+    { poolAddress, provider }
+  ) => {
+    commit('REMOVE_WHITELISTED_LP_REQUEST');
+    try {
+      const params = [
+        'ConfigurableRightsPool',
+        poolAddress,
+        'removeWhitelistedLiquidityProvider',
+        [provider],
+        {}
+      ];
+      await dispatch('sendTransaction', params);
+      commit('REMOVE_WHITELISTED_LP_SUCCESS');
+    } catch (e) {
+      if (!e || isTxReverted(e)) {
+        return e;
+      }
+      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      commit('REMOVE_WHITELISTED_LP_FAILURE', e);
     }
   },
   approve: async ({ commit, dispatch, rootState }, token) => {
