@@ -39,6 +39,10 @@ const startItems = [
     to: { name: 'home' }
   },
   {
+    name: 'Smart pools',
+    to: { name: 'smart' }
+  },
+  {
     name: 'Private pools',
     to: { name: 'private' }
   }
@@ -57,7 +61,7 @@ export default {
     items() {
       const items = clone(startItems);
       items[0].count = this.subgraph.balancer.finalizedPoolCount;
-      items[1].count = this.subgraph.balancer.privatePoolCount;
+      items[2].count = this.subgraph.balancer.privatePoolCount;
       if (this.web3.account) {
         items.push({
           name: 'Create a pool',
