@@ -4,9 +4,19 @@
       <div class="py-2 d-flex">
         <span v-text="'Pool type'" class="flex-auto text-left" />
         <span
-          v-text="pool.finalized ? 'Shared pool' : 'Private pool'"
+          v-text="
+            pool.finalized
+              ? 'Shared pool'
+              : pool.crp
+              ? 'Smart pool'
+              : 'Private pool'
+          "
           class="text-white"
         />
+      </div>
+      <div v-if="pool.crp" class="py-2 d-flex">
+        <span v-text="'Rights'" class="flex-auto text-left" />
+        <span v-text="rights" class="text-white text-right" />
       </div>
       <div class="py-2 d-flex">
         <span
@@ -82,6 +92,11 @@
 
 <script>
 export default {
-  props: ['pool']
+  props: ['pool'],
+  computed: {
+    rights() {
+      return this.pool.rights.join(', ');
+    }
+  }
 };
 </script>

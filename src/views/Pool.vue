@@ -22,7 +22,10 @@
           <a :href="_etherscanLink(pool.id)" target="_blank" class="text-white">
             <Icon name="external-link" size="16" class="ml-1 mr-2" />
           </a>
-          <UiLabel v-if="!pool.finalized" v-text="'Private'" />
+          <UiLabel
+            v-if="!pool.finalized"
+            v-text="pool.crp ? 'Smart pool' : 'Private'"
+          />
         </h3>
         <div class="d-flex">
           <UiButton
