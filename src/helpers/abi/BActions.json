@@ -163,7 +163,7 @@
       "outputs": [
         {
           "internalType": "contract ConfigurableRightsPool",
-          "name": "pool",
+          "name": "crp",
           "type": "address"
         }
       ],
