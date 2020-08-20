@@ -17,7 +17,7 @@
         class="mb-4"
       />
       <div class="d-flex flex-items-center flex-auto mb-4 px-4 px-md-0">
-        <PoolHeader :pool="pool" />
+        <PoolHeader :pool="pool" class="flex-auto" />
         <div class="d-flex">
           <UiButton
             v-if="enableAddLiquidity"
