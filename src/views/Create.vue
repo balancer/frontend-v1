@@ -113,15 +113,13 @@
         <h4 class="flex-auto" v-text="'Rights'" />
       </div>
       <div
-        class="d-flex flex-items-center mt-2"
+        class="d-flex flex-items-center"
         v-for="(right, rightKey) in poolRights"
         :key="rightKey"
       >
-        <UiCheckbox
-          :checked="rights[rightKey]"
-          @change="toggleRight(rightKey)"
-        />
-        <span class="ml-2 text-white" v-text="right" />
+        <UiCheckbox :checked="rights[rightKey]" @change="toggleRight(rightKey)">
+          <span class="ml-2 text-white" v-text="right" />
+        </UiCheckbox>
       </div>
     </div>
     <MessageError v-if="validationError" :text="validationError" class="mt-4" />
@@ -177,12 +175,12 @@ const poolTypes = {
 };
 
 const poolRights = {
-  canPauseSwapping: 'can pause swapping',
-  canChangeSwapFee: 'can change swap fee',
-  canChangeWeights: 'can change weights',
-  canAddRemoveTokens: 'can add and remove tokens',
-  canWhitelistLPs: 'can whitelist LPs',
-  canChangeCap: 'can change pool cap'
+  canPauseSwapping: 'Can pause swapping',
+  canChangeSwapFee: 'Can change swap fee',
+  canChangeWeights: 'Can change weights',
+  canAddRemoveTokens: 'Can add and remove tokens',
+  canWhitelistLPs: 'Can whitelist LPs',
+  canChangeCap: 'Can change pool cap'
 };
 
 function getAnotherToken(tokens, selectedTokens) {
