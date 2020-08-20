@@ -165,23 +165,11 @@ import {
   normalizeBalance,
   denormalizeBalance,
   getTokenBySymbol,
-  isLocked
+  isLocked,
+  poolTypes,
+  poolRights
 } from '@/helpers/utils';
 import { validateNumberInput, formatError } from '@/helpers/validation';
-
-const poolTypes = {
-  SHARED_POOL: 'Shared',
-  SMART_POOL: 'Smart'
-};
-
-const poolRights = {
-  canPauseSwapping: 'Can pause swapping',
-  canChangeSwapFee: 'Can change swap fee',
-  canChangeWeights: 'Can change weights',
-  canAddRemoveTokens: 'Can add and remove tokens',
-  canWhitelistLPs: 'Can whitelist LPs',
-  canChangeCap: 'Can change pool cap'
-};
 
 function getAnotherToken(tokens, selectedTokens) {
   const tokenAddresses = Object.keys(tokens);
