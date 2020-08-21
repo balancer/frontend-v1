@@ -363,20 +363,24 @@ export default {
     },
     async create() {
       this.loading = true;
+      const poolParams = {
+        tokens: this.tokens,
+        balances: this.amounts,
+        weights: this.weights,
+        swapFee: this.swapFee
+      };
       if (this.type === 'SHARED_POOL') {
-        await this.createPool({
-          tokens: this.tokens,
-          startBalances: this.amounts,
-          startWeights: this.weights,
-          swapFee: this.swapFee
-        });
+        await this.createPool(poolParams);
       }
       if (this.type === 'SMART_POOL') {
+        const crpParams = {
+          initialSupply: '100',
+          minimumWeightChangeBlockPeriod: 10,
+          addTokenTimeLockInBlocks: 10
+        };
         await this.createSmartPool({
-          tokens: this.tokens,
-          balances: this.amounts,
-          weights: this.weights,
-          swapFee: this.swapFee,
+          poolParams,
+          crpParams,
           rights: this.rights,
           symbol: this.tokenSymbol
         });

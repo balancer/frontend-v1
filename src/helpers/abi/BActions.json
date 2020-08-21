@@ -5,6 +5,61 @@
       "constant": false,
       "inputs": [
         {
+          "internalType": "contract ConfigurableRightsPool",
+          "name": "crp",
+          "type": "address"
+        },
+        {
+          "internalType": "contract ERC20",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenAmountIn",
+          "type": "uint256"
+        }
+      ],
+      "name": "applyAddToken",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "contract ConfigurableRightsPool",
+          "name": "crp",
+          "type": "address"
+        },
+        {
+          "internalType": "contract ERC20",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "balance",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "denormalizedWeight",
+          "type": "uint256"
+        }
+      ],
+      "name": "commitAddToken",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
           "internalType": "contract BFactory",
           "name": "factory",
           "type": "address"
@@ -175,12 +230,72 @@
       "constant": false,
       "inputs": [
         {
+          "internalType": "contract ConfigurableRightsPool",
+          "name": "crp",
+          "type": "address"
+        },
+        {
+          "internalType": "contract ERC20",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "newWeight",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "poolAmountIn",
+          "type": "uint256"
+        }
+      ],
+      "name": "decreaseWeight",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
           "internalType": "contract BPool",
           "name": "pool",
           "type": "address"
         }
       ],
       "name": "finalize",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "contract ConfigurableRightsPool",
+          "name": "crp",
+          "type": "address"
+        },
+        {
+          "internalType": "contract ERC20",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "newWeight",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenAmountIn",
+          "type": "uint256"
+        }
+      ],
+      "name": "increaseWeight",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -215,13 +330,38 @@
       "constant": false,
       "inputs": [
         {
-          "internalType": "contract BPool",
+          "internalType": "contract ConfigurableRightsPool",
           "name": "pool",
           "type": "address"
         },
         {
-          "internalType": "address",
-          "name": "tokenIn",
+          "internalType": "uint256",
+          "name": "poolAmountOut",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "maxAmountsIn",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "joinSmartPool",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "contract AbstractPool",
+          "name": "pool",
+          "type": "address"
+        },
+        {
+          "internalType": "contract ERC20",
+          "name": "token",
           "type": "address"
         },
         {
@@ -245,7 +385,72 @@
       "constant": false,
       "inputs": [
         {
-          "internalType": "contract BPool",
+          "internalType": "contract ConfigurableRightsPool",
+          "name": "crp",
+          "type": "address"
+        },
+        {
+          "internalType": "contract ERC20",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "poolAmountIn",
+          "type": "uint256"
+        }
+      ],
+      "name": "removeToken",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "contract ConfigurableRightsPool",
+          "name": "crp",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "provider",
+          "type": "address"
+        }
+      ],
+      "name": "removeWhitelistedLiquidityProvider",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "contract ConfigurableRightsPool",
+          "name": "crp",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "newCap",
+          "type": "uint256"
+        }
+      ],
+      "name": "setCap",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "contract AbstractPool",
           "name": "pool",
           "type": "address"
         },
@@ -265,7 +470,7 @@
       "constant": false,
       "inputs": [
         {
-          "internalType": "contract BPool",
+          "internalType": "contract AbstractPool",
           "name": "pool",
           "type": "address"
         },
@@ -285,7 +490,7 @@
       "constant": false,
       "inputs": [
         {
-          "internalType": "contract BPool",
+          "internalType": "contract AbstractPool",
           "name": "pool",
           "type": "address"
         },
@@ -326,6 +531,56 @@
         }
       ],
       "name": "setTokens",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "contract ConfigurableRightsPool",
+          "name": "crp",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "newWeights",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256",
+          "name": "startBlock",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "endBlock",
+          "type": "uint256"
+        }
+      ],
+      "name": "updateWeightsGradually",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "contract ConfigurableRightsPool",
+          "name": "crp",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "provider",
+          "type": "address"
+        }
+      ],
+      "name": "whitelistLiquidityProvider",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
