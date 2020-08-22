@@ -6,7 +6,7 @@
       Pool Overview
     </div>
     <div class="text-white">
-      {{ _shorten(pool.id) }}
+      {{ _shortenAddress(pool.id) }}
     </div>
     <div class="text-white">
       My share: {{ _num(userShare.current, 'percent') }}

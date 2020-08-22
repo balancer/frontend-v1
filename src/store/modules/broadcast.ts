@@ -5,9 +5,9 @@ import {
   bnum,
   denormalizeBalance,
   MAX_UINT,
-  shorten,
   toWei,
-  isTxReverted
+  isTxReverted,
+  shortenAddress
 } from '@/helpers/utils';
 import BigNumber from '@/helpers/bignumber';
 
@@ -801,7 +801,7 @@ const actions = {
     commit('APPROVE_REQUEST');
     const spender = rootState.web3.dsProxyAddress;
     const tokenMetadata = rootState.web3.tokenMetadata[token];
-    const symbol = tokenMetadata ? tokenMetadata.symbol : shorten(token);
+    const symbol = tokenMetadata ? tokenMetadata.symbol : shortenAddress(token);
     try {
       const params = [
         'TestToken',

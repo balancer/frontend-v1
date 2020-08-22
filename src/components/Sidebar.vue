@@ -68,6 +68,10 @@ export default {
           name: 'Create a pool',
           to: { name: 'create' }
         });
+        items.push({
+          name: 'My pools',
+          to: { name: 'my-pools' }
+        });
       }
       return items;
     },

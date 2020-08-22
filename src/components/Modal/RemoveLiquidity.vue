@@ -2,7 +2,7 @@
   <UiModal :open="open" @close="$emit('close')" v-if="pool.id">
     <UiModalForm @submit="handleSubmit">
       <template slot="header">
-        <h3 class="text-white">Remove Liquidity</h3>
+        <h3 class="text-white">Remove liquidity</h3>
       </template>
       <div class="text-center m-4 mt-0">
         <Toggle
@@ -94,7 +94,7 @@
           class="button-primary ml-2"
           :loading="loading"
         >
-          Remove Liquidity
+          Remove liquidity
         </UiButton>
       </template>
     </UiModalForm>

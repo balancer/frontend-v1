@@ -113,15 +113,13 @@
         <h4 class="flex-auto" v-text="'Rights'" />
       </div>
       <div
-        class="d-flex flex-items-center mt-2"
+        class="d-flex flex-items-center"
         v-for="(right, rightKey) in poolRights"
         :key="rightKey"
       >
-        <UiCheckbox
-          :checked="rights[rightKey]"
-          @change="toggleRight(rightKey)"
-        />
-        <span class="ml-2 text-white" v-text="right" />
+        <UiCheckbox :checked="rights[rightKey]" @change="toggleRight(rightKey)">
+          <span class="ml-2 text-white" v-text="right" />
+        </UiCheckbox>
       </div>
     </div>
     <MessageError v-if="validationError" :text="validationError" class="mt-4" />
@@ -167,23 +165,11 @@ import {
   normalizeBalance,
   denormalizeBalance,
   getTokenBySymbol,
-  isLocked
+  isLocked,
+  poolTypes,
+  poolRights
 } from '@/helpers/utils';
 import { validateNumberInput, formatError } from '@/helpers/validation';
-
-const poolTypes = {
-  SHARED_POOL: 'Shared',
-  SMART_POOL: 'Smart'
-};
-
-const poolRights = {
-  canPauseSwapping: 'can pause swapping',
-  canChangeSwapFee: 'can change swap fee',
-  canChangeWeights: 'can change weights',
-  canAddRemoveTokens: 'can add and remove tokens',
-  canWhitelistLPs: 'can whitelist LPs',
-  canChangeCap: 'can change pool cap'
-};
 
 function getAnotherToken(tokens, selectedTokens) {
   const tokenAddresses = Object.keys(tokens);

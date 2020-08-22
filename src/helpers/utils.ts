@@ -14,6 +14,20 @@ export const liquidityToggleOptions = {
   SINGLE_ASSET: 'Single asset'
 };
 
+export const poolTypes = {
+  SHARED_POOL: 'Shared',
+  SMART_POOL: 'Smart'
+};
+
+export const poolRights = {
+  canPauseSwapping: 'Can pause swapping',
+  canChangeSwapFee: 'Can change swap fee',
+  canChangeWeights: 'Can change weights',
+  canAddRemoveTokens: 'Can add and remove tokens',
+  canWhitelistLPs: 'Can whitelist LPs',
+  canChangeCap: 'Can change pool cap'
+};
+
 export const unknownColors = [
   '#6f6776',
   '#9a9a97',
@@ -33,8 +47,12 @@ export function jsonParse(input, fallback?) {
   }
 }
 
-export function shorten(str = '') {
+export function shortenAddress(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
+}
+
+export function shorten(str = '', max = 14) {
+  return str.length > max ? `${str.slice(0, max)}...` : str;
 }
 
 export function bnum(val: string | number | BigNumber): BigNumber {
