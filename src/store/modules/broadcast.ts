@@ -295,7 +295,7 @@ const actions = {
   },
   createSmartPool: async (
     { commit, dispatch, rootState },
-    { poolParams, crpParams, rights, symbol }
+    { symbol, name, poolParams, crpParams, rights }
   ) => {
     commit('CREATE_SMART_POOL_REQUEST');
     const dsProxyAddress = rootState.web3.dsProxyAddress;
@@ -345,6 +345,7 @@ const actions = {
           config.addresses.crpFactory,
           config.addresses.bFactory,
           symbol,
+          name,
           poolParams,
           crpParams,
           rights

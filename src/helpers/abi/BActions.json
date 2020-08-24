@@ -128,6 +128,11 @@
           "type": "string"
         },
         {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
           "components": [
             {
               "internalType": "address[]",
@@ -206,6 +211,11 @@
             {
               "internalType": "bool",
               "name": "canChangeCap",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "canRemoveAllTokens",
               "type": "bool"
             }
           ],
