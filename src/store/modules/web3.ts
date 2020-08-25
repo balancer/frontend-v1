@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import { getInstance } from '@bonustrack/lock/plugins/vue';
 import { Web3Provider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
 import { AddressZero } from '@ethersproject/constants';
@@ -7,11 +8,9 @@ import { Interface } from '@ethersproject/abi';
 import abi from '@/helpers/abi';
 import config from '@/config';
 import wsProvider from '@/helpers/ws';
-import { isTxRejected } from '@/helpers/utils';
+import { isTxRejected, GAS_LIMIT_BUFFER } from '@/helpers/utils';
 
-const GAS_LIMIT_BUFFER = 0.1;
-
-let provider;
+let auth;
 let web3;
 
 const state = {
@@ -179,9 +178,10 @@ const mutations = {
 
 const actions = {
   login: async ({ dispatch }, connector = 'injected') => {
-    provider = await Vue.prototype.$auth.login(connector);
-    if (provider) {
-      web3 = new Web3Provider(provider);
+    auth = getInstance();
+    await auth.login(connector);
+    if (auth.provider) {
+      web3 = new Web3Provider(auth.provider);
       await dispatch('loadWeb3');
     }
   },
@@ -256,7 +256,7 @@ const actions = {
   loadWeb3: async ({ commit, dispatch }) => {
     commit('LOAD_WEB3_REQUEST');
     try {
-      if (!web3 || !provider) {
+      if (!web3 || !auth.provider) {
         await dispatch('loadBackupProvider');
       } else {
         await dispatch('loadProvider');
@@ -264,7 +264,8 @@ const actions = {
           await dispatch('loadBackupProvider');
         }
       }
-      await dispatch('loadAccount');
+      if (state.injectedChainId === config.chainId)
+        await dispatch('loadAccount');
       commit('LOAD_WEB3_SUCCESS');
     } catch (e) {
       commit('LOAD_WEB3_FAILURE', e);
@@ -274,16 +275,16 @@ const actions = {
   loadProvider: async ({ commit, dispatch }) => {
     commit('LOAD_PROVIDER_REQUEST');
     try {
-      if (provider.removeAllListeners) provider.removeAllListeners();
-      if (provider && provider.on) {
-        provider.on('chainChanged', async () => {
+      if (auth.provider.removeAllListeners) auth.provider.removeAllListeners();
+      if (auth.provider && auth.provider.on) {
+        auth.provider.on('chainChanged', async () => {
           commit('HANDLE_CHAIN_CHANGED');
           if (state.active) {
             await dispatch('logout');
             await dispatch('login');
           }
         });
-        provider.on('accountsChanged', async accounts => {
+        auth.provider.on('accountsChanged', async accounts => {
           if (accounts.length === 0) {
             if (state.active) await dispatch('loadWeb3');
           } else {
@@ -291,11 +292,11 @@ const actions = {
             await dispatch('loadAccount');
           }
         });
-        provider.on('close', async () => {
+        auth.provider.on('close', async () => {
           commit('HANDLE_CLOSE');
           if (state.active) await dispatch('loadWeb3');
         });
-        provider.on('networkChanged', async () => {
+        auth.provider.on('networkChanged', async () => {
           commit('HANDLE_NETWORK_CHANGED');
           if (state.active) {
             await dispatch('logout');
@@ -309,8 +310,7 @@ const actions = {
       commit('LOAD_PROVIDER_SUCCESS', {
         injectedLoaded: true,
         injectedChainId: network.chainId,
-        account,
-        name
+        account
       });
     } catch (e) {
       commit('LOAD_PROVIDER_FAILURE', e);
@@ -321,7 +321,6 @@ const actions = {
     commit('LOAD_BACKUP_PROVIDER_REQUEST');
     try {
       web3 = wsProvider;
-      provider = null;
       const network = await web3.getNetwork();
       commit('LOAD_BACKUP_PROVIDER_SUCCESS', {
         injectedActive: false,
