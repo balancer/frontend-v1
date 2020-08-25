@@ -598,7 +598,7 @@ const actions = {
         'BActions',
         config.addresses.bActions,
         'decreaseWeight',
-        [poolAddress, token, newWeight, poolAmountIn],
+        [poolAddress, token, newWeight, poolAmountIn.toString()],
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
@@ -728,13 +728,14 @@ const actions = {
     { poolAddress, token, poolAmountIn }
   ) => {
     commit('REMOVE_TOKEN_REQUEST');
+    poolAmountIn = toWei(poolAmountIn);
     const dsProxyAddress = rootState.web3.dsProxyAddress;
     try {
       const underlyingParams = [
         'BActions',
         config.addresses.bActions,
         'removeToken',
-        [poolAddress, token, poolAmountIn],
+        [poolAddress, token, poolAmountIn.toString()],
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
