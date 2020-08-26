@@ -385,6 +385,8 @@ const actions = {
       commit('SEND_TRANSACTION_SUCCESS');
       return tx;
     } catch (e) {
+      console.log(action);
+      console.log(params);
       if (isTxRejected(e)) {
         commit('SEND_TRANSACTION_REJECTED', e);
         return Promise.reject();
