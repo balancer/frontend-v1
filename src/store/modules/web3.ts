@@ -377,6 +377,9 @@ const actions = {
       const safeGasLimit = Math.floor(gasLimit * (1 + GAS_LIMIT_BUFFER));
       overrides.gasLimit = safeGasLimit;
 
+      console.log(action);
+      console.log(params);
+
       const tx = await contractWithSigner[action](...params, overrides);
       await tx.wait();
       commit('SEND_TRANSACTION_SUCCESS');
