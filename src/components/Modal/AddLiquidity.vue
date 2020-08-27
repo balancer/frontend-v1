@@ -98,6 +98,11 @@
           :text="validationError"
           class="mb-4"
         />
+        <MessageError
+          v-if="lockedTokenError"
+          :text="lockedTokenError"
+          class="mb-4"
+        />
         <MessageError v-if="transferError" :text="transferError" class="mb-4" />
         <MessageCheckbox
           v-if="!tokenError && !validationError"
@@ -125,7 +130,7 @@
           :disabled="
             tokenError ||
               validationError ||
-              hasLockedToken ||
+              lockedTokenError ||
               !checkboxAccept ||
               transactionFailed
           "
@@ -278,8 +283,28 @@ export default {
       }
       return undefined;
     },
-    transferError() {
+    lockedTokenError() {
       if (this.tokenError || this.validationError) {
+        return undefined;
+      }
+      for (const token of this.pool.tokensList) {
+        if (
+          isLocked(
+            this.web3.allowances,
+            token,
+            this.web3.dsProxyAddress,
+            this.amounts[token],
+            this.web3.tokenMetadata[token].decimals
+          )
+        ) {
+          const ticker = this._ticker(token);
+          return `Unlock ${ticker} to continue`;
+        }
+      }
+      return undefined;
+    },
+    transferError() {
+      if (this.tokenError || this.validationError || this.lockedTokenError) {
         return undefined;
       }
       if (!this.transactionFailed) {
@@ -328,22 +353,6 @@ export default {
         return 'Adding liquidity failed as your Compound position might go underwater. ';
       }
       return 'Adding liquidity failed as one of the underlying tokens blocked the transfer. ';
-    },
-    hasLockedToken() {
-      for (const token of this.pool.tokensList) {
-        if (
-          isLocked(
-            this.web3.allowances,
-            token,
-            this.web3.dsProxyAddress,
-            this.amounts[token],
-            this.web3.tokenMetadata[token].decimals
-          )
-        ) {
-          return true;
-        }
-      }
-      return false;
     },
     hasCustomToken() {
       if (this.validationError || this.tokenError) {
