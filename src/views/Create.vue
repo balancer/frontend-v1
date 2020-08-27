@@ -110,6 +110,16 @@
         />
       </div>
       <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
+        <h4 class="flex-auto" v-text="'Token name'" />
+      </div>
+      <div class="mb-4">
+        <input
+          class="input pool-input text-right text-white"
+          v-model="tokenName"
+          placeholder="Balancer Smart Pool"
+        />
+      </div>
+      <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
         <h4 class="flex-auto" v-text="'Rights'" />
       </div>
       <div
@@ -196,6 +206,7 @@ export default {
       tokens: [],
       activeToken: 0,
       tokenSymbol: '',
+      tokenName: '',
       rights: {},
       tokenModalOpen: false,
       confirmModalOpen: false,
@@ -365,10 +376,11 @@ export default {
           addTokenTimeLockInBlocks: 10
         };
         await this.createSmartPool({
+          symbol: this.tokenSymbol,
+          name: this.tokenName,
           poolParams,
           crpParams,
-          rights: this.rights,
-          symbol: this.tokenSymbol
+          rights: this.rights
         });
       }
       this.loading = false;
