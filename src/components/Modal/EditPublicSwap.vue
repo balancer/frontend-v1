@@ -1,76 +1,68 @@
 <template>
-  <UiModal :open="open" @close="$emit('close')">
-    <div
-      class="modal-body py-6 text-center"
-      :class="{ 'bg-blue mosaic anim-scroll': step > lastStep }"
-    >
-      <form @submit.prevent="handleSubmit">
-        <div v-if="step === 0">
-          <div class="px-4 mb-4 overflow-hidden">
-            <h2 class="mb-3">Public swap</h2>
-            <p class="mb-3">
-              Excepteur sint occaecat cupidatat non proident, sunt in.
-            </p>
-            <div class="my-6">
-              <label
-                class="d-block mb-3"
-                :class="publicSwap ? 'text-blue' : 'text-gray'"
-              >
-                {{ publicSwap ? 'Active' : 'Paused' }}
-              </label>
-              <VueSwitch v-model="publicSwap" />
-            </div>
+  <UiModal :open="open" @close="$emit('close')" style="max-width: 440px;">
+    <UiModalForm @submit="handleSubmit">
+      <template slot="header">
+        <h3 class="text-white">Edit public swap</h3>
+      </template>
+      <div class="text-center m-4">
+        <h5 class="px-4 mb-4 mx-auto overflow-hidden" style="max-width: 340px;">
+          Enable or pause trading in your pool.
+        </h5>
+        <div class="my-6">
+          <div class="d-block h4 mb-3">
+            {{ input ? 'Active' : 'Paused' }}
           </div>
-          <div class="mx-3 overflow-hidden">
-            <button
-              type="button"
-              class="btn-outline d-inline-block column mx-1"
-              @click="$emit('close')"
-            >
-              Cancel
-            </button>
-            <button
-              :disabled="loading || publicSwap === value"
-              type="submit"
-              class="btn-mktg d-inline-block column mx-1"
-            >
-              Confirm
-            </button>
-          </div>
+          <VueSwitch v-model="input" />
         </div>
-        <FormBroadcast v-if="step === 1" @close="$emit('close')" />
-      </form>
-    </div>
+      </div>
+      <template slot="footer">
+        <UiButton @click="$emit('close')" type="button" class="mx-1">
+          Cancel
+        </UiButton>
+        <UiButton
+          :disabled="loading || input === value"
+          :loading="loading"
+          type="submit"
+          class="button-primary mx-1"
+        >
+          Confirm
+        </UiButton>
+      </template>
+    </UiModalForm>
   </UiModal>
 </template>
 
 <script>
-import { delay } from '@/helpers/utils';
+import { mapActions } from 'vuex';
 
 export default {
-  props: ['open', 'value'],
+  props: ['open', 'value', 'pool'],
   data() {
     return {
       loading: false,
-      step: 0,
-      lastStep: 0,
-      publicSwap: false
+      input: false
     };
   },
   watch: {
     open() {
-      this.step = 0;
       this.loading = false;
-      this.publicSwap = this.value;
+      this.input = this.value;
     }
   },
   methods: {
+    ...mapActions(['setPublicSwap']),
     async handleSubmit() {
       this.loading = true;
-      await delay(1e3);
-      // @TODO Broadcast tx
+      try {
+        this.tx = await this.setPublicSwap({
+          poolAddress: this.pool.controller,
+          publicSwap: this.input
+        });
+        this.$emit('close');
+      } catch (e) {
+        console.error(e);
+      }
       this.loading = false;
-      this.step++;
     }
   }
 };
