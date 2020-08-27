@@ -21,7 +21,6 @@ export default {
           count: this.pool.swapsCount
         });
       }
-      const myPoolArr = this.subgraph.myPools.map(myPool => myPool.id);
       if (this.pool.finalized) {
         items.push({
           name: 'Holders',
@@ -33,7 +32,10 @@ export default {
         name: 'About',
         to: { name: 'pool-about' }
       });
-      if (myPoolArr.includes(this.pool.id)) {
+      if (
+        this.web3.account
+        // && this.web3.account.toLowerCase() === this.pool.crpController
+      ) {
         items.push({
           name: 'Settings',
           to: { name: 'pool-settings' }
