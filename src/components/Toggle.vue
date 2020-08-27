@@ -1,5 +1,5 @@
 <template>
-  <span class="toggle">
+  <span class="toggle mt-4">
     <a
       v-for="(name, key) in options"
       :key="key"

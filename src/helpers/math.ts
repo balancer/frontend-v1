@@ -238,33 +238,3 @@ export function calcSingleOutGivenPoolIn(
   const tokenAmountOut = bmul(tokenAmountOutBeforeSwapFee, BONE.minus(zaz));
   return tokenAmountOut;
 }
-
-export function calcSingleInGivenWeightIncrease(
-  tokenBalance: BigNumber,
-  tokenWeight: BigNumber,
-  tokenWeightNew: BigNumber
-): BigNumber {
-  const deltaWeight = tokenWeightNew.minus(tokenWeight);
-  const tokenBalanceIn = bmul(tokenBalance, bdiv(deltaWeight, tokenWeight));
-  return tokenBalanceIn;
-}
-
-export function calcPoolInGivenWeightDecrease(
-  totalWeight: BigNumber,
-  tokenWeight: BigNumber,
-  tokenWeightNew: BigNumber,
-  poolSupply: BigNumber
-): BigNumber {
-  const deltaWeight = tokenWeight.minus(tokenWeightNew);
-  const poolAmountIn = bmul(poolSupply, bdiv(deltaWeight, totalWeight));
-  return poolAmountIn;
-}
-
-export function calcPoolInGivenTokenRemove(
-  totalWeight: BigNumber,
-  tokenWeight: BigNumber,
-  poolSupply: BigNumber
-): BigNumber {
-  const poolAmountIn = bdiv(bmul(poolSupply, tokenWeight), totalWeight);
-  return poolAmountIn;
-}

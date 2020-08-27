@@ -44,6 +44,16 @@ const mutations = {
   GET_POOLS_FAILURE(_state, payload) {
     console.debug('GET_POOLS_FAILURE', payload);
   },
+  GET_MY_POOLS_REQUEST() {
+    console.debug('GET_MY_POOLS_REQUEST');
+  },
+  GET_MY_POOLS_SUCCESS(_state, payload) {
+    Vue.set(_state, 'myPools', payload);
+    console.debug('GET_MY_POOLS_SUCCESS');
+  },
+  GET_MY_POOLS_FAILURE(_state, payload) {
+    console.debug('GET_MY_POOLS_FAILURE', payload);
+  },
   GET_MY_POOLS_SHARES_REQUEST() {
     console.debug('GET_MY_POOLS_SHARES_REQUEST');
   },
@@ -173,6 +183,23 @@ const actions = {
       return pools;
     } catch (e) {
       commit('GET_POOLS_FAILURE', e);
+    }
+  },
+  getMyPools: async ({ commit }) => {
+    commit('GET_MY_POOLS_REQUEST');
+    try {
+      const myPools = [
+        '0x145bc933a22de9afd6f7a44d52e2cc9924b8741d',
+        '0x1492b5b01350b7c867185a643f2e59f7be279fd3',
+        '0x226bc733f8ce4cc76f2b13db1456d3724163a68f',
+        '0xbe6daaf4ab70a1690759331aec740881620856f0',
+        '0xe3bdae21c5afc2dd0d58bdc2324e5ac3c8801f40',
+        '0x456a6019e548700f3ebd7d2afa5e2cca44e7c3c8'
+      ];
+      commit('GET_MY_POOLS_SUCCESS', myPools);
+      return myPools;
+    } catch (e) {
+      commit('GET_MY_POOLS_FAILURE', e);
     }
   },
   getMyPoolShares: async ({ commit, rootState }) => {

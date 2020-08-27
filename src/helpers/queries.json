@@ -8,7 +8,6 @@
       "color": true,
       "poolCount": true,
       "finalizedPoolCount": true,
-      "crpCount": true,
       "txCount": true
     }
   },
@@ -35,11 +34,6 @@
       "controller": true,
       "publicSwap": true,
       "finalized": true,
-      "crp": true,
-      "name": true,
-      "symbol": true,
-      "crpController": true,
-      "rights": true,
       "swapFee": true,
       "totalWeight": true,
       "totalShares": true,
@@ -126,8 +120,6 @@
       "id": true,
       "publicSwap": true,
       "finalized": true,
-      "crp": true,
-      "rights": true,
       "swapFee": true,
       "totalWeight": true,
       "totalShares": true,

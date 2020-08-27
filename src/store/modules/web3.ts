@@ -401,6 +401,7 @@ const actions = {
       dispatch('lookupAddress'),
       dispatch('getBalances', tokens),
       dispatch('getAllowances', { tokens, spender: state.dsProxyAddress }),
+      dispatch('getMyPools'),
       dispatch('getMyPoolShares')
     ]);
   },

@@ -17,21 +17,27 @@
         class="mb-4"
       />
       <div class="d-flex flex-items-center flex-auto mb-4 px-4 px-md-0">
-        <PoolHeader :pool="pool" class="flex-auto" />
+        <h3 class="flex-auto d-flex flex-items-center hide-sm">
+          <div>Pool {{ _shorten(pool.id) }}</div>
+          <a :href="_etherscanLink(pool.id)" target="_blank" class="text-white">
+            <Icon name="external-link" size="16" class="ml-1 mr-2" />
+          </a>
+          <UiLabel v-if="!pool.finalized" v-text="'Private'" />
+        </h3>
         <div class="d-flex">
           <UiButton
             v-if="enableAddLiquidity"
             class="button-primary ml-2"
             @click="openAddLiquidityModal"
           >
-            Add liquidity
+            Add Liquidity
           </UiButton>
           <UiButton
             v-if="enableAddLiquidity"
             class="ml-2"
             @click="openRemoveLiquidityModal"
           >
-            Remove liquidity
+            Remove Liquidity
           </UiButton>
         </div>
       </div>

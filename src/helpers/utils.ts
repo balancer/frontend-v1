@@ -9,24 +9,9 @@ export const MAX_UINT = MaxUint256;
 export const POOL_TOKENS_DECIMALS = 18;
 export const GAS_LIMIT_BUFFER = 0.1;
 
-export const liquidityToggleOptions = {
+export const toggleOptions = {
   MULTI_ASSET: 'Multi assets',
   SINGLE_ASSET: 'Single asset'
-};
-
-export const poolTypes = {
-  SHARED_POOL: 'Shared',
-  SMART_POOL: 'Smart'
-};
-
-export const poolRights = {
-  canPauseSwapping: 'Can pause swapping',
-  canChangeSwapFee: 'Can change swap fee',
-  canChangeWeights: 'Can change weights',
-  canAddRemoveTokens: 'Can add and remove tokens',
-  canWhitelistLPs: 'Can whitelist LPs',
-  canChangeCap: 'Can change pool cap',
-  canRemoveAllTokens: 'Can remove all tokens'
 };
 
 export const unknownColors = [
@@ -48,12 +33,8 @@ export function jsonParse(input, fallback?) {
   }
 }
 
-export function shortenAddress(str = '') {
+export function shorten(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
-}
-
-export function shorten(str = '', max = 14) {
-  return str.length > max ? `${str.slice(0, max)}...` : str;
 }
 
 export function bnum(val: string | number | BigNumber): BigNumber {

@@ -37,7 +37,7 @@
               class="text-white"
               target="_blank"
             >
-              {{ _shortenAddress(getTxHashFromId(swap.id)) }}
+              {{ _shorten(getTxHashFromId(swap.id)) }}
               <Icon name="external-link" />
             </a>
           </div>
