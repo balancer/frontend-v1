@@ -312,7 +312,7 @@ export default {
       if (hasToken(this.pool, 'SNX')) {
         return 'Adding liquidity failed as your SNX is locked in staking.';
       }
-      const synths = ['sUSD', 'sBTC', 'sETH', 'sXAU', 'sXAG', 'sDEFI'];
+      const synths = ['sUSD', 'sBTC', 'sETH', 'sXAU', 'sXAG', 'sDEFI', 'sXMR'];
       if (synths.some(synth => hasToken(this.pool, synth))) {
         return 'Adding liquidity failed as your Synthetix position might go underwater. ';
       }
