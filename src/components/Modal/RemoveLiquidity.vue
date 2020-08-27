@@ -2,13 +2,14 @@
   <UiModal :open="open" @close="$emit('close')" v-if="pool.id">
     <UiModalForm @submit="handleSubmit">
       <template slot="header">
-        <h3 class="text-white">Remove Liquidity</h3>
+        <h3 class="text-white">Remove liquidity</h3>
       </template>
       <div class="text-center m-4 mt-0">
         <Toggle
           :value="type"
-          :options="toggleOptions"
+          :options="liquidityToggleOptions"
           @select="handleSelectType"
+          class="mt-4"
         />
       </div>
       <div class="m-4 d-block d-sm-flex">
@@ -93,7 +94,7 @@
           class="button-primary ml-2"
           :loading="loading"
         >
-          Remove Liquidity
+          Remove liquidity
         </UiButton>
       </template>
     </UiModalForm>
@@ -106,7 +107,7 @@ import {
   bnum,
   normalizeBalance,
   denormalizeBalance,
-  toggleOptions
+  liquidityToggleOptions
 } from '@/helpers/utils';
 import { calcSingleOutGivenPoolIn } from '@/helpers/math';
 import { validateNumberInput, formatError } from '@/helpers/validation';
@@ -115,7 +116,7 @@ export default {
   props: ['open', 'pool'],
   data() {
     return {
-      toggleOptions,
+      liquidityToggleOptions,
       loading: false,
       poolAmountIn: '',
       type: 'MULTI_ASSET',

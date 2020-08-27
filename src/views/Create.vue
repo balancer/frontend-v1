@@ -1,7 +1,7 @@
 <template>
   <div class="px-0 px-md-5 py-4">
-    <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
-      <h3 class="flex-auto" v-text="'Create a pool'" />
+    <div class="d-flex flex-justify-center px-4 px-md-0 mb-3">
+      <Toggle :value="type" :options="poolTypes" @select="handleSelectType" />
     </div>
     <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
       <h4 class="flex-auto" v-text="'Assets'" />
@@ -98,6 +98,40 @@
         placeholder="0.00"
       />
     </div>
+    <div v-if="type === 'SMART_POOL'">
+      <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
+        <h4 class="flex-auto" v-text="'Token symbol'" />
+      </div>
+      <div class="mb-4">
+        <input
+          class="input pool-input text-right text-white"
+          v-model="tokenSymbol"
+          placeholder="BPT"
+        />
+      </div>
+      <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
+        <h4 class="flex-auto" v-text="'Token name'" />
+      </div>
+      <div class="mb-4">
+        <input
+          class="input pool-input text-right text-white"
+          v-model="tokenName"
+          placeholder="Balancer Smart Pool"
+        />
+      </div>
+      <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
+        <h4 class="flex-auto" v-text="'Rights'" />
+      </div>
+      <div
+        class="d-flex flex-items-center"
+        v-for="(right, rightKey) in poolRights"
+        :key="rightKey"
+      >
+        <UiCheckbox :checked="rights[rightKey]" @change="toggleRight(rightKey)">
+          <span class="ml-2 text-white" v-text="right" />
+        </UiCheckbox>
+      </div>
+    </div>
     <MessageError v-if="validationError" :text="validationError" class="mt-4" />
     <MessageSimilarPools v-if="pool" :pool="pool" class="mt-4" />
     <MessageCheckbox
@@ -141,7 +175,9 @@ import {
   normalizeBalance,
   denormalizeBalance,
   getTokenBySymbol,
-  isLocked
+  isLocked,
+  poolTypes,
+  poolRights
 } from '@/helpers/utils';
 import { validateNumberInput, formatError } from '@/helpers/validation';
 
@@ -161,11 +197,17 @@ function getAnotherToken(tokens, selectedTokens) {
 export default {
   data() {
     return {
+      poolTypes,
+      poolRights,
+      type: 'SHARED_POOL',
       amounts: {},
       weights: {},
       swapFee: '',
       tokens: [],
       activeToken: 0,
+      tokenSymbol: '',
+      tokenName: '',
+      rights: {},
       tokenModalOpen: false,
       confirmModalOpen: false,
       padlock: true,
@@ -287,7 +329,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['createPool']),
+    ...mapActions(['createPool', 'createSmartPool']),
+    handleSelectType(type) {
+      this.type = type;
+    },
     togglePadlock() {
       this.padlock = !this.padlock;
       for (const token of this.tokens) {
@@ -310,14 +355,34 @@ export default {
       const index = this.tokens.indexOf(tokenAddress);
       this.tokens.splice(index, 1);
     },
+    toggleRight(right) {
+      Vue.set(this.rights, right, !this.rights[right]);
+    },
     async create() {
       this.loading = true;
-      await this.createPool({
+      const poolParams = {
         tokens: this.tokens,
-        startBalances: this.amounts,
-        startWeights: this.weights,
+        balances: this.amounts,
+        weights: this.weights,
         swapFee: this.swapFee
-      });
+      };
+      if (this.type === 'SHARED_POOL') {
+        await this.createPool(poolParams);
+      }
+      if (this.type === 'SMART_POOL') {
+        const crpParams = {
+          initialSupply: '100',
+          minimumWeightChangeBlockPeriod: 10,
+          addTokenTimeLockInBlocks: 10
+        };
+        await this.createSmartPool({
+          symbol: this.tokenSymbol,
+          name: this.tokenName,
+          poolParams,
+          crpParams,
+          rights: this.rights
+        });
+      }
       this.loading = false;
     },
     handleWeightChange(tokenAddress) {

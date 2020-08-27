@@ -2,7 +2,7 @@ import numeral from 'numeral';
 import { mapState } from 'vuex';
 import store from '@/store';
 import config from '@/config';
-import { shorten, trunc, etherscanLink } from '@/helpers/utils';
+import { shortenAddress, shorten, trunc, etherscanLink } from '@/helpers/utils';
 
 // @ts-ignore
 const modules = Object.entries(store.state).map(module => module[0]);
@@ -30,6 +30,9 @@ export default {
       return numeral(number)
         .format(format)
         .toUpperCase();
+    },
+    _shortenAddress(str: string): string {
+      return shortenAddress(str);
     },
     _shorten(str: string): string {
       return shorten(str);

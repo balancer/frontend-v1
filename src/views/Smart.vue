@@ -1,11 +1,12 @@
 <template>
   <div>
-    <div class="px-0 px-md-5">
+    <div class="px-0 px-md-5 pt-4">
       <ListPools
-        :key="JSON.stringify(query)"
         :query="query"
-        title="My pools"
-        class="pt-4"
+        :key="JSON.stringify(query)"
+        title="Smart pools"
+        withFilters="1"
+        class="mb-4"
       />
     </div>
   </div>
@@ -17,7 +18,7 @@ export default {
     query() {
       return {
         where: {
-          crpController: this.web3.account
+          crp: true
         }
       };
     }

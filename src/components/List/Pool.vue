@@ -1,7 +1,7 @@
 <template>
   <UiTableTr :to="{ name: 'pool', params: { id: pool.id } }">
     <div class="column-sm text-left hide-sm hide-md hide-lg">
-      {{ _shorten(pool.id) }}
+      {{ _shortenAddress(pool.id) }}
     </div>
     <div>
       <Pie :tokens="pool.tokens" class="mr-3" size="34" />
