@@ -83,12 +83,11 @@ export default {
     }
   },
   methods: {
-    getTokenValue(entry) {
-      const address = entry[0];
-      const balanceString = entry[1];
+    getTokenValue([address, balanceStr]) {
+      if (!this.web3.tokenMetadata[address]) return 0;
       const decimals =
         address === 'ether' ? 18 : this.web3.tokenMetadata[address].decimals;
-      const balance = normalizeBalance(balanceString, decimals);
+      const balance = normalizeBalance(balanceStr, decimals);
       const weth = this.config.tokens[this.config.addresses.weth];
       const price =
         address === 'ether'
@@ -96,10 +95,10 @@ export default {
           : this.price.values[address];
       return balance.times(price).toNumber();
     },
-    formatBalance(balanceString, address) {
+    formatBalance(balanceStr, address) {
       const decimals =
         address === 'ether' ? 18 : this.web3.tokenMetadata[address].decimals;
-      const rawBalance = normalizeBalance(balanceString || '0', decimals);
+      const rawBalance = normalizeBalance(balanceStr || '0', decimals);
       return this._precision(rawBalance.toNumber(), address);
     }
   }
