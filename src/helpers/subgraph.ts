@@ -1,8 +1,9 @@
 import merge from 'lodash/merge';
 import cloneDeep from 'lodash/cloneDeep';
 import { jsonToGraphQLQuery } from 'json-to-graphql-query';
-import config from '@/config';
 import queries from '@/helpers/queries.json';
+
+const subgraphUrl = process.env.VUE_APP_SUBGRAPH_URL || '';
 
 export async function request(key: string | null, jsonQuery: any = {}) {
   jsonQuery = key
@@ -12,7 +13,7 @@ export async function request(key: string | null, jsonQuery: any = {}) {
     typeof jsonQuery === 'string'
       ? jsonQuery
       : jsonToGraphQLQuery({ query: jsonQuery });
-  const res = await fetch(config.subgraphUrl, {
+  const res = await fetch(subgraphUrl, {
     method: 'POST',
     headers: {
       Accept: 'application/json',

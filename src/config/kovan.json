@@ -2,8 +2,6 @@
   "network": "kovan",
   "chainId": 42,
   "defaultPrecision": 2,
-  "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-kovan",
-  "alchemyWsUrl": "wss://eth-kovan.ws.alchemyapi.io/v2/C467LJc7Aa761LLxlcxXvhIG9HzDTtKw",
   "addresses": {
     "bFactory": "0x8f7F78080219d4066A8036ccD30D588B416a40DB",
     "bActions": "0x8e4813128B11b7eD48cE880ffC3C9698aA24fD0E",
@@ -54,4 +52,4 @@
     }
   }
 }
-  
+
