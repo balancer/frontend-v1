@@ -7,11 +7,11 @@ import { getAddress } from '@ethersproject/address';
 import { Interface } from '@ethersproject/abi';
 import abi from '@/helpers/abi';
 import config from '@/config';
-import wsProvider from '@/helpers/ws';
+import provider from '@/helpers/rpc';
 import { isTxRejected, GAS_LIMIT_BUFFER } from '@/helpers/utils';
 
 let auth;
-let web3;
+let web3 = provider;
 
 const state = {
   injectedLoaded: false,
@@ -320,8 +320,7 @@ const actions = {
   loadBackupProvider: async ({ commit }) => {
     commit('LOAD_BACKUP_PROVIDER_REQUEST');
     try {
-      web3 = wsProvider;
-      const network = await web3.getNetwork();
+      const network = await provider.getNetwork();
       commit('LOAD_BACKUP_PROVIDER_SUCCESS', {
         injectedActive: false,
         backUpLoaded: true,
