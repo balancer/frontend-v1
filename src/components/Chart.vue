@@ -74,6 +74,19 @@ const options = {
   }
 };
 
+function normalizeMetrics(rawMetrics) {
+  const keys = Object.keys(rawMetrics);
+  const metrics = {};
+  for (let i = 0; i < keys.length; i++) {
+    if (rawMetrics[keys[i]].length) {
+      metrics[keys[i]] = rawMetrics[keys[i]][0];
+    } else {
+      metrics[keys[i]] = metrics[keys[i - 1]];
+    }
+  }
+  return metrics;
+}
+
 export default {
   props: ['pool'],
   data() {
@@ -93,9 +106,9 @@ export default {
       for (let i = 1; i < rowKeys.length; i++) {
         const timestamp = parseFloat(rowKeys[i].split('_')[1]);
         const date = new Date(timestamp);
-        const row = this.metrics[rowKeys[i]];
-        const previousRow = this.metrics[rowKeys[i - 1]];
-        if (row.length === 0 || previousRow.length === 0) {
+        const values = this.metrics[rowKeys[i]];
+        const previousValues = this.metrics[rowKeys[i - 1]];
+        if (!values || !previousValues) {
           data.push({
             time: date.toISOString()
           });
@@ -103,20 +116,20 @@ export default {
         }
         let value;
         if (this.activeTab === 'LIQUIDITY') {
-          value = parseFloat(row[0].poolLiquidity);
+          value = parseFloat(values.poolLiquidity);
         }
         if (this.activeTab === 'VOLUME') {
-          const totalVolume = parseFloat(row[0].poolTotalSwapVolume);
+          const totalVolume = parseFloat(values.poolTotalSwapVolume);
           const previousTotalVolume = parseFloat(
-            previousRow[0].poolTotalSwapVolume
+            previousValues.poolTotalSwapVolume
           );
           value = totalVolume - previousTotalVolume;
         }
         if (this.activeTab === 'FEE_RETURNS') {
-          const totalFee = parseFloat(row[0].poolTotalSwapFee);
-          const previousTotalFee = parseFloat(previousRow[0].poolTotalSwapFee);
+          const totalFee = parseFloat(values.poolTotalSwapFee);
+          const previousTotalFee = parseFloat(previousValues.poolTotalSwapFee);
           const dailyFee = totalFee - previousTotalFee;
-          const liquidity = parseFloat(row[0].poolLiquidity);
+          const liquidity = parseFloat(values.poolLiquidity);
           value = (dailyFee / liquidity) * 365;
         }
         data.push({
@@ -188,7 +201,8 @@ export default {
   },
   async mounted() {
     this.loading = true;
-    this.metrics = await this.getPoolMetrics(this.pool.id);
+    const metrics = await this.getPoolMetrics(this.pool.id);
+    this.metrics = normalizeMetrics(metrics);
     this.loading = false;
     await this.loadChart();
   }
