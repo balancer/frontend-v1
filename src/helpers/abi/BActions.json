@@ -2,7 +2,6 @@
   "contractName": "BActions",
   "abi": [
     {
-      "constant": false,
       "inputs": [
         {
           "internalType": "contract ConfigurableRightsPool",
@@ -22,12 +21,10 @@
       ],
       "name": "applyAddToken",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
           "internalType": "contract ConfigurableRightsPool",
@@ -52,12 +49,10 @@
       ],
       "name": "commitAddToken",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
           "internalType": "contract BFactory",
@@ -65,31 +60,24 @@
           "type": "address"
         },
         {
-          "components": [
-            {
-              "internalType": "address[]",
-              "name": "tokens",
-              "type": "address[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "balances",
-              "type": "uint256[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "weights",
-              "type": "uint256[]"
-            },
-            {
-              "internalType": "uint256",
-              "name": "swapFee",
-              "type": "uint256"
-            }
-          ],
-          "internalType": "struct Params.Pool",
-          "name": "params",
-          "type": "tuple"
+          "internalType": "address[]",
+          "name": "tokens",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "balances",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "weights",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256",
+          "name": "swapFee",
+          "type": "uint256"
         },
         {
           "internalType": "bool",
@@ -105,12 +93,10 @@
           "type": "address"
         }
       ],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
           "internalType": "contract CRPFactory",
@@ -123,30 +109,30 @@
           "type": "address"
         },
         {
-          "internalType": "string",
-          "name": "symbol",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "name",
-          "type": "string"
-        },
-        {
           "components": [
             {
+              "internalType": "string",
+              "name": "poolTokenSymbol",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "poolTokenName",
+              "type": "string"
+            },
+            {
               "internalType": "address[]",
-              "name": "tokens",
+              "name": "constituentTokens",
               "type": "address[]"
             },
             {
               "internalType": "uint256[]",
-              "name": "balances",
+              "name": "tokenBalances",
               "type": "uint256[]"
             },
             {
               "internalType": "uint256[]",
-              "name": "weights",
+              "name": "tokenWeights",
               "type": "uint256[]"
             },
             {
@@ -155,7 +141,7 @@
               "type": "uint256"
             }
           ],
-          "internalType": "struct Params.Pool",
+          "internalType": "struct ConfigurableRightsPool.PoolParams",
           "name": "poolParams",
           "type": "tuple"
         },
@@ -177,7 +163,7 @@
               "type": "uint256"
             }
           ],
-          "internalType": "struct Params.CRP",
+          "internalType": "struct ConfigurableRightsPool.CrpParams",
           "name": "crpParams",
           "type": "tuple"
         },
@@ -212,11 +198,6 @@
               "internalType": "bool",
               "name": "canChangeCap",
               "type": "bool"
-            },
-            {
-              "internalType": "bool",
-              "name": "canRemoveAllTokens",
-              "type": "bool"
             }
           ],
           "internalType": "struct RightsManager.Rights",
@@ -232,12 +213,10 @@
           "type": "address"
         }
       ],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
           "internalType": "contract ConfigurableRightsPool",
@@ -262,12 +241,10 @@
       ],
       "name": "decreaseWeight",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
           "internalType": "contract BPool",
@@ -277,12 +254,10 @@
       ],
       "name": "finalize",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
           "internalType": "contract ConfigurableRightsPool",
@@ -307,12 +282,10 @@
       ],
       "name": "increaseWeight",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
           "internalType": "contract BPool",
@@ -332,12 +305,10 @@
       ],
       "name": "joinPool",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
           "internalType": "contract ConfigurableRightsPool",
@@ -357,12 +328,10 @@
       ],
       "name": "joinSmartPool",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
           "internalType": "contract AbstractPool",
@@ -387,12 +356,10 @@
       ],
       "name": "joinswapExternAmountIn",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
           "internalType": "contract ConfigurableRightsPool",
@@ -412,12 +379,10 @@
       ],
       "name": "removeToken",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
           "internalType": "contract ConfigurableRightsPool",
@@ -432,12 +397,10 @@
       ],
       "name": "removeWhitelistedLiquidityProvider",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
           "internalType": "contract ConfigurableRightsPool",
@@ -452,12 +415,10 @@
       ],
       "name": "setCap",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
           "internalType": "contract AbstractPool",
@@ -472,12 +433,10 @@
       ],
       "name": "setController",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
           "internalType": "contract AbstractPool",
@@ -492,12 +451,10 @@
       ],
       "name": "setPublicSwap",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
           "internalType": "contract AbstractPool",
@@ -512,12 +469,10 @@
       ],
       "name": "setSwapFee",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
           "internalType": "contract BPool",
@@ -542,12 +497,10 @@
       ],
       "name": "setTokens",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
           "internalType": "contract ConfigurableRightsPool",
@@ -572,12 +525,10 @@
       ],
       "name": "updateWeightsGradually",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
       "inputs": [
         {
           "internalType": "contract ConfigurableRightsPool",
@@ -592,7 +543,6 @@
       ],
       "name": "whitelistLiquidityProvider",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     }
