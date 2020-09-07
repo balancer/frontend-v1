@@ -46,7 +46,7 @@
           <span class="ml-2 text-white">Can change weights</span>
         </UiCheckbox>
         <div v-if="rights.canChangeWeights">
-          <span>Minimum update time (in blocks): </span>
+          <span>Minimum update period (in blocks): </span>
           <input
             class="ml-2 input pool-input text-right text-white"
             :value="minimumWeightChangeBlockPeriod"
@@ -61,7 +61,7 @@
           <span class="ml-2 text-white">Can change tokens</span>
         </UiCheckbox>
         <div v-if="rights.canAddRemoveTokens">
-          <span>Minimum time before adding new token (in blocks): </span>
+          <span>Token adding minimal timelock (in blocks): </span>
           <input
             class="ml-2 input pool-input text-right text-white"
             :value="addTokenTimeLockInBlocks"
