@@ -99,38 +99,20 @@
       />
     </div>
     <div v-if="type === 'SMART_POOL'">
-      <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
-        <h4 class="flex-auto" v-text="'Token symbol'" />
-      </div>
-      <div class="mb-4">
-        <input
-          class="input pool-input text-right text-white"
-          v-model="tokenSymbol"
-          placeholder="BPT"
-        />
-      </div>
-      <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
-        <h4 class="flex-auto" v-text="'Token name'" />
-      </div>
-      <div class="mb-4">
-        <input
-          class="input pool-input text-right text-white"
-          v-model="tokenName"
-          placeholder="Balancer Smart Pool"
-        />
-      </div>
-      <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
-        <h4 class="flex-auto" v-text="'Rights'" />
-      </div>
-      <div
-        class="d-flex flex-items-center"
-        v-for="(right, rightKey) in poolRights"
-        :key="rightKey"
-      >
-        <UiCheckbox :checked="rights[rightKey]" @change="toggleRight(rightKey)">
-          <span class="ml-2 text-white" v-text="right" />
-        </UiCheckbox>
-      </div>
+      <FormCrp
+        :tokenSymbol="crp.poolTokenSymbol"
+        :tokenName="crp.poolTokenName"
+        :rights="crp.rights"
+        :minimumWeightChangeBlockPeriod="crp.minimumWeightChangeBlockPeriod"
+        :addTokenTimeLockInBlocks="crp.addTokenTimeLockInBlocks"
+        :initialSupply="crp.initialSupply"
+        @change-symbol="changeSymbol"
+        @change-name="changeName"
+        @toggle-right="toggleRight"
+        @change-weight-period="changeWeightPeriod"
+        @change-add-timelock="changeAddTimelock"
+        @change-initial-supply="changeInitialSupply"
+      />
     </div>
     <MessageError v-if="validationError" :text="validationError" class="mt-4" />
     <MessageSimilarPools v-if="pool" :pool="pool" class="mt-4" />
@@ -176,8 +158,7 @@ import {
   denormalizeBalance,
   getTokenBySymbol,
   isLocked,
-  poolTypes,
-  poolRights
+  poolTypes
 } from '@/helpers/utils';
 import { validateNumberInput, formatError } from '@/helpers/validation';
 
@@ -198,16 +179,20 @@ export default {
   data() {
     return {
       poolTypes,
-      poolRights,
       type: 'SHARED_POOL',
       amounts: {},
       weights: {},
       swapFee: '',
       tokens: [],
+      crp: {
+        poolTokenSymbol: '',
+        poolTokenName: '',
+        rights: {},
+        minimumWeightChangeBlockPeriod: '10',
+        addTokenTimeLockInBlocks: '10',
+        initialSupply: '100'
+      },
       activeToken: 0,
-      tokenSymbol: '',
-      tokenName: '',
-      rights: {},
       tokenModalOpen: false,
       confirmModalOpen: false,
       padlock: true,
@@ -355,8 +340,23 @@ export default {
       const index = this.tokens.indexOf(tokenAddress);
       this.tokens.splice(index, 1);
     },
+    changeSymbol(symbol) {
+      this.crp.poolTokenSymbol = symbol;
+    },
+    changeName(name) {
+      this.crp.poolTokenName = name;
+    },
     toggleRight(right) {
-      Vue.set(this.rights, right, !this.rights[right]);
+      Vue.set(this.crp.rights, right, !this.crp.rights[right]);
+    },
+    changeWeightPeriod(weightPeriod) {
+      this.crp.minimumWeightChangeBlockPeriod = weightPeriod;
+    },
+    changeAddTimelock(addTimelock) {
+      this.crp.addTokenTimeLockInBlocks = addTimelock;
+    },
+    changeInitialSupply(initialSupply) {
+      this.crp.initialSupply = initialSupply;
     },
     async create() {
       this.loading = true;
@@ -370,23 +370,31 @@ export default {
         await this.createPool(poolParams);
       }
       if (this.type === 'SMART_POOL') {
+        const {
+          poolTokenSymbol,
+          poolTokenName,
+          rights,
+          minimumWeightChangeBlockPeriod,
+          addTokenTimeLockInBlocks,
+          initialSupply
+        } = this.crp;
         const poolParams = {
-          poolTokenSymbol: this.tokenSymbol,
-          poolTokenName: this.tokenName,
+          poolTokenSymbol,
+          poolTokenName,
           constituentTokens: this.tokens,
           tokenBalances: this.amounts,
           tokenWeights: this.weights,
           swapFee: this.swapFee
         };
         const crpParams = {
-          initialSupply: '100',
-          minimumWeightChangeBlockPeriod: 10,
-          addTokenTimeLockInBlocks: 10
+          minimumWeightChangeBlockPeriod,
+          addTokenTimeLockInBlocks,
+          initialSupply
         };
         await this.createSmartPool({
           poolParams,
           crpParams,
-          rights: this.rights
+          rights
         });
       }
       this.loading = false;
