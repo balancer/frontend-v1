@@ -285,6 +285,41 @@ export default {
       if (fee < 0.0001 || fee > 10) {
         return 'Fee should be from 0.0001% to 10%';
       }
+      // Smart pool validation
+      if (this.type == 'SMART_POOL') {
+        if (!this.crp.poolTokenSymbol) {
+          return `Token symbol can't be empty`;
+        }
+        if (!this.crp.poolTokenName) {
+          return `Token name can't be empty`;
+        }
+
+        const weightPeriodError = validateNumberInput(
+          this.crp.minimumWeightChangeBlockPeriod
+        );
+        const weightPeriodErrorText = formatError(weightPeriodError);
+        if (weightPeriodErrorText) return weightPeriodErrorText;
+        const addTimelockError = validateNumberInput(
+          this.crp.addTokenTimeLockInBlocks
+        );
+        const addTimelockErrorText = formatError(addTimelockError);
+        if (addTimelockErrorText) return addTimelockErrorText;
+        const initialSupplyError = validateNumberInput(this.crp.initialSupply);
+        const initialSupplyErrorText = formatError(initialSupplyError);
+        if (initialSupplyErrorText) return initialSupplyErrorText;
+
+        const weightPeriod = parseFloat(
+          this.crp.minimumWeightChangeBlockPeriod
+        );
+        const addTimelock = parseFloat(this.crp.addTokenTimeLockInBlocks);
+        if (weightPeriod < addTimelock) {
+          return 'Weight change period should be bigger than token adding timelock';
+        }
+        const initialSupply = parseFloat(this.crp.initialSupply);
+        if (initialSupply < 100 || initialSupply > 1e9) {
+          return 'Supply should be between 100 and 1,000,000,000';
+        }
+      }
       return undefined;
     },
     hasLockedToken() {
