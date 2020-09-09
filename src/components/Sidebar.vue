@@ -84,7 +84,7 @@ export default {
   },
   methods: {
     getTokenValue([address, balanceStr]) {
-      if (!this.web3.tokenMetadata[address]) return 0;
+      if (!this.web3.tokenMetadata[address] && address !== 'ether') return 0;
       const decimals =
         address === 'ether' ? 18 : this.web3.tokenMetadata[address].decimals;
       const balance = normalizeBalance(balanceStr, decimals);
