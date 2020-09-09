@@ -157,6 +157,7 @@ import {
 } from '@/helpers/utils';
 import { calcPoolOutGivenSingleIn } from '@/helpers/math';
 import { validateNumberInput, formatError } from '@/helpers/validation';
+import { getAddress } from '@ethersproject/address';
 
 const BALANCE_BUFFER = 0.01;
 
@@ -199,9 +200,14 @@ export default {
     }
   },
   computed: {
+    poolTokenBalance() {
+      let balance = this.subgraph.poolShares[this.pool.id] || 0;
+      const nodeBalance = this.web3.balances[getAddress(this.pool.id)];
+      if (nodeBalance) balance = normalizeBalance(nodeBalance, 18);
+      return balance;
+    },
     userLiquidity() {
-      const poolSharesFrom =
-        parseFloat(this.subgraph.poolShares[this.pool.id]) || 0;
+      const poolSharesFrom = parseFloat(this.poolTokenBalance);
       const totalShares = parseFloat(this.pool.totalShares);
       const current = poolSharesFrom / totalShares;
       if (this.validationError) {
