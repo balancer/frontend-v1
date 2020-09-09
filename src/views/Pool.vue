@@ -68,6 +68,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { getAddress } from '@ethersproject/address';
 
 export default {
   data() {
@@ -114,7 +115,8 @@ export default {
       return (
         this.config.chainId === this.web3.injectedChainId &&
         this.web3.account &&
-        Object.keys(this.subgraph.poolShares).includes(this.id)
+        (Object.keys(this.subgraph.poolShares).includes(this.id) ||
+          this.web3.balances[getAddress(this.id)])
       );
     }
   },
@@ -149,9 +151,9 @@ export default {
         await this.loadTokenMetadata(unknownTokens);
         await this.loadPricesByAddress(unknownTokens);
       }
-      if (this.web3.account) {
+      if (this.$auth.isAuthenticated) {
         await Promise.all([
-          this.getBalances(this.pool.tokensList),
+          this.getBalances([...this.pool.tokensList, getAddress(this.id)]),
           this.getAllowances({
             tokens: this.pool.tokensList,
             spender: this.web3.dsProxyAddress
