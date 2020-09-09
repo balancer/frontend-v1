@@ -102,6 +102,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { getAddress } from '@ethersproject/address';
 import {
   bnum,
   normalizeBalance,
@@ -132,10 +133,13 @@ export default {
   },
   computed: {
     poolTokenBalance() {
-      return this.subgraph.poolShares[this.pool.id] || 0;
+      let balance = this.subgraph.poolShares[this.pool.id] || 0;
+      const nodeBalance = this.web3.balances[getAddress(this.pool.id)];
+      if (nodeBalance) balance = normalizeBalance(nodeBalance, 18);
+      return balance;
     },
     userLiquidity() {
-      const poolSharesFrom = this.subgraph.poolShares[this.pool.id] || 0;
+      const poolSharesFrom = this.poolTokenBalance;
       const totalShares = parseFloat(this.pool.totalShares);
       const current = poolSharesFrom / totalShares;
       if (this.validationError) {
@@ -151,7 +155,7 @@ export default {
 
       const poolTokens = parseFloat(this.poolAmountIn);
       const future = (poolSharesFrom - poolTokens) / (totalShares - poolTokens);
-      const userLiquidity = {
+      return {
         absolute: {
           current: poolSharesFrom,
           future: poolSharesFrom + poolTokens
@@ -161,7 +165,6 @@ export default {
           future
         }
       };
-      return userLiquidity;
     },
     tokens() {
       return this.pool.tokens.map(token => {
