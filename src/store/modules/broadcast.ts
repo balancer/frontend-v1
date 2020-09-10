@@ -245,11 +245,12 @@ const actions = {
       commit('CREATE_PROXY_FAILURE', e);
     }
   },
-  createPool: async ({ commit, dispatch, rootState }, poolParams) => {
+  createPool: async (
+    { commit, dispatch, rootState },
+    { tokens, balances, weights, swapFee }
+  ) => {
     commit('CREATE_POOL_REQUEST');
     const dsProxyAddress = rootState.web3.dsProxyAddress;
-    const { tokens } = poolParams;
-    let { balances, weights, swapFee } = poolParams;
     try {
       balances = tokens.map(token => {
         const amountInput = balances[token];
@@ -268,17 +269,11 @@ const actions = {
       swapFee = toWei(swapFee)
         .div(100)
         .toString();
-      const poolParams = {
-        tokens,
-        balances,
-        weights,
-        swapFee
-      };
       const underlyingParams = [
         'BActions',
         config.addresses.bActions,
         'create',
-        [config.addresses.bFactory, poolParams, true],
+        [config.addresses.bFactory, tokens, balances, weights, swapFee, true],
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
@@ -295,20 +290,20 @@ const actions = {
   },
   createSmartPool: async (
     { commit, dispatch, rootState },
-    { symbol, name, poolParams, crpParams, rights }
+    { poolParams, crpParams, rights }
   ) => {
     commit('CREATE_SMART_POOL_REQUEST');
     const dsProxyAddress = rootState.web3.dsProxyAddress;
-    const { tokens } = poolParams;
-    let { balances, weights, swapFee } = poolParams;
+    const { poolTokenSymbol, poolTokenName, constituentTokens } = poolParams;
+    let { tokenBalances, tokenWeights, swapFee } = poolParams;
     let { initialSupply } = crpParams;
     const {
       minimumWeightChangeBlockPeriod,
       addTokenTimeLockInBlocks
     } = crpParams;
     try {
-      balances = tokens.map(token => {
-        const amountInput = balances[token];
+      tokenBalances = constituentTokens.map(token => {
+        const amountInput = tokenBalances[token];
         const amount = bnum(amountInput);
         const tokenMetadata = rootState.web3.tokenMetadata[token];
         const decimals = tokenMetadata ? tokenMetadata.decimals : null;
@@ -316,8 +311,8 @@ const actions = {
           .integerValue(BigNumber.ROUND_DOWN)
           .toString();
       });
-      weights = tokens.map(token => {
-        return toWei(weights[token])
+      tokenWeights = constituentTokens.map(token => {
+        return toWei(tokenWeights[token])
           .div(2)
           .toString();
       });
@@ -325,9 +320,11 @@ const actions = {
         .div(100)
         .toString();
       poolParams = {
-        tokens,
-        balances,
-        weights,
+        poolTokenSymbol,
+        poolTokenName,
+        constituentTokens,
+        tokenBalances,
+        tokenWeights,
         swapFee
       };
       initialSupply = toWei(initialSupply).toString();
@@ -344,8 +341,6 @@ const actions = {
         [
           config.addresses.crpFactory,
           config.addresses.bFactory,
-          symbol,
-          name,
           poolParams,
           crpParams,
           rights
