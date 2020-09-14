@@ -609,12 +609,12 @@ const actions = {
   },
   updateWeightsGradually: async (
     { commit, dispatch, rootState },
-    { poolAddress, newWeights, startBlock, endBlock }
+    { poolAddress, tokens, newWeights, startBlock, endBlock }
   ) => {
     commit('UPDATE_WEIGHTS_GRADUALLY_REQUEST');
     const dsProxyAddress = rootState.web3.dsProxyAddress;
     try {
-      newWeights = Object.keys(newWeights).map(token => {
+      newWeights = tokens.map(token => {
         return toWei(newWeights[token])
           .div(2)
           .toString();
