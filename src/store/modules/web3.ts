@@ -22,7 +22,8 @@ const state = {
   active: false,
   balances: {},
   allowances: {},
-  tokenMetadata: {}
+  crps: {},
+  tokenMetadata: {},
 };
 
 const mutations = {
@@ -35,6 +36,7 @@ const mutations = {
     Vue.set(_state, 'active', false);
     Vue.set(_state, 'balances', {});
     Vue.set(_state, 'allowances', {});
+    Vue.set(_state, 'crps', {});
     console.debug('LOGOUT');
   },
   LOAD_TOKEN_METADATA_REQUEST() {
@@ -173,7 +175,20 @@ const mutations = {
   },
   GET_PROXY_FAILURE(_state, payload) {
     console.debug('GET_PROXY_FAILURE', payload);
-  }
+  },
+  GET_CRPS_REQUEST() {
+    console.debug('GET_CRPS_REQUEST');
+  },
+  GET_CRPS_SUCCESS(_state, payload) {
+    for (const address in payload) {
+      const crp = payload[address];
+      Vue.set(_state.crps, address, crp);
+    }
+    console.debug('GET_CRPS_SUCCESS');
+  },
+  GET_CRPS_FAILURE(_state, payload) {
+    console.debug('GET_CRPS_FAILURE', payload);
+  },
 };
 
 const actions = {
@@ -509,6 +524,66 @@ const actions = {
       return proxy;
     } catch (e) {
       commit('GET_PROXY_FAILURE', e);
+      return Promise.reject();
+    }
+  },
+  getCrps: async ({ commit }, crps) => {
+    commit('GET_CRPS_REQUEST');
+    const multi = new Contract(
+      config.addresses.multicall,
+      abi['Multicall'],
+      web3
+    );
+    const calls = [];
+    const crpIface = new Interface(abi.ConfigurableRightsPool);
+    crps.forEach(crp => {
+      // @ts-ignore
+      calls.push([crp, crpIface.encodeFunctionData('decimals', [])]);
+      // @ts-ignore
+      calls.push([crp, crpIface.encodeFunctionData('symbol', [])]);
+      // @ts-ignore
+      calls.push([crp, crpIface.encodeFunctionData('name', [])]);
+      // @ts-ignore
+      calls.push([crp, crpIface.encodeFunctionData('totalSupply', [])]);
+      // // @ts-ignore
+      // calls.push([crp, crpIface.encodeFunctionData('minimumWeightChangeBlockPeriod', [])]);
+      // // @ts-ignore
+      // calls.push([crp, crpIface.encodeFunctionData('addTokenTimeLockInBlocks', [])]);
+      // // @ts-ignore
+      // calls.push([crp, crpIface.encodeFunctionData('bspCap', [])]);
+    });
+    const crpData: any = {};
+    try {
+      const [, response] = await multi.aggregate(calls);
+      for (let i = 0; i < crps.length; i++) {
+        const [decimals] = crpIface.decodeFunctionResult(
+          'decimals',
+          response[4 * i]
+        );
+        const [symbol] = crpIface.decodeFunctionResult(
+          'symbol',
+          response[4 * i + 1]
+        );
+        const [name] = crpIface.decodeFunctionResult(
+          'name',
+          response[4 * i + 2]
+        );
+        const [totalSupplyNumber] = crpIface.decodeFunctionResult(
+          'totalSupply',
+          response[4 * i + 3]
+        );
+        const totalSupply = totalSupplyNumber.toString();
+        crpData[crps[i]] = {
+          decimals,
+          symbol,
+          name,
+          totalSupply,
+        };
+      }
+      commit('GET_CRPS_SUCCESS', crpData);
+      return crpData;
+    } catch (e) {
+      commit('GET_CRPS_FAILURE', e);
       return Promise.reject();
     }
   }
