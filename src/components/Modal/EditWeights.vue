@@ -1,95 +1,187 @@
 <template>
-  <UiModal :open="open" @close="$emit('close')">
-    <div
-      class="modal-body py-6 text-center"
-      :class="{ 'bg-blue mosaic anim-scroll': step > lastStep }"
-    >
-      <form @submit.prevent="handleSubmit">
-        <div v-if="step === 0">
-          <FormSelectWeights
-            :tokens="tokens"
-            v-model="weights"
-            :value="value"
-          />
-          <div class="text-left mx-4 mb-4">
-            <label class="d-block text-center"
-              >Min. weight change block period</label
-            >
+  <UiModal :open="open" @close="$emit('close')" style="max-width: 440px;">
+    <UiModalForm @submit="handleSubmit">
+      <template slot="header">
+        <h3 class="text-white">Edit token weights</h3>
+      </template>
+      <UiTable>
+        <UiTableTh>
+          <div class="flex-auto text-left">Tokens</div>
+          <div class="column-sm">Weights</div>
+          <div class="column">Percent</div>
+        </UiTableTh>
+        <UiTableTr v-for="(token, i) in pool.tokens" :key="token.checksum">
+          <Token :address="token.checksum" size="28" class="mr-2" />
+          <div class="flex-auto text-left">
+            {{ _ticker(token.checksum) }}
+          </div>
+          <div class="column-sm text-right">
             <input
-              v-model="minimumWeightChangeBlockPeriod"
-              type="number"
-              class="h2 border-0 form-control text-center width-full"
-              placeholder="1"
-              min="1"
+              :value="weights[i]"
+              class="input text-right ml-4"
+              placeholder="0.0"
+              @input="
+                e => {
+                  handleInputChange(i, e.target.value);
+                }
+              "
             />
           </div>
-          <div class="mx-3 overflow-hidden">
-            <button
-              type="button"
-              class="btn-outline d-inline-block column mx-1"
-              @click="$emit('close')"
-            >
-              Cancel
-            </button>
-            <button
-              :disabled="
-                loading ||
-                  JSON.stringify(weights) === JSON.stringify(defaultValue)
-              "
-              type="submit"
-              class="btn-mktg d-inline-block column mx-1"
-            >
-              Confirm
-            </button>
-          </div>
-        </div>
-        <FormBroadcast v-if="step === 1" @close="$emit('close')" />
-      </form>
-    </div>
+          <div
+            class="column text-right"
+            v-text="_num((weights[i] / totalWeight).toFixed(4), 'percent')"
+          />
+        </UiTableTr>
+      </UiTable>
+      <div v-if="isLocked" class="my-2 text-center">
+        Unlock {{ _ticker(tokenToSpend) }} to continue.
+        <ButtonUnlock :tokenAddress="tokenToSpend" :amount="amountToSpend" />
+      </div>
+      <template slot="footer">
+        <UiButton @click="$emit('close')" type="button" class="mx-1">
+          Cancel
+        </UiButton>
+        <UiButton
+          :disabled="loading || !isValid"
+          :loading="loading"
+          type="submit"
+          class="button-primary mx-1"
+        >
+          Confirm
+        </UiButton>
+      </template>
+    </UiModalForm>
   </UiModal>
 </template>
 
 <script>
 import { getAddress } from '@ethersproject/address';
-import { delay, clone } from '@/helpers/utils';
+import { mapActions } from 'vuex';
+import {
+  calcSingleInGivenWeightIncrease,
+  calcPoolInGivenWeightDecrease
+} from '@/helpers/math';
+import { bnum, toWei, scale, isLocked } from '@/helpers/utils';
 
 export default {
   props: ['open', 'pool'],
   data() {
     return {
       loading: false,
-      step: 0,
-      lastStep: 0,
-      weights: [],
-      minimumWeightChangeBlockPeriod: 64
+      tokenIndex: 0,
+      weights: []
     };
-  },
-  computed: {
-    value() {
-      const tokens = clone(this.pool.tokens);
-      return tokens.map(token => token.denormWeight);
-    },
-    tokens() {
-      const tokensList = clone(this.pool.tokensList);
-      return tokensList.map(token => {
-        return getAddress(token);
-      });
-    }
   },
   watch: {
     open() {
-      this.step = 0;
       this.loading = false;
-      this.weights = clone(this.value);
+      this.weights = this.pool.tokens.map(
+        token => 2 * parseFloat(token.denormWeight)
+      );
+    }
+  },
+  computed: {
+    totalWeight() {
+      return this.weights.reduce((a, b) => a + parseFloat(b), 0);
+    },
+    tokenToSpend() {
+      if (this.isWeightIncrease) {
+        return this.pool.tokens[this.tokenIndex].checksum;
+      }
+      if (this.isWeightDecrease) {
+        return getAddress(this.pool.controller);
+      }
+      return undefined;
+    },
+    amountToSpend() {
+      const token = this.pool.tokens[this.tokenIndex];
+      if (this.isWeightIncrease) {
+        const tokenAmountIn = calcSingleInGivenWeightIncrease(
+          scale(bnum(token.balance), token.decimals),
+          toWei(token.denormWeight),
+          toWei(this.weights[this.tokenIndex])
+        );
+        return tokenAmountIn.toString();
+      }
+      if (this.isWeightDecrease) {
+        const crp = this.web3.crps[getAddress(this.pool.controller)];
+        const totalWeight =
+          this.totalWeight +
+          2 * parseFloat(token.denormWeight) -
+          parseFloat(this.weights[this.tokenIndex]);
+        const poolAmountIn = calcPoolInGivenWeightDecrease(
+          toWei(totalWeight),
+          toWei(token.denormWeight).times(2),
+          toWei(this.weights[this.tokenIndex]),
+          bnum(crp.totalSupply)
+        );
+        return poolAmountIn.toString();
+      }
+      return '0';
+    },
+    isLocked() {
+      if (!this.tokenToSpend) {
+        return false;
+      }
+      return isLocked(
+        this.web3.allowances,
+        this.tokenToSpend,
+        this.web3.dsProxyAddress,
+        this.amountToSpend,
+        this.web3.tokenMetadata[this.tokenToSpend].decimals
+      );
+    },
+    isWeightIncrease() {
+      const weight =
+        2 * parseFloat(this.pool.tokens[this.tokenIndex].denormWeight);
+      const newWeight = parseFloat(this.weights[this.tokenIndex]);
+      return newWeight > weight;
+    },
+    isWeightDecrease() {
+      const weight =
+        2 * parseFloat(this.pool.tokens[this.tokenIndex].denormWeight);
+      const newWeight = parseFloat(this.weights[this.tokenIndex]);
+      return newWeight < weight;
+    },
+    isValid() {
+      const isWeightChange = this.isWeightIncrease || this.isWeightDecrease;
+      const correctWeight = this.totalWeight >= 2 && this.totalWeight <= 98;
+      return isWeightChange && correctWeight;
     }
   },
   methods: {
+    ...mapActions(['increaseWeight', 'decreaseWeight']),
+    handleInputChange(i, weight) {
+      this.tokenIndex = i;
+      this.weights = this.pool.tokens.map(
+        token => 2 * parseFloat(token.denormWeight)
+      );
+      this.weights[i] = weight;
+    },
     async handleSubmit() {
       this.loading = true;
-      await delay(1e3);
-      // @TODO Broadcast tx
+      const token = this.pool.tokens[this.tokenIndex];
+      if (this.isWeightIncrease) {
+        const tokenWeiAmountIn = bnum(this.amountToSpend);
+        const tokenAmountIn = scale(tokenWeiAmountIn, -token.decimals);
+        await this.increaseWeight({
+          poolAddress: this.pool.controller,
+          token: token.checksum,
+          newWeight: this.weights[this.tokenIndex],
+          tokenAmountIn
+        });
+      } else {
+        const poolWeiAmountIn = bnum(this.amountToSpend);
+        const poolAmountIn = scale(poolWeiAmountIn, -18);
+        await this.decreaseWeight({
+          poolAddress: this.pool.controller,
+          token: token.checksum,
+          newWeight: this.weights[this.tokenIndex],
+          poolAmountIn
+        });
+      }
+      this.$emit('close');
       this.loading = false;
-      this.step++;
     }
   }
 };
