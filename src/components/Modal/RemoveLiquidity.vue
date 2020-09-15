@@ -295,7 +295,7 @@ export default {
       return (this.poolTokenBalance / this.pool.totalShares) * token.balance;
     },
     getTokenAmountOut(token) {
-      if (this.validationError) {
+      if (!this.poolAmountIn || !parseFloat(this.poolAmountIn)) {
         return 0;
       }
       if (this.isMultiAsset) {
