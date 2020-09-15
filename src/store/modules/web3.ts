@@ -23,7 +23,7 @@ const state = {
   balances: {},
   allowances: {},
   crps: {},
-  tokenMetadata: {},
+  tokenMetadata: {}
 };
 
 const mutations = {
@@ -188,7 +188,7 @@ const mutations = {
   },
   GET_CRPS_FAILURE(_state, payload) {
     console.debug('GET_CRPS_FAILURE', payload);
-  },
+  }
 };
 
 const actions = {
@@ -577,7 +577,7 @@ const actions = {
           decimals,
           symbol,
           name,
-          totalSupply,
+          totalSupply
         };
       }
       commit('GET_CRPS_SUCCESS', crpData);
