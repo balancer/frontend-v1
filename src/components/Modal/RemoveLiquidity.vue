@@ -317,6 +317,12 @@ export default {
         const poolSupply = denormalizeBalance(this.pool.totalShares, 18);
         const totalWeight = bnum(this.pool.totalWeight).times('1e18');
         const swapFee = bnum(this.pool.swapFee).times('1e18');
+        
+        if (amount.div(poolSupply).gt(0.99)) {
+          // Invalidate user's attempt to withdraw the entire pool supply in a single token
+          // At amounts close to 100%, solidity math freaks out
+          return 0;
+        }
 
         const tokenAmountOut = calcSingleOutGivenPoolIn(
           tokenBalanceOut,
