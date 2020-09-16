@@ -98,9 +98,6 @@ const mutations = {
   HANDLE_CLOSE_CHANGED() {
     console.debug('HANDLE_CLOSE_CHANGED');
   },
-  HANDLE_NETWORK_CHANGED() {
-    console.debug('HANDLE_NETWORK_CHANGED');
-  },
   RESOLVE_NAME_REQUEST() {
     console.debug('RESOLVE_NAME_REQUEST');
   },
@@ -297,13 +294,6 @@ const actions = {
         auth.provider.on('close', async () => {
           commit('HANDLE_CLOSE');
           if (state.active) await dispatch('loadWeb3');
-        });
-        auth.provider.on('networkChanged', async () => {
-          commit('HANDLE_NETWORK_CHANGED');
-          if (state.active) {
-            await dispatch('logout');
-            await dispatch('login');
-          }
         });
       }
       const network = await web3.getNetwork();
