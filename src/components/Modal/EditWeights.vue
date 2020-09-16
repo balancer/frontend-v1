@@ -145,7 +145,7 @@ export default {
     },
     isValid() {
       const isWeightChange = this.isWeightIncrease || this.isWeightDecrease;
-      const correctWeight = this.totalWeight >= 2 && this.totalWeight <= 98;
+      const correctWeight = this.totalWeight >= 2 && this.totalWeight <= 100;
       return isWeightChange && correctWeight;
     }
   },
