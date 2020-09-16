@@ -570,12 +570,12 @@ const actions = {
           'addTokenTimeLockInBlocks',
           response[7 * i + 5]
         )
-        const addTokenTimeLockInBlocks = addTokenTimeLockInBlocksNumber.toString();
+        const addTokenTimeLockInBlocks = addTokenTimeLockInBlocksNumber.toNumber();
         const [minimumWeightChangeBlockPeriodNumber] = crpIface.decodeFunctionResult(
           'minimumWeightChangeBlockPeriod',
           response[7 * i + 6]
         )
-        const minimumWeightChangeBlockPeriod = minimumWeightChangeBlockPeriodNumber.toString();
+        const minimumWeightChangeBlockPeriod = minimumWeightChangeBlockPeriodNumber.toNumber();
         crpData[crps[i]] = {
           decimals,
           symbol,
