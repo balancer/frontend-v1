@@ -95,8 +95,8 @@ const mutations = {
     Vue.set(_state, 'account', payload);
     console.debug('HANDLE_ACCOUNTS_CHANGED', payload);
   },
-  HANDLE_CLOSE_CHANGED() {
-    console.debug('HANDLE_CLOSE_CHANGED');
+  HANDLE_DISCONNECT() {
+    console.debug('HANDLE_DISCONNECT');
   },
   RESOLVE_NAME_REQUEST() {
     console.debug('RESOLVE_NAME_REQUEST');
@@ -291,8 +291,8 @@ const actions = {
             await dispatch('loadAccount');
           }
         });
-        auth.provider.on('close', async () => {
-          commit('HANDLE_CLOSE');
+        auth.provider.on('disconnect', async () => {
+          commit('HANDLE_DISCONNECT');
           if (state.active) await dispatch('loadWeb3');
         });
       }
