@@ -25,8 +25,7 @@ export const poolRights = {
   canChangeWeights: 'Can change weights',
   canAddRemoveTokens: 'Can add and remove tokens',
   canWhitelistLPs: 'Can whitelist LPs',
-  canChangeCap: 'Can change pool cap',
-  canRemoveAllTokens: 'Can remove all tokens'
+  canChangeCap: 'Can change pool cap'
 };
 
 export const unknownColors = [
