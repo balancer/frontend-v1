@@ -227,10 +227,14 @@ export function formatFilters(filters, fb) {
   return filters;
 }
 
-export function blockNumberToTimestamp(currentTime, currentBlockNumber, blockNumber) {
+export function blockNumberToTimestamp(
+  currentTime,
+  currentBlockNumber,
+  blockNumber
+) {
   const AVG_BLOCK_TIMES = {
     1: 13,
-    42: 5,
+    42: 5
   };
   const avgBlockTime = AVG_BLOCK_TIMES[config.chainId];
   return currentTime + avgBlockTime * 1000 * (blockNumber - currentBlockNumber);

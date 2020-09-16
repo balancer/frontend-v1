@@ -96,7 +96,7 @@ const mutations = {
     console.debug('GET_LATEST_BLOCK_SUCCESS', payload);
     Vue.set(_state, 'blockNumber', payload);
   },
-  GET_LATEST_BLOCK_FAILURE(_state, payload) {
+  GET_LATEST_BLOCK_FAILURE() {
     console.debug('GET_LATEST_BLOCK_FAILURE');
   },
   HANDLE_CHAIN_CHANGED() {
@@ -535,10 +535,18 @@ const actions = {
       calls.push([crp, crpIface.encodeFunctionData('totalSupply', [])]);
       // @ts-ignore
       calls.push([crp, crpIface.encodeFunctionData('bspCap', [])]);
-      // @ts-ignore
-      calls.push([crp, crpIface.encodeFunctionData('addTokenTimeLockInBlocks', [])]);
-      // @ts-ignore
-      calls.push([crp, crpIface.encodeFunctionData('minimumWeightChangeBlockPeriod', [])]);
+      calls.push([
+        // @ts-ignore
+        crp,
+        // @ts-ignore
+        crpIface.encodeFunctionData('addTokenTimeLockInBlocks', [])
+      ]);
+      calls.push([
+        // @ts-ignore
+        crp,
+        // @ts-ignore
+        crpIface.encodeFunctionData('minimumWeightChangeBlockPeriod', [])
+      ]);
     });
     const crpData: any = {};
     try {
@@ -564,17 +572,19 @@ const actions = {
         const [bspCapNumber] = crpIface.decodeFunctionResult(
           'bspCap',
           response[7 * i + 4]
-        )
+        );
         const bspCap = bspCapNumber.toString();
         const [addTokenTimeLockInBlocksNumber] = crpIface.decodeFunctionResult(
           'addTokenTimeLockInBlocks',
           response[7 * i + 5]
-        )
+        );
         const addTokenTimeLockInBlocks = addTokenTimeLockInBlocksNumber.toNumber();
-        const [minimumWeightChangeBlockPeriodNumber] = crpIface.decodeFunctionResult(
+        const [
+          minimumWeightChangeBlockPeriodNumber
+        ] = crpIface.decodeFunctionResult(
           'minimumWeightChangeBlockPeriod',
           response[7 * i + 6]
-        )
+        );
         const minimumWeightChangeBlockPeriod = minimumWeightChangeBlockPeriodNumber.toNumber();
         crpData[crps[i]] = {
           decimals,
