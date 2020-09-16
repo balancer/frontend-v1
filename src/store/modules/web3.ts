@@ -16,6 +16,7 @@ let web3;
 const state = {
   injectedLoaded: false,
   injectedChainId: null,
+  blockNumber: 0,
   account: null,
   dsProxyAddress: null,
   active: false,
@@ -87,6 +88,16 @@ const mutations = {
     Vue.set(_state, 'activeChainId', null);
     Vue.set(_state, 'active', false);
     console.debug('LOAD_BACKUP_PROVIDER_FAILURE', payload);
+  },
+  GET_LATEST_BLOCK_REQUEST() {
+    console.debug('GET_LATEST_BLOCK_REQUEST');
+  },
+  GET_LATEST_BLOCK_SUCCESS(_state, payload) {
+    console.debug('GET_LATEST_BLOCK_SUCCESS', payload);
+    Vue.set(_state, 'blockNumber', payload);
+  },
+  GET_LATEST_BLOCK_FAILURE(_state, payload) {
+    console.debug('GET_LATEST_BLOCK_FAILURE');
   },
   HANDLE_CHAIN_CHANGED() {
     console.debug('HANDLE_CHAIN_CHANGED');
@@ -322,6 +333,17 @@ const actions = {
       });
     } catch (e) {
       commit('LOAD_BACKUP_PROVIDER_FAILURE', e);
+      return Promise.reject();
+    }
+  },
+  getLatestBlock: async ({ commit }) => {
+    commit('GET_LATEST_BLOCK_REQUEST');
+    try {
+      const block = await web3.getBlockNumber();
+      commit('GET_LATEST_BLOCK_SUCCESS', block);
+      return block;
+    } catch (e) {
+      commit('GET_LATEST_BLOCK_FAILURE', e);
       return Promise.reject();
     }
   },
