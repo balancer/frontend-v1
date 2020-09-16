@@ -545,12 +545,12 @@ const actions = {
       calls.push([crp, crpIface.encodeFunctionData('name', [])]);
       // @ts-ignore
       calls.push([crp, crpIface.encodeFunctionData('totalSupply', [])]);
-      // // @ts-ignore
-      // calls.push([crp, crpIface.encodeFunctionData('minimumWeightChangeBlockPeriod', [])]);
-      // // @ts-ignore
-      // calls.push([crp, crpIface.encodeFunctionData('addTokenTimeLockInBlocks', [])]);
-      // // @ts-ignore
-      // calls.push([crp, crpIface.encodeFunctionData('bspCap', [])]);
+      // @ts-ignore
+      calls.push([crp, crpIface.encodeFunctionData('bspCap', [])]);
+      // @ts-ignore
+      calls.push([crp, crpIface.encodeFunctionData('addTokenTimeLockInBlocks', [])]);
+      // @ts-ignore
+      calls.push([crp, crpIface.encodeFunctionData('minimumWeightChangeBlockPeriod', [])]);
     });
     const crpData: any = {};
     try {
@@ -558,26 +558,44 @@ const actions = {
       for (let i = 0; i < crps.length; i++) {
         const [decimals] = crpIface.decodeFunctionResult(
           'decimals',
-          response[4 * i]
+          response[7 * i]
         );
         const [symbol] = crpIface.decodeFunctionResult(
           'symbol',
-          response[4 * i + 1]
+          response[7 * i + 1]
         );
         const [name] = crpIface.decodeFunctionResult(
           'name',
-          response[4 * i + 2]
+          response[7 * i + 2]
         );
         const [totalSupplyNumber] = crpIface.decodeFunctionResult(
           'totalSupply',
-          response[4 * i + 3]
+          response[7 * i + 3]
         );
         const totalSupply = totalSupplyNumber.toString();
+        const [bspCapNumber] = crpIface.decodeFunctionResult(
+          'bspCap',
+          response[7 * i + 4]
+        )
+        const bspCap = bspCapNumber.toString();
+        const [addTokenTimeLockInBlocksNumber] = crpIface.decodeFunctionResult(
+          'addTokenTimeLockInBlocks',
+          response[7 * i + 5]
+        )
+        const addTokenTimeLockInBlocks = addTokenTimeLockInBlocksNumber.toString();
+        const [minimumWeightChangeBlockPeriodNumber] = crpIface.decodeFunctionResult(
+          'minimumWeightChangeBlockPeriod',
+          response[7 * i + 6]
+        )
+        const minimumWeightChangeBlockPeriod = minimumWeightChangeBlockPeriodNumber.toString();
         crpData[crps[i]] = {
           decimals,
           symbol,
           name,
-          totalSupply
+          totalSupply,
+          bspCap,
+          addTokenTimeLockInBlocks,
+          minimumWeightChangeBlockPeriod
         };
       }
       commit('GET_CRPS_SUCCESS', crpData);
