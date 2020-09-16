@@ -54,7 +54,7 @@ import { getAddress } from '@ethersproject/address';
 import { delay, clone } from '@/helpers/utils';
 
 export default {
-  props: ['open', 'pool'],
+  props: ['open', 'pool', 'defaultValue'],
   data() {
     return {
       loading: false,

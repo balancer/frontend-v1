@@ -124,6 +124,7 @@
       class="mt-4"
     />
     <UiButton
+      :loading="loading"
       :disabled="validationError || hasLockedToken || !checkboxAccept"
       class="button-primary mt-4"
       @click="confirmModalOpen = true"
@@ -184,6 +185,7 @@ export default {
       weights: {},
       swapFee: '',
       tokens: [],
+      loading: false,
       crp: {
         poolTokenSymbol: '',
         poolTokenName: '',
