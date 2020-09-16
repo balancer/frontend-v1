@@ -18,7 +18,6 @@ const state = {
   injectedChainId: null,
   account: null,
   dsProxyAddress: null,
-  name: null,
   active: false,
   balances: {},
   allowances: {},
@@ -32,7 +31,6 @@ const mutations = {
     Vue.set(_state, 'injectedChainId', null);
     Vue.set(_state, 'account', null);
     Vue.set(_state, 'dsProxyAddress', null);
-    Vue.set(_state, 'name', null);
     Vue.set(_state, 'active', false);
     Vue.set(_state, 'balances', {});
     Vue.set(_state, 'allowances', {});
@@ -67,7 +65,6 @@ const mutations = {
     Vue.set(_state, 'injectedLoaded', payload.injectedLoaded);
     Vue.set(_state, 'injectedChainId', payload.injectedChainId);
     Vue.set(_state, 'account', payload.account);
-    Vue.set(_state, 'name', payload.name);
     Vue.set(_state, 'active', true);
     console.debug('LOAD_PROVIDER_SUCCESS');
   },
@@ -103,16 +100,6 @@ const mutations = {
   },
   HANDLE_NETWORK_CHANGED() {
     console.debug('HANDLE_NETWORK_CHANGED');
-  },
-  LOOKUP_ADDRESS_REQUEST() {
-    console.debug('LOOKUP_ADDRESS_REQUEST');
-  },
-  LOOKUP_ADDRESS_SUCCESS(_state, payload) {
-    Vue.set(_state, 'name', payload);
-    console.debug('LOOKUP_ADDRESS_SUCCESS');
-  },
-  LOOKUP_ADDRESS_FAILURE(_state, payload) {
-    console.debug('LOOKUP_ADDRESS_FAILURE', payload);
   },
   RESOLVE_NAME_REQUEST() {
     console.debug('RESOLVE_NAME_REQUEST');
@@ -348,16 +335,6 @@ const actions = {
       return Promise.reject();
     }
   },
-  lookupAddress: async ({ commit }) => {
-    commit('LOOKUP_ADDRESS_REQUEST');
-    try {
-      const name = await web3.lookupAddress(state.account);
-      commit('LOOKUP_ADDRESS_SUCCESS', name);
-      return name;
-    } catch (e) {
-      commit('LOOKUP_ADDRESS_FAILURE', e);
-    }
-  },
   resolveName: async ({ commit }, payload) => {
     commit('RESOLVE_NAME_REQUEST');
     try {
@@ -413,7 +390,6 @@ const actions = {
     const tokens = Object.entries(config.tokens).map(token => token[1].address);
     await dispatch('getProxy');
     await Promise.all([
-      dispatch('lookupAddress'),
       dispatch('getBalances', tokens),
       dispatch('getAllowances', { tokens, spender: state.dsProxyAddress }),
       dispatch('getMyPoolShares')
