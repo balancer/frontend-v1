@@ -335,7 +335,7 @@ const actions = {
   lookupAddress: async ({ commit }) => {
     commit('LOOKUP_ADDRESS_REQUEST');
     try {
-      const name = await web3.lookupAddress(state.account);
+      const name = await web3.lookupAddress(state.account || '');
       commit('LOOKUP_ADDRESS_SUCCESS', name);
       return name;
     } catch (e) {

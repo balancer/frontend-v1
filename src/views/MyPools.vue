@@ -17,7 +17,7 @@ export default {
     query() {
       return {
         where: {
-          crpController: this.web3.account
+          crpController: this.web3.dsProxyAddress
         }
       };
     }

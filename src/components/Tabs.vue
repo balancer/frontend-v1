@@ -33,8 +33,8 @@ export default {
         to: { name: 'pool-about' }
       });
       if (
-        this.web3.account
-        // && this.web3.account.toLowerCase() === this.pool.crpController
+        this.web3.account &&
+        this.web3.dsProxyAddress.toLowerCase() === this.pool.crpController
       ) {
         items.push({
           name: 'Settings',
