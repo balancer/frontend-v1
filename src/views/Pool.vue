@@ -61,6 +61,8 @@
 </template>
 
 <script>
+import { getAddress } from '@ethersproject/address';
+
 import { mapActions } from 'vuex';
 
 export default {
@@ -100,8 +102,8 @@ export default {
       return (
         this.config.chainId === this.web3.injectedChainId &&
         this.web3.account &&
-        this.pool.finalized &&
-        this.pool.totalShares !== '0'
+        ((this.pool.finalized && this.pool.totalShares !== '0') ||
+          this.pool.crp)
       );
     },
     enableRemoveLiquidity() {
@@ -115,6 +117,7 @@ export default {
   methods: {
     ...mapActions([
       'getPool',
+      'getCrps',
       'getBalances',
       'getAllowances',
       'loadTokenMetadata',
@@ -135,6 +138,10 @@ export default {
       if (!this.pool) {
         this.loading = false;
         return;
+      }
+      if (this.pool.crp) {
+        const poolAddress = getAddress(this.pool.controller);
+        this.getCrps([poolAddress]);
       }
       const unknownTokens = this.pool.tokensList.filter(
         tokenAddress => !this.web3.tokenMetadata[tokenAddress]
