@@ -44,10 +44,16 @@ export default {
   props: ['pool'],
   computed: {
     poolTokenBalance() {
-      let balance = this.subgraph.poolShares[this.pool.id] || 0;
-      const nodeBalance = this.web3.balances[getAddress(this.pool.id)];
-      if (nodeBalance) balance = normalizeBalance(nodeBalance, 18);
-      return balance;
+      const poolAddress = getAddress(this.pool.id);
+      const balance = this.web3.balances[poolAddress] || 0;
+      const poolBalanceNumber = normalizeBalance(balance, 18);
+      return poolBalanceNumber.toString();
+    },
+    totalShares() {
+      const poolAddress = getAddress(this.pool.id);
+      const poolSupply = this.web3.supplies[poolAddress] || 0;
+      const totalShareNumber = normalizeBalance(poolSupply, 18);
+      return totalShareNumber.toString();
     },
     poolLiquidity() {
       return getPoolLiquidity(this.pool, this.price.values);
@@ -55,7 +61,7 @@ export default {
     poolSharePercent() {
       const poolShares = this.poolTokenBalance;
       if (!this.pool.finalized || !poolShares) return 0;
-      return (1 / this.pool.totalShares) * poolShares;
+      return (1 / this.totalShares) * poolShares;
     }
   }
 };

@@ -13,15 +13,21 @@ export default {
   props: ['pool', 'poolTokens'],
   computed: {
     poolTokenBalance() {
-      let balance = this.subgraph.poolShares[this.pool.id] || 0;
-      const nodeBalance = this.web3.balances[getAddress(this.pool.id)];
-      if (nodeBalance) balance = normalizeBalance(nodeBalance, 18);
-      return balance;
+      const poolAddress = getAddress(this.pool.id);
+      const balance = this.web3.balances[poolAddress] || 0;
+      const poolBalanceNumber = normalizeBalance(balance, 18);
+      return poolBalanceNumber.toString();
+    },
+    totalShares() {
+      const poolAddress = getAddress(this.pool.id);
+      const poolSupply = this.web3.supplies[poolAddress] || 0;
+      const totalShareNumber = normalizeBalance(poolSupply, 18);
+      return totalShareNumber.toString();
     },
     poolSharesPercentFrom() {
       const poolSharesFrom = this.poolTokenBalance;
       if (!poolSharesFrom) return 0;
-      return ((100 / this.pool.totalShares) * poolSharesFrom) / 100;
+      return ((100 / this.totalShares) * poolSharesFrom) / 100;
     },
     poolSharesPercentTo() {
       const poolTokens =
@@ -31,8 +37,7 @@ export default {
       const poolSharesTo = poolSharesFrom + poolTokens;
       if (poolSharesTo <= 0) return 0;
       return (
-        ((100 / (parseFloat(this.pool.totalShares) + poolTokens)) *
-          poolSharesTo) /
+        ((100 / (parseFloat(this.totalShares) + poolTokens)) * poolSharesTo) /
         100
       );
     }
