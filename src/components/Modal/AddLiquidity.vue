@@ -144,6 +144,8 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { getAddress } from '@ethersproject/address';
+
 import BigNumber from '@/helpers/bignumber';
 import {
   calcPoolTokensByRatio,
@@ -157,7 +159,6 @@ import {
 } from '@/helpers/utils';
 import { calcPoolOutGivenSingleIn } from '@/helpers/math';
 import { validateNumberInput, formatError } from '@/helpers/validation';
-import { getAddress } from '@ethersproject/address';
 
 const BALANCE_BUFFER = 0.01;
 
@@ -201,14 +202,20 @@ export default {
   },
   computed: {
     poolTokenBalance() {
-      let balance = this.subgraph.poolShares[this.pool.id] || 0;
-      const nodeBalance = this.web3.balances[getAddress(this.pool.id)];
-      if (nodeBalance) balance = normalizeBalance(nodeBalance, 18);
-      return balance;
+      const poolAddress = getAddress(this.pool.id);
+      const balance = this.web3.balances[poolAddress] || 0;
+      const poolBalanceNumber = normalizeBalance(balance, 18);
+      return poolBalanceNumber.toString();
+    },
+    totalShares() {
+      const poolAddress = getAddress(this.pool.id);
+      const poolSupply = this.web3.supplies[poolAddress] || 0;
+      const totalShareNumber = normalizeBalance(poolSupply, 18);
+      return totalShareNumber.toString();
     },
     userLiquidity() {
       const poolSharesFrom = parseFloat(this.poolTokenBalance);
-      const totalShares = parseFloat(this.pool.totalShares);
+      const totalShares = parseFloat(this.totalShares);
       const current = poolSharesFrom / totalShares;
       if (this.validationError) {
         return {
@@ -414,7 +421,7 @@ export default {
         tokenIn.decimals
       );
       const tokenWeightIn = bnum(tokenIn.denormWeight).times('1e18');
-      const poolSupply = denormalizeBalance(this.pool.totalShares, 18);
+      const poolSupply = denormalizeBalance(this.totalShares, 18);
       const totalWeight = bnum(this.pool.totalWeight).times('1e18');
       const tokenAmountIn = denormalizeBalance(
         amount,
@@ -467,7 +474,7 @@ export default {
     handleChange(changedAmount, changedToken) {
       const ratio = bnum(changedAmount).div(changedToken.balance);
       if (this.isMultiAsset) {
-        this.poolTokens = calcPoolTokensByRatio(ratio, this.pool.totalShares);
+        this.poolTokens = calcPoolTokensByRatio(ratio, this.totalShares);
       } else {
         const tokenIn = this.pool.tokens.find(
           token => token.checksum === this.activeToken
@@ -484,7 +491,7 @@ export default {
           tokenIn.decimals
         );
         const tokenWeightIn = bnum(tokenIn.denormWeight).times('1e18');
-        const poolSupply = denormalizeBalance(this.pool.totalShares, 18);
+        const poolSupply = denormalizeBalance(this.totalShares, 18);
         const totalWeight = bnum(this.pool.totalWeight).times('1e18');
         const tokenAmountIn = denormalizeBalance(
           amount,

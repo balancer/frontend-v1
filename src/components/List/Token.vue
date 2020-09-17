@@ -28,10 +28,16 @@ export default {
   props: ['pool', 'token'],
   computed: {
     poolTokenBalance() {
-      let balance = this.subgraph.poolShares[this.pool.id] || 0;
-      const nodeBalance = this.web3.balances[getAddress(this.pool.id)];
-      if (nodeBalance) balance = normalizeBalance(nodeBalance, 18);
-      return balance;
+      const poolAddress = getAddress(this.pool.id);
+      const balance = this.web3.balances[poolAddress] || 0;
+      const poolBalanceNumber = normalizeBalance(balance, 18);
+      return poolBalanceNumber.toNumber();
+    },
+    totalShares() {
+      const poolAddress = getAddress(this.pool.id);
+      const poolSupply = this.web3.supplies[poolAddress] || 0;
+      const totalShareNumber = normalizeBalance(poolSupply, 18);
+      return totalShareNumber.toNumber();
     },
     checksum() {
       return getAddress(this.token.address);

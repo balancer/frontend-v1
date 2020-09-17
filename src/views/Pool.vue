@@ -123,6 +123,7 @@ export default {
   methods: {
     ...mapActions([
       'getPool',
+      'getSupplies',
       'getBalances',
       'getAllowances',
       'loadTokenMetadata',
@@ -153,6 +154,7 @@ export default {
       }
       if (this.$auth.isAuthenticated) {
         await Promise.all([
+          this.getSupplies([getAddress(this.id)]),
           this.getBalances([...this.pool.tokensList, getAddress(this.id)]),
           this.getAllowances({
             tokens: this.pool.tokensList,
