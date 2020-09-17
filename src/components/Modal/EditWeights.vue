@@ -64,7 +64,7 @@ import {
 import { bnum, toWei, scale, isLocked } from '@/helpers/utils';
 
 export default {
-  props: ['open', 'pool'],
+  props: ['open', 'pool', 'defaultValue'],
   data() {
     return {
       loading: false,

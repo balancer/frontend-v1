@@ -18,7 +18,10 @@
         you may have.
       </div>
       <div class="mt-4 d-flex flex-items-center flex-justify-center">
-        <UiButton class="button-primary" @click="$emit('create')">
+        <UiButton
+          class="button-primary"
+          @click="[$emit('create'), $emit('close')]"
+        >
           Continue
         </UiButton>
       </div>

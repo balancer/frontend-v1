@@ -1,6 +1,6 @@
 import { WebSocketProvider } from '@ethersproject/providers';
-import config from '@/config';
 
-const wsProvider = new WebSocketProvider(config.alchemyWsUrl);
+const url: any = process.env.VUE_APP_RPC_URL;
+const provider = new WebSocketProvider(url);
 
-export default wsProvider;
+export default provider;

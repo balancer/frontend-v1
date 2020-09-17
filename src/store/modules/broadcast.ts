@@ -238,9 +238,7 @@ const actions = {
       commit('CREATE_PROXY_SUCCESS');
       return tx;
     } catch (e) {
-      if (!e || isTxReverted(e)) {
-        return e;
-      }
+      if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('CREATE_PROXY_FAILURE', e);
     }
@@ -281,9 +279,7 @@ const actions = {
       dispatch('notify', ['green', "You've successfully created a pool"]);
       commit('CREATE_POOL_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) {
-        return e;
-      }
+      if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('CREATE_POOL_FAILURE', e);
     }
@@ -352,9 +348,7 @@ const actions = {
       dispatch('notify', ['green', "You've successfully created a pool"]);
       commit('CREATE_SMART_POOL_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) {
-        return e;
-      }
+      if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('CREATE_SMART_POOL_FAILURE', e);
     }
@@ -380,9 +374,7 @@ const actions = {
       dispatch('notify', ['green', "You've successfully added liquidity"]);
       commit('JOIN_POOL_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) {
-        return e;
-      }
+      if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('JOIN_POOL_FAILURE', e);
     }
@@ -408,9 +400,7 @@ const actions = {
       dispatch('notify', ['green', "You've successfully added liquidity"]);
       commit('JOINSWAP_EXTERN_AMOUNT_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) {
-        return e;
-      }
+      if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('JOINSWAP_EXTERN_AMOUNT_FAILURE', e);
     }
@@ -434,9 +424,7 @@ const actions = {
       dispatch('notify', ['green', "You've successfully removed liquidity"]);
       commit('EXIT_POOL_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) {
-        return e;
-      }
+      if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('EXIT_POOL_FAILURE', e);
     }
@@ -460,9 +448,7 @@ const actions = {
       dispatch('notify', ['green', "You've successfully removed liquidity"]);
       commit('EXITSWAP_POOL_AMOUNT_IN_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) {
-        return e;
-      }
+      if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('EXITSWAP_POOL_AMOUNT_IN_FAILURE', e);
     }
@@ -485,9 +471,7 @@ const actions = {
       await dispatch('sendTransaction', params);
       commit('SET_PUBLIC_SWAP_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) {
-        return e;
-      }
+      if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('SET_PUBLIC_SWAP_FAILURE', e);
     }
@@ -511,11 +495,10 @@ const actions = {
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
       await dispatch('sendTransaction', params);
+      dispatch('notify', ['green', "You've successfully changed the swap fee"]);
       commit('SET_SWAP_FEE_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) {
-        return e;
-      }
+      if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('SET_SWAP_FEE_FAILURE', e);
     }
@@ -538,9 +521,7 @@ const actions = {
       await dispatch('sendTransaction', params);
       commit('SET_CONTROLLER_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) {
-        return e;
-      }
+      if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('SET_CONTROLLER_FAILURE', e);
     }
@@ -571,9 +552,7 @@ const actions = {
       await dispatch('sendTransaction', params);
       commit('INCREASE_WEIGHT_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) {
-        return e;
-      }
+      if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('INCREASE_WEIGHT_FAILURE', e);
     }
@@ -600,9 +579,7 @@ const actions = {
       await dispatch('sendTransaction', params);
       commit('DECREASE_WEIGHT_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) {
-        return e;
-      }
+      if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('DECREASE_WEIGHT_FAILURE', e);
     }
@@ -630,9 +607,7 @@ const actions = {
       await dispatch('sendTransaction', params);
       commit('UPDATE_WEIGHTS_GRADUALLY_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) {
-        return e;
-      }
+      if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('UPDATE_WEIGHTS_GRADUALLY_FAILURE', e);
     }
@@ -653,9 +628,7 @@ const actions = {
       await dispatch('sendTransaction', params);
       commit('SET_CAP_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) {
-        return e;
-      }
+      if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('SET_CAP_FAILURE', e);
     }
@@ -686,9 +659,7 @@ const actions = {
       await dispatch('sendTransaction', params);
       commit('COMMIT_ADD_TOKEN_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) {
-        return e;
-      }
+      if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('COMMIT_ADD_TOKEN_FAILURE', e);
     }
@@ -711,9 +682,7 @@ const actions = {
       await dispatch('sendTransaction', params);
       commit('APPLY_ADD_TOKEN_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) {
-        return e;
-      }
+      if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('APPLY_ADD_TOKEN_FAILURE', e);
     }
@@ -737,9 +706,7 @@ const actions = {
       await dispatch('sendTransaction', params);
       commit('REMOVE_TOKEN_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) {
-        return e;
-      }
+      if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('REMOVE_TOKEN_FAILURE', e);
     }
@@ -762,9 +729,7 @@ const actions = {
       await dispatch('sendTransaction', params);
       commit('WHITELIST_LP_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) {
-        return e;
-      }
+      if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('WHITELIST_LP_FAILURE', e);
     }
@@ -787,9 +752,7 @@ const actions = {
       await dispatch('sendTransaction', params);
       commit('REMOVE_WHITELISTED_LP_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) {
-        return e;
-      }
+      if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('REMOVE_WHITELISTED_LP_FAILURE', e);
     }
@@ -813,9 +776,7 @@ const actions = {
       dispatch('notify', ['green', `You've successfully unlocked ${symbol}`]);
       commit('APPROVE_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) {
-        return e;
-      }
+      if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('APPROVE_FAILURE', e);
     }
@@ -837,9 +798,7 @@ const actions = {
       ]);
       commit('WRAP_ETH_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) {
-        return e;
-      }
+      if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('WRAP_ETH_FAILURE', e);
     }
@@ -861,9 +820,7 @@ const actions = {
       ]);
       commit('UNWRAP_ETH_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) {
-        return e;
-      }
+      if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('UNWRAP_ETH_FAILURE', e);
     }
