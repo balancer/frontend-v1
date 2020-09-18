@@ -373,8 +373,7 @@ const actions = {
         overrides
       );
       const gasLimit = gasLimitNumber.toNumber();
-      const safeGasLimit = Math.floor(gasLimit * (1 + GAS_LIMIT_BUFFER));
-      overrides.gasLimit = safeGasLimit;
+      overrides.gasLimit = Math.floor(gasLimit * (1 + GAS_LIMIT_BUFFER));
 
       const tx = await contractWithSigner[action](...params, overrides);
       await tx.wait();
@@ -390,9 +389,7 @@ const actions = {
     }
   },
   loadAccount: async ({ dispatch }) => {
-    if (!state.account) {
-      return;
-    }
+    if (!state.account) return;
     // @ts-ignore
     const tokens = Object.entries(config.tokens).map(token => token[1].address);
     await dispatch('getProxy');

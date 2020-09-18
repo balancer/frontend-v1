@@ -26,15 +26,6 @@ const mutations = {
   GET_BALANCER_FAILURE(_state, payload) {
     console.debug('GET_BALANCER_FAILURE', payload);
   },
-  GET_POOL_REQUEST() {
-    console.debug('GET_POOL_REQUEST');
-  },
-  GET_POOL_SUCCESS() {
-    console.debug('GET_POOL_SUCCESS');
-  },
-  GET_POOL_FAILURE(_state, payload) {
-    console.debug('GET_POOL_FAILURE', payload);
-  },
   GET_POOLS_REQUEST() {
     console.debug('GET_POOLS_REQUEST');
   },
@@ -103,36 +94,6 @@ const actions = {
       commit('GET_BALANCER_SUCCESS', balancer);
     } catch (e) {
       commit('GET_BALANCER_FAILURE', e);
-    }
-  },
-  getPool: async ({ commit }, payload) => {
-    const ts = Math.round(new Date().getTime() / 1000);
-    const tsYesterday = ts - 24 * 3600;
-    const query = {
-      pool: {
-        __args: {
-          id: payload.toLowerCase()
-        },
-        swaps: {
-          __args: {
-            where: {
-              timestamp_lt: tsYesterday
-            }
-          }
-        }
-      }
-    };
-    commit('GET_POOL_REQUEST');
-    try {
-      let { pool } = await request('getPool', query);
-      if (!pool) {
-        return;
-      }
-      pool = formatPool(pool);
-      commit('GET_POOL_SUCCESS');
-      return pool;
-    } catch (e) {
-      commit('GET_POOL_FAILURE', e);
     }
   },
   getPools: async ({ commit }, payload) => {

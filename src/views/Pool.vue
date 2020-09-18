@@ -62,6 +62,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import Pool from '@/_balancer/pool';
 
 export default {
   data() {
@@ -100,8 +101,7 @@ export default {
       return (
         this.config.chainId === this.web3.injectedChainId &&
         this.web3.account &&
-        this.pool.finalized &&
-        this.pool.totalShares !== '0'
+        (this.pool.finalized || this.pool.crp)
       );
     },
     enableRemoveLiquidity() {
@@ -114,7 +114,6 @@ export default {
   },
   methods: {
     ...mapActions([
-      'getPool',
       'getBalances',
       'getAllowances',
       'loadTokenMetadata',
@@ -131,7 +130,9 @@ export default {
     },
     async loadPool() {
       this.loading = true;
-      this.pool = await this.getPool(this.id);
+      const pool = new Pool(this.id);
+      this.pool = await pool.getMetadata();
+      console.log('Pool metadata', this.pool);
       if (!this.pool) {
         this.loading = false;
         return;

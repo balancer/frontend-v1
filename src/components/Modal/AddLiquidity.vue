@@ -539,9 +539,10 @@ export default {
     },
     async handleSubmit() {
       this.loading = true;
+      const poolAddress = this.pool.crp ? this.pool.controller : this.pool.id;
       if (this.isMultiAsset) {
         const params = {
-          poolAddress: this.pool.id,
+          poolAddress,
           poolAmountOut: this.poolTokens,
           maxAmountsIn: this.pool.tokensList.map(tokenAddress => {
             const token = this.pool.tokens.find(
@@ -554,7 +555,8 @@ export default {
             const balanceAmountIn = bnum(this.web3.balances[token.checksum]);
             const tokenAmountIn = BigNumber.min(inputAmountIn, balanceAmountIn);
             return tokenAmountIn.toString();
-          })
+          }),
+          isSmartpool: this.pool.crp
         };
         const txResult = await this.joinPool(params);
         if (isTxReverted(txResult)) {
@@ -571,7 +573,7 @@ export default {
           .integerValue(BigNumber.ROUND_UP)
           .toString();
         const params = {
-          poolAddress: this.pool.id,
+          poolAddress,
           tokenInAddress: this.activeToken,
           tokenAmountIn,
           minPoolAmountOut: '0'
