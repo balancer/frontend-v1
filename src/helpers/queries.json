@@ -71,12 +71,6 @@
           "orderBy": "timestamp",
           "orderDirection": "desc"
         },
-        "tokenIn": true,
-        "tokenInSym": true,
-        "tokenAmountIn": true,
-        "tokenOut": true,
-        "tokenOutSym": true,
-        "tokenAmountOut": true,
         "poolTotalSwapVolume": true
       }
     }
@@ -153,12 +147,6 @@
           "orderBy": "timestamp",
           "orderDirection": "desc"
         },
-        "tokenIn": true,
-        "tokenInSym": true,
-        "tokenAmountIn": true,
-        "tokenOut": true,
-        "tokenOutSym": true,
-        "tokenAmountOut": true,
         "poolTotalSwapVolume": true
       }
     }

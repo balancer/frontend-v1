@@ -44,7 +44,9 @@
     </div>
     <div class="border-bottom mb-4 pb-3">
       <div class="float-right">
-        <UiButton @click="modalOpen.gradualWeights = true">Update gradually</UiButton>
+        <UiButton @click="modalOpen.gradualWeights = true"
+          >Update gradually</UiButton
+        >
       </div>
       <div class="float-right mr-2">
         <UiButton @click="modalOpen.weights = true">Update</UiButton>
@@ -130,7 +132,7 @@ export default {
       }
       const capNumber = scale(bnum(crp.bspCap), -18);
       return capNumber.toString();
-    },
-  },
+    }
+  }
 };
 </script>

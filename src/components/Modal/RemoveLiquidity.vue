@@ -56,9 +56,9 @@
           </UiTable>
           <UiTable class="mt-4">
             <UiTableTh class="text-left flex-items-center text-white">
-              <div class="flex-auto">BPT amount</div>
+              <div class="flex-auto">{{ pool.symbol }} amount</div>
               <div class="ml-2 column text-left">
-                {{ _num(poolTokenBalance) }} BPT
+                {{ _num(poolTokenBalance) }} {{ pool.symbol }}
                 <a @click="setMax" class="link-text mr-3">
                   <UiLabel v-text="'Max'" />
                 </a>
@@ -103,6 +103,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { getAddress } from '@ethersproject/address';
 import {
   bnum,
   normalizeBalance,
@@ -133,10 +134,12 @@ export default {
   },
   computed: {
     poolTokenBalance() {
-      return this.subgraph.poolShares[this.pool.id] || 0;
+      const bptAddress = this.pool.crp ? this.pool.controller : this.pool.id;
+      const balance = this.web3.balances[getAddress(bptAddress)];
+      return normalizeBalance(balance || '0', 18);
     },
     userLiquidity() {
-      const poolSharesFrom = this.subgraph.poolShares[this.pool.id] || 0;
+      const poolSharesFrom = this.poolTokenBalance;
       const totalShares = parseFloat(this.pool.totalShares);
       const current = poolSharesFrom / totalShares;
       if (this.validationError) {
@@ -152,7 +155,7 @@ export default {
 
       const poolTokens = parseFloat(this.poolAmountIn);
       const future = (poolSharesFrom - poolTokens) / (totalShares - poolTokens);
-      const userLiquidity = {
+      return {
         absolute: {
           current: poolSharesFrom,
           future: poolSharesFrom + poolTokens
@@ -162,7 +165,6 @@ export default {
           future
         }
       };
-      return userLiquidity;
     },
     tokens() {
       return this.pool.tokens.map(token => {
@@ -219,12 +221,9 @@ export default {
       return undefined;
     },
     slippage() {
-      if (this.validationError) {
-        return undefined;
-      }
-      if (this.isMultiAsset) {
-        return undefined;
-      }
+      if (this.validationError) return undefined;
+      if (this.isMultiAsset) return undefined;
+
       const tokenOutAddress = this.activeToken;
       const tokenOut = this.pool.tokens.find(
         token => token.address === tokenOutAddress
@@ -253,9 +252,7 @@ export default {
         .times(tokenBalanceOut)
         .div(poolSupply)
         .div(tokenWeightOut);
-      const one = bnum(1);
-      const slippage = one.minus(tokenAmountOut.div(expectedTokenAmountOut));
-      return slippage;
+      return bnum(1).minus(tokenAmountOut.div(expectedTokenAmountOut));
     },
     isMultiAsset() {
       return this.type === 'MULTI_ASSET';
@@ -265,21 +262,23 @@ export default {
     ...mapActions(['exitPool', 'exitswapPoolAmountIn']),
     async handleSubmit() {
       this.loading = true;
+      const poolAddress = this.pool.crp ? this.pool.controller : this.pool.id;
       if (this.isMultiAsset) {
         await this.exitPool({
-          poolAddress: this.pool.id,
+          poolAddress,
           poolAmountIn: this.poolAmountIn,
           minAmountsOut: this.pool.tokens.map(() => 0) // @TODO add amounts
         });
       } else {
         const tokenOutAddress = this.activeToken;
         await this.exitswapPoolAmountIn({
-          poolAddress: this.pool.id,
+          poolAddress,
           tokenOutAddress,
           poolAmountIn: this.poolAmountIn,
           minTokenAmountOut: '0'
         });
       }
+      this.$emit('close');
       this.loading = false;
     },
     handleSelectType(type) {

@@ -22,21 +22,23 @@
 
 <script>
 import { getAddress } from '@ethersproject/address';
+import { normalizeBalance } from '@/helpers/utils';
 
 export default {
   props: ['pool', 'token'],
   computed: {
+    poolTokenBalance() {
+      const bptAddress = this.pool.crp ? this.pool.controller : this.pool.id;
+      const balance = this.web3.balances[getAddress(bptAddress)];
+      return normalizeBalance(balance || '0', 18);
+    },
     checksum() {
       return getAddress(this.token.address);
     },
-    myShares() {
-      if (!this.web3.account) return 0;
-      return this.subgraph.poolShares[this.pool.id];
-    },
     myPoolBalance() {
-      if (!this.myShares) return 0;
+      if (!this.poolTokenBalance) return 0;
       const balance =
-        (this.myShares / this.pool.totalShares) * this.token.balance;
+        (this.poolTokenBalance / this.pool.totalShares) * this.token.balance;
       return this._precision(balance, this.token.checksum);
     },
     myShareValue() {
