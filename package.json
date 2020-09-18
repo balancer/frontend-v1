@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@bonustrack/lock": "github:bonustrack/lock#99e05fd7e31c1e56e877d8b683a75bf7bce25f90",
+    "@bonustrack/snapshot.js": "github:bonustrack/snapshot.js#198a8458ceee75c3ffba0c17ba2c760a42d9357e",
     "@ethersproject/abi": "^5.0.1",
     "@ethersproject/address": "^5.0.1",
     "@ethersproject/constants": "^5.0.1",
