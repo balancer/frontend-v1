@@ -110,7 +110,8 @@ export default {
       return (
         this.config.chainId === this.web3.injectedChainId &&
         this.web3.account &&
-        Object.keys(this.subgraph.poolShares).includes(this.id)
+        (Object.keys(this.subgraph.poolShares).includes(this.id) ||
+          this.web3.balances[getAddress(this.id)])
       );
     }
   },
@@ -140,10 +141,12 @@ export default {
         this.loading = false;
         return;
       }
+      /*
       if (this.pool.crp) {
         const poolAddress = getAddress(this.pool.controller);
         this.getCrps([poolAddress]);
       }
+      */
       const unknownTokens = this.pool.tokensList.filter(
         tokenAddress => !this.web3.tokenMetadata[tokenAddress]
       );
@@ -151,9 +154,10 @@ export default {
         await this.loadTokenMetadata(unknownTokens);
         await this.loadPricesByAddress(unknownTokens);
       }
-      if (this.web3.account) {
+      if (this.$auth.isAuthenticated) {
+        const bptAddress = this.pool.crp ? this.pool.controller : this.pool.id;
         await Promise.all([
-          this.getBalances(this.pool.tokensList),
+          this.getBalances([...this.pool.tokensList, getAddress(bptAddress)]),
           this.getAllowances({
             tokens: this.pool.tokensList,
             spender: this.web3.dsProxyAddress

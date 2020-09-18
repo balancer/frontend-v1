@@ -79,13 +79,13 @@
           </UiTable>
           <UiTable class="mt-4">
             <UiTableTh class="text-left flex-items-center text-white">
-              <div class="flex-auto">BPT amount</div>
+              <div class="flex-auto">{{ pool.symbol }} amount</div>
               <div class="flex-auto text-right">
                 {{ _num(userLiquidity.absolute.current) }}
                 <span v-if="userLiquidity.absolute.future">
                   → {{ _num(userLiquidity.absolute.future) }}
                 </span>
-                BPT
+                {{ pool.symbol }}
               </div>
             </UiTableTh>
           </UiTable>
@@ -145,6 +145,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { getAddress } from '@ethersproject/address';
 import BigNumber from '@/helpers/bignumber';
 import {
   calcPoolTokensByRatio,
@@ -200,9 +201,13 @@ export default {
     }
   },
   computed: {
+    poolTokenBalance() {
+      const bptAddress = this.pool.crp ? this.pool.controller : this.pool.id;
+      const balance = this.web3.balances[getAddress(bptAddress)];
+      return normalizeBalance(balance || '0', 18);
+    },
     userLiquidity() {
-      const poolSharesFrom =
-        parseFloat(this.subgraph.poolShares[this.pool.id]) || 0;
+      const poolSharesFrom = parseFloat(this.poolTokenBalance);
       const totalShares = parseFloat(this.pool.totalShares);
       const current = poolSharesFrom / totalShares;
       if (this.validationError) {
@@ -222,7 +227,7 @@ export default {
             .toNumber()
         : 0;
       const future = (poolSharesFrom + poolTokens) / (totalShares + poolTokens);
-      const userLiquidity = {
+      return {
         absolute: {
           current: poolSharesFrom,
           future: poolSharesFrom + poolTokens
@@ -232,7 +237,6 @@ export default {
           future
         }
       };
-      return userLiquidity;
     },
     tokenError() {
       if (
@@ -430,9 +434,7 @@ export default {
         .times(poolSupply)
         .div(tokenBalanceIn)
         .div(totalWeight);
-      const one = bnum(1);
-      const slippage = one.minus(poolAmountOut.div(expectedPoolAmountOut));
-      return slippage;
+      return bnum(1).minus(poolAmountOut.div(expectedPoolAmountOut));
     },
     findFrontrunnableToken() {
       if (this.validationError) {
@@ -580,6 +582,7 @@ export default {
         };
         await this.joinswapExternAmountIn(params);
       }
+      this.$emit('close');
       this.loading = false;
     },
     isInputValid(token) {

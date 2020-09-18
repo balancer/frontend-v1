@@ -6,21 +6,26 @@
 </template>
 
 <script>
-import { POOL_TOKENS_DECIMALS } from '@/helpers/utils';
+import { normalizeBalance, POOL_TOKENS_DECIMALS } from '@/helpers/utils';
+import { getAddress } from '@ethersproject/address';
 
 export default {
   props: ['pool', 'poolTokens'],
   computed: {
+    poolTokenBalance() {
+      const bptAddress = this.pool.crp ? this.pool.controller : this.pool.id;
+      const balance = this.web3.balances[getAddress(bptAddress)];
+      return normalizeBalance(balance || '0', 18);
+    },
     poolSharesPercentFrom() {
-      const poolSharesFrom = this.subgraph.poolShares[this.pool.id] || 0;
-      if (!poolSharesFrom) return 0;
-      return ((100 / this.pool.totalShares) * poolSharesFrom) / 100;
+      if (!this.poolTokenBalance) return 0;
+      return ((100 / this.pool.totalShares) * this.poolTokenBalance) / 100;
     },
     poolSharesPercentTo() {
       const poolTokens =
         parseFloat(this.poolTokens).toFixed(POOL_TOKENS_DECIMALS) / 1e18;
       if (!poolTokens) return this.poolSharesPercentFrom;
-      const poolSharesFrom = this.subgraph.poolShares[this.pool.id] || 0;
+      const poolSharesFrom = this.poolTokenBalance;
       const poolSharesTo = poolSharesFrom + poolTokens;
       if (poolSharesTo <= 0) return 0;
       return (

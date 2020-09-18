@@ -381,13 +381,7 @@ const actions = {
   },
   joinswapExternAmountIn: async (
     { commit, dispatch, rootState },
-    {
-      poolAddress,
-      tokenInAddress,
-      tokenAmountIn,
-      minPoolAmountOut,
-      isSmartpool = false
-    }
+    { poolAddress, tokenInAddress, tokenAmountIn, minPoolAmountOut }
   ) => {
     commit('JOINSWAP_EXTERN_AMOUNT_REQUEST');
     try {

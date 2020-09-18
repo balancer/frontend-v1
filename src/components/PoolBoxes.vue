@@ -36,18 +36,25 @@
 </template>
 
 <script>
+import { getAddress } from '@ethersproject/address';
 import { getPoolLiquidity } from '@/helpers/price';
+import { normalizeBalance } from '@/helpers/utils';
 
 export default {
   props: ['pool'],
   computed: {
+    poolTokenBalance() {
+      const bptAddress = this.pool.crp ? this.pool.controller : this.pool.id;
+      const balance = this.web3.balances[getAddress(bptAddress)];
+      return normalizeBalance(balance || '0', 18);
+    },
     poolLiquidity() {
       return getPoolLiquidity(this.pool, this.price.values);
     },
     poolSharePercent() {
-      const poolShares = this.subgraph.poolShares[this.pool.id];
-      if (!this.pool.finalized || !poolShares) return 0;
-      return (1 / this.pool.totalShares) * poolShares;
+      if ((!this.pool.finalized && !this.pool.crp) || !this.poolTokenBalance)
+        return 0;
+      return (1 / this.pool.totalShares) * this.poolTokenBalance;
     }
   }
 };
