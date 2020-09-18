@@ -20,6 +20,7 @@ const state = {
   dsProxyAddress: null,
   name: null,
   active: false,
+  supplies: {},
   balances: {},
   allowances: {},
   tokenMetadata: {}
@@ -132,6 +133,18 @@ const mutations = {
   },
   SEND_TRANSACTION_FAILURE(_state, payload) {
     console.debug('SEND_TRANSACTION_FAILURE', payload);
+  },
+  GET_SUPPLIES_REQUEST() {
+    console.debug('GET_SUPPLIES_REQUEST');
+  },
+  GET_SUPPLIES_SUCCESS(_state, payload) {
+    for (const address in payload) {
+      Vue.set(_state.supplies, address, payload[address]);
+    }
+    console.debug('GET_SUPPLIES_SUCCESS');
+  },
+  GET_SUPPLIES_FAILURE(_state, payload) {
+    console.debug('GET_SUPPLIES_FAILURE', payload);
   },
   GET_BALANCES_REQUEST() {
     console.debug('GET_BALANCES_REQUEST');
@@ -404,6 +417,37 @@ const actions = {
       dispatch('getMyPools'),
       dispatch('getMyPoolShares')
     ]);
+  },
+  getSupplies: async ({ commit }, tokens) => {
+    commit('GET_SUPPLIES_REQUEST');
+    const multi = new Contract(
+      config.addresses.multicall,
+      abi['Multicall'],
+      web3
+    );
+    const calls = [];
+    const tokenIface = new Interface(abi.TestToken);
+    tokens.forEach(token => {
+      // @ts-ignore
+      calls.push([token, tokenIface.encodeFunctionData('totalSupply', [])]);
+    });
+    const supplies: any = {};
+    try {
+      const [, response] = await multi.aggregate(calls);
+      for (let i = 0; i < tokens.length; i++) {
+        const [totalSupplyNumber] = tokenIface.decodeFunctionResult(
+          'totalSupply',
+          response[i]
+        );
+        const totalSupply = totalSupplyNumber.toString();
+        supplies[tokens[i]] = totalSupply;
+      }
+      commit('GET_SUPPLIES_SUCCESS', supplies);
+      return supplies;
+    } catch (e) {
+      commit('GET_SUPPLIES_FAILURE', e);
+      return Promise.reject();
+    }
   },
   getBalances: async ({ commit }, tokens) => {
     commit('GET_BALANCES_REQUEST');
