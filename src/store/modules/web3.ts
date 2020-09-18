@@ -16,12 +16,13 @@ let web3 = provider;
 const state = {
   injectedLoaded: false,
   injectedChainId: null,
+  blockNumber: 0,
   account: null,
   dsProxyAddress: null,
-  name: null,
   active: false,
   balances: {},
   allowances: {},
+  crps: {},
   tokenMetadata: {}
 };
 
@@ -31,10 +32,10 @@ const mutations = {
     Vue.set(_state, 'injectedChainId', null);
     Vue.set(_state, 'account', null);
     Vue.set(_state, 'dsProxyAddress', null);
-    Vue.set(_state, 'name', null);
     Vue.set(_state, 'active', false);
     Vue.set(_state, 'balances', {});
     Vue.set(_state, 'allowances', {});
+    Vue.set(_state, 'crps', {});
     console.debug('LOGOUT');
   },
   LOAD_TOKEN_METADATA_REQUEST() {
@@ -65,7 +66,6 @@ const mutations = {
     Vue.set(_state, 'injectedLoaded', payload.injectedLoaded);
     Vue.set(_state, 'injectedChainId', payload.injectedChainId);
     Vue.set(_state, 'account', payload.account);
-    Vue.set(_state, 'name', payload.name);
     Vue.set(_state, 'active', true);
     console.debug('LOAD_PROVIDER_SUCCESS');
   },
@@ -89,6 +89,16 @@ const mutations = {
     Vue.set(_state, 'active', false);
     console.debug('LOAD_BACKUP_PROVIDER_FAILURE', payload);
   },
+  GET_LATEST_BLOCK_REQUEST() {
+    console.debug('GET_LATEST_BLOCK_REQUEST');
+  },
+  GET_LATEST_BLOCK_SUCCESS(_state, payload) {
+    console.debug('GET_LATEST_BLOCK_SUCCESS', payload);
+    Vue.set(_state, 'blockNumber', payload);
+  },
+  GET_LATEST_BLOCK_FAILURE() {
+    console.debug('GET_LATEST_BLOCK_FAILURE');
+  },
   HANDLE_CHAIN_CHANGED() {
     console.debug('HANDLE_CHAIN_CHANGED');
   },
@@ -96,21 +106,8 @@ const mutations = {
     Vue.set(_state, 'account', payload);
     console.debug('HANDLE_ACCOUNTS_CHANGED', payload);
   },
-  HANDLE_CLOSE_CHANGED() {
-    console.debug('HANDLE_CLOSE_CHANGED');
-  },
-  HANDLE_NETWORK_CHANGED() {
-    console.debug('HANDLE_NETWORK_CHANGED');
-  },
-  LOOKUP_ADDRESS_REQUEST() {
-    console.debug('LOOKUP_ADDRESS_REQUEST');
-  },
-  LOOKUP_ADDRESS_SUCCESS(_state, payload) {
-    Vue.set(_state, 'name', payload);
-    console.debug('LOOKUP_ADDRESS_SUCCESS');
-  },
-  LOOKUP_ADDRESS_FAILURE(_state, payload) {
-    console.debug('LOOKUP_ADDRESS_FAILURE', payload);
+  HANDLE_DISCONNECT() {
+    console.debug('HANDLE_DISCONNECT');
   },
   RESOLVE_NAME_REQUEST() {
     console.debug('RESOLVE_NAME_REQUEST');
@@ -173,6 +170,19 @@ const mutations = {
   },
   GET_PROXY_FAILURE(_state, payload) {
     console.debug('GET_PROXY_FAILURE', payload);
+  },
+  GET_CRPS_REQUEST() {
+    console.debug('GET_CRPS_REQUEST');
+  },
+  GET_CRPS_SUCCESS(_state, payload) {
+    for (const address in payload) {
+      const crp = payload[address];
+      Vue.set(_state.crps, address, crp);
+    }
+    console.debug('GET_CRPS_SUCCESS');
+  },
+  GET_CRPS_FAILURE(_state, payload) {
+    console.debug('GET_CRPS_FAILURE', payload);
   }
 };
 
@@ -292,16 +302,9 @@ const actions = {
             await dispatch('loadAccount');
           }
         });
-        auth.provider.on('close', async () => {
-          commit('HANDLE_CLOSE');
+        auth.provider.on('disconnect', async () => {
+          commit('HANDLE_DISCONNECT');
           if (state.active) await dispatch('loadWeb3');
-        });
-        auth.provider.on('networkChanged', async () => {
-          commit('HANDLE_NETWORK_CHANGED');
-          if (state.active) {
-            await dispatch('logout');
-            await dispatch('login');
-          }
         });
       }
       const network = await web3.getNetwork();
@@ -332,14 +335,15 @@ const actions = {
       return Promise.reject();
     }
   },
-  lookupAddress: async ({ commit }) => {
-    commit('LOOKUP_ADDRESS_REQUEST');
+  getLatestBlock: async ({ commit }) => {
+    commit('GET_LATEST_BLOCK_REQUEST');
     try {
-      const name = await web3.lookupAddress(state.account || '');
-      commit('LOOKUP_ADDRESS_SUCCESS', name);
-      return name;
+      const block = await web3.getBlockNumber();
+      commit('GET_LATEST_BLOCK_SUCCESS', block);
+      return block;
     } catch (e) {
-      commit('LOOKUP_ADDRESS_FAILURE', e);
+      commit('GET_LATEST_BLOCK_FAILURE', e);
+      return Promise.reject();
     }
   },
   resolveName: async ({ commit }, payload) => {
@@ -394,7 +398,6 @@ const actions = {
     const tokens = Object.entries(config.tokens).map(token => token[1].address);
     await dispatch('getProxy');
     await Promise.all([
-      dispatch('lookupAddress'),
       dispatch('getBalances', tokens),
       dispatch('getAllowances', { tokens, spender: state.dsProxyAddress }),
       dispatch('getMyPoolShares')
@@ -505,6 +508,94 @@ const actions = {
       return proxy;
     } catch (e) {
       commit('GET_PROXY_FAILURE', e);
+      return Promise.reject();
+    }
+  },
+  getCrps: async ({ commit }, crps) => {
+    commit('GET_CRPS_REQUEST');
+    const multi = new Contract(
+      config.addresses.multicall,
+      abi['Multicall'],
+      web3
+    );
+    const calls = [];
+    const crpIface = new Interface(abi.ConfigurableRightsPool);
+    crps.forEach(crp => {
+      // @ts-ignore
+      calls.push([crp, crpIface.encodeFunctionData('decimals', [])]);
+      // @ts-ignore
+      calls.push([crp, crpIface.encodeFunctionData('symbol', [])]);
+      // @ts-ignore
+      calls.push([crp, crpIface.encodeFunctionData('name', [])]);
+      // @ts-ignore
+      calls.push([crp, crpIface.encodeFunctionData('totalSupply', [])]);
+      // @ts-ignore
+      calls.push([crp, crpIface.encodeFunctionData('bspCap', [])]);
+      calls.push([
+        // @ts-ignore
+        crp,
+        // @ts-ignore
+        crpIface.encodeFunctionData('addTokenTimeLockInBlocks', [])
+      ]);
+      calls.push([
+        // @ts-ignore
+        crp,
+        // @ts-ignore
+        crpIface.encodeFunctionData('minimumWeightChangeBlockPeriod', [])
+      ]);
+    });
+    const crpData: any = {};
+    try {
+      const [, response] = await multi.aggregate(calls);
+      for (let i = 0; i < crps.length; i++) {
+        const [decimals] = crpIface.decodeFunctionResult(
+          'decimals',
+          response[7 * i]
+        );
+        const [symbol] = crpIface.decodeFunctionResult(
+          'symbol',
+          response[7 * i + 1]
+        );
+        const [name] = crpIface.decodeFunctionResult(
+          'name',
+          response[7 * i + 2]
+        );
+        const [totalSupplyNumber] = crpIface.decodeFunctionResult(
+          'totalSupply',
+          response[7 * i + 3]
+        );
+        const totalSupply = totalSupplyNumber.toString();
+        const [bspCapNumber] = crpIface.decodeFunctionResult(
+          'bspCap',
+          response[7 * i + 4]
+        );
+        const bspCap = bspCapNumber.toString();
+        const [addTokenTimeLockInBlocksNumber] = crpIface.decodeFunctionResult(
+          'addTokenTimeLockInBlocks',
+          response[7 * i + 5]
+        );
+        const addTokenTimeLockInBlocks = addTokenTimeLockInBlocksNumber.toNumber();
+        const [
+          minimumWeightChangeBlockPeriodNumber
+        ] = crpIface.decodeFunctionResult(
+          'minimumWeightChangeBlockPeriod',
+          response[7 * i + 6]
+        );
+        const minimumWeightChangeBlockPeriod = minimumWeightChangeBlockPeriodNumber.toNumber();
+        crpData[crps[i]] = {
+          decimals,
+          symbol,
+          name,
+          totalSupply,
+          bspCap,
+          addTokenTimeLockInBlocks,
+          minimumWeightChangeBlockPeriod
+        };
+      }
+      commit('GET_CRPS_SUCCESS', crpData);
+      return crpData;
+    } catch (e) {
+      commit('GET_CRPS_FAILURE', e);
       return Promise.reject();
     }
   }

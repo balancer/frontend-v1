@@ -92,12 +92,11 @@ export default {
     }
   },
   methods: {
-    getTokenValue(entry) {
-      const address = entry[0];
-      const balanceString = entry[1];
+    getTokenValue([address, balanceStr]) {
+      if (!this.web3.tokenMetadata[address] && address !== 'ether') return 0;
       const decimals =
         address === 'ether' ? 18 : this.web3.tokenMetadata[address].decimals;
-      const balance = normalizeBalance(balanceString, decimals);
+      const balance = normalizeBalance(balanceStr, decimals);
       const weth = this.config.tokens[this.config.addresses.weth];
       const price =
         address === 'ether'

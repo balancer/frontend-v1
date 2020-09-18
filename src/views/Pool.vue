@@ -61,6 +61,8 @@
 </template>
 
 <script>
+import { getAddress } from '@ethersproject/address';
+
 import { mapActions } from 'vuex';
 import Pool from '@/_balancer/pool';
 
@@ -114,6 +116,7 @@ export default {
   },
   methods: {
     ...mapActions([
+      'getCrps',
       'getBalances',
       'getAllowances',
       'loadTokenMetadata',
@@ -136,6 +139,10 @@ export default {
       if (!this.pool) {
         this.loading = false;
         return;
+      }
+      if (this.pool.crp) {
+        const poolAddress = getAddress(this.pool.controller);
+        this.getCrps([poolAddress]);
       }
       const unknownTokens = this.pool.tokensList.filter(
         tokenAddress => !this.web3.tokenMetadata[tokenAddress]
