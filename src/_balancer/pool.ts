@@ -1,6 +1,6 @@
 import merge from 'lodash/merge';
 import { getAddress } from '@ethersproject/address';
-import { multicall, subgraphRequest } from '@bonustrack/snapshot.js/src/utils';
+import { multicall, subgraphRequest } from './utils';
 import provider from '@/helpers/rpc';
 import abi from '@/helpers/abi';
 import { formatPool } from '@/helpers/utils';
