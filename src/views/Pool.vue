@@ -133,7 +133,6 @@ export default {
       } catch (e) {
         return this.$router.push({ name: 'home' });
       }
-      */
       const unknownTokens = this.pool.tokensList.filter(
         tokenAddress => !this.web3.tokenMetadata[tokenAddress]
       );
