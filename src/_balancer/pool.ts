@@ -21,6 +21,10 @@ export default class Pool {
     this.checksum = isAddress(address) ? getAddress(address) : '';
   }
 
+  isWhitelisted() {
+    return !!config.crps[this.address];
+  }
+
   getTypeStr() {
     return this.metadata.finalized
       ? 'Shared'
@@ -29,11 +33,14 @@ export default class Pool {
       : 'Private';
   }
 
+  getAbout() {
+    return this.isWhitelisted() && config.crps[this.address].about
+      ? config.crps[this.address].about
+      : '';
+  }
+
   isCrp() {
-    if (
-      config.addresses.crps.map(crp => crp.toLowerCase()).includes(this.address)
-    )
-      return true;
+    if (this.isWhitelisted()) return true;
     return this.metadata.crp;
   }
 
@@ -55,6 +62,26 @@ export default class Pool {
 
   async getNodeMetadata() {
     const address = this.getBptAddress();
+    if (this.isCrp()) {
+      const [publicSwap, name, decimals, symbol, totalShares] = await multicall(
+        provider,
+        abi['BPool'],
+        [
+          'isPublicSwap',
+          'name',
+          'decimals',
+          'symbol',
+          'totalSupply'
+        ].map(method => [address, method, []])
+      );
+      return {
+        publicSwap: publicSwap[0],
+        name: name.toString(),
+        symbol: symbol.toString(),
+        totalShares: formatUnits(totalShares.toString(), decimals),
+        rights: []
+      };
+    }
     const [publicSwap, name, decimals, symbol, totalShares] = await multicall(
       provider,
       abi['BPool'],

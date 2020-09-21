@@ -1,37 +1,45 @@
 <template>
   <UiTable class="p-4">
+    <div v-if="bPool.getAbout()" class="mb-3">
+      <div v-text="'Description'" class="mb-2" />
+      <h5 v-text="bPool.getAbout()" class="text-white" />
+    </div>
     <div class="mb-3">
       <div v-text="'Pool type'" class="mb-2" />
       <h5 v-text="bPool.getTypeStr()" class="text-white" />
     </div>
-    <div v-if="pool.crp" class="mb-3">
+    <div v-if="bPool.isCrp()" class="mb-3">
       <div v-text="'Rights'" class="mb-2" />
-      <h5 v-html="rights" class="text-white" />
+      <h5 v-if="rightsHtml" v-html="rightsHtml" class="text-white" />
+      <h5 v-else v-text="'None'" class="text-white" />
     </div>
     <div class="mb-3">
-      <div v-text="pool.finalized ? 'Creator' : 'Controller'" class="mb-2" />
+      <div
+        v-text="bPool.metadata.finalized ? 'Creator' : 'Controller'"
+        class="mb-2"
+      />
       <h5>
         <a
-          :href="_etherscanLink(pool.controller)"
+          :href="_etherscanLink(bPool.metadata.controller)"
           target="_blank"
           class="text-white"
         >
-          <Avatar :address="pool.controller" class="mr-1" />
-          {{ _shortenAddress(pool.controller) }}
+          <Avatar :address="bPool.metadata.controller" class="mr-1" />
+          {{ _shortenAddress(bPool.metadata.controller) }}
           <Icon name="external-link" size="16" class="ml-1" />
         </a>
       </h5>
     </div>
-    <div v-if="pool.crp" class="mb-3">
+    <div v-if="bPool.isCrp() && bPool.metadata.crpController" class="mb-3">
       <div v-text="'Smart pool controller'" class="mb-2" />
       <h5>
         <a
-          :href="_etherscanLink(pool.crpController)"
+          :href="_etherscanLink(bPool.metadata.crpController)"
           target="_blank"
           class="text-white"
         >
-          <Avatar :address="pool.crpController" class="mr-1" />
-          {{ _shortenAddress(pool.crpController) }}
+          <Avatar :address="bPool.metadata.crpController" class="mr-1" />
+          {{ _shortenAddress(bPool.metadata.crpController) }}
           <Icon name="external-link" size="16" class="ml-1" />
         </a>
       </h5>
@@ -40,53 +48,59 @@
       <div v-text="'Creation date'" class="mb-2" />
       <h5>
         <a
-          :href="_etherscanLink(pool.tx, 'tx')"
+          :href="_etherscanLink(bPool.metadata.tx, 'tx')"
           target="_blank"
           class="text-white"
         >
-          {{ $d(pool.createTime * 1e3, 'long') }}
+          {{ $d(bPool.metadata.createTime * 1e3, 'long') }}
           <Icon name="external-link" size="16" class="ml-1" />
         </a>
       </h5>
     </div>
-    <template v-if="pool.finalized">
+    <template v-if="bPool.metadata.finalized">
       <div class="mb-3">
         <div v-text="'BPT asset'" class="mb-2" />
         <h5>
           <a
-            :href="_etherscanLink(pool.id, 'token')"
+            :href="_etherscanLink(bPool.address, 'token')"
             target="_blank"
             class="text-white"
           >
-            <Token :address="pool.id" class="v-align-middle mr-1" />
-            {{ _shortenAddress(pool.id) }}
+            <Token :address="bPool.address" class="v-align-middle mr-1" />
+            {{ _shortenAddress(bPool.address) }}
             <Icon name="external-link" size="16" class="ml-1" />
           </a>
         </h5>
       </div>
       <div class="mb-3">
         <div v-text="'BPT total supply'" class="mb-2" />
-        <h5 v-text="_num(pool.totalShares)" class="text-white" />
+        <h5 v-text="_num(bPool.metadata.totalShares)" class="text-white" />
       </div>
     </template>
     <div class="mb-3">
       <div v-text="'Public swap'" class="mb-2" />
       <h5
-        v-text="pool.publicSwap ? 'Enabled' : 'Disabled'"
+        v-text="bPool.metadata.publicSwap ? 'Enabled' : 'Disabled'"
         class="text-white"
       />
     </div>
     <div class="mb-3">
       <div v-text="'Swap fee'" class="mb-2" />
-      <h5 v-text="_num(pool.swapFee, 'percent')" class="text-white" />
+      <h5 v-text="_num(bPool.metadata.swapFee, 'percent')" class="text-white" />
     </div>
     <div class="mb-3">
       <div v-text="'Total swap volume'" class="mb-2" />
-      <h5 v-text="_num(pool.totalSwapVolume, 'currency')" class="text-white" />
+      <h5
+        v-text="_num(bPool.metadata.totalSwapVolume, 'currency')"
+        class="text-white"
+      />
     </div>
     <div class="mb-3">
       <div v-text="'Total swap fee'" class="mb-2" />
-      <h5 v-text="_num(pool.totalSwapFee, 'currency')" class="text-white" />
+      <h5
+        v-text="_num(bPool.metadata.totalSwapFee, 'currency')"
+        class="text-white"
+      />
     </div>
   </UiTable>
 </template>
@@ -95,10 +109,12 @@
 import { poolRights } from '@/helpers/utils';
 
 export default {
-  props: ['pool', 'bPool'],
+  props: ['bPool'],
   computed: {
-    rights() {
-      return this.pool.rights.map(right => poolRights[right]).join('<br/>');
+    rightsHtml() {
+      return this.bPool.metadata.rights
+        .map(right => poolRights[right])
+        .join('<br/>');
     }
   }
 };

@@ -79,13 +79,15 @@
           </UiTable>
           <UiTable class="mt-4">
             <UiTableTh class="text-left flex-items-center text-white">
-              <div class="flex-auto">{{ pool.symbol }} amount</div>
+              <div class="flex-auto">
+                {{ _shorten(pool.symbol, 12) }} amount
+              </div>
               <div class="flex-auto text-right">
                 {{ _num(userLiquidity.absolute.current) }}
                 <span v-if="userLiquidity.absolute.future">
                   → {{ _num(userLiquidity.absolute.future) }}
                 </span>
-                {{ pool.symbol }}
+                {{ _shorten(pool.symbol, 12) }}
               </div>
             </UiTableTh>
           </UiTable>

@@ -46,7 +46,7 @@
       @close="modalRemoveLiquidityOpen = false"
     />
     <ModalCustomToken
-      v-if="hasCustomToken"
+      v-if="hasCustomToken && !bPool.isWhitelisted()"
       :open="modalCustomTokenOpen"
       @close="modalCustomTokenOpen = false"
     />
@@ -97,7 +97,7 @@ export default {
       return (
         this.config.chainId === this.web3.injectedChainId &&
         this.web3.account &&
-        (this.pool.finalized || this.pool.crp)
+        (this.pool.finalized || this.pool.crp || this.bPool.isCrp())
       );
     },
     enableRemoveLiquidity() {

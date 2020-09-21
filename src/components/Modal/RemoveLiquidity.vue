@@ -58,7 +58,7 @@
             <UiTableTh class="text-left flex-items-center text-white">
               <div class="flex-auto">Amount</div>
               <div class="ml-2">
-                {{ _num(poolTokenBalance) }} {{ pool.symbol }}
+                {{ _num(poolTokenBalance) }} {{ _shorten(pool.symbol, 12) }}
                 <a @click="setMax" class="link-text mr-3">
                   <UiLabel v-text="'Max'" />
                 </a>

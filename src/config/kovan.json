@@ -9,9 +9,9 @@
     "proxy": "0x2641f150669739986CDa3ED6860DeD44BC3Cda5d",
     "crpFactory": "0x17e8705E85aE8E3df7C5E4d3EEd94000FB30C483",
     "weth": "0xd0A1E359811322d97991E03f863a0C30C2cF029C",
-    "multicall": "0x2cc8688C5f75E365aaEEb4ea8D6a480405A48D2A",
-    "crps": []
+    "multicall": "0x2cc8688C5f75E365aaEEb4ea8D6a480405A48D2A"
   },
+  "crps": {},
   "connectors": {
     "injected": {
       "id": "injected",

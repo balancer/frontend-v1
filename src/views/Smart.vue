@@ -21,7 +21,7 @@ export default {
       if (config.chainId === 1)
         return {
           where: {
-            id_in: config.addresses.crps
+            id_in: Object.keys(config.crps)
           }
         };
       return {
