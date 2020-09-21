@@ -79,13 +79,15 @@
           </UiTable>
           <UiTable class="mt-4">
             <UiTableTh class="text-left flex-items-center text-white">
-              <div class="flex-auto">{{ pool.symbol }} amount</div>
+              <div class="flex-auto">
+                {{ _shorten(pool.symbol, 12) }} amount
+              </div>
               <div class="flex-auto text-right">
                 {{ _num(userLiquidity.absolute.current) }}
                 <span v-if="userLiquidity.absolute.future">
                   → {{ _num(userLiquidity.absolute.future) }}
                 </span>
-                {{ pool.symbol }}
+                {{ _shorten(pool.symbol, 12) }}
               </div>
             </UiTableTh>
           </UiTable>
@@ -172,7 +174,7 @@ function hasToken(pool, symbol) {
 }
 
 export default {
-  props: ['open', 'pool'],
+  props: ['open', 'pool', 'bPool'],
   data() {
     return {
       liquidityToggleOptions,
@@ -202,7 +204,7 @@ export default {
   },
   computed: {
     poolTokenBalance() {
-      const bptAddress = this.pool.crp ? this.pool.controller : this.pool.id;
+      const bptAddress = this.bPool.getBptAddress();
       const balance = this.web3.balances[getAddress(bptAddress)];
       return normalizeBalance(balance || '0', 18);
     },
@@ -541,7 +543,7 @@ export default {
     },
     async handleSubmit() {
       this.loading = true;
-      const poolAddress = this.pool.crp ? this.pool.controller : this.pool.id;
+      const poolAddress = this.bPool.getBptAddress();
       if (this.isMultiAsset) {
         const params = {
           poolAddress,

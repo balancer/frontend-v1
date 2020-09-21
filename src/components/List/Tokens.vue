@@ -4,6 +4,7 @@
       v-for="token in pool.tokens"
       :key="token.address"
       :pool="pool"
+      :bPool="bPool"
       :token="token"
     />
   </div>
@@ -11,6 +12,6 @@
 
 <script>
 export default {
-  props: ['pool']
+  props: ['pool', 'bPool']
 };
 </script>

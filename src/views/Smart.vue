@@ -13,9 +13,17 @@
 </template>
 
 <script>
+import config from '@/config';
+
 export default {
   computed: {
     query() {
+      if (config.chainId === 1)
+        return {
+          where: {
+            id_in: Object.keys(config.crps)
+          }
+        };
       return {
         where: {
           crp: true

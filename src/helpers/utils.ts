@@ -48,7 +48,7 @@ export function jsonParse(input, fallback?) {
 }
 
 export function shortenAddress(str = '') {
-  return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
+  return str ? `${str.slice(0, 6)}...${str.slice(str.length - 4)}` : str;
 }
 
 export function shorten(str = '', max = 14) {
