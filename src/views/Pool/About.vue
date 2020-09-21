@@ -2,16 +2,7 @@
   <UiTable class="p-4">
     <div class="mb-3">
       <div v-text="'Pool type'" class="mb-2" />
-      <h5
-        v-text="
-          pool.finalized
-            ? 'Shared pool'
-            : pool.crp
-            ? 'Smart pool'
-            : 'Private pool'
-        "
-        class="text-white"
-      />
+      <h5 v-text="bPool.getTypeStr()" class="text-white" />
     </div>
     <div v-if="pool.crp" class="mb-3">
       <div v-text="'Rights'" class="mb-2" />
@@ -104,7 +95,7 @@
 import { poolRights } from '@/helpers/utils';
 
 export default {
-  props: ['pool'],
+  props: ['pool', 'bPool'],
   computed: {
     rights() {
       return this.pool.rights.map(right => poolRights[right]).join('<br/>');

@@ -56,8 +56,8 @@
           </UiTable>
           <UiTable class="mt-4">
             <UiTableTh class="text-left flex-items-center text-white">
-              <div class="flex-auto">{{ pool.symbol }} amount</div>
-              <div class="ml-2 column text-left">
+              <div class="flex-auto">Amount</div>
+              <div class="ml-2">
                 {{ _num(poolTokenBalance) }} {{ pool.symbol }}
                 <a @click="setMax" class="link-text mr-3">
                   <UiLabel v-text="'Max'" />
@@ -114,7 +114,7 @@ import { calcSingleOutGivenPoolIn } from '@/helpers/math';
 import { validateNumberInput, formatError } from '@/helpers/validation';
 
 export default {
-  props: ['open', 'pool'],
+  props: ['open', 'pool', 'bPool'],
   data() {
     return {
       liquidityToggleOptions,
@@ -134,8 +134,9 @@ export default {
   },
   computed: {
     poolTokenBalance() {
-      const bptAddress = this.pool.crp ? this.pool.controller : this.pool.id;
-      const balance = this.web3.balances[getAddress(bptAddress)];
+      const balance = this.web3.balances[
+        getAddress(this.bPool.getBptAddress())
+      ];
       return normalizeBalance(balance || '0', 18);
     },
     userLiquidity() {

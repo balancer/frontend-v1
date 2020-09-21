@@ -3,13 +3,6 @@
     <div v-if="loading" class="text-center">
       <UiLoading class="big" />
     </div>
-    <div
-      v-else-if="!pool"
-      class="text-white text-center mt-8"
-      style="font-size: 24px;"
-    >
-      Pool not found
-    </div>
     <div v-else>
       <MessageSimilarPools
         v-if="pool.liquidity < 1e7 && pool.finalized"
@@ -17,7 +10,7 @@
         class="mb-4"
       />
       <div class="d-flex flex-items-center flex-auto mb-4 px-4 px-md-0">
-        <PoolHeader :pool="pool" class="flex-auto" />
+        <PoolHeader :pool="bPool" class="flex-auto" />
         <div class="d-flex">
           <UiButton
             v-if="enableAddLiquidity"
@@ -38,17 +31,17 @@
       <PoolBoxes :pool="pool" />
       <Chart :pool="pool" />
       <Tabs :pool="pool" />
-      <router-view :key="$route.path" :pool="pool" />
+      <router-view :key="$route.path" :pool="pool" :bPool="bPool" />
     </div>
     <ModalAddLiquidity
-      v-if="pool"
       :pool="pool"
+      :bPool="bPool"
       :open="modalAddLiquidityOpen"
       @close="modalAddLiquidityOpen = false"
     />
     <ModalRemoveLiquidity
-      v-if="pool"
       :pool="pool"
+      :bPool="bPool"
       :open="modalRemoveLiquidityOpen"
       @close="modalRemoveLiquidityOpen = false"
     />
@@ -69,6 +62,7 @@ import Pool from '@/_balancer/pool';
 export default {
   data() {
     return {
+      bPool: undefined,
       id: this.$route.params.id,
       pool: {},
       loading: false,
@@ -117,7 +111,6 @@ export default {
   },
   methods: {
     ...mapActions([
-      'getCrps',
       'getBalances',
       'getAllowances',
       'loadTokenMetadata',
@@ -134,19 +127,12 @@ export default {
     },
     async loadPool() {
       this.loading = true;
-      const pool = new Pool(this.id);
-      this.pool = await pool.getMetadata();
-      console.log('Pool metadata', this.pool);
-      if (!this.pool) {
-        this.loading = false;
-        return;
+      this.bPool = new Pool(this.id);
+      try {
+        this.pool = await this.bPool.getMetadata();
+      } catch (e) {
+        return this.$router.push({ name: 'home' });
       }
-      /*
-      if (this.pool.crp) {
-        const poolAddress = getAddress(this.pool.controller);
-        this.getCrps([poolAddress]);
-      }
-      */
       const unknownTokens = this.pool.tokensList.filter(
         tokenAddress => !this.web3.tokenMetadata[tokenAddress]
       );
@@ -155,9 +141,11 @@ export default {
         await this.loadPricesByAddress(unknownTokens);
       }
       if (this.$auth.isAuthenticated) {
-        const bptAddress = this.pool.crp ? this.pool.controller : this.pool.id;
         await Promise.all([
-          this.getBalances([...this.pool.tokensList, getAddress(bptAddress)]),
+          this.getBalances([
+            ...this.pool.tokensList,
+            getAddress(this.bPool.getBptAddress())
+          ]),
           this.getAllowances({
             tokens: this.pool.tokensList,
             spender: this.web3.dsProxyAddress

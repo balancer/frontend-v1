@@ -1,33 +1,60 @@
 import merge from 'lodash/merge';
-import { getAddress } from '@ethersproject/address';
+import { getAddress, isAddress } from '@ethersproject/address';
 import { multicall, subgraphRequest } from './utils';
 import provider from '@/helpers/rpc';
 import abi from '@/helpers/abi';
 import { formatPool } from '@/helpers/utils';
 import { formatUnits } from '@ethersproject/units';
 import queries from '@/helpers/queries.json';
+import config from '@/config';
 
 const subgraphUrl = process.env.VUE_APP_SUBGRAPH_URL;
 
 export default class Pool {
   public readonly address: string;
   public readonly checksum: string;
+  public ready = false;
   public metadata?: any;
 
   constructor(address: string) {
     this.address = address.toLowerCase();
-    this.checksum = getAddress(address);
+    this.checksum = isAddress(address) ? getAddress(address) : '';
+  }
+
+  getTypeStr() {
+    return this.metadata.finalized
+      ? 'Shared'
+      : this.isCrp()
+      ? 'Smart pool'
+      : 'Private';
+  }
+
+  isCrp() {
+    if (
+      config.addresses.crps.map(crp => crp.toLowerCase()).includes(this.address)
+    )
+      return true;
+    return this.metadata.crp;
+  }
+
+  getBptAddress() {
+    return this.isCrp() ? this.metadata.controller : this.address;
   }
 
   async getMetadata() {
-    this.metadata = await this.getSubgraphMetadata();
-    const metadata = await this.getNodeMetadata();
-    this.metadata = { ...this.metadata, ...metadata };
-    return this.metadata;
+    try {
+      this.metadata = await this.getSubgraphMetadata();
+      const metadata = await this.getNodeMetadata();
+      this.metadata = { ...this.metadata, ...metadata };
+      this.ready = true;
+      return this.metadata;
+    } catch (e) {
+      return Promise.reject();
+    }
   }
 
   async getNodeMetadata() {
-    const address = this.metadata.crp ? this.metadata.controller : this.address;
+    const address = this.getBptAddress();
     const [publicSwap, name, decimals, symbol, totalShares] = await multicall(
       provider,
       abi['BPool'],

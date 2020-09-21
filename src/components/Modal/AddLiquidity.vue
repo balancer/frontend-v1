@@ -172,7 +172,7 @@ function hasToken(pool, symbol) {
 }
 
 export default {
-  props: ['open', 'pool'],
+  props: ['open', 'pool', 'bPool'],
   data() {
     return {
       liquidityToggleOptions,

@@ -34,8 +34,8 @@ export default {
     _shortenAddress(str: string): string {
       return shortenAddress(str);
     },
-    _shorten(str: string): string {
-      return shorten(str);
+    _shorten(str: string, max?): string {
+      return shorten(str, max);
     },
     _trunc(value: number, decimals: number): number {
       return trunc(value, decimals);

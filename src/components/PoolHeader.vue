@@ -1,15 +1,19 @@
 <template>
   <h3 class="hide-sm">
-    <span class="mr-2" v-if="pool.name" v-text="pool.name" />
-    <span class="mr-2" v-else>Pool {{ _shortenAddress(pool.id) }}</span>
-    <span v-if="pool.symbol" v-text="`(${_shorten(pool.symbol)})`" />
-    <a :href="_etherscanLink(pool.id)" target="_blank" class="text-white">
+    <span
+      class="mr-2"
+      v-if="pool.metadata.name"
+      v-text="_shorten(pool.metadata.name, 24)"
+    />
+    <span class="mr-2" v-else>Pool {{ _shortenAddress(pool.address) }}</span>
+    <span
+      v-if="pool.metadata.symbol"
+      v-text="`(${_shorten(pool.metadata.symbol)})`"
+    />
+    <a :href="_etherscanLink(pool.address)" target="_blank" class="text-white">
       <Icon name="external-link" size="16" class="ml-1 mr-2" />
     </a>
-    <UiLabel
-      v-if="!pool.finalized"
-      v-text="pool.crp ? 'Smart pool' : 'Private'"
-    />
+    <UiLabel v-if="!pool.metadata.finalized" v-text="pool.getTypeStr()" />
   </h3>
 </template>
 
