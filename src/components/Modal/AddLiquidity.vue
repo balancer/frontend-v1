@@ -204,7 +204,7 @@ export default {
   },
   computed: {
     poolTokenBalance() {
-      const bptAddress = this.pool.crp ? this.pool.controller : this.pool.id;
+      const bptAddress = this.bPool.getBptAddress();
       const balance = this.web3.balances[getAddress(bptAddress)];
       return normalizeBalance(balance || '0', 18);
     },
@@ -543,7 +543,7 @@ export default {
     },
     async handleSubmit() {
       this.loading = true;
-      const poolAddress = this.pool.crp ? this.pool.controller : this.pool.id;
+      const poolAddress = this.bPool.getBptAddress();
       if (this.isMultiAsset) {
         const params = {
           poolAddress,

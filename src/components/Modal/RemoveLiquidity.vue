@@ -263,7 +263,7 @@ export default {
     ...mapActions(['exitPool', 'exitswapPoolAmountIn']),
     async handleSubmit() {
       this.loading = true;
-      const poolAddress = this.pool.crp ? this.pool.controller : this.pool.id;
+      const poolAddress = this.bPool.getBptAddress();
       if (this.isMultiAsset) {
         await this.exitPool({
           poolAddress,

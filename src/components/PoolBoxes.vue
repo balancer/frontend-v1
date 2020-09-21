@@ -44,7 +44,7 @@ export default {
   props: ['pool'],
   computed: {
     poolTokenBalance() {
-      const bptAddress = this.pool.crp ? this.pool.controller : this.pool.id;
+      const bptAddress = this.bPool.getBptAddress();
       const balance = this.web3.balances[getAddress(bptAddress)];
       return normalizeBalance(balance || '0', 18);
     },

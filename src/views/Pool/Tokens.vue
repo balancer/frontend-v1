@@ -9,13 +9,13 @@
         <div v-text="'My balance'" class="column hide-sm hide-md" />
         <div v-text="'My asset value'" class="column hide-sm hide-md hide-lg" />
       </UiTableTh>
-      <ListTokens :pool="pool" />
+      <ListTokens :pool="pool" :bPool="bPool" />
     </UiTable>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['pool']
+  props: ['pool', 'bPool']
 };
 </script>
