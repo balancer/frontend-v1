@@ -41,7 +41,7 @@ import { getPoolLiquidity } from '@/helpers/price';
 import { normalizeBalance } from '@/helpers/utils';
 
 export default {
-  props: ['pool'],
+  props: ['pool', 'bPool'],
   computed: {
     poolTokenBalance() {
       const bptAddress = this.bPool.getBptAddress();
@@ -52,7 +52,10 @@ export default {
       return getPoolLiquidity(this.pool, this.price.values);
     },
     poolSharePercent() {
-      if ((!this.pool.finalized && !this.pool.crp) || !this.poolTokenBalance)
+      if (
+        (!this.pool.finalized && !this.bPool.isCrp()) ||
+        !this.poolTokenBalance
+      )
         return 0;
       return (1 / this.pool.totalShares) * this.poolTokenBalance;
     }

@@ -560,7 +560,7 @@ export default {
             const tokenAmountIn = BigNumber.min(inputAmountIn, balanceAmountIn);
             return tokenAmountIn.toString();
           }),
-          isSmartpool: this.pool.crp
+          isCrp: this.bPool.isCrp()
         };
         const txResult = await this.joinPool(params);
         if (isTxReverted(txResult)) {

@@ -28,7 +28,7 @@
           </UiButton>
         </div>
       </div>
-      <PoolBoxes :pool="pool" />
+      <PoolBoxes :pool="pool" :bPool="bPool" />
       <Chart :pool="pool" />
       <Tabs :pool="pool" />
       <router-view :key="$route.path" :pool="pool" :bPool="bPool" />
@@ -97,7 +97,7 @@ export default {
       return (
         this.config.chainId === this.web3.injectedChainId &&
         this.web3.account &&
-        (this.pool.finalized || this.pool.crp || this.bPool.isCrp())
+        (this.pool.finalized || this.bPool.isCrp())
       );
     },
     enableRemoveLiquidity() {

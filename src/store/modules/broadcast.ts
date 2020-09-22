@@ -355,7 +355,7 @@ const actions = {
   },
   joinPool: async (
     { commit, dispatch, rootState },
-    { poolAddress, poolAmountOut, maxAmountsIn, isSmartpool = false }
+    { poolAddress, poolAmountOut, maxAmountsIn, isCrp = false }
   ) => {
     commit('JOIN_POOL_REQUEST');
     try {
@@ -363,7 +363,7 @@ const actions = {
       const underlyingParams = [
         'BActions',
         config.addresses.bActions,
-        isSmartpool ? 'joinSmartPool' : 'joinPool',
+        isCrp ? 'joinSmartPool' : 'joinPool',
         [poolAddress, poolAmountOut, maxAmountsIn],
         {}
       ];
