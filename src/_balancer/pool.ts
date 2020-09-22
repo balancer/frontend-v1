@@ -3,7 +3,7 @@ import { getAddress, isAddress } from '@ethersproject/address';
 import { multicall, subgraphRequest } from './utils';
 import provider from '@/helpers/rpc';
 import abi from '@/helpers/abi';
-import { formatPool } from '@/helpers/utils';
+import { poolRights, formatPool } from '@/helpers/utils';
 import { formatUnits } from '@ethersproject/units';
 import queries from '@/helpers/queries.json';
 import config from '@/config';
@@ -63,15 +63,23 @@ export default class Pool {
   async getNodeMetadata() {
     const address = this.getBptAddress();
     if (this.isCrp()) {
-      const [publicSwap, name, decimals, symbol, totalShares] = await multicall(
+      const [
+        publicSwap,
+        name,
+        decimals,
+        symbol,
+        totalShares,
+        rights
+      ] = await multicall(
         provider,
-        abi['BPool'],
+        abi['ConfigurableRightsPool'],
         [
           'isPublicSwap',
           'name',
           'decimals',
           'symbol',
-          'totalSupply'
+          'totalSupply',
+          'rights'
         ].map(method => [address, method, []])
       );
       return {
@@ -79,7 +87,9 @@ export default class Pool {
         name: name.toString(),
         symbol: symbol.toString(),
         totalShares: formatUnits(totalShares.toString(), decimals),
-        rights: []
+        rights: Object.fromEntries(
+          Object.entries(poolRights).map((right, i) => [right[0], rights[i]])
+        )
       };
     }
     const [publicSwap, name, decimals, symbol, totalShares] = await multicall(

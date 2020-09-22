@@ -10,7 +10,11 @@
     </div>
     <div v-if="bPool.isCrp()" class="mb-3">
       <div v-text="'Rights'" class="mb-2" />
-      <h5 v-if="rightsHtml" v-html="rightsHtml" class="text-white" />
+      <template v-if="Object.keys(bPool.metadata.rights).length > 0">
+        <div v-for="(right, key) in bPool.metadata.rights" :key="key">
+          <h5 v-text="poolRights[key]" class="text-white mb-1" />
+        </div>
+      </template>
       <h5 v-else v-text="'None'" class="text-white" />
     </div>
     <div class="mb-3">
@@ -110,12 +114,10 @@ import { poolRights } from '@/helpers/utils';
 
 export default {
   props: ['bPool'],
-  computed: {
-    rightsHtml() {
-      return this.bPool.metadata.rights
-        .map(right => poolRights[right])
-        .join('<br/>');
-    }
+  data() {
+    return {
+      poolRights
+    };
   }
 };
 </script>
