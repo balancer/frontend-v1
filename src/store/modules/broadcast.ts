@@ -353,6 +353,7 @@ const actions = {
         { value: parseEther(amount) }
       ];
       await dispatch('sendTransaction', params);
+      await dispatch('getBalances');
       dispatch('notify', [
         'green',
         `You've successfully wrapped ${amount} ether`
@@ -377,6 +378,7 @@ const actions = {
         {}
       ];
       await dispatch('sendTransaction', params);
+      await dispatch('getBalances');
       dispatch('notify', [
         'green',
         `You've successfully unwrapped ${amount} ether`
