@@ -201,7 +201,6 @@ const actions = {
   logout: async ({ commit }) => {
     Vue.prototype.$auth.logout();
     commit('LOGOUT');
-    commit('CLEAR_USER');
   },
   initTokenMetadata: async ({ commit }) => {
     const metadata = Object.fromEntries(
@@ -290,18 +289,12 @@ const actions = {
     try {
       if (auth.provider.removeAllListeners) auth.provider.removeAllListeners();
       if (auth.provider && auth.provider.on) {
-        auth.provider.on('chainChanged', async () => {
-          commit('HANDLE_CHAIN_CHANGED');
-          if (state.active) {
-            await dispatch('logout');
-            await dispatch('login');
-          }
-        });
         auth.provider.on('accountsChanged', async accounts => {
           if (accounts.length === 0) {
             if (state.active) await dispatch('loadWeb3');
           } else {
             commit('HANDLE_ACCOUNTS_CHANGED', accounts[0]);
+            await dispatch('clearUser');
             await dispatch('loadAccount');
           }
         });
@@ -312,6 +305,7 @@ const actions = {
         auth.provider.on('networkChanged', async () => {
           commit('HANDLE_NETWORK_CHANGED');
           if (state.active) {
+            await dispatch('clearUser');
             await dispatch('logout');
             await dispatch('login');
           }

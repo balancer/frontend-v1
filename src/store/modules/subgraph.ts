@@ -104,6 +104,9 @@ const mutations = {
 };
 
 const actions = {
+  clearUser: async ({ commit }) => {
+    commit('CLEAR_USER');
+  },
   getBalancer: async ({ commit }) => {
     commit('GET_BALANCER_REQUEST');
     try {
