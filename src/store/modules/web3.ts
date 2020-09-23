@@ -408,8 +408,8 @@ const actions = {
       dispatch('lookupAddress'),
       dispatch('getBalances', tokens),
       dispatch('getAllowances', { tokens, spender: state.dsProxyAddress }),
-      dispatch('getMyPools'),
-      dispatch('getMyPoolShares')
+      dispatch('getUserPools'),
+      dispatch('getUserPoolShares')
     ]);
   },
   getSupplies: async ({ commit }, tokens) => {

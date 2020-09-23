@@ -204,7 +204,7 @@ const actions = {
 
       await dispatch('sendTransaction', params);
       await dispatch('getBalances');
-      await dispatch('getMyPoolShares');
+      await dispatch('getUserPoolShares');
       dispatch('notify', ['green', "You've successfully added liquidity"]);
       commit('JOIN_POOL_SUCCESS');
     } catch (e) {
@@ -249,7 +249,7 @@ const actions = {
 
       await dispatch('sendTransaction', params);
       await dispatch('getBalances');
-      await dispatch('getMyPoolShares');
+      await dispatch('getUserPoolShares');
       dispatch('notify', ['green', "You've successfully added liquidity"]);
       commit('JOINSWAP_EXTERN_AMOUNT_SUCCESS');
     } catch (e) {
@@ -275,7 +275,7 @@ const actions = {
       ];
       await dispatch('sendTransaction', params);
       await dispatch('getBalances');
-      await dispatch('getMyPoolShares');
+      await dispatch('getUserPoolShares');
       dispatch('notify', ['green', "You've successfully removed liquidity"]);
       commit('EXIT_POOL_SUCCESS');
     } catch (e) {
@@ -305,7 +305,7 @@ const actions = {
       ];
       await dispatch('sendTransaction', params);
       await dispatch('getBalances');
-      await dispatch('getMyPoolShares');
+      await dispatch('getUserPoolShares');
       dispatch('notify', ['green', "You've successfully removed liquidity"]);
       commit('EXITSWAP_POOL_AMOUNT_IN_SUCCESS');
     } catch (e) {
