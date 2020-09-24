@@ -449,6 +449,43 @@ const actions = {
       return Promise.reject();
     }
   },
+  getPoolBalances: async ({ commit }, { poolAddress, tokens }) => {
+    const promises: any = [];
+    const multi = new Contract(
+      config.addresses.multicall,
+      abi['Multicall'],
+      web3
+    );
+    const calls = [];
+    const testToken = new Interface(abi.TestToken);
+    const tokensToFetch = tokens
+      ? tokens
+      : Object.keys(state.balances).filter(token => token !== 'ether');
+    tokensToFetch.forEach(token => {
+      // @ts-ignore
+      calls.push([token, testToken.encodeFunctionData('balanceOf', [poolAddress])]);
+    });
+    promises.push(multi.aggregate(calls));
+    const balances: any = {};
+    try {
+      // @ts-ignore
+      const [[, response]] = await Promise.all(promises);
+      let i = 0;
+      response.forEach(value => {
+        if (tokensToFetch && tokensToFetch[i]) {
+          const balanceNumber = testToken.decodeFunctionResult(
+            'balanceOf',
+            value
+          );
+          balances[tokensToFetch[i]] = balanceNumber.toString();
+        }
+        i++;
+      });
+      return balances;
+    } catch (e) {
+      return Promise.reject();
+    }
+  },
   getBalances: async ({ commit }, tokens) => {
     commit('GET_BALANCES_REQUEST');
     const address = state.account;
