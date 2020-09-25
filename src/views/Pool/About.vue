@@ -125,9 +125,7 @@ export default {
   },
   computed: {
     rights() {
-      const rights = filterObj(this.bPool.metadata.rights, right => right[1]);
-      console.log(rights);
-      return rights;
+      return filterObj(this.bPool.metadata.rights, right => right[1]);
     }
   }
 };

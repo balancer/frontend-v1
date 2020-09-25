@@ -51,9 +51,7 @@ export default class Pool {
   async getMetadata() {
     try {
       this.metadata = await this.getSubgraphMetadata();
-      console.log('Subgraph', this.metadata);
       const metadata = await this.getNodeMetadata();
-      console.log('Node', metadata);
       this.metadata = { ...this.metadata, ...metadata };
       this.ready = true;
       return this.metadata;

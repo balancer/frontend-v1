@@ -243,7 +243,3 @@ export function blockNumberToTimestamp(
 export function filterObj(obj, fn) {
   return Object.fromEntries(Object.entries(obj).filter(item => fn(item)));
 }
-
-export function mapObj(obj, fn) {
-  return Object.fromEntries(Object.entries(obj).map(item => fn(item)));
-}
