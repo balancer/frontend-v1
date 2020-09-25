@@ -67,8 +67,11 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { getAddress } from '@ethersproject/address';
+
+import { bnum, scale } from '@/helpers/utils';
 
 export default {
   data() {
@@ -126,6 +129,7 @@ export default {
       'getSupplies',
       'getBalances',
       'getAllowances',
+      'getPoolBalances',
       'loadTokenMetadata',
       'loadPricesByAddress'
     ]),
@@ -153,16 +157,35 @@ export default {
         await this.loadPricesByAddress(unknownTokens);
       }
       if (this.$auth.isAuthenticated) {
-        await Promise.all([
+        const data = await Promise.all([
           this.getSupplies([getAddress(this.id)]),
           this.getBalances([...this.pool.tokensList, getAddress(this.id)]),
           this.getAllowances({
             tokens: this.pool.tokensList,
             spender: this.web3.dsProxyAddress
+          }),
+          this.getPoolBalances({
+            poolAddress: this.id,
+            tokens: this.pool.tokensList
           })
         ]);
+        this.fixPoolBalances(data[3]);
       }
       this.loading = false;
+    },
+    fixPoolBalances(poolBalances) {
+      for (const address in poolBalances) {
+        const tokenIndex = this.pool.tokens.findIndex(
+          token => token.checksum == address
+        );
+        const tokenDecimals = this.pool.tokens[tokenIndex].decimals;
+        const poolBalance = scale(bnum(poolBalances[address]), -tokenDecimals);
+        Vue.set(
+          this.pool.tokens[tokenIndex],
+          'balance',
+          poolBalance.toString()
+        );
+      }
     }
   },
   created() {
