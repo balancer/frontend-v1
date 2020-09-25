@@ -101,6 +101,7 @@
 </template>
 
 <script>
+import { BigNumber } from 'bignumber.js';
 import { mapActions } from 'vuex';
 import { getAddress } from '@ethersproject/address';
 import {
@@ -111,6 +112,8 @@ import {
 } from '@/helpers/utils';
 import { calcSingleOutGivenPoolIn } from '@/helpers/math';
 import { validateNumberInput, formatError } from '@/helpers/validation';
+
+const BALANCE_BUFFER = 0.01;
 
 export default {
   props: ['open', 'pool'],
@@ -281,11 +284,21 @@ export default {
         });
       } else {
         const tokenOutAddress = this.activeToken;
+        const tokenOut = this.pool.tokens.find(
+          token => token.address === this.activeToken
+        );
+        const minTokenAmountOut = denormalizeBalance(
+          this.getTokenAmountOut(tokenOut),
+          tokenOut.decimals
+        )
+          .times(1 - BALANCE_BUFFER)
+          .integerValue(BigNumber.ROUND_UP)
+          .toString();
         await this.exitswapPoolAmountIn({
           poolAddress: this.pool.id,
           tokenOutAddress,
           poolAmountIn: this.poolAmountIn,
-          minTokenAmountOut: '0'
+          minTokenAmountOut
         });
       }
       this.loading = false;
