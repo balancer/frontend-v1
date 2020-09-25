@@ -585,6 +585,7 @@ export default {
         await this.joinswapExternAmountIn(params);
       }
       this.$emit('close');
+      this.$emit('reload');
       this.loading = false;
     },
     isInputValid(token) {

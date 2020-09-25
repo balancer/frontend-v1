@@ -38,12 +38,14 @@
       :bPool="bPool"
       :open="modalAddLiquidityOpen"
       @close="modalAddLiquidityOpen = false"
+      @reload="loadPool"
     />
     <ModalRemoveLiquidity
       :pool="pool"
       :bPool="bPool"
       :open="modalRemoveLiquidityOpen"
       @close="modalRemoveLiquidityOpen = false"
+      @reload="loadPool"
     />
     <ModalCustomToken
       v-if="hasCustomToken && !bPool.isWhitelisted()"
@@ -94,11 +96,7 @@ export default {
       return false;
     },
     enableAddLiquidity() {
-      return (
-        this.config.chainId === this.web3.injectedChainId &&
-        this.web3.account &&
-        (this.pool.finalized || this.bPool.isCrp())
-      );
+      return this.pool.finalized || this.bPool.isCrp();
     },
     enableRemoveLiquidity() {
       return (
@@ -126,7 +124,6 @@ export default {
       this.modalRemoveLiquidityOpen = true;
     },
     async loadPool() {
-      this.loading = true;
       this.bPool = new Pool(this.id);
       try {
         this.pool = await this.bPool.getMetadata();
@@ -152,11 +149,12 @@ export default {
           })
         ]);
       }
-      this.loading = false;
     }
   },
-  created() {
-    this.loadPool();
+  async created() {
+    this.loading = true;
+    await this.loadPool();
+    this.loading = false;
   }
 };
 </script>

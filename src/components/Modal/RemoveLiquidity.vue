@@ -280,6 +280,7 @@ export default {
         });
       }
       this.$emit('close');
+      this.$emit('reload');
       this.loading = false;
     },
     handleSelectType(type) {
