@@ -280,7 +280,18 @@ export default {
         await this.exitPool({
           poolAddress: this.pool.id,
           poolAmountIn: this.poolAmountIn,
-          minAmountsOut: this.pool.tokens.map(() => 0) // @TODO add amounts
+          minAmountsOut: this.pool.tokensList.map(tokenAddress => {
+            const token = this.pool.tokens.find(
+              token => token.checksum === tokenAddress
+            );
+            return denormalizeBalance(
+              this.getTokenAmountOut(token),
+              token.decimals
+            )
+              .times(1 - BALANCE_BUFFER)
+              .integerValue(BigNumber.ROUND_UP)
+              .toString();
+          })
         });
       } else {
         const tokenOutAddress = this.activeToken;
