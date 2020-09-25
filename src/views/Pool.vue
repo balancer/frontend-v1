@@ -124,9 +124,10 @@ export default {
       this.modalRemoveLiquidityOpen = true;
     },
     async loadPool() {
-      this.bPool = new Pool(this.id);
+      const bPool = new Pool(this.id);
       try {
-        this.pool = await this.bPool.getMetadata();
+        this.pool = await bPool.getMetadata();
+        this.bPool = bPool;
       } catch (e) {
         return this.$router.push({ name: 'home' });
       }

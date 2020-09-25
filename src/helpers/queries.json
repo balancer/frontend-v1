@@ -36,7 +36,6 @@
       "finalized": true,
       "crp": true,
       "crpController": true,
-      "rights": true,
       "swapFee": true,
       "totalWeight": true,
       "totalSwapVolume": true,
