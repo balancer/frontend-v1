@@ -239,3 +239,7 @@ export function blockNumberToTimestamp(
   const avgBlockTime = AVG_BLOCK_TIMES[config.chainId];
   return currentTime + avgBlockTime * 1000 * (blockNumber - currentBlockNumber);
 }
+
+export function filterObj(obj, fn) {
+  return Object.fromEntries(Object.entries(obj).filter(item => fn(item)));
+}
