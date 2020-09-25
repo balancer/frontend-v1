@@ -582,11 +582,15 @@ export default {
         )
           .integerValue(BigNumber.ROUND_UP)
           .toString();
+        const minPoolAmountOut = bnum(this.poolTokens)
+          .times(1 - BALANCE_BUFFER)
+          .integerValue(BigNumber.ROUND_UP)
+          .toString();
         const params = {
           poolAddress: this.pool.id,
           tokenInAddress: this.activeToken,
           tokenAmountIn,
-          minPoolAmountOut: '0'
+          minPoolAmountOut
         };
         await this.joinswapExternAmountIn(params);
       }
