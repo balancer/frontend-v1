@@ -462,8 +462,12 @@ const actions = {
       ? tokens
       : Object.keys(state.balances).filter(token => token !== 'ether');
     tokensToFetch.forEach(token => {
-      // @ts-ignore
-      calls.push([token, testToken.encodeFunctionData('balanceOf', [poolAddress])]);
+      calls.push([
+        // @ts-ignore
+        token,
+        // @ts-ignore
+        testToken.encodeFunctionData('balanceOf', [poolAddress])
+      ]);
     });
     promises.push(multi.aggregate(calls));
     const balances: any = {};
