@@ -10,12 +10,16 @@
     </div>
     <div v-if="bPool.isCrp()" class="mb-3">
       <div v-text="'Rights'" class="mb-2" />
-      <template v-if="Object.keys(bPool.metadata.rights).length > 0">
-        <div v-for="(right, key) in bPool.metadata.rights" :key="key">
+      <template v-if="Object.keys(rights).length > 0">
+        <div v-for="(right, key) in rights" :key="key">
           <h5 v-text="poolRights[key]" class="text-white mb-1" />
         </div>
       </template>
       <h5 v-else v-text="'None'" class="text-white" />
+    </div>
+    <div v-if="rights.canChangeCap" class="mb-3">
+      <div v-text="'Cap'" class="mb-2" />
+      <h5 v-text="_num(bPool.metadata.bspCap)" class="text-white" />
     </div>
     <div class="mb-3">
       <div
@@ -110,7 +114,7 @@
 </template>
 
 <script>
-import { poolRights } from '@/helpers/utils';
+import { filterObj, poolRights } from '@/helpers/utils';
 
 export default {
   props: ['bPool'],
@@ -118,6 +122,13 @@ export default {
     return {
       poolRights
     };
+  },
+  computed: {
+    rights() {
+      const rights = filterObj(this.bPool.metadata.rights, right => right[1]);
+      console.log(rights);
+      return rights;
+    }
   }
 };
 </script>

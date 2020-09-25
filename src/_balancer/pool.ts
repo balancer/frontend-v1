@@ -51,7 +51,9 @@ export default class Pool {
   async getMetadata() {
     try {
       this.metadata = await this.getSubgraphMetadata();
+      console.log('Subgraph', this.metadata);
       const metadata = await this.getNodeMetadata();
+      console.log('Node', metadata);
       this.metadata = { ...this.metadata, ...metadata };
       this.ready = true;
       return this.metadata;
@@ -69,7 +71,8 @@ export default class Pool {
         decimals,
         symbol,
         totalShares,
-        rights
+        rights,
+        bspCap
       ] = await multicall(
         provider,
         abi['ConfigurableRightsPool'],
@@ -79,7 +82,8 @@ export default class Pool {
           'decimals',
           'symbol',
           'totalSupply',
-          'rights'
+          'rights',
+          'bspCap'
         ].map(method => [address, method, []])
       );
       return {
@@ -89,10 +93,18 @@ export default class Pool {
         totalShares: formatUnits(totalShares.toString(), decimals),
         rights: Object.fromEntries(
           Object.entries(poolRights).map((right, i) => [right[0], rights[i]])
-        )
+        ),
+        bspCap: formatUnits(bspCap.toString(), decimals)
       };
     }
-    const [publicSwap, name, decimals, symbol, totalShares] = await multicall(
+    const [
+      publicSwap,
+      name,
+      decimals,
+      symbol,
+      swapFee,
+      totalShares
+    ] = await multicall(
       provider,
       abi['BPool'],
       [
@@ -100,6 +112,7 @@ export default class Pool {
         'name',
         'decimals',
         'symbol',
+        'getSwapFee',
         'totalSupply'
       ].map(method => [address, method, []])
     );
@@ -107,7 +120,10 @@ export default class Pool {
       publicSwap: publicSwap[0],
       name: name.toString(),
       symbol: symbol.toString(),
-      totalShares: formatUnits(totalShares.toString(), decimals)
+      swapFee: formatUnits(swapFee.toString(), decimals),
+      totalShares: formatUnits(totalShares.toString(), decimals),
+      rights: [],
+      bspCap: 0
     };
   }
 
