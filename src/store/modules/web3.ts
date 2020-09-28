@@ -8,7 +8,7 @@ import { Interface } from '@ethersproject/abi';
 import abi from '@/helpers/abi';
 import config from '@/config';
 import wsProvider from '@/helpers/ws';
-import { GAS_LIMIT_BUFFER, isTxRejected, logFailed } from '@/helpers/utils';
+import { GAS_LIMIT_BUFFER, isTxRejected, logRevertedTx } from '@/helpers/utils';
 
 let auth;
 let web3;
@@ -392,7 +392,7 @@ const actions = {
         commit('SEND_TRANSACTION_REJECTED', e);
         return Promise.reject();
       }
-      logFailed(wsProvider, contract, action, params);
+      logRevertedTx(wsProvider, contract, action, params);
       commit('SEND_TRANSACTION_FAILURE', e);
       return Promise.reject(e);
     }
