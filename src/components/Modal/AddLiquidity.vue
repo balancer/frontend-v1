@@ -131,7 +131,7 @@
               validationError ||
               lockedTokenError ||
               !checkboxAccept ||
-              transactionFailed
+              transactionReverted
           "
           :loading="loading"
         >
@@ -182,7 +182,7 @@ export default {
       type: 'MULTI_ASSET',
       activeToken: null,
       checkboxAccept: false,
-      transactionFailed: false
+      transactionReverted: false
     };
   },
   watch: {
@@ -197,7 +197,7 @@ export default {
       this.type = 'MULTI_ASSET';
       this.activeToken = this.pool.tokens[0].checksum;
       this.checkboxAccept = false;
-      this.transactionFailed = false;
+      this.transactionReverted = false;
     }
   },
   computed: {
@@ -319,7 +319,7 @@ export default {
       if (this.tokenError || this.validationError || this.lockedTokenError) {
         return undefined;
       }
-      if (!this.transactionFailed) {
+      if (!this.transactionReverted) {
         return undefined;
       }
       if (hasToken(this.pool, 'SNX')) {
@@ -570,7 +570,7 @@ export default {
         };
         const txResult = await this.joinPool(params);
         if (isTxReverted(txResult)) {
-          this.transactionFailed = true;
+          this.transactionReverted = true;
         }
       } else {
         const tokenIn = this.pool.tokens.find(
