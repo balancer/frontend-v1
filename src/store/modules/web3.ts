@@ -449,7 +449,7 @@ const actions = {
       return Promise.reject();
     }
   },
-  getPoolBalances: async ({ commit }, { poolAddress, tokens }) => {
+  getPoolBalances: async (state, { poolAddress, tokens }) => {
     const promises: any = [];
     const multi = new Contract(
       config.addresses.multicall,

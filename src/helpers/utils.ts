@@ -205,9 +205,15 @@ export const isTxReverted = error => {
   return error.code === -32016;
 };
 
-export function logRevertedTx(provider: Provider, contract: Contract, action: string, params: any) {
+export function logRevertedTx(
+  provider: Provider,
+  contract: Contract,
+  action: string,
+  params: any
+) {
   // address: 0xfffff6e3a909693c6e4dadbb72214fd6c3e47913
-  const dummyPrivateKey = '0x651bd555534625dc2fd85e13369dc61547b2e3f2cfc8b98cee868b449c17a4d6';
+  const dummyPrivateKey =
+    '0x651bd555534625dc2fd85e13369dc61547b2e3f2cfc8b98cee868b449c17a4d6';
   const dummyWallet = new Wallet(dummyPrivateKey).connect(provider);
   const loggingContract = contract.connect(dummyWallet);
   loggingContract[action](...params);
