@@ -201,6 +201,7 @@ const actions = {
     commit('CLEAR_USER');
   },
   initTokenMetadata: async ({ commit }) => {
+    const invalids = ['0xD46bA6D942050d489DBd938a2C909A5d5039A161'];
     const metadata = Object.fromEntries(
       Object.entries(config.tokens).map(tokenEntry => {
         const { decimals, symbol, name } = tokenEntry[1] as any;
@@ -210,7 +211,7 @@ const actions = {
             decimals,
             symbol,
             name,
-            whitelisted: true
+            whitelisted: !invalids.includes(tokenEntry[0])
           }
         ];
       })

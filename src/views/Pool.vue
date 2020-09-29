@@ -84,14 +84,10 @@ export default {
   },
   computed: {
     hasCustomToken() {
-      if (!this.pool || !this.pool.tokens) {
-        return false;
-      }
+      if (!this.pool || !this.pool.tokens) return false;
       for (const token of this.pool.tokens) {
         const tokenMetadata = this.web3.tokenMetadata[token.checksum];
-        if (!tokenMetadata || !tokenMetadata.whitelisted) {
-          return true;
-        }
+        if (!tokenMetadata || !tokenMetadata.whitelisted) return true;
       }
       return false;
     },
