@@ -433,6 +433,7 @@ export default {
           crpParams,
           rights
         });
+        this.$router.push({ name: 'my-pools' });
       }
       this.loading = false;
     },

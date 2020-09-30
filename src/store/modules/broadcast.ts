@@ -344,7 +344,8 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-      await dispatch('sendTransaction', params);
+      const tx = await dispatch('sendTransaction', params);
+      await tx.wait(6);
       dispatch('notify', ['green', "You've successfully created a pool"]);
       commit('CREATE_SMART_POOL_SUCCESS');
     } catch (e) {
