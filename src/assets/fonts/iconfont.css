@@ -1,10 +1,10 @@
 @font-face {
     font-family: "iconfont";
-    src: url("./iconfont.eot?849793b4cfe5a26ed41926c5d38a73dc?#iefix") format("embedded-opentype"),
-url("./iconfont.woff2?849793b4cfe5a26ed41926c5d38a73dc") format("woff2"),
-url("./iconfont.woff?849793b4cfe5a26ed41926c5d38a73dc") format("woff"),
-url("./iconfont.ttf?849793b4cfe5a26ed41926c5d38a73dc") format("truetype"),
-url("./iconfont.svg?849793b4cfe5a26ed41926c5d38a73dc#iconfont") format("svg");
+    src: url("./iconfont.eot?5bf7bcf8112a56450d974569531f87d8?#iefix") format("embedded-opentype"),
+url("./iconfont.woff2?5bf7bcf8112a56450d974569531f87d8") format("woff2"),
+url("./iconfont.woff?5bf7bcf8112a56450d974569531f87d8") format("woff"),
+url("./iconfont.ttf?5bf7bcf8112a56450d974569531f87d8") format("truetype"),
+url("./iconfont.svg?5bf7bcf8112a56450d974569531f87d8#iconfont") format("svg");
 }
 
 i[class^="icon-"]:before, i[class*=" icon-"]:before {
@@ -33,54 +33,48 @@ i[class^="icon-"]:before, i[class*=" icon-"]:before {
 .icon-check:before {
     content: "\f105";
 }
-.icon-checkbox-off:before {
+.icon-close:before {
     content: "\f106";
 }
-.icon-checkbox-on:before {
+.icon-external-link:before {
     content: "\f107";
 }
-.icon-close:before {
+.icon-github:before {
     content: "\f108";
 }
-.icon-external-link:before {
+.icon-go:before {
     content: "\f109";
 }
-.icon-github:before {
+.icon-info:before {
     content: "\f10a";
 }
-.icon-go:before {
+.icon-lock:before {
     content: "\f10b";
 }
-.icon-info:before {
+.icon-menu:before {
     content: "\f10c";
 }
-.icon-lock:before {
+.icon-plus:before {
     content: "\f10d";
 }
-.icon-menu:before {
+.icon-receipt-outlined:before {
     content: "\f10e";
 }
-.icon-plus:before {
+.icon-search:before {
     content: "\f10f";
 }
-.icon-receipt-outlined:before {
+.icon-signature:before {
     content: "\f110";
 }
-.icon-search:before {
+.icon-unlock:before {
     content: "\f111";
 }
-.icon-signature:before {
+.icon-user:before {
     content: "\f112";
 }
-.icon-unlock:before {
+.icon-wallet:before {
     content: "\f113";
 }
-.icon-user:before {
-    content: "\f114";
-}
-.icon-wallet:before {
-    content: "\f115";
-}
 .icon-warning:before {
-    content: "\f116";
+    content: "\f114";
 }
