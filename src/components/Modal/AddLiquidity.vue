@@ -134,7 +134,7 @@
               validationError ||
               lockedTokenError ||
               !checkboxAccept ||
-              transactionFailed
+              transactionReverted
           "
           :loading="loading"
         >
@@ -184,7 +184,7 @@ export default {
       type: 'MULTI_ASSET',
       activeToken: null,
       checkboxAccept: false,
-      transactionFailed: false
+      transactionReverted: false
     };
   },
   watch: {
@@ -199,7 +199,7 @@ export default {
       this.type = 'MULTI_ASSET';
       this.activeToken = this.pool.tokens[0].checksum;
       this.checkboxAccept = false;
-      this.transactionFailed = false;
+      this.transactionReverted = false;
     }
   },
   computed: {
@@ -310,12 +310,9 @@ export default {
       return undefined;
     },
     transferError() {
-      if (this.tokenError || this.validationError || this.lockedTokenError) {
+      if (this.tokenError || this.validationError || this.lockedTokenError)
         return undefined;
-      }
-      if (!this.transactionFailed) {
-        return undefined;
-      }
+      if (!this.transactionReverted) return undefined;
       if (hasToken(this.pool, 'SNX')) {
         return 'Adding liquidity failed as your SNX is locked in staking.';
       }
@@ -563,9 +560,7 @@ export default {
           isCrp: this.bPool.isCrp()
         };
         const txResult = await this.joinPool(params);
-        if (isTxReverted(txResult)) {
-          this.transactionFailed = true;
-        }
+        if (isTxReverted(txResult)) this.transactionReverted = true;
       } else {
         const tokenIn = this.pool.tokens.find(
           token => token.checksum === this.activeToken
