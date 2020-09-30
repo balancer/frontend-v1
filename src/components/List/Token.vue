@@ -32,13 +32,19 @@ export default {
       const balance = this.web3.balances[getAddress(bptAddress)];
       return normalizeBalance(balance || '0', 18);
     },
+    totalShares() {
+      const poolAddress = this.bPool.getBptAddress();
+      const poolSupply = this.web3.supplies[poolAddress] || 0;
+      const totalShareNumber = normalizeBalance(poolSupply, 18);
+      return totalShareNumber.toNumber();
+    },
     checksum() {
       return getAddress(this.token.address);
     },
     myPoolBalance() {
       if (!this.poolTokenBalance) return 0;
       const balance =
-        (this.poolTokenBalance / this.pool.totalShares) * this.token.balance;
+        (this.poolTokenBalance / this.totalShares) * this.token.balance;
       return this._precision(balance, this.token.checksum);
     },
     myShareValue() {

@@ -137,14 +137,19 @@ export default {
   },
   computed: {
     poolTokenBalance() {
-      const balance = this.web3.balances[
-        getAddress(this.bPool.getBptAddress())
-      ];
+      const bptAddress = this.bPool.getBptAddress();
+      const balance = this.web3.balances[getAddress(bptAddress)];
       return normalizeBalance(balance || '0', 18);
+    },
+    totalShares() {
+      const poolAddress = this.bPool.getBptAddress();
+      const poolSupply = this.web3.supplies[poolAddress] || 0;
+      const totalShareNumber = normalizeBalance(poolSupply, 18);
+      return totalShareNumber.toString();
     },
     userLiquidity() {
       const poolSharesFrom = this.poolTokenBalance;
-      const totalShares = parseFloat(this.pool.totalShares);
+      const totalShares = parseFloat(this.totalShares);
       const current = poolSharesFrom / totalShares;
       if (this.validationError) {
         return {
@@ -200,7 +205,7 @@ export default {
           tokenOut.decimals
         );
         const tokenWeightOut = bnum(tokenOut.denormWeight).times('1e18');
-        const poolSupply = denormalizeBalance(this.pool.totalShares, 18);
+        const poolSupply = denormalizeBalance(this.totalShares, 18);
         const totalWeight = bnum(this.pool.totalWeight).times('1e18');
         const swapFee = bnum(this.pool.swapFee).times('1e18');
 
@@ -239,7 +244,7 @@ export default {
         tokenOut.decimals
       );
       const tokenWeightOut = bnum(tokenOut.denormWeight).times('1e18');
-      const poolSupply = denormalizeBalance(this.pool.totalShares, 18);
+      const poolSupply = denormalizeBalance(this.totalShares, 18);
       const totalWeight = bnum(this.pool.totalWeight).times('1e18');
       const swapFee = bnum(this.pool.swapFee).times('1e18');
 
@@ -321,12 +326,12 @@ export default {
     },
     getTokenBalance(token) {
       if (!this.poolTokenBalance) return 0;
-      return (this.poolTokenBalance / this.pool.totalShares) * token.balance;
+      return (this.poolTokenBalance / this.totalShares) * token.balance;
     },
     getTokenAmountOut(token) {
       if (!this.poolAmountIn || !parseFloat(this.poolAmountIn)) return 0;
       if (this.isMultiAsset) {
-        return (token.balance / this.pool.totalShares) * this.poolAmountIn;
+        return (token.balance / this.totalShares) * this.poolAmountIn;
       } else {
         if (this.activeToken !== token.address) {
           return 0;
@@ -341,7 +346,7 @@ export default {
           tokenOut.decimals
         );
         const tokenWeightOut = bnum(tokenOut.denormWeight).times('1e18');
-        const poolSupply = denormalizeBalance(this.pool.totalShares, 18);
+        const poolSupply = denormalizeBalance(this.totalShares, 18);
         const totalWeight = bnum(this.pool.totalWeight).times('1e18');
         const swapFee = bnum(this.pool.swapFee).times('1e18');
 

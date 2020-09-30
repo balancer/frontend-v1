@@ -208,9 +208,15 @@ export default {
       const balance = this.web3.balances[getAddress(bptAddress)];
       return normalizeBalance(balance || '0', 18);
     },
+    totalShares() {
+      const poolAddress = this.bPool.getBptAddress();
+      const poolSupply = this.web3.supplies[poolAddress] || 0;
+      const totalShareNumber = normalizeBalance(poolSupply, 18);
+      return totalShareNumber.toString();
+    },
     userLiquidity() {
       const poolSharesFrom = parseFloat(this.poolTokenBalance);
-      const totalShares = parseFloat(this.pool.totalShares);
+      const totalShares = parseFloat(this.totalShares);
       const current = poolSharesFrom / totalShares;
       if (this.validationError) {
         return {
@@ -412,7 +418,7 @@ export default {
         tokenIn.decimals
       );
       const tokenWeightIn = bnum(tokenIn.denormWeight).times('1e18');
-      const poolSupply = denormalizeBalance(this.pool.totalShares, 18);
+      const poolSupply = denormalizeBalance(this.totalShares, 18);
       const totalWeight = bnum(this.pool.totalWeight).times('1e18');
       const tokenAmountIn = denormalizeBalance(
         amount,
@@ -463,7 +469,7 @@ export default {
     handleChange(changedAmount, changedToken) {
       const ratio = bnum(changedAmount).div(changedToken.balance);
       if (this.isMultiAsset) {
-        this.poolTokens = calcPoolTokensByRatio(ratio, this.pool.totalShares);
+        this.poolTokens = calcPoolTokensByRatio(ratio, this.totalShares);
       } else {
         const tokenIn = this.pool.tokens.find(
           token => token.checksum === this.activeToken
@@ -480,7 +486,7 @@ export default {
           tokenIn.decimals
         );
         const tokenWeightIn = bnum(tokenIn.denormWeight).times('1e18');
-        const poolSupply = denormalizeBalance(this.pool.totalShares, 18);
+        const poolSupply = denormalizeBalance(this.totalShares, 18);
         const totalWeight = bnum(this.pool.totalWeight).times('1e18');
         const tokenAmountIn = denormalizeBalance(
           amount,

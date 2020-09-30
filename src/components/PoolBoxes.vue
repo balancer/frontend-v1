@@ -48,6 +48,12 @@ export default {
       const balance = this.web3.balances[getAddress(bptAddress)];
       return normalizeBalance(balance || '0', 18);
     },
+    totalShares() {
+      const poolAddress = this.bPool.getBptAddress();
+      const poolSupply = this.web3.supplies[poolAddress] || 0;
+      const totalShareNumber = normalizeBalance(poolSupply, 18);
+      return totalShareNumber.toString();
+    },
     poolLiquidity() {
       return getPoolLiquidity(this.pool, this.price.values);
     },
@@ -57,7 +63,7 @@ export default {
         !this.poolTokenBalance
       )
         return 0;
-      return (1 / this.pool.totalShares) * this.poolTokenBalance;
+      return (1 / this.totalShares) * this.poolTokenBalance;
     }
   }
 };

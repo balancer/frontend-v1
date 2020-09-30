@@ -21,6 +21,7 @@ const state = {
   account: null,
   dsProxyAddress: null,
   active: false,
+  supplies: {},
   balances: {},
   allowances: {},
   crps: {},
@@ -107,6 +108,9 @@ const mutations = {
     Vue.set(_state, 'account', payload);
     console.debug('HANDLE_ACCOUNTS_CHANGED', payload);
   },
+  HANDLE_NETWORK_CHANGED() {
+    console.debug('HANDLE_NETWORK_CHANGED');
+  },
   HANDLE_DISCONNECT() {
     console.debug('HANDLE_DISCONNECT');
   },
@@ -130,6 +134,18 @@ const mutations = {
   },
   SEND_TRANSACTION_FAILURE(_state, payload) {
     console.debug('SEND_TRANSACTION_FAILURE', payload);
+  },
+  GET_SUPPLIES_REQUEST() {
+    console.debug('GET_SUPPLIES_REQUEST');
+  },
+  GET_SUPPLIES_SUCCESS(_state, payload) {
+    for (const address in payload) {
+      Vue.set(_state.supplies, address, payload[address]);
+    }
+    console.debug('GET_SUPPLIES_SUCCESS');
+  },
+  GET_SUPPLIES_FAILURE(_state, payload) {
+    console.debug('GET_SUPPLIES_FAILURE', payload);
   },
   GET_BALANCES_REQUEST() {
     console.debug('GET_BALANCES_REQUEST');
@@ -450,6 +466,36 @@ const actions = {
       });
       return balances;
     } catch (e) {
+      return Promise.reject();
+    }
+  },
+  getSupplies: async ({ commit }, tokens) => {
+    commit('GET_SUPPLIES_REQUEST');
+    const multi = new Contract(
+      config.addresses.multicall,
+      abi['Multicall'],
+      web3
+    );
+    const calls = [];
+    const tokenIface = new Interface(abi.TestToken);
+    tokens.forEach(token => {
+      // @ts-ignore
+      calls.push([token, tokenIface.encodeFunctionData('totalSupply', [])]);
+    });
+    const supplies: any = {};
+    try {
+      const [, response] = await multi.aggregate(calls);
+      for (let i = 0; i < tokens.length; i++) {
+        const [totalSupplyNumber] = tokenIface.decodeFunctionResult(
+          'totalSupply',
+          response[i]
+        );
+        supplies[tokens[i]] = totalSupplyNumber.toString();
+      }
+      commit('GET_SUPPLIES_SUCCESS', supplies);
+      return supplies;
+    } catch (e) {
+      commit('GET_SUPPLIES_FAILURE', e);
       return Promise.reject();
     }
   },
