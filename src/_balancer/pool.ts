@@ -22,7 +22,9 @@ export default class Pool {
   }
 
   isWhitelisted() {
-    return !!config.crps[this.address];
+    return Object.keys(config.crps)
+      .map(crp => crp.toLowerCase())
+      .includes(this.address);
   }
 
   getTypeStr() {

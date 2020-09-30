@@ -23,7 +23,7 @@ export default {
           where: {
             id_in: Object.entries(config.crps)
               .filter(crp => crp[1].is_visible)
-              .map(crp => crp[0])
+              .map(crp => crp[0].toLowerCase())
           }
         };
       return {
