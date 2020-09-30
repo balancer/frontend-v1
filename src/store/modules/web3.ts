@@ -199,7 +199,6 @@ const actions = {
   logout: async ({ commit }) => {
     Vue.prototype.$auth.logout();
     commit('LOGOUT');
-    commit('CLEAR_USER');
   },
   initTokenMetadata: async ({ commit }) => {
     const invalids = ['0xD46bA6D942050d489DBd938a2C909A5d5039A161'];
@@ -289,24 +288,26 @@ const actions = {
     try {
       if (auth.provider.removeAllListeners) auth.provider.removeAllListeners();
       if (auth.provider && auth.provider.on) {
-        auth.provider.on('chainChanged', async () => {
-          commit('HANDLE_CHAIN_CHANGED');
-          if (state.active) {
-            await dispatch('logout');
-            await dispatch('login');
-          }
-        });
         auth.provider.on('accountsChanged', async accounts => {
           if (accounts.length === 0) {
             if (state.active) await dispatch('loadWeb3');
           } else {
             commit('HANDLE_ACCOUNTS_CHANGED', accounts[0]);
+            await dispatch('clearUser');
             await dispatch('loadAccount');
           }
         });
         auth.provider.on('disconnect', async () => {
           commit('HANDLE_DISCONNECT');
           if (state.active) await dispatch('loadWeb3');
+        });
+        auth.provider.on('networkChanged', async () => {
+          commit('HANDLE_NETWORK_CHANGED');
+          if (state.active) {
+            await dispatch('clearUser');
+            await dispatch('logout');
+            await dispatch('login');
+          }
         });
       }
       const network = await web3.getNetwork();
@@ -394,6 +395,12 @@ const actions = {
       return Promise.reject(e);
     }
   },
+  syncFetch: async ({ dispatch }, { tx, action, params }) => {
+    // We need to wait for few blocks before the fetch
+    // otherwise we have a high chance of fetching the old data
+    await tx.wait(2);
+    await dispatch(action, params);
+  },
   loadAccount: async ({ dispatch }) => {
     if (!state.account) return;
     // @ts-ignore
@@ -402,8 +409,49 @@ const actions = {
     await Promise.all([
       dispatch('getBalances', tokens),
       dispatch('getAllowances', { tokens, spender: state.dsProxyAddress }),
-      dispatch('getMyPoolShares')
+      dispatch('getUserPoolShares')
     ]);
+  },
+  getPoolBalances: async (_state, { poolAddress, tokens }) => {
+    const promises: any = [];
+    const multi = new Contract(
+      config.addresses.multicall,
+      abi['Multicall'],
+      web3
+    );
+    const calls = [];
+    const testToken = new Interface(abi.TestToken);
+    const tokensToFetch = tokens
+      ? tokens
+      : Object.keys(state.balances).filter(token => token !== 'ether');
+    tokensToFetch.forEach(token => {
+      calls.push([
+        // @ts-ignore
+        token,
+        // @ts-ignore
+        testToken.encodeFunctionData('balanceOf', [poolAddress])
+      ]);
+    });
+    promises.push(multi.aggregate(calls));
+    const balances: any = {};
+    try {
+      // @ts-ignore
+      const [[, response]] = await Promise.all(promises);
+      let i = 0;
+      response.forEach(value => {
+        if (tokensToFetch && tokensToFetch[i]) {
+          const balanceNumber = testToken.decodeFunctionResult(
+            'balanceOf',
+            value
+          );
+          balances[tokensToFetch[i]] = balanceNumber.toString();
+        }
+        i++;
+      });
+      return balances;
+    } catch (e) {
+      return Promise.reject();
+    }
   },
   getBalances: async ({ commit }, tokens) => {
     commit('GET_BALANCES_REQUEST');

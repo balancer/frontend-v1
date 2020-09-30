@@ -85,6 +85,9 @@ const mutations = {
 };
 
 const actions = {
+  clearUser: async ({ commit }) => {
+    commit('CLEAR_USER');
+  },
   getBalancer: async ({ commit }) => {
     commit('GET_BALANCER_REQUEST');
     try {
@@ -136,7 +139,7 @@ const actions = {
       commit('GET_POOLS_FAILURE', e);
     }
   },
-  getMyPoolShares: async ({ commit, rootState }) => {
+  getUserPoolShares: async ({ commit, rootState }) => {
     const address = rootState.web3.account;
     commit('GET_MY_POOLS_SHARES_REQUEST');
     try {
@@ -149,7 +152,7 @@ const actions = {
           }
         }
       };
-      const { poolShares } = await request('getMyPoolShares', query);
+      const { poolShares } = await request('getUserPoolShares', query);
       const balances: any = {};
       poolShares.forEach(share => (balances[share.poolId.id] = share.balance));
       commit('GET_MY_POOLS_SHARES_SUCCESS', balances);

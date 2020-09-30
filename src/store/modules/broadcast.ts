@@ -368,9 +368,9 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-      await dispatch('sendTransaction', params);
-      await dispatch('getBalances');
-      await dispatch('getMyPoolShares');
+      const tx = await dispatch('sendTransaction', params);
+      dispatch('syncFetch', { tx, action: 'getBalances' });
+      dispatch('syncFetch', { tx, action: 'getUserPoolShares' });
       dispatch('notify', ['green', "You've successfully added liquidity"]);
       commit('JOIN_POOL_SUCCESS');
     } catch (e) {
@@ -394,9 +394,9 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-      await dispatch('sendTransaction', params);
-      await dispatch('getBalances');
-      await dispatch('getMyPoolShares');
+      const tx = await dispatch('sendTransaction', params);
+      dispatch('syncFetch', { tx, action: 'getBalances' });
+      dispatch('syncFetch', { tx, action: 'getUserPoolShares' });
       dispatch('notify', ['green', "You've successfully added liquidity"]);
       commit('JOINSWAP_EXTERN_AMOUNT_SUCCESS');
     } catch (e) {
@@ -418,9 +418,9 @@ const actions = {
         [toWei(poolAmountIn).toString(), minAmountsOut],
         {}
       ];
-      await dispatch('sendTransaction', params);
-      await dispatch('getBalances');
-      await dispatch('getMyPoolShares');
+      const tx = await dispatch('sendTransaction', params);
+      dispatch('syncFetch', { tx, action: 'getBalances' });
+      dispatch('syncFetch', { tx, action: 'getUserPoolShares' });
       dispatch('notify', ['green', "You've successfully removed liquidity"]);
       commit('EXIT_POOL_SUCCESS');
     } catch (e) {
@@ -442,9 +442,9 @@ const actions = {
         [tokenOutAddress, toWei(poolAmountIn).toString(), minTokenAmountOut],
         {}
       ];
-      await dispatch('sendTransaction', params);
-      await dispatch('getBalances');
-      await dispatch('getMyPoolShares');
+      const tx = await dispatch('sendTransaction', params);
+      dispatch('syncFetch', { tx, action: 'getBalances' });
+      dispatch('syncFetch', { tx, action: 'getUserPoolShares' });
       dispatch('notify', ['green', "You've successfully removed liquidity"]);
       commit('EXITSWAP_POOL_AMOUNT_IN_SUCCESS');
     } catch (e) {
@@ -771,8 +771,11 @@ const actions = {
         {}
       ];
       const tx = await dispatch('sendTransaction', params);
-      await tx.wait(2);
-      await dispatch('getAllowances', { tokens: [token], spender });
+      dispatch('syncFetch', {
+        tx,
+        action: 'getAllowances',
+        params: { tokens: [token], spender }
+      });
       dispatch('notify', ['green', `You've successfully unlocked ${symbol}`]);
       commit('APPROVE_SUCCESS');
     } catch (e) {
@@ -791,7 +794,8 @@ const actions = {
         [],
         { value: toWei(amount).toString() }
       ];
-      await dispatch('sendTransaction', params);
+      const tx = await dispatch('sendTransaction', params);
+      dispatch('syncFetch', { tx, action: 'getBalances' });
       dispatch('notify', [
         'green',
         `You've successfully wrapped ${amount} ether`
@@ -813,7 +817,8 @@ const actions = {
         [toWei(amount).toString()],
         {}
       ];
-      await dispatch('sendTransaction', params);
+      const tx = await dispatch('sendTransaction', params);
+      dispatch('syncFetch', { tx, action: 'getBalances' });
       dispatch('notify', [
         'green',
         `You've successfully unwrapped ${amount} ether`
