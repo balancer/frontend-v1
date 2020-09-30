@@ -1,27 +1,39 @@
 <template>
   <div class="border rounded-1 panel-background p-4 text-white">
-    <div class="border-bottom mb-4 pb-3">
+    <div
+      v-if="bPool.metadata.rights.canPauseSwapping"
+      class="border-bottom mb-4 pb-3"
+    >
       <div class="float-right">
         <UiButton @click="modalOpen.publicSwap = true">Toggle</UiButton>
       </div>
       <label class="d-block mb-2">Public swap</label>
       <p v-text="pool.publicSwap ? 'Active' : 'Paused'" class="text-gray" />
     </div>
-    <div class="border-bottom mb-4 pb-3">
+    <div
+      v-if="bPool.metadata.rights.canChangeSwapFee"
+      class="border-bottom mb-4 pb-3"
+    >
       <div class="float-right">
         <UiButton @click="modalOpen.swapFee = true">Change</UiButton>
       </div>
       <label class="d-block mb-2">Swap fee</label>
       <p v-text="_num(pool.swapFee, 'percent')" class="text-gray" />
     </div>
-    <div class="border-bottom mb-4 pb-3">
+    <div
+      v-if="bPool.metadata.rights.canChangeCap"
+      class="border-bottom mb-4 pb-3"
+    >
       <div class="float-right">
         <UiButton @click="modalOpen.cap = true">Change</UiButton>
       </div>
       <label class="d-block mb-2">Cap</label>
       <p v-text="_num(cap)" class="text-gray" />
     </div>
-    <div class="border-bottom mb-4 pb-3">
+    <div
+      v-if="bPool.metadata.rights.canAddRemoveTokens && 1 === 2"
+      class="border-bottom mb-4 pb-3"
+    >
       <div class="float-right">
         <UiButton @click="modalOpen.tokens = true">Add</UiButton>
       </div>
@@ -42,7 +54,10 @@
         </div>
       </div>
     </div>
-    <div class="border-bottom mb-4 pb-3">
+    <div
+      v-if="bPool.metadata.rights.canChangeWeights && 1 === 2"
+      class="border-bottom mb-4 pb-3"
+    >
       <div class="float-right">
         <UiButton @click="modalOpen.gradualWeights = true"
           >Update gradually</UiButton
@@ -54,7 +69,7 @@
       <label class="d-block mb-2">Weights</label>
       <Pie :tokens="pool.tokens" size="64" class="mr-2" />
     </div>
-    <div class="pb-3">
+    <div>
       <div class="float-right">
         <UiButton @click="modalOpen.controller = true">Change</UiButton>
       </div>
@@ -105,11 +120,10 @@
 
 <script>
 import { getAddress } from '@ethersproject/address';
-
 import { bnum, scale } from '@/helpers/utils';
 
 export default {
-  props: ['pool'],
+  props: ['pool', 'bPool'],
   data() {
     return {
       modalOpen: {
@@ -127,9 +141,7 @@ export default {
     cap() {
       const address = getAddress(this.pool.controller);
       const crp = this.web3.crps[address];
-      if (!crp) {
-        return '0';
-      }
+      if (!crp) return '0';
       const capNumber = scale(bnum(crp.bspCap), -18);
       return capNumber.toString();
     }

@@ -34,8 +34,7 @@ export default {
       });
       if (
         this.web3.account &&
-        this.web3.dsProxyAddress.toLowerCase() === this.pool.crpController &&
-        this.config.network === 'kovan'
+        this.web3.dsProxyAddress.toLowerCase() === this.pool.crpController
       ) {
         items.push({
           name: 'Settings',
