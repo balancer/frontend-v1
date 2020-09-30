@@ -24,7 +24,7 @@
       format="percent"
       class="column hide-sm hide-md"
     />
-    <UiNum :value="pool.liquidity" format="currency" class="column" />
+    <UiNum :value="poolLiquidity" format="currency" class="column" />
     <UiNum
       :value="myLiquidity"
       format="currency"

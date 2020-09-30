@@ -4,7 +4,7 @@
       <div
         class="border rounded-0 rounded-md-1 panel-background py-4 mx-0 mx-md-2"
       >
-        <h3 v-text="_num(pool.liquidity, 'currency')" />
+        <h3 v-text="_num(poolLiquidity, 'currency')" />
         <p class="mb-0">Liquidity</p>
       </div>
     </div>
