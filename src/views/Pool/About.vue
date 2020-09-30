@@ -2,7 +2,7 @@
   <UiTable class="p-4">
     <div v-if="bPool.getAbout()" class="mb-3">
       <div v-text="'Description'" class="mb-2" />
-      <h5 v-text="bPool.getAbout()" class="text-white" />
+      <h5 v-text="bPool.getAbout()" class="text-white" style="max-width: 580px;" />
     </div>
     <div class="mb-3">
       <div v-text="'Pool type'" class="mb-2" />

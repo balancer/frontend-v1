@@ -13,7 +13,8 @@
   },
   "crps": {
     "0x0b0448ee12653b2ddd12b2c4b858e98de30b4eb9": {
-      "about": "This pool use a custom smart pool factory."
+      "about": "This pool uses a customized version of the smart pool, designed to hold AMPL Elastic Supply tokens and accommodate the daily rebase.",
+      "is_visible": false
     }
   },
   "connectors": {

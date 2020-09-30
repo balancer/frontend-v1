@@ -21,7 +21,9 @@ export default {
       if (config.chainId === 1)
         return {
           where: {
-            id_in: Object.keys(config.crps)
+            id_in: Object.entries(config.crps)
+              .filter(crp => crp[1].is_visible)
+              .map(crp => crp[0])
           }
         };
       return {
