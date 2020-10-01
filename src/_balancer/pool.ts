@@ -14,11 +14,13 @@ export default class Pool {
   public readonly address: string;
   public readonly checksum: string;
   public ready = false;
+  public config: any;
   public metadata?: any;
 
   constructor(address: string) {
     this.address = address.toLowerCase();
     this.checksum = isAddress(address) ? getAddress(address) : '';
+    this.config = this.isWhitelisted() ? config.crps[this.address] : {};
   }
 
   isWhitelisted() {
@@ -33,12 +35,6 @@ export default class Pool {
       : this.isCrp()
       ? 'Smart pool'
       : 'Private';
-  }
-
-  getAbout() {
-    return this.isWhitelisted() && config.crps[this.address].about
-      ? config.crps[this.address].about
-      : '';
   }
 
   isCrp() {

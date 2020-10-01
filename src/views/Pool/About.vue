@@ -1,12 +1,19 @@
 <template>
   <UiTable class="p-4">
-    <div v-if="bPool.getAbout()" class="mb-3">
+    <div v-if="bPool.config.about" class="mb-3">
       <div v-text="'Description'" class="mb-2" />
       <h5
-        v-text="bPool.getAbout()"
-        class="text-white"
+        v-text="bPool.config.about"
+        class="text-white mb-2"
         style="max-width: 580px;"
       />
+      <h5 v-if="bPool.config.learn_more">
+        <a
+          :href="bPool.config.learn_more"
+          v-text="'Learn more'"
+          target="_blank"
+        />
+      </h5>
     </div>
     <div class="mb-3">
       <div v-text="'Pool type'" class="mb-2" />
