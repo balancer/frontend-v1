@@ -13,16 +13,16 @@
 </template>
 
 <script>
-import config from '@/config';
+import pools from '@/helpers/pools';
 
 export default {
   computed: {
     query() {
-      if (config.chainId === 1)
+      if (this.config.chainId === 1)
         return {
           where: {
-            id_in: Object.entries(config.crps)
-              .filter(crp => crp[1].is_visible)
+            id_in: Object.entries(pools)
+              .filter(crp => crp[1].is_compatible)
               .map(crp => crp[0].toLowerCase())
           }
         };

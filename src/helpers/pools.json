@@ -1,0 +1,19 @@
+{
+  "0x0b0448ee12653b2ddd12b2c4b858e98de30b4eb9": {
+    "chainId": 1,
+    "name": "AMPL Smart Rebasing (deprecated)",
+    "about": "(Deprecated) This pool uses a customized version of the smart pool, designed to hold AMPL Elastic Supply tokens and accommodate the daily rebase.",
+    "is_visible": false,
+    "is_compatible": false,
+    "logo": false
+  },
+  "0x7860e28ebfb8ae052bfe279c07ac5d94c9cd2937": {
+    "chainId": 1,
+    "name": "AMPL Smart Rebasing",
+    "about": "This pool uses a customized version of the smart pool, designed to hold AMPL Elastic Supply tokens and accommodate the daily rebase.",
+    "learn_more": "https://ampleforth.org",
+    "is_visible": true,
+    "is_compatible": true,
+    "logo": true
+  }
+}

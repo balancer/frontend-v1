@@ -11,17 +11,6 @@
     "weth": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
     "multicall": "0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441"
   },
-  "crps": {
-    "0x0b0448ee12653b2ddd12b2c4b858e98de30b4eb9": {
-      "about": "(Legacy pool) This pool uses a customized version of the smart pool, designed to hold AMPL Elastic Supply tokens and accommodate the daily rebase.",
-      "is_visible": false
-    },
-    "0x7860e28ebfb8ae052bfe279c07ac5d94c9cd2937": {
-      "about": "This pool uses a customized version of the smart pool, designed to hold AMPL Elastic Supply tokens and accommodate the daily rebase.",
-      "learn_more": "https://ampleforth.org",
-      "is_visible": true
-    }
-  },
   "connectors": {
     "injected": {
       "id": "injected",

@@ -6,7 +6,7 @@ import abi from '@/helpers/abi';
 import { poolRights, formatPool } from '@/helpers/utils';
 import { formatUnits } from '@ethersproject/units';
 import queries from '@/helpers/queries.json';
-import config from '@/config';
+import pools from '@/helpers/pools.json';
 
 const subgraphUrl = process.env.VUE_APP_SUBGRAPH_URL;
 
@@ -20,11 +20,11 @@ export default class Pool {
   constructor(address: string) {
     this.address = address.toLowerCase();
     this.checksum = isAddress(address) ? getAddress(address) : '';
-    this.config = this.isWhitelisted() ? config.crps[this.address] : {};
+    this.config = this.isWhitelisted() ? pools[this.address] : {};
   }
 
   isWhitelisted() {
-    return Object.keys(config.crps)
+    return Object.keys(pools)
       .map(crp => crp.toLowerCase())
       .includes(this.address);
   }
@@ -38,7 +38,7 @@ export default class Pool {
   }
 
   isCrp() {
-    if (this.isWhitelisted()) return true;
+    if (this.isWhitelisted() && this.config.is_compatible) return true;
     return this.metadata.crp;
   }
 
