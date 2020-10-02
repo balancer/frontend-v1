@@ -45,25 +45,5 @@
     "is_compatible": false,
     "logo": true,
     "bptAddress": "0xad6a626ae2b43dcb1b39430ce496d2fa0365ba9c"
-  },
-  "0xf24c660931e2b5f390f1b7002ed8f0ebeb8c3f2a": {
-    "chainId": 1,
-    "name": "PieDAO DEFI++",
-    "symbol": "DEFI++",
-    "learn_more": "https://pools.piedao.org/#/pie/0x880873a96ce38c7fd39dc714592902b069bde048",
-    "is_visible": false,
-    "is_compatible": false,
-    "logo": true,
-    "bptAddress": "0x880873a96ce38c7fd39dc714592902b069bde048"
-  },
-  "0x71c4f1a8d95ad1faa0f893b74ca67fdf53ee63fb": {
-    "chainId": 1,
-    "name": "PieDAO DEFI Large Cap",
-    "symbol": "DEFI+L",
-    "learn_more": "https://pools.piedao.org/#/pie/0x24d1917c1ae6c085e6b68b6c1a41b8f9de5bd441",
-    "is_visible": false,
-    "is_compatible": false,
-    "logo": true,
-    "bptAddress": "0x24d1917c1ae6c085e6b68b6c1a41b8f9de5bd441"
   }
 }
