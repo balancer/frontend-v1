@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex">
-    <div class="mr-2 pr-1">
+    <div v-if="pool.config.logo" class="mr-2 pr-1">
       <Token :address="pool.getBptAddress()" size="44" />
     </div>
     <div>
