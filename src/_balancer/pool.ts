@@ -6,7 +6,7 @@ import abi from '@/helpers/abi';
 import { poolRights, formatPool } from '@/helpers/utils';
 import { formatUnits } from '@ethersproject/units';
 import queries from '@/helpers/queries.json';
-import pools from '@/helpers/pools.json';
+import pools from './pools.json';
 
 const subgraphUrl = process.env.VUE_APP_SUBGRAPH_URL;
 
@@ -43,6 +43,7 @@ export default class Pool {
   }
 
   getBptAddress() {
+    if (this.config.bptAddress) return this.config.bptAddress;
     return this.isCrp() ? this.metadata.controller : this.address;
   }
 

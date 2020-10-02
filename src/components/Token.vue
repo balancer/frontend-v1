@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { getTokenLogoUrl } from '@/helpers/utils';
+import { getTokenLogoUrl } from '@/_balancer/utils';
 
 export default {
   props: ['address', 'symbol', 'size'],

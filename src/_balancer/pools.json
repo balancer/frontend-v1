@@ -1,0 +1,69 @@
+{
+  "0x0b0448ee12653b2ddd12b2c4b858e98de30b4eb9": {
+    "chainId": 1,
+    "name": "AMPL Smart Rebasing (deprecated)",
+    "about": "(Deprecated) This pool uses a customized version of the smart pool, designed to hold AMPL Elastic Supply tokens and accommodate the daily rebase.",
+    "is_visible": false,
+    "is_compatible": false
+  },
+  "0x7860e28ebfb8ae052bfe279c07ac5d94c9cd2937": {
+    "chainId": 1,
+    "name": "AMPL Smart Rebasing",
+    "about": "This pool uses a customized version of the smart pool, designed to hold AMPL Elastic Supply tokens and accommodate the daily rebase.",
+    "learn_more": "https://ampleforth.org",
+    "is_visible": true,
+    "is_compatible": true
+  },
+  "0x9891832633a83634765952b051bc7fef36714a46": {
+    "chainId": 1,
+    "name": "PieDAO BTC++",
+    "symbol": "BTC++",
+    "about": "BTC++ it’s a weighed allocation between the different representations of Bitcoin on the Ethereum.",
+    "learn_more": "https://pools.piedao.org/#/pie/0x0327112423f3a68efdf1fcf402f6c5cb9f7c33fd",
+    "is_visible": false,
+    "is_compatible": false,
+    "logo": true,
+    "bptAddress": "0x0327112423f3a68efdf1fcf402f6c5cb9f7c33fd"
+  },
+  "0x1ee383389c621c37ee5aa476f88413a815083c5d": {
+    "chainId": 1,
+    "name": "PieDAO USD++ Pool",
+    "symbol": "USD++",
+    "about": "USD++ it’s a stable coin pool where weights are determined by volatility to the peg, trust minimization, and market risk.",
+    "learn_more": "https://pools.piedao.org/#/pie/0x9a48bd0ec040ea4f1d3147c025cd4076a2e71e3e",
+    "is_visible": false,
+    "is_compatible": false,
+    "logo": true,
+    "bptAddress": "0x9a48bd0ec040ea4f1d3147c025cd4076a2e71e3e"
+  },
+  "0x94743cfaa3fdc62e9693572314b5ee377eba5d11": {
+    "chainId": 1,
+    "name": "PieDAO DEFI Small Cap",
+    "symbol": "DEFI+S",
+    "learn_more": "https://pools.piedao.org/#/pie/0xad6a626ae2b43dcb1b39430ce496d2fa0365ba9c",
+    "is_visible": false,
+    "is_compatible": false,
+    "logo": true,
+    "bptAddress": "0xad6a626ae2b43dcb1b39430ce496d2fa0365ba9c"
+  },
+  "0xf24c660931e2b5f390f1b7002ed8f0ebeb8c3f2a": {
+    "chainId": 1,
+    "name": "PieDAO DEFI++",
+    "symbol": "DEFI++",
+    "learn_more": "https://pools.piedao.org/#/pie/0x880873a96ce38c7fd39dc714592902b069bde048",
+    "is_visible": false,
+    "is_compatible": false,
+    "logo": true,
+    "bptAddress": "0x880873a96ce38c7fd39dc714592902b069bde048"
+  },
+  "0x71c4f1a8d95ad1faa0f893b74ca67fdf53ee63fb": {
+    "chainId": 1,
+    "name": "PieDAO DEFI Large Cap",
+    "symbol": "DEFI+L",
+    "learn_more": "https://pools.piedao.org/#/pie/0x24d1917c1ae6c085e6b68b6c1a41b8f9de5bd441",
+    "is_visible": false,
+    "is_compatible": false,
+    "logo": true,
+    "bptAddress": "0x24d1917c1ae6c085e6b68b6c1a41b8f9de5bd441"
+  }
+}
