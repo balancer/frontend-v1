@@ -1,8 +1,10 @@
 import { Interface } from '@ethersproject/abi';
 import { Contract } from '@ethersproject/contracts';
+import { getAddress } from '@ethersproject/address';
 import { jsonToGraphQLQuery } from 'json-to-graphql-query';
+import config from '../config';
 import { abi as multicallAbi } from '../helpers/abi/Multicall.json';
-import config from '@/config';
+import logos from './logos.json';
 
 const MULTICALL = config.addresses.multicall;
 
@@ -36,4 +38,21 @@ export async function subgraphRequest(url, query) {
   });
   const { data } = await res.json();
   return data || {};
+}
+
+export function getTokenLogoUrl(address: string): string | null {
+  if (logos.includes(address.toLowerCase()))
+    return `https://raw.githubusercontent.com/balancer-labs/assets/master/assets/${address.toLowerCase()}.png`;
+  let trustwalletId: string | null = null;
+  if (address === 'ether') {
+    trustwalletId = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
+  } else {
+    const checksum = getAddress(address);
+    const token = config.tokens[checksum];
+    if (token && token.hasIcon) {
+      trustwalletId = checksum;
+    }
+  }
+  if (!trustwalletId) return null;
+  return `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${trustwalletId}/logo.png`;
 }

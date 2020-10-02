@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import pools from '@/helpers/pools';
+import pools from '@/_balancer/pools.json';
 
 export default {
   computed: {
