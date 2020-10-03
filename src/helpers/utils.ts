@@ -1,6 +1,7 @@
 import { getAddress } from '@ethersproject/address';
 import { MaxUint256 } from '@ethersproject/constants';
 import BigNumber from '@/helpers/bignumber';
+import logos from '@/helpers/logos.json';
 import config from '@/config';
 
 export const ITEMS_PER_PAGE = 20;
@@ -169,6 +170,8 @@ export function getTokenBySymbol(symbol) {
 }
 
 export function getTokenLogoUrl(address: string): string | null {
+  if (logos.includes(address.toLowerCase()))
+    return `https://raw.githubusercontent.com/balancer-labs/assets/master/assets/${address.toLowerCase()}.png`;
   let trustwalletId: string | null = null;
   if (address === 'ether') {
     trustwalletId = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
