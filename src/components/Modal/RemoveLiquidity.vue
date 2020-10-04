@@ -282,18 +282,20 @@ export default {
         await this.exitPool({
           poolAddress,
           poolAmountIn: this.poolAmountIn,
-          minAmountsOut: this.pool.tokensList.map(tokenAddress => {
-            const token = this.pool.tokens.find(
-              token => token.checksum === tokenAddress
-            );
-            return denormalizeBalance(
-              this.getTokenAmountOut(token),
-              token.decimals
-            )
-              .times(1 - BALANCE_BUFFER)
-              .integerValue(BigNumber.ROUND_UP)
-              .toString();
-          })
+          minAmountsOut: this.pool.tokensList.map(() => '0')
+          // FIXME Code below leads to withdrawal issues
+          // minAmountsOut: this.pool.tokensList.map(tokenAddress => {
+          //   const token = this.pool.tokens.find(
+          //     token => token.checksum === tokenAddress
+          //   );
+          //   return denormalizeBalance(
+          //     this.getTokenAmountOut(token),
+          //     token.decimals
+          //   )
+          //     .times(1 - BALANCE_BUFFER)
+          //     .integerValue(BigNumber.ROUND_UP)
+          //     .toString();
+          // })
         });
       } else {
         const tokenOutAddress = this.activeToken;
