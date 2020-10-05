@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
-      <h4 class="flex-auto" v-text="'Token symbol'" />
+      <h4 class="flex-auto">{{ $t('tokenSymbol') }}</h4>
     </div>
     <div class="mb-4">
       <input
@@ -12,7 +12,7 @@
       />
     </div>
     <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
-      <h4 class="flex-auto" v-text="'Token name'" />
+      <h4 class="flex-auto">{{ $t('tokenName') }} </h4>
     </div>
     <div class="mb-4">
       <input
@@ -23,7 +23,7 @@
       />
     </div>
     <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
-      <h4 class="flex-auto">Initial supply</h4>
+      <h4 class="flex-auto">{{ $t('initialSupply') }}</h4>
     </div>
     <div class="mb-4">
       <input
@@ -34,7 +34,7 @@
       />
     </div>
     <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
-      <h4 class="flex-auto" v-text="'Rights'" />
+      <h4 class="flex-auto">{{ $t('rights') }}</h4>
     </div>
     <div>
       <div class="d-flex flex-column">
@@ -42,22 +42,22 @@
           :checked="rights.canPauseSwapping"
           @change="$emit('toggle-right', 'canPauseSwapping')"
         >
-          <span class="ml-2 text-white">Can pause swapping</span>
+          <span class="ml-2 text-white">{{ $t('canPauseSwapping') }}</span>
         </UiCheckbox>
         <UiCheckbox
           :checked="rights.canChangeSwapFee"
           @change="$emit('toggle-right', 'canChangeSwapFee')"
         >
-          <span class="ml-2 text-white">Can change swap fee</span>
+          <span class="ml-2 text-white">{{ $t('canChangeSwapFee') }}</span>
         </UiCheckbox>
         <UiCheckbox
           :checked="rights.canChangeWeights"
           @change="$emit('toggle-right', 'canChangeWeights')"
         >
-          <span class="ml-2 text-white">Can change weights</span>
+          <span class="ml-2 text-white">{{ $t('canChangeWeights') }}</span>
         </UiCheckbox>
         <div v-if="rights.canChangeWeights">
-          <span>Minimum update period (in blocks): </span>
+          <span>{{ $t('minimumUpdatePeriod') }}: </span>
           <input
             class="ml-2 input pool-input text-right text-white"
             :value="minimumWeightChangeBlockPeriod"
@@ -69,10 +69,10 @@
           :checked="rights.canAddRemoveTokens"
           @change="$emit('toggle-right', 'canAddRemoveTokens')"
         >
-          <span class="ml-2 text-white">Can change tokens</span>
+          <span class="ml-2 text-white">{{ $t('canAddRemoveTokens') }}</span>
         </UiCheckbox>
         <div v-if="rights.canAddRemoveTokens">
-          <span>Token adding minimal timelock (in blocks): </span>
+          <span>{{ $t('addTokenTimelock') }}: </span>
           <input
             class="ml-2 input pool-input text-right text-white"
             :value="addTokenTimeLockInBlocks"
@@ -84,13 +84,13 @@
           :checked="rights.canWhitelistLPs"
           @change="$emit('toggle-right', 'canWhitelistLPs')"
         >
-          <span class="ml-2 text-white">Can limit LPs</span>
+          <span class="ml-2 text-white">{{ $t('canWhitelistLPs') }}</span>
         </UiCheckbox>
         <UiCheckbox
           :checked="rights.canChangeCap"
           @change="$emit('toggle-right', 'canChangeCap')"
         >
-          <span class="ml-2 text-white">Can change pool cap</span>
+          <span class="ml-2 text-white">{{ $t('canChangeCap') }}</span>
         </UiCheckbox>
       </div>
     </div>
