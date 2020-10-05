@@ -35,7 +35,7 @@
                   :checked="activeToken === token.checksum"
                   :onChange="
                     e => {
-                      onTokenSelect(token.checksum);
+                      handleTokenSelect(token.checksum);
                     }
                   "
                 />
@@ -520,6 +520,7 @@ export default {
       const balance = this.web3.balances[token.checksum];
       const amount = normalizeBalance(balance, token.decimals);
       this.amounts[token.checksum] = amount.toString();
+      this.handleTokenSelect(token.checksum);
       this.handleChange(amount, token);
     },
     lowerAmounts() {
@@ -541,7 +542,7 @@ export default {
         })
       );
     },
-    onTokenSelect(token) {
+    handleTokenSelect(token) {
       this.activeToken = token;
     },
     async handleSubmit() {
