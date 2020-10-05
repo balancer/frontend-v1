@@ -28,7 +28,10 @@
             <UiTableTr
               v-for="token in tokens"
               :key="token.address"
-              class="text-white"
+              class="text-white asset"
+              :class="{
+                active: isMultiAsset || activeToken === token.address
+              }"
             >
               <div
                 class="column-lg flex-auto flex-items-center d-flex text-left"
@@ -373,3 +376,13 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.asset {
+  opacity: 0.6;
+}
+
+.asset.active {
+  opacity: 1;
+}
+</style>

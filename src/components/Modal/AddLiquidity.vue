@@ -25,7 +25,14 @@
               <div class="column">Wallet Balance</div>
               <div class="column-sm">Deposit Amount</div>
             </UiTableTh>
-            <UiTableTr v-for="token in pool.tokens" :key="token.checksum">
+            <UiTableTr
+              v-for="token in pool.tokens"
+              :key="token.checksum"
+              class="asset"
+              :class="{
+                active: isMultiAsset || activeToken === token.checksum
+              }"
+            >
               <div
                 class="column-lg flex-auto d-flex flex-items-center text-left d-flex"
               >
@@ -613,3 +620,13 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.asset {
+  opacity: 0.6;
+}
+
+.asset.active {
+  opacity: 1;
+}
+</style>
