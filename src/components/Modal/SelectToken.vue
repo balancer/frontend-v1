@@ -52,6 +52,8 @@ import { mapActions } from 'vuex';
 import { getAddress } from '@ethersproject/address';
 import { bnum, isValidAddress, normalizeBalance } from '@/helpers/utils';
 
+const hidden = ['AMPL'];
+
 export default {
   props: ['open', 'not'],
   data() {
@@ -89,10 +91,14 @@ export default {
             if (this.not.includes(token[0])) {
               return false;
             }
+            const address = token[0];
+            const tokenMetadata = this.web3.tokenMetadata[address];
+            if (hidden.includes(tokenMetadata.symbol)) {
+              return false;
+            }
             const query = this.query.toLowerCase();
             if (isValidAddress(query)) {
-              const address = token[0].toLowerCase();
-              return address === query;
+              return address.toLowerCase() === query;
             } else {
               const symbol = token[1].symbol.toLowerCase();
               const name = token[1].name.toLowerCase();

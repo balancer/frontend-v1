@@ -19,5 +19,7 @@ const configs = { homestead, kovan };
 configs.homestead = merge(registry, configs.homestead);
 configs.kovan = merge(registryKovan, configs.kovan);
 const network = process.env.VUE_APP_NETWORK || 'homestead';
+const config = configs[network];
+config.env = process.env.VUE_APP_ENV || 'staging';
 
-export default configs[network];
+export default config;

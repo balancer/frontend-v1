@@ -34,11 +34,15 @@ const SCORE_THRESHOLD = 0.1;
 
 function getPoolScore(pool, modelPool) {
   const {
+    id: modelId,
     tokens: modelTokens,
     swapFee: modelSwapFee,
     liquidity: modelLiquidity
   } = modelPool;
-  const { tokens, swapFee, liquidity } = pool;
+  const { id, tokens, swapFee, liquidity } = pool;
+  if (modelId === id) {
+    return 0;
+  }
   if (liquidity <= modelLiquidity) {
     return 0;
   }
