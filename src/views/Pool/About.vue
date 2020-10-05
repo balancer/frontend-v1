@@ -8,11 +8,10 @@
         style="max-width: 580px;"
       />
       <h5 v-if="bPool.config.learn_more">
-        <a
-          :href="bPool.config.learn_more"
-          v-text="'Learn more'"
-          target="_blank"
-        />
+        <a :href="bPool.config.learn_more" target="_blank">
+          Learn more
+          <Icon name="external-link" size="16" class="ml-1 mr-2" />
+        </a>
       </h5>
     </div>
     <div class="mb-3">

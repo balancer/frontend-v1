@@ -9,8 +9,9 @@
   "0x7860e28ebfb8ae052bfe279c07ac5d94c9cd2937": {
     "chainId": 1,
     "name": "AMPL Smart Rebasing",
-    "about": "This pool uses a customized version of the smart pool, designed to hold AMPL Elastic Supply tokens and accommodate the daily rebase.",
-    "learn_more": "https://ampleforth.org",
+    "about": "This Smart Pool is customized to hold the AMPL elastic supply token. The pool weights update automatically with AMPL's rebases to reduce impermanent loss.",
+    "learn_more": "https://medium.com/ampleforth/ampl-usdc-smart-pool-on-balancer-be8eed9a264a",
+    "logo": true,
     "is_visible": true,
     "is_compatible": true
   },

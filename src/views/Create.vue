@@ -1,7 +1,12 @@
 <template>
   <div class="px-0 px-md-5 py-4">
     <div class="d-flex flex-justify-center px-4 px-md-0 mb-3">
-      <Toggle v-if="config.env !== 'production'" :value="type" :options="poolTypes" @select="handleSelectType" />
+      <Toggle
+        v-if="config.env !== 'production'"
+        :value="type"
+        :options="poolTypes"
+        @select="handleSelectType"
+      />
     </div>
     <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
       <h4 class="flex-auto" v-text="'Assets'" />
