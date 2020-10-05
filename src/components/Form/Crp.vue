@@ -23,6 +23,17 @@
       />
     </div>
     <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
+      <h4 class="flex-auto">Initial supply</h4>
+    </div>
+    <div class="mb-4">
+      <input
+        class="ml-2 input pool-input text-right text-white"
+        :value="initialSupply"
+        @change="$emit('change-initial-supply', $event.target.value)"
+        placeholder="100"
+      />
+    </div>
+    <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
       <h4 class="flex-auto" v-text="'Rights'" />
     </div>
     <div>
@@ -81,15 +92,6 @@
         >
           <span class="ml-2 text-white">Can change pool cap</span>
         </UiCheckbox>
-        <div v-if="rights.canChangeCap">
-          <span>Initial supply: </span>
-          <input
-            class="ml-2 input pool-input text-right text-white"
-            :value="initialSupply"
-            @change="$emit('change-initial-supply', $event.target.value)"
-            placeholder="100"
-          />
-        </div>
       </div>
     </div>
   </div>
