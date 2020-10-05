@@ -25,7 +25,14 @@
               <div class="column">Wallet Balance</div>
               <div class="column-sm">Deposit Amount</div>
             </UiTableTh>
-            <UiTableTr v-for="token in pool.tokens" :key="token.checksum">
+            <UiTableTr
+              v-for="token in pool.tokens"
+              :key="token.checksum"
+              class="asset"
+              :class="{
+                active: isMultiAsset || activeToken === token.checksum
+              }"
+            >
               <div
                 class="column-lg flex-auto d-flex flex-items-center text-left d-flex"
               >
@@ -35,7 +42,7 @@
                   :checked="activeToken === token.checksum"
                   :onChange="
                     e => {
-                      onTokenSelect(token.checksum);
+                      handleTokenSelect(token.checksum);
                     }
                   "
                 />
@@ -520,6 +527,7 @@ export default {
       const balance = this.web3.balances[token.checksum];
       const amount = normalizeBalance(balance, token.decimals);
       this.amounts[token.checksum] = amount.toString();
+      this.handleTokenSelect(token.checksum);
       this.handleChange(amount, token);
     },
     lowerAmounts() {
@@ -541,7 +549,7 @@ export default {
         })
       );
     },
-    onTokenSelect(token) {
+    handleTokenSelect(token) {
       this.activeToken = token;
     },
     async handleSubmit() {
@@ -612,3 +620,13 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.asset {
+  opacity: 0.6;
+}
+
+.asset.active {
+  opacity: 1;
+}
+</style>
