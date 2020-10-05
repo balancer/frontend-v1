@@ -252,7 +252,7 @@ export default {
           this.config.untrusted.includes(token.checksum)
         )
       ) {
-        return 'This pool contains untrusted token that may cause loss of funds. Do not deposit.';
+        return 'This pool contains an untrusted token that may cause loss of funds. Do not deposit.';
       }
       return undefined;
     },
