@@ -46,5 +46,16 @@
     "is_compatible": false,
     "logo": true,
     "bptAddress": "0xad6a626ae2b43dcb1b39430ce496d2fa0365ba9c"
+  },
+  "0x0e5c1813587088378787e7dd6c9cb4cb01a0ea18": {
+    "chainId": 1,
+    "name": "PieDAO DEFI Large Cap",
+    "symbol": "DEFI+L",
+    "about": "DEFI+L is a diversified carefully weighted allocation of the leading DeFi tokens in the market.",
+    "learn_more": "https://pools.piedao.org/#/pie/0x78f225869c08d478c34e5f645d07a87d3fe8eb78",
+    "is_visible": false,
+    "is_compatible": false,
+    "logo": true,
+    "bptAddress": "0x78f225869c08d478c34e5f645d07a87d3fe8eb78"
   }
 }
