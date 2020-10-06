@@ -68,7 +68,7 @@
           </div>
           <div class="column-sm hide-sm">
             <div
-              v-text="_num(price.values[token], $t('currency'))"
+              v-text="_num(price.values[token], 'currency')"
               v-if="padlock"
             />
             <div v-text="'-'" v-else />
