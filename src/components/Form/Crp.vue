@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
-      <h4 class="flex-auto">{{ $t('tokenSymbol') }}</h4>
+      <h4 v-text="$t('tokenSymbol')" class="flex-auto"/>
     </div>
     <div class="mb-4">
       <input
