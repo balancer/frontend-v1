@@ -9,9 +9,9 @@
         :pool="pool"
         class="mb-4"
       />
-      <div class="d-flex flex-items-center flex-auto mb-4 px-4 px-md-0">
-        <PoolHeader :pool="bPool" class="flex-auto" />
-        <div class="d-flex">
+      <div class="d-block text-center text-md-left d-md-flex mb-3 mb-md-0">
+        <PoolHeader :pool="bPool" class="flex-auto pb-3" />
+        <div class="pb-3">
           <UiButton
             v-if="enableAddLiquidity"
             class="button-primary ml-2"
