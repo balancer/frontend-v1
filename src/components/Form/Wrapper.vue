@@ -71,11 +71,11 @@ export default {
     },
     unwrapInputValid() {
       const error = validateNumberInput(this.unwrapAmount);
-      if (error !== ValidationError.NONE && error !== ValidationError.EMPTY) return false;
+      if (error !== ValidationError.NONE && error !== ValidationError.EMPTY)
+        return false;
       const wethBalance = this.web3.balances[this.config.addresses.weth] || '0';
       const balance = normalizeBalance(wethBalance, 18);
       return !balance.lt(this.unwrapAmount);
-
     }
   },
   methods: {
