@@ -4,7 +4,7 @@ import { getAddress } from '@ethersproject/address';
 import { jsonToGraphQLQuery } from 'json-to-graphql-query';
 import config from '../config';
 import { abi as multicallAbi } from '../helpers/abi/Multicall.json';
-import logos from 'assets/assets/index.json';
+import logos from '@balancer-labs/assets/assets/index.json';
 
 const MULTICALL = config.addresses.multicall;
 
