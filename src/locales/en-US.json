@@ -26,6 +26,7 @@
     "depositAmount": "Deposit amount",
     "deposits": "Deposits",
     "editTokenWeights": "Edit token weights",
+    "emptyState": "No results found",
     "errEmptyTokenName": "Token name can't be empty",
     "errEmptyTokenSymbol": "Token symbol can't be empty",
     "errExceedsBalance": "Token amount should not exceed balance",

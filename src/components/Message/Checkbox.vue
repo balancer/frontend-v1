@@ -9,8 +9,8 @@
         • Do not add tokens whose transfer functions do not return <b>bool</b>.
       </div>
       <div v-if="custom">
-        • Any other <b>non-standard behavior from ERC20</b> may cause issues.
-        Do your own research!
+        • Any other <b>non-standard behavior from ERC20</b> may cause issues. Do
+        your own research!
       </div>
       <div>
         • Do not add tokens you don't trust, or whose rules for minting and
@@ -18,8 +18,8 @@
       </div>
       <div>
         • By checking this box, you agree that Balancer Labs is not liable for
-        any losses you might incur as a direct or indirect result of
-        adding liquidity to this pool.
+        any losses you might incur as a direct or indirect result of adding
+        liquidity to this pool.
       </div>
     </div>
   </div>

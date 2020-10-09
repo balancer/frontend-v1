@@ -9,12 +9,12 @@
       />
     </div>
     <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
-      <h4 v-text="$t('assets')" class="flex-auto"/>
+      <h4 v-text="$t('assets')" class="flex-auto" />
     </div>
     <UiTable class="mb-4">
       <UiTableTh>
-        <div v-text="$t('asset')" class="flex-auto text-left"/>
-        <div v-text="$t('weight')" class="column"/>
+        <div v-text="$t('asset')" class="flex-auto text-left" />
+        <div v-text="$t('weight')" class="column" />
         <div v-text="'%'" class="column-sm hide-sm" />
         <div class="column">
           <span @click="togglePadlock">
@@ -23,8 +23,8 @@
           </span>
           {{ $t('amount') }}
         </div>
-        <div v-text="$t('price')" class="column-sm hide-sm"/>
-        <div v-text="$t('totalValue')" class="column hide-sm"/>
+        <div v-text="$t('price')" class="column-sm hide-sm" />
+        <div v-text="$t('totalValue')" class="column hide-sm" />
         <div class="column-xs" />
       </UiTableTh>
       <div v-for="(token, i) in tokens" :key="token">
@@ -93,7 +93,7 @@
       {{ $t('addToken') }}
     </UiButton>
     <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
-      <h4 v-text="$t('swapFeePct')" class="flex-auto"/>
+      <h4 v-text="$t('swapFeePct')" class="flex-auto" />
     </div>
     <div class="mb-4">
       <input

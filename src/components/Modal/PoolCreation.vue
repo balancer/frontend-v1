@@ -9,8 +9,8 @@
         <b>{{ value }}</b>
       </div>
       <div class="mt-2">
-        If these {{ type }}s are not correct, you are vulnerable to loss of funds
-        through arbitrage. You can click on <Icon name="lock" size="16" />
+        If these {{ type }}s are not correct, you are vulnerable to loss of
+        funds through arbitrage. You can click on <Icon name="lock" size="16" />
         to toggle manual input.
       </div>
       <div class="mt-2">
