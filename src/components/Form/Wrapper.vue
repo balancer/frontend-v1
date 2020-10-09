@@ -63,27 +63,19 @@ export default {
   computed: {
     wrapInputValid() {
       const error = validateNumberInput(this.wrapAmount);
-      if (error !== ValidationError.NONE && error !== ValidationError.EMPTY) {
+      if (error !== ValidationError.NONE && error !== ValidationError.EMPTY)
         return false;
-      }
       const ethBalance = this.web3.balances['ether'] || '0';
       const balance = normalizeBalance(ethBalance, 18);
-      if (balance.lt(this.wrapAmount)) {
-        return false;
-      }
-      return true;
+      return !balance.lt(this.wrapAmount);
     },
     unwrapInputValid() {
       const error = validateNumberInput(this.unwrapAmount);
-      if (error !== ValidationError.NONE && error !== ValidationError.EMPTY) {
+      if (error !== ValidationError.NONE && error !== ValidationError.EMPTY)
         return false;
-      }
       const wethBalance = this.web3.balances[this.config.addresses.weth] || '0';
       const balance = normalizeBalance(wethBalance, 18);
-      if (balance.lt(this.unwrapAmount)) {
-        return false;
-      }
-      return true;
+      return !balance.lt(this.unwrapAmount);
     }
   },
   methods: {

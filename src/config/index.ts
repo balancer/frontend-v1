@@ -1,6 +1,6 @@
 import merge from 'lodash/merge';
-import registry from 'assets/generated/pm/registry.homestead.json';
-import registryKovan from 'assets/generated/pm/registry.kovan.json';
+import registry from '@balancer-labs/assets/generated/pm/registry.homestead.json';
+import registryKovan from '@balancer-labs/assets/generated/pm/registry.kovan.json';
 import homestead from '@/config/homestead.json';
 import kovan from '@/config/kovan.json';
 
