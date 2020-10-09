@@ -15,6 +15,9 @@
       </span>
     </div>
     <div class="text-white">Swap fee: {{ _num(pool.swapFee, 'percent') }}</div>
+    <div class="text-center">
+      <Pie :tokens="pool.tokens" size="100" class="my-3" />
+    </div>
     <div
       class="mt-2 d-flex flex-column flex-items-center flex-justify-center text-white"
     >
