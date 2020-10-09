@@ -4,7 +4,7 @@
       <div class="p-4 panel-background border rounded-1 d-flex flex-column">
         <h3 class="mb-4 px-4 px-md-0">Setup Proxy</h3>
         <div>
-          Create proxy contract to manage liquidity on Balancer. This is a
+          Create a proxy contract to manage liquidity on Balancer. This is a
           one-time action and will save you gas in the long-term.
         </div>
         <div class="mt-4 d-flex flex-justify-center">
@@ -20,7 +20,7 @@
           <UiButton @click="goBack()" v-else>Next</UiButton>
         </div>
         <div class="mt-2" v-if="loading">
-          Waiting for confirmations to protect from chain reorganizations:
+          Waiting for confirmation:
           {{ confirmations }}/10
         </div>
       </div>

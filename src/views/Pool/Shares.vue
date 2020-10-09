@@ -50,7 +50,7 @@
     <div
       v-if="shares.length === 0 && !loading"
       class="border-top d-flex flex-items-center p-4 text-white"
-      v-text="$t('messages.EMPTY_STATE')"
+      v-text="$t('emptyState')"
     />
   </UiTable>
 </template>

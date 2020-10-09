@@ -25,7 +25,7 @@
           <ListPool v-for="(pool, i) in pools" :key="i" :pool="pool" />
         </div>
         <UiTableTr v-else-if="!loading">
-          <div v-text="$t('messages.EMPTY_STATE')" />
+          <div v-text="$t('emptyState')" />
         </UiTableTr>
         <ListLoading
           v-if="loading"

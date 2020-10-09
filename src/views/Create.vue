@@ -9,22 +9,22 @@
       />
     </div>
     <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
-      <h4 class="flex-auto" v-text="'Assets'" />
+      <h4 v-text="$t('assets')" class="flex-auto" />
     </div>
     <UiTable class="mb-4">
       <UiTableTh>
-        <div v-text="'Asset'" class="flex-auto text-left" />
-        <div v-text="'Weight'" class="column" />
+        <div v-text="$t('asset')" class="flex-auto text-left" />
+        <div v-text="$t('weight')" class="column" />
         <div v-text="'%'" class="column-sm hide-sm" />
         <div class="column">
           <span @click="togglePadlock">
             <span v-if="padlock"><Icon name="lock" size="16"/></span>
             <span v-else><Icon name="unlock" size="16"/></span>
           </span>
-          Amount
+          {{ $t('amount') }}
         </div>
-        <div v-text="'Price'" class="column-sm hide-sm" />
-        <div v-text="'Total value'" class="column hide-sm" />
+        <div v-text="$t('price')" class="column-sm hide-sm" />
+        <div v-text="$t('totalValue')" class="column hide-sm" />
         <div class="column-xs" />
       </UiTableTh>
       <div v-for="(token, i) in tokens" :key="token">
@@ -90,10 +90,10 @@
       </div>
     </UiTable>
     <UiButton v-if="tokens.length < 8" class="mb-4" @click="addToken">
-      Add Token
+      {{ $t('addToken') }}
     </UiButton>
     <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
-      <h4 class="flex-auto" v-text="'Swap fee (%)'" />
+      <h4 v-text="$t('swapFeePct')" class="flex-auto" />
     </div>
     <div class="mb-4">
       <input
@@ -134,7 +134,7 @@
       class="button-primary mt-4"
       @click="confirmModalOpen = true"
     >
-      Create
+      {{ $t('create') }}
     </UiButton>
     <ModalSelectToken
       :open="tokenModalOpen"
@@ -250,16 +250,16 @@ export default {
       if (feeErrorText) return feeErrorText;
       // Token count validation
       if (this.tokens.length < 2) {
-        return 'Pool should contain at least 2 tokens';
+        return this.$t('errMinPoolTokens');
       }
       if (this.tokens.length > 8) {
-        return 'Pool should contain no more than 8 tokens';
+        return this.$t('errMaxPoolTokens');
       }
       // Weight validation
       for (const token of this.tokens) {
         const weight = parseFloat(this.weights[token]);
         if (weight < 2 || weight > 98) {
-          return 'Weight should be from 2 to 98';
+          return this.$t('errInvalidWeight');
         }
       }
       const totalWeight = this.tokens.reduce((acc, token) => {
@@ -267,7 +267,7 @@ export default {
         return acc + weight;
       }, 0);
       if (totalWeight > 100) {
-        return 'Total weight should not exceed 100';
+        return this.$t('errInvalidMaxWeight');
       }
       // Amount validation
       for (const token of this.tokens) {
@@ -277,28 +277,28 @@ export default {
           this.web3.tokenMetadata[token].decimals
         );
         if (weiAmount.lt('1e6')) {
-          return 'Token balance in wei form needs to be at least 1,000,000. For example, WBTC has 8 decimals so the minimum is 0.01 WBTC.';
+          return this.$t('errMinTokenBalance');
         }
         const balance = normalizeBalance(
           this.web3.balances[token],
           this.web3.tokenMetadata[token].decimals
         );
         if (amount.gt(balance)) {
-          return 'Token amount should not exceed balance';
+          return this.$t('errExceedsBalance');
         }
       }
       // Fee validation
       const fee = parseFloat(this.swapFee);
       if (fee < 0.0001 || fee > 10) {
-        return 'Fee should be from 0.0001% to 10%';
+        return this.$t('errFeeRange');
       }
       // Smart pool validation
       if (this.type == 'SMART_POOL') {
         if (!this.crp.poolTokenSymbol) {
-          return `Token symbol can't be empty`;
+          return this.$t('errEmptyTokenSymbol');
         }
         if (!this.crp.poolTokenName) {
-          return `Token name can't be empty`;
+          return this.$t('errEmptyTokenName');
         }
 
         const weightPeriodError = validateNumberInput(
@@ -320,11 +320,11 @@ export default {
         );
         const addTimelock = parseFloat(this.crp.addTokenTimeLockInBlocks);
         if (weightPeriod < addTimelock) {
-          return 'Weight change period should be bigger than token adding timelock';
+          return this.$t('errInconsistentTimelock');
         }
         const initialSupply = parseFloat(this.crp.initialSupply);
         if (initialSupply < 100 || initialSupply > 1e9) {
-          return 'Supply should be between 100 and 1,000,000,000';
+          return this.$t('errInitialSupplyRange');
         }
       }
       return undefined;

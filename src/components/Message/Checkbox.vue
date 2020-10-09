@@ -6,20 +6,20 @@
         • Do not add <b>deflationary tokens</b> or tokens with transfer fees.
       </div>
       <div v-if="custom">
-        • Do not add tokens with <b>no bool return values</b>.
+        • Do not add tokens whose transfer functions do not return <b>bool</b>.
       </div>
       <div v-if="custom">
-        • Any other <b>non-standard behavior from ERC20</b> may cause issues.
-        DYOR!
+        • Any other <b>non-standard behavior from ERC20</b> may cause issues. Do
+        your own research!
       </div>
       <div>
-        • Do not add tokens you don't trust or whose rules over minting and
+        • Do not add tokens you don't trust, or whose rules for minting and
         blacklisting you don’t agree with.
       </div>
       <div>
-        • By checking this box you agree that Balancer Labs is not liable for
-        any losses or issues you might have as a direct or indirect result from
-        adding liquidity to this pool.
+        • By checking this box, you agree that Balancer Labs is not liable for
+        any losses you might incur as a direct or indirect result of adding
+        liquidity to this pool.
       </div>
     </div>
   </div>
