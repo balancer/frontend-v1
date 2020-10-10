@@ -1,15 +1,13 @@
 <template>
   <div class="p-4">
     <p class="mb-4">
-      There is a minimum swap fee of
-      <a class="link-text" @click="setSwapFee(0.0001)">0.0001%</a> and a maximum
-      of <a class="link-text" @click="setSwapFee(10)">10%</a>.
+      {{ $t('minimumSwapFee') }}
+      <a class="link-text" @click="setSwapFee(0.0001)">0.0001%</a>
+      {{ $t('andMax') }} <a class="link-text" @click="setSwapFee(10)">10%</a>.
     </p>
     <UiTable>
       <UiTableTh>
-        <div class="flex-auto text-left">
-          Swap Fee (%)
-        </div>
+        <div v-text="$t('swapFeePct')" class="flex-auto text-left" />
         <input
           type="number"
           class="input"

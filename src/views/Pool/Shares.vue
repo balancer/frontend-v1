@@ -1,10 +1,10 @@
 <template>
   <UiTable>
     <UiTableTh>
-      <div v-text="'Holder'" class="flex-auto text-left" />
-      <div v-text="'Balance'" class="column" />
-      <div v-text="'Value'" class="column hide-sm" />
-      <div v-text="'Shares'" class="column" />
+      <div v-text="$t('holder')" class="flex-auto text-left" />
+      <div v-text="$t('balance')" class="column" />
+      <div v-text="$t('value')" class="column hide-sm" />
+      <div v-text="$t('shares')" class="column" />
     </UiTableTh>
     <div
       v-infinite-scroll="loadMore"
@@ -28,7 +28,7 @@
           </div>
           <div class="column">
             <UiNum :value="share.balance" class="mr-1" />
-            BPT
+            {{ $t('bpt') }}
           </div>
           <UiNum
             :value="bptValue * share.balance"

@@ -1,10 +1,8 @@
 <template>
   <div>
     <div class="p-4 pb-0">
-      <p class="mb-4">
-        Select up to 8 tokens you’d like to have in the pool.
-      </p>
-      <Search v-model="query" placeholder="Search name, symbol or address" />
+      <p v-text="$t('selectTokens')" class="mb-4" />
+      <Search v-model="query" v-bind:placeholder="$t('searchTypes')" />
     </div>
     <div
       class="text-left overflow-y-scroll border rounded-1 mt-0 m-4"
@@ -14,7 +12,7 @@
         class="py-3 text-center"
         v-if="query && Object.keys(tokens).length === 0"
       >
-        No token found for this search
+        {{ $t('noTokenFound') }}
       </p>
       <a
         v-for="token in tokens"

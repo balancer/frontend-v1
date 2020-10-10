@@ -2,13 +2,13 @@
   <UiModal :open="open" @close="$emit('close')" style="max-width: 440px;">
     <UiModalForm @submit="handleSubmit">
       <template slot="header">
-        <h3 class="text-white">Edit token weights</h3>
+        <h3 v-text="$t('editTokenWeights')" class="text-white" />
       </template>
       <UiTable>
         <UiTableTh>
-          <div class="flex-auto text-left">Tokens</div>
-          <div class="column-sm">Weights</div>
-          <div class="column">Percent</div>
+          <div v-text="$t('tokens')" class="flex-auto text-left" />
+          <div v-text="$t('weights')" class="column-sm" />
+          <div v-text="$t('percent')" class="column" />
         </UiTableTh>
         <UiTableTr v-for="(token, i) in pool.tokens" :key="token.checksum">
           <Token :address="token.checksum" size="28" class="mr-2" />
@@ -34,12 +34,12 @@
         </UiTableTr>
       </UiTable>
       <div v-if="isLocked" class="my-2 text-center">
-        Unlock {{ _ticker(tokenToSpend) }} to continue.
+        {{ $t('unlock') }} {{ _ticker(tokenToSpend) }} {{ $t('toContinue') }}.
         <ButtonUnlock :tokenAddress="tokenToSpend" :amount="amountToSpend" />
       </div>
       <template slot="footer">
         <UiButton @click="$emit('close')" type="button" class="mx-1">
-          Cancel
+          {{ $t('cancel') }}
         </UiButton>
         <UiButton
           :disabled="loading || !isValid"
@@ -47,7 +47,7 @@
           type="submit"
           class="button-primary mx-1"
         >
-          Confirm
+          {{ $t('confirm') }}
         </UiButton>
       </template>
     </UiModalForm>

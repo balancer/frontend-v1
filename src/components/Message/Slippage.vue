@@ -10,13 +10,17 @@
 </template>
 
 <script>
+import i18n from '@/i18n';
+
 export default {
   props: ['value', 'isDeposit'],
   computed: {
     text() {
-      const action = this.isDeposit ? 'Adding' : 'Removing';
+      const action = this.isDeposit ? "$t('adding')" : "$t('removing')";
       const percentage = this._num(this.value, 'percent');
-      return `${action} liquidity will incur ${percentage} of slippage`;
+      return `${action} ${i18n.tc('liquidityIncurs')} ${percentage} ${i18n.tc(
+        'ofSlippage'
+      )}`;
     },
     isWarning() {
       return this.value.gte(0.01);

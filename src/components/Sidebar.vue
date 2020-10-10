@@ -11,9 +11,7 @@
     />
     <FormWrapper class="p-4 border-top" />
     <div class="p-4 border-top">
-      <div class="eyebrow mb-4">
-        My wallet
-      </div>
+      <div v-text="$t('myWallet')" class="eyebrow mb-4" />
       <div v-if="web3.account" class="text-white">
         <div v-for="(balance, i) in balances" :key="i" class="d-flex mb-3">
           <Token :address="i" size="20" class="mr-2" />
@@ -23,7 +21,7 @@
         </div>
       </div>
       <div v-else class="text-white mb-3">
-        Connect wallet to see balances
+        {{ $t('connectWalletForBalance') }}
       </div>
     </div>
   </div>
@@ -32,18 +30,19 @@
 <script>
 import config from '@/config';
 import { clone, normalizeBalance } from '@/helpers/utils';
+import i18n from '@/i18n';
 
 const startItems = [
   {
-    name: 'Shared pools',
+    name: i18n.tc('sharedPools'),
     to: { name: 'home' }
   },
   {
-    name: 'Smart pools',
+    name: i18n.tc('smartPools'),
     to: { name: 'smart' }
   },
   {
-    name: 'Private pools',
+    name: i18n.tc('privatePools'),
     to: { name: 'private' }
   }
 ];
@@ -65,11 +64,11 @@ export default {
       items[2].count = this.subgraph.balancer.privatePoolCount;
       if (this.web3.account) {
         items.push({
-          name: 'Create a pool',
+          name: i18n.tc('createPool'),
           to: { name: 'create' }
         });
         items.push({
-          name: 'My pools',
+          name: i18n.tc('myPools'),
           to: { name: 'my-pools' }
         });
       }

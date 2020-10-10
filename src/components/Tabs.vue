@@ -3,33 +3,35 @@
 </template>
 
 <script>
+import i18n from '@/i18n';
+
 export default {
   props: ['pool'],
   computed: {
     items() {
       const items = [
         {
-          name: 'Balances',
+          name: i18n.tc('balances'),
           to: { name: 'pool' },
           count: this.pool.tokens.length
         }
       ];
       if (this.pool.swapsCount > 0) {
         items.push({
-          name: 'Swaps',
+          name: i18n.tc('swaps'),
           to: { name: 'pool-swaps' },
           count: this.pool.swapsCount
         });
       }
       if (this.pool.finalized) {
         items.push({
-          name: 'Holders',
+          name: i18n.tc('holders'),
           to: { name: 'pool-shares' },
           count: this.pool.holdersCount
         });
       }
       items.push({
-        name: 'About',
+        name: i18n.tc('about'),
         to: { name: 'pool-about' }
       });
       if (
@@ -37,7 +39,7 @@ export default {
         this.web3.dsProxyAddress.toLowerCase() === this.pool.crpController
       ) {
         items.push({
-          name: 'Settings',
+          name: i18n.tc('settings'),
           to: { name: 'pool-settings' }
         });
       }

@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-items-center">
-    <div class="pb-1">Filter by asset</div>
+    <div v-text="$t('filterByAsset')" class="pb-1" />
     <div v-for="(token, i) in tokens" :key="i" class="topic ml-2">
       <button
         class="topic-button text-center line-height-0 position-absolute right-0"

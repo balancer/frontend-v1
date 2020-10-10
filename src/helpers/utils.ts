@@ -13,7 +13,7 @@ export const POOL_TOKENS_DECIMALS = 18;
 export const GAS_LIMIT_BUFFER = 0.1;
 
 export const liquidityToggleOptions = {
-  MULTI_ASSET: 'Multi assets',
+  MULTI_ASSET: 'Multi asset',
   SINGLE_ASSET: 'Single asset'
 };
 

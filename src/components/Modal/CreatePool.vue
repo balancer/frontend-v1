@@ -51,9 +51,9 @@
           class="button-blue d-inline-block column mx-1"
           :class="{ 'btn-white': step === 0 }"
         >
-          <template v-if="step === lastStep - 1">Preview</template>
-          <template v-else-if="step === lastStep">Confirm</template>
-          <template v-else>Next</template>
+          <template v-if="step === lastStep - 1" v-text="$t('preview')" />
+          <template v-else-if="step === lastStep" v-text="$t('confirm')" />
+          <template v-else v-text="$t('next')" />
         </UiButton>
       </template>
     </UiModalForm>
@@ -62,6 +62,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import i18n from '@/i18n';
 // import { delay } from '@/helpers/utils';
 
 export default {
@@ -69,11 +70,11 @@ export default {
   data() {
     return {
       stepTitles: [
-        'Select Tokens',
-        'Set Weights',
-        'Deposit',
-        'Set Swap Fee',
-        'Preview'
+        i18n.tc('selectTokens'),
+        i18n.tc('set=Weights'),
+        i18n.tc('deposit'),
+        i18n.tc('setSwapFee'),
+        i18n.tc('preview')
       ],
       loading: false,
       step: 0,

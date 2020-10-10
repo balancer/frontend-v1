@@ -33,7 +33,7 @@
         </template>
         <UiButton v-if="web3.injectedLoaded && wrongNetwork" class="button-red">
           <Icon name="warning" class="ml-n2 mr-1 v-align-middle" />
-          Wrong network
+          {{ $t('wrongNetwork') }}
         </UiButton>
         <UiButton
           v-if="showLogin"
@@ -41,7 +41,7 @@
           :loading="loading"
           class="button-primary"
         >
-          Connect wallet
+          {{ $t('connectWallet') }}
         </UiButton>
         <UiButton @click="modalAboutOpen = true" class="ml-2 hide-sm">
           <span v-text="'?'" class="ml-n1 mr-n1" />

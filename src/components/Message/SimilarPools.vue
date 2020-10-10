@@ -6,9 +6,7 @@
   >
     <Icon name="info" size="22" class="mr-4" />
     <div>
-      <div>
-        There are similar pools available:
-      </div>
+      <div v-text="$t('similarPools')" />
       <div v-for="pool in pools" :key="pool.id">
         <router-link
           :to="{ name: 'pool', params: { id: pool.id } }"
@@ -25,6 +23,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import i18n from '@/i18n';
 
 const WEIGHT_FACTOR = 0.0025;
 const FEE_FACTOR = 40;
@@ -144,8 +143,11 @@ export default {
         tokenShares.push(tokenShare);
       }
       const tokenString = tokenShares.join(' ');
-      const feeString = `fee: ${this._num(pool.swapFee, 'percent')}`;
-      const liquidityString = `liquidity: ${this._num(
+      const feeString = `${i18n.tc('fee')}: ${this._num(
+        pool.swapFee,
+        'percent'
+      )}`;
+      const liquidityString = `${i18n.tc('liquidity')}: ${this._num(
         pool.liquidity,
         'currency'
       )}`;
