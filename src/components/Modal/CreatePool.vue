@@ -71,7 +71,7 @@ export default {
     return {
       stepTitles: [
         i18n.tc('selectTokens'),
-        i18n.tc('set=Weights'),
+        i18n.tc('setWeights'),
         i18n.tc('deposit'),
         i18n.tc('setSwapFee'),
         i18n.tc('preview')
