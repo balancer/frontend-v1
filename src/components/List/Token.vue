@@ -3,9 +3,15 @@
     <div class="flex-auto text-left">
       <router-link
         :to="{ name: 'home', query: { token: [checksum], filter: 1 } }"
-        class="text-white d-flex"
+        class="text-white d-flex flex-items-center"
       >
-        <Token :address="token.address" :symbol="token.symbol" class="mr-3" />
+        <Token :address="token.address" :symbol="token.symbol" class="mr-1" />
+        <Icon
+          :style="`color: ${token.color}`"
+          name="bullet"
+          size="16"
+          class="mt-1"
+        />
         {{ _ticker(token.checksum) }}
       </router-link>
     </div>

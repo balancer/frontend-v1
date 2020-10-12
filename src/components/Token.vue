@@ -7,12 +7,7 @@
       class="circle bg-white"
       :title="symbol"
     />
-    <span
-      :style="style"
-      class="circle d-block text-bold bg-gray text-white text-center overflow-hidden"
-      v-text="'?'"
-      v-else
-    />
+    <Avatar :style="style" :address="address" v-else />
   </span>
 </template>
 
