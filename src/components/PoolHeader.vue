@@ -1,6 +1,19 @@
 <template>
   <div class="d-block text-center text-md-left d-md-flex flex-auto pb-4">
-    <Token :address="pool.getBptAddress()" size="44" class="mr-0 mr-md-3" />
+    <div class="pt-1">
+      <Token
+        v-if="pool.isWhitelisted()"
+        :address="pool.getBptAddress()"
+        size="44"
+        class="mr-0 mr-md-3"
+      />
+      <Pie
+        :tokens="pool.metadata.tokens"
+        size="44"
+        class="mr-0 mr-md-3"
+        v-else
+      />
+    </div>
     <div>
       <h3>
         <span
