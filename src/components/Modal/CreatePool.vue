@@ -62,7 +62,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-import i18n from '@/i18n';
 // import { delay } from '@/helpers/utils';
 
 export default {
@@ -70,11 +69,11 @@ export default {
   data() {
     return {
       stepTitles: [
-        i18n.tc('selectTokens'),
-        i18n.tc('setWeights'),
-        i18n.tc('deposit'),
-        i18n.tc('setSwapFee'),
-        i18n.tc('preview')
+        this.$t('selectTokens'),
+        this.$t('setWeights'),
+        this.$t('deposit'),
+        this.$t('setSwapFee'),
+        this.$t('preview')
       ],
       loading: false,
       step: 0,

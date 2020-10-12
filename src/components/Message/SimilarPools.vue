@@ -23,7 +23,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-import i18n from '@/i18n';
 
 const WEIGHT_FACTOR = 0.0025;
 const FEE_FACTOR = 40;
@@ -143,11 +142,11 @@ export default {
         tokenShares.push(tokenShare);
       }
       const tokenString = tokenShares.join(' ');
-      const feeString = `${i18n.tc('fee')}: ${this._num(
+      const feeString = `${this.$t('fee')}: ${this._num(
         pool.swapFee,
         'percent'
       )}`;
-      const liquidityString = `${i18n.tc('liquidity')}: ${this._num(
+      const liquidityString = `${this.$t('liquidity')}: ${this._num(
         pool.liquidity,
         'currency'
       )}`;

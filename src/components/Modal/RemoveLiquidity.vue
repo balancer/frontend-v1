@@ -116,7 +116,6 @@ import {
 } from '@/helpers/utils';
 import { calcSingleOutGivenPoolIn } from '@/helpers/math';
 import { validateNumberInput, formatError } from '@/helpers/validation';
-import i18n from '@/i18n';
 
 const BALANCE_BUFFER = 0.01;
 
@@ -192,7 +191,7 @@ export default {
       // Amount validation
       const amount = bnum(this.poolAmountIn);
       if (amount.gt(this.poolTokenBalance)) {
-        return i18n.tc('errExceedsBalance');
+        return this.$t('errExceedsBalance');
       }
       // Max ratio out validation
       if (!this.isMultiAsset) {
@@ -216,7 +215,7 @@ export default {
         if (amount.div(poolSupply).gt(0.99)) {
           // Invalidate user's attempt to withdraw the entire pool supply in a single token
           // At amounts close to 100%, solidity math freaks out
-          return i18n.tc('insufficientLiquidity');
+          return this.$t('insufficientLiquidity');
         }
 
         const tokenAmountOut = calcSingleOutGivenPoolIn(
@@ -228,7 +227,7 @@ export default {
           swapFee
         );
         if (tokenAmountOut.div(tokenBalanceOut).gt(maxOutRatio)) {
-          return i18n.tc('insufficientLiquidity');
+          return this.$t('insufficientLiquidity');
         }
       }
       return undefined;

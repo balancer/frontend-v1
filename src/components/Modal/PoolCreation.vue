@@ -26,13 +26,11 @@
 </template>
 
 <script>
-import i18n from '@/i18n';
-
 export default {
   props: ['open', 'padlock', 'tokens', 'amounts', 'weights'],
   computed: {
     type() {
-      return this.padlock ? i18n.tc('price') : i18n.tc('amount');
+      return this.padlock ? this.$t('price') : this.$t('amount');
     },
     values() {
       if (this.padlock) {

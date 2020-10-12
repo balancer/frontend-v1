@@ -26,19 +26,18 @@
 <script>
 import { mapActions } from 'vuex';
 import * as TV from 'lightweight-charts';
-import i18n from '@/i18n';
 
 const items = [
   {
-    name: i18n.tc('liquidity'),
+    name: this.$t('liquidity'),
     id: 'LIQUIDITY'
   },
   {
-    name: i18n.tc('volume'),
+    name: this.$t('volume'),
     id: 'VOLUME'
   },
   {
-    name: i18n.tc('feeReturns'),
+    name: this.$t('feeReturns'),
     id: 'FEE_RETURNS'
   }
 ];

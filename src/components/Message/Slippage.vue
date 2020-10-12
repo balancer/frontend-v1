@@ -10,15 +10,13 @@
 </template>
 
 <script>
-import i18n from '@/i18n';
-
 export default {
   props: ['value', 'isDeposit'],
   computed: {
     text() {
       const action = this.isDeposit ? "$t('adding')" : "$t('removing')";
       const percentage = this._num(this.value, 'percent');
-      return `${action} ${i18n.tc('liquidityIncurs')} ${percentage} ${i18n.tc(
+      return `${action} ${this.$t('liquidityIncurs')} ${percentage} ${this.$t(
         'ofSlippage'
       )}`;
     },

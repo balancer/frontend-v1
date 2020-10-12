@@ -168,7 +168,6 @@ import {
 } from '@/helpers/utils';
 import { calcPoolOutGivenSingleIn } from '@/helpers/math';
 import { validateNumberInput, formatError } from '@/helpers/validation';
-import i18n from '@/i18n';
 
 const BALANCE_BUFFER = 0.01;
 
@@ -260,7 +259,7 @@ export default {
           this.config.untrusted.includes(token.checksum)
         )
       ) {
-        return i18n.tc('untrustedTokens');
+        return this.$t('untrustedTokens');
       }
       return undefined;
     },
@@ -287,7 +286,7 @@ export default {
           this.web3.tokenMetadata[token].decimals
         );
         if (amount.gt(balance)) {
-          return i18n.tc('amountExceedsBalance');
+          return this.$t('amountExceedsBalance');
         }
       }
       // Max in ratio validation
@@ -298,7 +297,7 @@ export default {
           token => token.checksum === this.activeToken
         );
         if (amount.div(tokenIn.balance).gt(maxInRatio)) {
-          return i18n.tc('insufficientLiquidity');
+          return this.$t('insufficientLiquidity');
         }
       }
       return undefined;
@@ -318,7 +317,7 @@ export default {
           )
         ) {
           const ticker = this._ticker(token);
-          return `${i18n.tc('unlock')} ${ticker} ${i18n.tc('toContinue')}`;
+          return `${this.$t('unlock')} ${ticker} ${this.$t('toContinue')}`;
         }
       }
       return undefined;
@@ -328,11 +327,11 @@ export default {
         return undefined;
       if (!this.transactionReverted) return undefined;
       if (hasToken(this.pool, 'SNX')) {
-        return i18n.tc('addStakedSNX');
+        return this.$t('addStakedSNX');
       }
       const synths = ['sUSD', 'sBTC', 'sETH', 'sXAU', 'sXAG', 'sDEFI', 'sXMR'];
       if (synths.some(synth => hasToken(this.pool, synth))) {
-        return i18n.tc('addSNXUnderwater');
+        return this.$t('addSNXUnderwater');
       }
       const aTokens = [
         'aDAI',
@@ -354,7 +353,7 @@ export default {
         'aZRX'
       ];
       if (aTokens.some(aToken => hasToken(this.pool, aToken))) {
-        return i18n.tc('addAAVEUnderwater');
+        return this.$t('addAAVEUnderwater');
       }
       const cTokens = [
         'cUSDC',
@@ -367,9 +366,9 @@ export default {
         'cWBTC'
       ];
       if (cTokens.some(cToken => hasToken(this.pool, cToken))) {
-        return i18n.tc('addCompoundUnderwater');
+        return this.$t('addCompoundUnderwater');
       }
-      return i18n.tc('addTransferBlocked');
+      return this.$t('addTransferBlocked');
     },
     hasCustomToken() {
       if (this.validationError || this.tokenError) {

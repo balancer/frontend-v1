@@ -30,19 +30,18 @@
 <script>
 import config from '@/config';
 import { clone, normalizeBalance } from '@/helpers/utils';
-import i18n from '@/i18n';
 
 const startItems = [
   {
-    name: i18n.tc('sharedPools'),
+    name: this.$t('sharedPools'),
     to: { name: 'home' }
   },
   {
-    name: i18n.tc('smartPools'),
+    name: this.$t('smartPools'),
     to: { name: 'smart' }
   },
   {
-    name: i18n.tc('privatePools'),
+    name: this.$t('privatePools'),
     to: { name: 'private' }
   }
 ];
@@ -64,11 +63,11 @@ export default {
       items[2].count = this.subgraph.balancer.privatePoolCount;
       if (this.web3.account) {
         items.push({
-          name: i18n.tc('createPool'),
+          name: this.$t('createPool'),
           to: { name: 'create' }
         });
         items.push({
-          name: i18n.tc('myPools'),
+          name: this.$t('myPools'),
           to: { name: 'my-pools' }
         });
       }
