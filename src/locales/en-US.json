@@ -10,7 +10,7 @@
     "addLiquidity": "Add liquidity",
     "addStakedSNX": "Adding liquidity failed as your SNX is locked in staking.",
     "addSNXUnderwater": "Adding liquidity failed as your Synthetix position might go underwater. ",
-    "addToken": "Add Token",
+    "addToken": "Add token",
     "addTokenTimelock": "Add token time lock (in blocks)",
     "allPoolAssets": "All pool assets",
     "amount": "Amount",
@@ -176,7 +176,7 @@
     "weight": "Weight",
     "weightConstraints": "Denormalized weights should be numbers from 2 to 98. Total weight should not exceed 100.",
     "weights": "Weights",
-    "weightsPct": "Weights Percent",
+    "weightsPct": "Weights percent",
     "withdraw": "Withdraw",
     "wrap": "Wrap",
     "wrongNetwork": "Wrong network"
