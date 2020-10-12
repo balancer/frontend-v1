@@ -33,15 +33,15 @@ import { clone, normalizeBalance } from '@/helpers/utils';
 
 const startItems = [
   {
-    name: this.$t('sharedPools'),
+    name: 'sharedPools',
     to: { name: 'home' }
   },
   {
-    name: this.$t('smartPools'),
+    name: 'smartPools',
     to: { name: 'smart' }
   },
   {
-    name: this.$t('privatePools'),
+    name: 'privatePools',
     to: { name: 'private' }
   }
 ];
@@ -63,14 +63,20 @@ export default {
       items[2].count = this.subgraph.balancer.privatePoolCount;
       if (this.web3.account) {
         items.push({
-          name: this.$t('createPool'),
+          name: 'createPool',
           to: { name: 'create' }
         });
         items.push({
-          name: this.$t('myPools'),
+          name: 'myPools',
           to: { name: 'my-pools' }
         });
       }
+
+      // Translate names
+      for (let i = 0; i < items.length; i++) {
+        items[i].name = this.$t(items[i].name);
+      }
+
       return items;
     },
     balances() {
