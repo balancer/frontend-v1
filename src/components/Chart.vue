@@ -9,7 +9,7 @@
           class="tab"
           :class="{ active: activeTab === item.id }"
         >
-          <span>{{ item.name }}</span>
+          <span v-text="$t(item.name)" />
         </li>
       </ul>
     </div>
@@ -29,15 +29,15 @@ import * as TV from 'lightweight-charts';
 
 const items = [
   {
-    name: 'Liquidity',
+    name: 'liquidity',
     id: 'LIQUIDITY'
   },
   {
-    name: 'Volume',
+    name: 'volume',
     id: 'VOLUME'
   },
   {
-    name: 'Fee returns',
+    name: 'feeReturns',
     id: 'FEE_RETURNS'
   }
 ];

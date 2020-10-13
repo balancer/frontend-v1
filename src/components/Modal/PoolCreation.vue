@@ -2,27 +2,23 @@
   <UiModal :open="open" @close="$emit('close')" style="max-width: 600px;">
     <div class="modal-body p-6 text-white">
       <div class="mb-2">
-        Before creating this pool, make sure the {{ type }} information below is
-        correct:
+        {{ $t('beforeCreatingPre') }} {{ type }} {{ $t('beforeCreatingPost') }}:
       </div>
       <div v-for="(value, index) in values" :key="index">
         <b>{{ value }}</b>
       </div>
       <div class="mt-2">
-        If these {{ type }}s are not correct, you are vulnerable to loss of
-        funds through arbitrage. You can click on <Icon name="lock" size="16" />
-        to toggle manual input.
+        {{ $t('vulnerablePre') }}{{ type }}{{ $t('vulnerableMid') }}
+        <Icon name="lock" size="16" />
+        {{ $t('vulnerablePost') }}.
       </div>
-      <div class="mt-2">
-        By continuing you agree that Balancer Labs is not liable for any losses
-        you may incur.
-      </div>
+      <div class="mt-2">{{ $t('disclaimer') }}.</div>
       <div class="mt-4 d-flex flex-items-center flex-justify-center">
         <UiButton
           class="button-primary"
           @click="[$emit('create'), $emit('close')]"
         >
-          Continue
+          {{ $t('continue') }}
         </UiButton>
       </div>
     </div>
@@ -34,7 +30,7 @@ export default {
   props: ['open', 'padlock', 'tokens', 'amounts', 'weights'],
   computed: {
     type() {
-      return this.padlock ? 'price' : 'amount';
+      return this.padlock ? this.$t('price') : this.$t('amount');
     },
     values() {
       if (this.padlock) {

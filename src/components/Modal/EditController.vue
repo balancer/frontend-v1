@@ -6,7 +6,7 @@
       </template>
       <div class="text-center m-4">
         <h5 class="px-4 mb-4 mx-auto overflow-hidden" style="max-width: 340px;">
-          Change pool controller
+          {{ $t('changePoolController') }}
         </h5>
         <input
           class="h3 py-2 px-3 input text-center"
@@ -16,7 +16,7 @@
       </div>
       <template slot="footer">
         <UiButton @click="$emit('close')" type="button" class="mx-1">
-          Cancel
+          {{ $t('cancel') }}
         </UiButton>
         <UiButton
           :disabled="loading || input === value"
@@ -24,7 +24,7 @@
           type="submit"
           class="button-primary mx-1"
         >
-          Confirm
+          {{ $t('confirm') }}
         </UiButton>
       </template>
     </UiModalForm>

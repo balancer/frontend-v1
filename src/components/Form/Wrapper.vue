@@ -16,7 +16,7 @@
         :loading="wrapLoading"
         :disabled="!wrapInputValid"
       >
-        Wrap
+        {{ $t('wrap') }}
       </UiButton>
     </div>
     <div v-text="'WETH → ETH'" class="eyebrow mb-2" />
@@ -40,7 +40,7 @@
         :loading="unwrapLoading"
         :disabled="!unwrapInputValid"
       >
-        Unwrap
+        {{ $t('unwrap') }}
       </UiButton>
     </div>
   </div>

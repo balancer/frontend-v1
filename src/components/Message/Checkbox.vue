@@ -3,23 +3,19 @@
     <UiCheckbox class="error" :checked="accepted" @change="$emit('toggle')" />
     <div class="ml-4">
       <div v-if="custom">
-        • Do not add <b>deflationary tokens</b> or tokens with transfer fees.
+        {{ $t('tokenWarning1') }}
       </div>
       <div v-if="custom">
-        • Do not add tokens whose transfer functions do not return <b>bool</b>.
+        {{ $t('tokenWarning2') }}
       </div>
       <div v-if="custom">
-        • Any other <b>non-standard behavior from ERC20</b> may cause issues. Do
-        your own research!
+        {{ $t('tokenWarning3') }}
       </div>
       <div>
-        • Do not add tokens you don't trust, or whose rules for minting and
-        blacklisting you don’t agree with.
+        {{ $t('tokenWarning4') }}
       </div>
       <div>
-        • By checking this box, you agree that Balancer Labs is not liable for
-        any losses you might incur as a direct or indirect result of adding
-        liquidity to this pool.
+        {{ $t('tokenWarning5') }}
       </div>
     </div>
   </div>

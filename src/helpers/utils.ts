@@ -24,7 +24,7 @@ export const unknownColors = [
 ];
 
 export const liquidityToggleOptions = {
-  MULTI_ASSET: 'Multi assets',
+  MULTI_ASSET: 'Multi asset',
   SINGLE_ASSET: 'Single asset'
 };
 

@@ -2,7 +2,7 @@
   <UiModal :open="open" @close="$emit('close')" v-if="pool.id">
     <UiModalForm @submit="handleSubmit">
       <template slot="header">
-        <h3 class="text-white">Remove liquidity</h3>
+        <h3 v-text="$t('removeLiquidity')" class="text-white" />
       </template>
       <div class="text-center m-4 mt-0">
         <Toggle
@@ -21,9 +21,9 @@
         <div class="col-12 col-md-9 float-left pl-0 pl-md-4">
           <UiTable>
             <UiTableTh>
-              <div class="column-lg flex-auto text-left">Asset</div>
-              <div class="column">My Pool Balance</div>
-              <div class="column-sm">Withdraw</div>
+              <div v-text="$t('asset')" class="column-lg flex-auto text-left" />
+              <div v-text="$t('myPoolBalance')" class="column" />
+              <div v-text="$t('removeLiquidity')" class="column-sm" />
             </UiTableTh>
             <UiTableTr
               v-for="token in tokens"
@@ -59,11 +59,11 @@
           </UiTable>
           <UiTable class="mt-4">
             <UiTableTh class="text-left flex-items-center text-white">
-              <div class="flex-auto">Amount</div>
+              <div v-text="$t('amount')" class="flex-auto" />
               <div class="ml-2">
                 {{ _num(poolTokenBalance) }} {{ _shorten(pool.symbol, 12) }}
                 <a @click="setMax" class="link-text mr-3">
-                  <UiLabel v-text="'Max'" />
+                  <UiLabel v-text="$t('max')" />
                 </a>
               </div>
               <input
@@ -97,7 +97,7 @@
           class="button-primary ml-2"
           :loading="loading"
         >
-          Remove liquidity
+          {{ $t('removeLiquidity') }}
         </UiButton>
       </template>
     </UiModalForm>
@@ -191,7 +191,7 @@ export default {
       // Amount validation
       const amount = bnum(this.poolAmountIn);
       if (amount.gt(this.poolTokenBalance)) {
-        return 'Token amount should not exceed balance';
+        return this.$t('errExceedsBalance');
       }
       // Max ratio out validation
       if (!this.isMultiAsset) {
@@ -215,7 +215,7 @@ export default {
         if (amount.div(poolSupply).gt(0.99)) {
           // Invalidate user's attempt to withdraw the entire pool supply in a single token
           // At amounts close to 100%, solidity math freaks out
-          return 'Insufficient pool liquidity';
+          return this.$t('insufficientLiquidity');
         }
 
         const tokenAmountOut = calcSingleOutGivenPoolIn(
@@ -227,7 +227,7 @@ export default {
           swapFee
         );
         if (tokenAmountOut.div(tokenBalanceOut).gt(maxOutRatio)) {
-          return 'Insufficient pool liquidity';
+          return this.$t('insufficientLiquidity');
         }
       }
       return undefined;

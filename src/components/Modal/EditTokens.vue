@@ -8,9 +8,10 @@
         <div v-if="step === 0">
           <FormSelectTokens v-model="tokens" :value="tokens" />
           <div class="text-left mx-4 mb-4">
-            <label class="d-block text-center"
-              >Time lock to add token (in block)</label
-            >
+            <label
+              v-text="$t('addTokenTimelock')"
+              class="d-block text-center"
+            />
             <input
               v-model="addTokenTimeLockInBlocks"
               type="number"
@@ -25,7 +26,7 @@
               class="btn-outline d-inline-block column mx-1"
               @click="$emit('close')"
             >
-              Cancel
+              {{ $t('cancel') }}
             </button>
             <button
               :disabled="
@@ -36,7 +37,7 @@
               type="submit"
               class="btn-mktg d-inline-block column mx-1"
             >
-              Confirm
+              {{ $t('confirm') }}
             </button>
           </div>
         </div>
