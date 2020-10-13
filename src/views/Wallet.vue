@@ -1,7 +1,7 @@
 <template>
   <div class="px-0 px-md-5 py-4">
     <ListPools
-      title="My Liquidity"
+      title="$t('myLiquidity')"
       v-if="Object.keys(subgraph.poolShares).length > 0"
       :query="queryMyLiquidity"
       class="mb-4"

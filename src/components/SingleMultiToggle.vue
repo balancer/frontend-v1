@@ -5,14 +5,14 @@
       :class="{ selected: selected === multiAsset }"
       @click="onSelect(multiAsset)"
     >
-      All Pool Assets
+      {{ $t('allPoolAssets') }}
     </div>
     <div
       class="d-flex flex-justify-center py-2 text-white rounded-right-1 option"
       :class="{ selected: selected === singleAsset }"
       @click="onSelect(singleAsset)"
     >
-      Single Asset
+      {{ $t('singleAsset') }}
     </div>
   </div>
 </template>

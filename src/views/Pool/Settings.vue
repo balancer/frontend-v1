@@ -5,19 +5,22 @@
       class="border-bottom mb-4 pb-3"
     >
       <div class="float-right">
-        <UiButton @click="modalOpen.publicSwap = true">Toggle</UiButton>
+        <UiButton v-text="$t('toggle')" @click="modalOpen.publicSwap = true" />
       </div>
-      <label class="d-block mb-2">Public swap</label>
-      <p v-text="pool.publicSwap ? 'Active' : 'Paused'" class="text-gray" />
+      <label v-text="$t('publicSwap')" class="d-block mb-2" />
+      <p
+        v-text="pool.publicSwap ? $t('active') : $t('paused')"
+        class="text-gray"
+      />
     </div>
     <div
       v-if="bPool.metadata.rights.canChangeSwapFee"
       class="border-bottom mb-4 pb-3"
     >
       <div class="float-right">
-        <UiButton @click="modalOpen.swapFee = true">Change</UiButton>
+        <UiButton v-text="$t('change')" @click="modalOpen.swapFee = true" />
       </div>
-      <label class="d-block mb-2">Swap fee</label>
+      <label v-text="$t('swapFee')" class="d-block mb-2" />
       <p v-text="_num(pool.swapFee, 'percent')" class="text-gray" />
     </div>
     <div
@@ -25,19 +28,19 @@
       class="border-bottom mb-4 pb-3"
     >
       <div class="float-right">
-        <UiButton @click="modalOpen.cap = true">Change</UiButton>
+        <UiButton v-text="$t('change')" @click="modalOpen.cap = true" />
       </div>
-      <label class="d-block mb-2">Cap</label>
-      <p v-text="_num(cap)" class="text-gray" />
+      <label v-text="$t('cap')" class="d-block mb-2" />
+      <p v-text="_num(pool.bspCap)" class="text-gray" />
     </div>
     <div
       v-if="bPool.metadata.rights.canAddRemoveTokens && 1 === 2"
       class="border-bottom mb-4 pb-3"
     >
       <div class="float-right">
-        <UiButton @click="modalOpen.tokens = true">Add</UiButton>
+        <UiButton v-text="$t('add')" @click="modalOpen.tokens = true" />
       </div>
-      <label class="d-block mb-2">Tokens</label>
+      <label v-text="$t('tokens')" class="d-block mb-2" />
       <div v-if="pool.tokens.length" class="mb-2">
         <div
           class="text-center mr-2 d-inline-block"
@@ -59,21 +62,22 @@
       class="border-bottom mb-4 pb-3"
     >
       <div class="float-right">
-        <UiButton @click="modalOpen.gradualWeights = true"
-          >Update gradually</UiButton
-        >
+        <UiButton
+          v-text="$t('updateGradually')"
+          @click="modalOpen.gradualWeights = true"
+        />
       </div>
       <div class="float-right mr-2">
-        <UiButton @click="modalOpen.weights = true">Update</UiButton>
+        <UiButton v-text="$t('update')" @click="modalOpen.weights = true" />
       </div>
-      <label class="d-block mb-2">Weights</label>
+      <label v-text="$t('weights')" class="d-block mb-2" />
       <Pie :tokens="pool.tokens" size="64" class="mr-2" />
     </div>
     <div>
       <div class="float-right">
-        <UiButton @click="modalOpen.controller = true">Change</UiButton>
+        <UiButton v-text="$t('change')" @click="modalOpen.controller = true" />
       </div>
-      <label class="d-block mb-2">Controller</label>
+      <label v-text="$t('controller')" class="d-block mb-2" />
       <p v-text="pool.crpController" class="text-gray" />
     </div>
     <ModalEditPublicSwap
@@ -95,7 +99,7 @@
       @close="modalOpen.controller = false"
     />
     <ModalEditCap
-      :value="cap"
+      :value="pool.bspCap"
       :pool="pool"
       :open="modalOpen.cap"
       @close="modalOpen.cap = false"

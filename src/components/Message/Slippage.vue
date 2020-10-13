@@ -14,9 +14,11 @@ export default {
   props: ['value', 'isDeposit'],
   computed: {
     text() {
-      const action = this.isDeposit ? 'Adding' : 'Removing';
+      const action = this.isDeposit ? "$t('adding')" : "$t('removing')";
       const percentage = this._num(this.value, 'percent');
-      return `${action} liquidity will incur ${percentage} of slippage`;
+      return `${action} ${this.$t('liquidityIncurs')} ${percentage} ${this.$t(
+        'ofSlippage'
+      )}`;
     },
     isWarning() {
       return this.value.gte(0.01);

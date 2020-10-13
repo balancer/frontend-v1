@@ -17,14 +17,14 @@
             class="button-primary ml-2"
             @click="openAddLiquidityModal"
           >
-            Add liquidity
+            {{ $t('addLiquidity') }}
           </UiButton>
           <UiButton
             v-if="enableAddLiquidity"
             class="ml-2"
             @click="openRemoveLiquidityModal"
           >
-            Remove liquidity
+            {{ $t('removeLiquidity') }}
           </UiButton>
         </div>
       </div>

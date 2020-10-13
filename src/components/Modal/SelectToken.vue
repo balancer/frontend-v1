@@ -2,11 +2,11 @@
   <UiModal :open="open" @close="close" style="max-width: 440px;">
     <UiModalForm>
       <template slot="header">
-        <h3 class="text-white mb-4">Select Token</h3>
+        <h3 v-text="$t('selectToken')" class="text-white mb-4" />
         <Search
           v-model="query"
           @input="handleQuery"
-          placeholder="Search name, symbol or address"
+          v-bind:placeholder="$t('searchTypes')"
         />
       </template>
       <UiLoading v-if="loading" class="big py-3" />
@@ -15,7 +15,7 @@
           class="py-3 text-center"
           v-if="query && Object.keys(tokens).length === 0"
         >
-          No token found for this search
+          {{ $t('noTokenFound') }}
         </li>
         <li v-for="(token, i) in tokens" :key="i">
           <a
@@ -29,7 +29,7 @@
               <span
                 class="text-red ml-2"
                 v-if="isDisabled(i)"
-                v-text="'Bad ERC20'"
+                v-text="$t('badERC20')"
               />
             </div>
             <div v-if="token.balance">

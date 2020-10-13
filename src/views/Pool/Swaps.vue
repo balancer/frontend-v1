@@ -5,10 +5,10 @@
         v-text="'Time'"
         class="flex-auto text-left hide-sm hide-md hide-lg"
       />
-      <div v-text="'Trade In'" class="column-lg text-left" />
-      <div v-text="'Trade Out'" class="column-lg text-left" />
-      <div v-text="'Transaction'" class="column hide-sm hide-md" />
-      <div v-text="'Swap fee'" class="column hide-sm hide-md hide-lg" />
+      <div v-text="$t('tradeIn')" class="column-lg text-left" />
+      <div v-text="$t('tradeOut')" class="column-lg text-left" />
+      <div v-text="$t('transaction')" class="column hide-sm hide-md" />
+      <div v-text="$t('swapFee')" class="column hide-sm hide-md hide-lg" />
     </UiTableTh>
     <div
       v-infinite-scroll="loadMore"

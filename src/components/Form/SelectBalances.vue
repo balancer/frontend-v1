@@ -2,9 +2,9 @@
   <div>
     <UiTable class="m-4">
       <UiTableTh>
-        <div class="flex-auto text-left">Tokens</div>
-        <div class="column text-left">Balance</div>
-        <div class="column-sm">Deposits</div>
+        <div v-text="$t('tokens')" class="flex-auto text-left" />
+        <div v-text="$t('balance')" class="column text-left" />
+        <div v-text="$t('deposits')" class="column-sm" />
       </UiTableTh>
       <UiTableTr v-for="(token, i) in tokens" :key="token">
         <div class="flex-auto d-flex flex-items-center text-left d-flex">
@@ -36,8 +36,8 @@
       </UiTableTr>
     </UiTable>
     <div class="m-4 p-3 border rounded-1 text-white">
-      <VueSwitch v-model="autoPricing" class="mr-3" /> Calculate deposits using
-      Balancer price (recommended)
+      <VueSwitch v-model="autoPricing" class="mr-3" />
+      {{ $t('calculateDeposits') }}
     </div>
   </div>
 </template>

@@ -21,11 +21,9 @@
           v-if="pool.config.name || pool.metadata.name"
           v-text="_shorten(pool.config.name || pool.metadata.name, 24)"
         />
-        <span
-          v-else
-          v-text="`Pool ${_shortenAddress(pool.address)}`"
-          class="mr-2"
-        />
+        <span v-else class="mr-2">
+          {{ $t('pool') }} {{ _shortenAddress(pool.address) }}
+        </span>
         <UiLabel v-if="!pool.metadata.finalized" v-text="pool.getTypeStr()" />
       </h3>
       <a :href="_etherscanLink(pool.getBptAddress())" target="_blank">
