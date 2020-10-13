@@ -46,7 +46,7 @@ export default {
     _ticker(address: string): string {
       if (address === 'ether') return 'ETH';
       const token = config.tokens[address];
-      return token ? token.symbol : this._shorten(address);
+      return token ? token.symbol : this._shortenAddress(address);
     },
     _precision(rawValue: number, address: string): number {
       const tokenConfig = config.tokens[address] || {};

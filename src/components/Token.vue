@@ -1,10 +1,12 @@
 <template>
-  <span class="d-inline-block" style="line-height: 0;">
+  <span
+    class="circle bg-white overflow-hidden d-inline-block"
+    style="line-height: 0;"
+  >
     <img
       v-if="tokenLogoUrl"
       :src="tokenLogoUrl"
       :style="style"
-      class="circle bg-white"
       :title="symbol"
     />
     <Avatar :style="style" :address="address" v-else />

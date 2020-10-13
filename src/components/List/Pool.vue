@@ -15,7 +15,7 @@
         >
           <Icon name="bullet" size="16" :style="`color: ${token.color}`" />
           {{ _num(token.weightPercent / 100, 'percent') }}
-          {{ _ticker(token.checksum) }}
+          {{ token.symbol }}
         </div>
       </div>
     </div>
