@@ -6,9 +6,7 @@
   >
     <Icon name="info" size="22" class="mr-4" />
     <div>
-      <div>
-        There are similar pools available:
-      </div>
+      <div v-text="$t('similarPools')" />
       <div v-for="pool in pools" :key="pool.id">
         <router-link
           :to="{ name: 'pool', params: { id: pool.id } }"
@@ -144,8 +142,11 @@ export default {
         tokenShares.push(tokenShare);
       }
       const tokenString = tokenShares.join(' ');
-      const feeString = `fee: ${this._num(pool.swapFee, 'percent')}`;
-      const liquidityString = `liquidity: ${this._num(
+      const feeString = `${this.$t('fee')}: ${this._num(
+        pool.swapFee,
+        'percent'
+      )}`;
+      const liquidityString = `${this.$t('liquidity')}: ${this._num(
         pool.liquidity,
         'currency'
       )}`;

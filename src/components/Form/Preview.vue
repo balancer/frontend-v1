@@ -2,9 +2,9 @@
   <div class="p-4">
     <UiTable class="mb-4">
       <UiTableTh>
-        <div class="flex-auto text-left">Tokens</div>
-        <div class="column text-left">Weights</div>
-        <div class="column">Deposits</div>
+        <div v-text="$t('tokens')" class="flex-auto text-left" />
+        <div v-text="$t('weights')" class="column text-left" />
+        <div v-text="$t('deposits')" class="column" />
       </UiTableTh>
       <UiTableTr v-for="(token, i) in tokens" :key="token">
         <div class="d-flex flex-auto">
@@ -30,7 +30,7 @@
     </UiTable>
     <UiTable>
       <UiTableTh>
-        <div class="flex-auto text-left">Swap Fee</div>
+        <div v-text="$t('swapFee')" class="flex-auto text-left" />
         <div class="text-white" v-text="`${parseFloat(swapFee.toFixed(4))}%`" />
       </UiTableTh>
     </UiTable>

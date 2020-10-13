@@ -51,9 +51,9 @@
           class="button-blue d-inline-block column mx-1"
           :class="{ 'btn-white': step === 0 }"
         >
-          <template v-if="step === lastStep - 1">Preview</template>
-          <template v-else-if="step === lastStep">Confirm</template>
-          <template v-else>Next</template>
+          <template v-if="step === lastStep - 1" v-text="$t('preview')" />
+          <template v-else-if="step === lastStep" v-text="$t('confirm')" />
+          <template v-else v-text="$t('next')" />
         </UiButton>
       </template>
     </UiModalForm>
@@ -69,11 +69,11 @@ export default {
   data() {
     return {
       stepTitles: [
-        'Select Tokens',
-        'Set Weights',
-        'Deposit',
-        'Set Swap Fee',
-        'Preview'
+        this.$t('selectTokens'),
+        this.$t('setWeights'),
+        this.$t('deposit'),
+        this.$t('setSwapFee'),
+        this.$t('preview')
       ],
       loading: false,
       step: 0,

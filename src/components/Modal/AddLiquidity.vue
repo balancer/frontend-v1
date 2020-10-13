@@ -2,7 +2,7 @@
   <UiModal :open="open" @close="$emit('close')" v-if="pool.id">
     <UiModalForm @submit="handleSubmit">
       <template slot="header">
-        <h3 class="text-white">Add liquidity</h3>
+        <h3 v-text="$t('addLiquidity')" class="text-white" />
       </template>
       <div class="text-center m-4 mt-0">
         <Toggle
@@ -21,9 +21,9 @@
         <div class="col-12 col-md-9 float-left pl-0 pl-md-4">
           <UiTable>
             <UiTableTh>
-              <div class="column-lg flex-auto text-left">Asset</div>
-              <div class="column">Wallet Balance</div>
-              <div class="column-sm">Deposit Amount</div>
+              <div v-text="$t('asset')" class="column-lg flex-auto text-left" />
+              <div v-text="$t('walletBalance')" class="column" />
+              <div v-text="$t('depositAmount')" class="column-sm" />
             </UiTableTh>
             <UiTableTr
               v-for="token in pool.tokens"
@@ -65,7 +65,7 @@
                   )
                 }}
                 <a @click="handleMax(token)" class="ml-1">
-                  <UiLabel v-text="'Max'" />
+                  <UiLabel v-text="$t('max')" />
                 </a>
               </div>
               <div class="column-sm">
@@ -87,7 +87,7 @@
           <UiTable class="mt-4">
             <UiTableTh class="text-left flex-items-center text-white">
               <div class="flex-auto">
-                {{ _shorten(pool.symbol, 12) }} amount
+                {{ _shorten(pool.symbol, 12) }} {{ $t('amount') }}
               </div>
               <div class="flex-auto text-right">
                 {{ _num(userLiquidity.absolute.current) }}
@@ -145,7 +145,7 @@
           "
           :loading="loading"
         >
-          Add liquidity
+          {{ $t('addLiquidity') }}
         </UiButton>
       </template>
     </UiModalForm>
@@ -259,7 +259,7 @@ export default {
           this.config.untrusted.includes(token.checksum)
         )
       ) {
-        return 'This pool contains an untrusted token that may cause loss of funds. Do not deposit.';
+        return this.$t('untrustedTokens');
       }
       return undefined;
     },
@@ -286,7 +286,7 @@ export default {
           this.web3.tokenMetadata[token].decimals
         );
         if (amount.gt(balance)) {
-          return 'Token amount should not exceed balance';
+          return this.$t('amountExceedsBalance');
         }
       }
       // Max in ratio validation
@@ -297,7 +297,7 @@ export default {
           token => token.checksum === this.activeToken
         );
         if (amount.div(tokenIn.balance).gt(maxInRatio)) {
-          return 'Insufficient pool liquidity';
+          return this.$t('insufficientLiquidity');
         }
       }
       return undefined;
@@ -317,7 +317,7 @@ export default {
           )
         ) {
           const ticker = this._ticker(token);
-          return `Unlock ${ticker} to continue`;
+          return `${this.$t('unlock')} ${ticker} ${this.$t('toContinue')}`;
         }
       }
       return undefined;
@@ -327,11 +327,11 @@ export default {
         return undefined;
       if (!this.transactionReverted) return undefined;
       if (hasToken(this.pool, 'SNX')) {
-        return 'Adding liquidity failed as your SNX is locked in staking.';
+        return this.$t('addStakedSNX');
       }
       const synths = ['sUSD', 'sBTC', 'sETH', 'sXAU', 'sXAG', 'sDEFI', 'sXMR'];
       if (synths.some(synth => hasToken(this.pool, synth))) {
-        return 'Adding liquidity failed as your Synthetix position might go underwater. ';
+        return this.$t('addSNXUnderwater');
       }
       const aTokens = [
         'aDAI',
@@ -353,7 +353,7 @@ export default {
         'aZRX'
       ];
       if (aTokens.some(aToken => hasToken(this.pool, aToken))) {
-        return 'Adding liquidity failed as your Aave position might go underwater. ';
+        return this.$t('addAAVEUnderwater');
       }
       const cTokens = [
         'cUSDC',
@@ -366,9 +366,9 @@ export default {
         'cWBTC'
       ];
       if (cTokens.some(cToken => hasToken(this.pool, cToken))) {
-        return 'Adding liquidity failed as your Compound position might go underwater. ';
+        return this.$t('addCompoundUnderwater');
       }
-      return 'Adding liquidity failed as one of the underlying tokens blocked the transfer. ';
+      return this.$t('addTransferBlocked');
     },
     hasCustomToken() {
       if (this.validationError || this.tokenError) {

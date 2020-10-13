@@ -2,13 +2,13 @@
   <UiModal :open="open" @close="$emit('close')" style="max-width: 440px;">
     <UiModalForm @submit="handleSubmit">
       <template slot="header">
-        <h3 class="text-white">Gradual weight update</h3>
+        <h3 v-text="$t('gradualWeightUpdate')" class="text-white" />
       </template>
       <UiTable>
         <UiTableTh>
-          <div class="flex-auto text-left">Tokens</div>
-          <div class="column-sm">Weights</div>
-          <div class="column">Percent</div>
+          <div v-text="$t('tokens')" class="flex-auto text-left" />
+          <div v-text="$t('weights')" class="column-sm" />
+          <div v-text="$t('percent')" class="column" />
         </UiTableTh>
         <UiTableTr v-for="(token, i) in pool.tokens" :key="token.checksum">
           <Token :address="token.checksum" size="28" class="mr-2" />
@@ -37,7 +37,7 @@
         </UiTableTr>
       </UiTable>
       <div class="ml-2 my-2">
-        Start block:
+        {{ $t('startBlock') }}:
         <input
           v-model="startBlock"
           class="input input-blocknumber text-right ml-2"
@@ -46,7 +46,7 @@
         {{ formatBlockNumber(startBlock) }}
       </div>
       <div class="ml-2 my-2">
-        End block:
+        {{ $t('endBlock') }}:
         <input
           v-model="endBlock"
           class="input input-blocknumber text-right ml-2"
@@ -56,7 +56,7 @@
       </div>
       <template slot="footer">
         <UiButton @click="$emit('close')" type="button" class="mx-1">
-          Cancel
+          {{ $t('cancel') }}
         </UiButton>
         <UiButton
           :disabled="loading || !isValid"
@@ -64,7 +64,7 @@
           type="submit"
           class="button-primary mx-1"
         >
-          Confirm
+          {{ $t('confirm') }}
         </UiButton>
       </template>
     </UiModalForm>

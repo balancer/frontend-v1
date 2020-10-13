@@ -7,14 +7,17 @@
     <UiTable>
       <UiTableTh>
         <div
-          v-text="'Pool address'"
+          v-text="$t('poolAddress')"
           class="column-sm text-left hide-sm hide-md hide-lg"
         />
-        <div v-text="'Assets'" class="flex-auto text-left" />
-        <div v-text="'Swap fee'" class="column hide-sm hide-md" />
-        <div v-text="'Market cap'" class="column" />
-        <div v-text="'My liquidity'" class="column hide-sm hide-md hide-lg" />
-        <div v-text="'Volume (24h)'" class="column hide-sm hide-md hide-lg" />
+        <div v-text="$t('assets')" class="flex-auto text-left" />
+        <div v-text="$t('swapFee')" class="column hide-sm hide-md" />
+        <div v-text="$t('marketCap')" class="column" />
+        <div
+          v-text="$t('myLiquidity')"
+          class="column hide-sm hide-md hide-lg"
+        />
+        <div v-text="$t('volume24')" class="column hide-sm hide-md hide-lg" />
       </UiTableTh>
       <div
         v-infinite-scroll="loadMore"
