@@ -2,7 +2,7 @@ import numeral from 'numeral';
 import { mapState } from 'vuex';
 import store from '@/store';
 import config from '@/config';
-import { shortenAddress, shorten, trunc, etherscanLink } from '@/helpers/utils';
+import { shortenAddress, shorten, trunc } from '@/helpers/utils';
 
 // @ts-ignore
 const modules = Object.entries(store.state).map(module => module[0]);
@@ -41,7 +41,7 @@ export default {
       return trunc(value, decimals);
     },
     _etherscanLink(str: string, type: string): string {
-      return etherscanLink(str, type);
+      return `${config.explorer}/${type}/${str}`;
     },
     _ticker(address: string): string {
       if (address === 'ether') return 'ETH';

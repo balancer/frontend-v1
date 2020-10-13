@@ -7,8 +7,7 @@ import { poolRights, formatPool } from '@/helpers/utils';
 import { formatUnits } from '@ethersproject/units';
 import queries from '@/helpers/queries.json';
 import pools from './pools.json';
-
-const subgraphUrl = process.env.VUE_APP_SUBGRAPH_URL;
+import config from '@/config';
 
 export default class Pool {
   public readonly address: string;
@@ -142,7 +141,7 @@ export default class Pool {
     };
     try {
       const response = await subgraphRequest(
-        subgraphUrl,
+        config.subgraphUrl,
         merge(queries['getPool'], query)
       );
       return formatPool(response.pool);

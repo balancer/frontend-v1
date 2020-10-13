@@ -189,11 +189,6 @@ export function getTokenBySymbol(symbol) {
   return config.tokens[tokenAddress];
 }
 
-export function etherscanLink(str: string, type = 'address'): string {
-  const network = config.network === 'homestead' ? '' : `${config.network}.`;
-  return `https://${network}etherscan.io/${type}/${str}`;
-}
-
 export const isTxRejected = error => {
   if (!error) {
     return false;
