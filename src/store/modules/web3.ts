@@ -239,7 +239,7 @@ const actions = {
     const multi = new Contract(
       config.addresses.multicall,
       abi['Multicall'],
-      web3
+      provider
     );
     const calls = [];
     const testToken = new Interface(abi.TestToken);
@@ -357,7 +357,7 @@ const actions = {
   getLatestBlock: async ({ commit }) => {
     commit('GET_LATEST_BLOCK_REQUEST');
     try {
-      const block = await web3.getBlockNumber();
+      const block = await provider.getBlockNumber();
       commit('GET_LATEST_BLOCK_SUCCESS', block);
       return block;
     } catch (e) {
@@ -368,7 +368,7 @@ const actions = {
   resolveName: async ({ commit }, payload) => {
     commit('RESOLVE_NAME_REQUEST');
     try {
-      const address = await web3.resolveName(payload);
+      const address = await provider.resolveName(payload);
       commit('RESOLVE_NAME_SUCCESS');
       return address;
     } catch (e) {
@@ -433,7 +433,7 @@ const actions = {
     const multi = new Contract(
       config.addresses.multicall,
       abi['Multicall'],
-      web3
+      provider
     );
     const calls = [];
     const testToken = new Interface(abi.TestToken);
@@ -474,7 +474,7 @@ const actions = {
     const multi = new Contract(
       config.addresses.multicall,
       abi['Multicall'],
-      web3
+      provider
     );
     const calls = [];
     const tokenIface = new Interface(abi.TestToken);
@@ -506,7 +506,7 @@ const actions = {
     const multi = new Contract(
       config.addresses.multicall,
       abi['Multicall'],
-      web3
+      provider
     );
     const calls = [];
     const testToken = new Interface(abi.TestToken);
@@ -553,7 +553,7 @@ const actions = {
     const multi = new Contract(
       config.addresses.multicall,
       abi['Multicall'],
-      web3
+      provider
     );
     const calls = [];
     const testToken = new Interface(abi.TestToken);
@@ -597,7 +597,7 @@ const actions = {
       const dsProxyRegistryContract = new Contract(
         config.addresses.dsProxyRegistry,
         abi['DSProxyRegistry'],
-        web3
+        provider
       );
       const proxy = await dsProxyRegistryContract.proxies(address);
       commit('GET_PROXY_SUCCESS', proxy);
@@ -612,7 +612,7 @@ const actions = {
     const multi = new Contract(
       config.addresses.multicall,
       abi['Multicall'],
-      web3
+      provider
     );
     const calls = [];
     const crpIface = new Interface(abi.ConfigurableRightsPool);

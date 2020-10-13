@@ -12,6 +12,17 @@ export const MAX_UINT = MaxUint256;
 export const POOL_TOKENS_DECIMALS = 18;
 export const GAS_LIMIT_BUFFER = 0.1;
 
+export const unknownColors = [
+  '#5d6872',
+  '#7e9e99',
+  '#9d9f7f',
+  '#68aca9',
+  '#a593a5',
+  '#387080',
+  '#c7bdf4',
+  '#c28d75'
+];
+
 export const liquidityToggleOptions = {
   MULTI_ASSET: 'Multi asset',
   SINGLE_ASSET: 'Single asset'
@@ -30,17 +41,6 @@ export const poolRights = {
   canWhitelistLPs: 'Can whitelist LPs',
   canChangeCap: 'Can change pool cap'
 };
-
-export const unknownColors = [
-  '#6f6776',
-  '#9a9a97',
-  '#c5ccb8',
-  '#c38890',
-  '#a593a5',
-  '#666092',
-  '#9a4f50',
-  '#c28d75'
-];
 
 export function jsonParse(input, fallback?) {
   try {
@@ -187,11 +187,6 @@ export function getTokenBySymbol(symbol) {
     tokenAddress => config.tokens[tokenAddress].symbol === symbol
   );
   return config.tokens[tokenAddress];
-}
-
-export function etherscanLink(str: string, type = 'address'): string {
-  const network = config.network === 'homestead' ? '' : `${config.network}.`;
-  return `https://${network}etherscan.io/${type}/${str}`;
 }
 
 export const isTxRejected = error => {

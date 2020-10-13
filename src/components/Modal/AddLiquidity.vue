@@ -47,7 +47,7 @@
                   "
                 />
                 <Token :address="token.address" class="mr-2" size="20" />
-                <div class="text-white">{{ _ticker(token.checksum) }}</div>
+                <div v-text="token.symbol" class="text-white" />
                 <ButtonUnlock
                   class="button-primary ml-2"
                   :tokenAddress="token.checksum"
@@ -316,8 +316,7 @@ export default {
             this.web3.tokenMetadata[token].decimals
           )
         ) {
-          const ticker = this._ticker(token);
-          return `${this.$t('unlock')} ${ticker} ${this.$t('toContinue')}`;
+          return `${this.$t('unlock')} ${token.symbol} ${this.$t('toContinue')}`;
         }
       }
       return undefined;

@@ -1,6 +1,6 @@
 import { JsonRpcProvider } from '@ethersproject/providers';
+import config from '@/config';
 
-const url: any = process.env.VUE_APP_RPC_URL;
-const provider = new JsonRpcProvider(url);
+const provider = new JsonRpcProvider(config.rpcUrl);
 
 export default provider;
