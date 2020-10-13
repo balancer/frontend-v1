@@ -28,7 +28,7 @@
       <h5 v-else v-text="$t('none')" class="text-white" />
     </div>
     <div v-if="rights.canChangeWeights" class="mb-3">
-      <div v-text="$t('minimumUpdatePeriod')" class="mb-2"/>
+      <div v-text="$t('minimumUpdatePeriod')" class="mb-2" />
       <h5
         v-text="_num(bPool.metadata.minimumWeightChangeBlockPeriod)"
         class="text-white"
