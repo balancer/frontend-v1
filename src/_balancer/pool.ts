@@ -69,7 +69,9 @@ export default class Pool {
         symbol,
         totalShares,
         rights,
-        bspCap
+        bspCap,
+        minimumWeightChangeBlockPeriod,
+        addTokenTimeLockInBlocks
       ] = await multicall(
         provider,
         abi['ConfigurableRightsPool'],
@@ -80,7 +82,9 @@ export default class Pool {
           'symbol',
           'totalSupply',
           'rights',
-          'bspCap'
+          'bspCap',
+          'minimumWeightChangeBlockPeriod',
+          'addTokenTimeLockInBlocks'
         ].map(method => [address, method, []])
       );
       return {
@@ -91,7 +95,9 @@ export default class Pool {
         rights: Object.fromEntries(
           Object.entries(poolRights).map((right, i) => [right[0], rights[i]])
         ),
-        bspCap: formatUnits(bspCap.toString(), decimals)
+        bspCap: formatUnits(bspCap.toString(), decimals),
+        minimumWeightChangeBlockPeriod: minimumWeightChangeBlockPeriod.toString(),
+        addTokenTimeLockInBlocks: addTokenTimeLockInBlocks.toString()
       };
     }
     const [
@@ -120,7 +126,9 @@ export default class Pool {
       swapFee: formatUnits(swapFee.toString(), decimals),
       totalShares: formatUnits(totalShares.toString(), decimals),
       rights: [],
-      bspCap: 0
+      bspCap: 0,
+      minimumWeightChangeBlockPeriod: 10,
+      addTokenTimeLockInBlocks: 10
     };
   }
 
