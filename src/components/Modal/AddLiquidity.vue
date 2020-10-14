@@ -316,7 +316,9 @@ export default {
             this.web3.tokenMetadata[token].decimals
           )
         ) {
-          return `${this.$t('unlock')} ${token.symbol} ${this.$t('toContinue')}`;
+          return `${this.$t('unlock')} ${token.symbol} ${this.$t(
+            'toContinue'
+          )}`;
         }
       }
       return undefined;
