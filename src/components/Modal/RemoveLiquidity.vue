@@ -47,7 +47,7 @@
                   "
                 />
                 <Token :address="token.address" class="mr-3" size="20" />
-                <div class="text-white">{{ _ticker(token.checksum) }}</div>
+                <div v-text="token.symbol" class="text-white" />
               </div>
               <div class="column">
                 {{ _num(token.myBalance) }}
