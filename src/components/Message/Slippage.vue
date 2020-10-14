@@ -14,7 +14,7 @@ export default {
   props: ['value', 'isDeposit'],
   computed: {
     text() {
-      const action = this.isDeposit ? "$t('adding')" : "$t('removing')";
+      const action = this.isDeposit ? this.$t('adding') : this.$t('removing');
       const percentage = this._num(this.value, 'percent');
       return `${action} ${this.$t('liquidityIncurs')} ${percentage} ${this.$t(
         'ofSlippage'
