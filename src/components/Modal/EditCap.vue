@@ -8,6 +8,14 @@
         <h5 class="px-4 mb-4 mx-auto overflow-hidden" style="max-width: 340px;">
           {{ $t('changePoolSupplyCap') }}
         </h5>
+        <div class="text-center m-4 mt-0">
+          <Toggle
+            :value="type"
+            :options="capInputOptions"
+            @select="handleSelectType"
+            class="mt-4"
+          />
+        </div>
         <input
           type="number"
           class="h3 py-2 px-3 input text-center"
@@ -15,6 +23,7 @@
           :class="isValid ? 'text-white' : 'text-red'"
           :min="0"
           :step="1"
+          :disabled="'UNLIMITED' == this.type"
           v-model="input"
         />
       </div>
@@ -23,7 +32,7 @@
           {{ $t('cancel') }}
         </UiButton>
         <UiButton
-          :disabled="loading || input === value"
+          :disabled="loading || (input === value && 'NUMERIC' == type)"
           :loading="loading"
           type="submit"
           class="button-primary mx-1"
@@ -38,19 +47,24 @@
 <script>
 import { mapActions } from 'vuex';
 import { validateNumberInput, ValidationError } from '@/helpers/validation';
+import { MAX, capInputOptions } from '@/helpers/utils';
 
 export default {
   props: ['open', 'value', 'pool'],
   data() {
     return {
       loading: false,
-      input: false
+      input: false,
+      type: false,
+      capInputOptions,
+      MAX
     };
   },
   watch: {
     open() {
       this.loading = false;
-      this.input = this.value.replace('.0', '');
+      this.input = this.value === MAX ? '' : this.value.replace('.0', '');
+      this.type = this.value === MAX ? 'UNLIMITED' : 'NUMERIC';
     }
   },
   computed: {
@@ -69,13 +83,16 @@ export default {
       try {
         this.tx = await this.setCap({
           poolAddress: this.pool.controller,
-          newCap: this.input
+          newCap: 'UNLIMITED' == this.type ? MAX.toString() : this.input
         });
         this.$emit('close');
       } catch (e) {
         console.error(e);
       }
       this.loading = false;
+    },
+    handleSelectType(type) {
+      this.type = type;
     }
   }
 };

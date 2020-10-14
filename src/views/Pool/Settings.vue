@@ -31,7 +31,10 @@
         <UiButton v-text="$t('change')" @click="modalOpen.cap = true" />
       </div>
       <label v-text="$t('cap')" class="d-block mb-2" />
-      <p v-text="_num(pool.bspCap)" class="text-gray" />
+      <div class="text-gray">
+        <div v-if="pool.bspCap === MAX" v-text="$t('unlimited')" />
+        <div v-else v-text="_num(pool.bspCap)" />
+      </div>
     </div>
     <div
       v-if="bPool.metadata.rights.canAddRemoveTokens && 1 === 2"
@@ -124,7 +127,7 @@
 
 <script>
 import { getAddress } from '@ethersproject/address';
-import { bnum, scale } from '@/helpers/utils';
+import { bnum, scale, MAX } from '@/helpers/utils';
 
 export default {
   props: ['pool', 'bPool'],
@@ -138,7 +141,8 @@ export default {
         weights: false,
         gradualWeights: false,
         tokens: false
-      }
+      },
+      MAX
     };
   },
   computed: {

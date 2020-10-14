@@ -68,7 +68,8 @@ export default class Pool {
         symbol,
         totalShares,
         rights,
-        bspCap
+        bspCap,
+        crpController
       ] = await multicall(
         provider,
         abi['ConfigurableRightsPool'],
@@ -79,7 +80,8 @@ export default class Pool {
           'symbol',
           'totalSupply',
           'rights',
-          'bspCap'
+          'bspCap',
+          'getController'
         ].map(method => [address, method, []])
       );
       return {
@@ -90,7 +92,8 @@ export default class Pool {
         rights: Object.fromEntries(
           Object.entries(poolRights).map((right, i) => [right[0], rights[i]])
         ),
-        bspCap: formatUnits(bspCap.toString(), decimals)
+        bspCap: formatUnits(bspCap.toString(), decimals),
+        crpController: crpController[0]
       };
     }
     const [

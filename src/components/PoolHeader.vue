@@ -26,7 +26,7 @@
         </span>
         <UiLabel v-if="!pool.metadata.finalized" v-text="pool.getTypeStr()" />
       </h3>
-      <a :href="_etherscanLink(pool.getBptAddress())" target="_blank">
+      <a :href="_etherscanLink(pool.getBptAddress(), 'token')" target="_blank">
         <span
           v-if="pool.config.symbol || pool.metadata.symbol"
           v-text="_shorten(pool.config.symbol || pool.metadata.symbol)"

@@ -159,6 +159,7 @@
     "tradeIn": "Trade in",
     "tradeOut": "Trade out",
     "transaction": "Transaction",
+    "unlimited": "Unlimited",
     "unlock": "unlock",
     "untrustedTokens": "This pool contains an untrusted token that may cause loss of funds. Do not deposit.",
     "unwrap": "Unwrap",

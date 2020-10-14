@@ -29,7 +29,13 @@
     </div>
     <div v-if="rights.canChangeCap" class="mb-3">
       <div v-text="$t('cap')" class="mb-2" />
-      <h5 v-text="_num(bPool.metadata.bspCap)" class="text-white" />
+      <h5 class="text-white">
+        <div
+          v-if="bPool.metadata.bspCap.toString() === MAX"
+          v-text="$t('unlimited')"
+        />
+        <div v-else v-text="_num(bPool.metadata.bspCap)" />
+      </h5>
     </div>
     <div class="mb-3">
       <div
@@ -38,7 +44,7 @@
       />
       <h5>
         <a
-          :href="_etherscanLink(bPool.metadata.controller)"
+          :href="_etherscanLink(bPool.metadata.controller, 'token')"
           target="_blank"
           class="text-white"
         >
@@ -52,7 +58,7 @@
       <div v-text="$t('smartPoolController')" class="mb-2" />
       <h5>
         <a
-          :href="_etherscanLink(bPool.metadata.crpController)"
+          :href="_etherscanLink(bPool.metadata.crpController, 'address')"
           target="_blank"
           class="text-white"
         >
@@ -124,13 +130,14 @@
 </template>
 
 <script>
-import { filterObj, poolRights } from '@/helpers/utils';
+import { filterObj, poolRights, MAX } from '@/helpers/utils';
 
 export default {
   props: ['bPool'],
   data() {
     return {
-      poolRights
+      poolRights,
+      MAX
     };
   },
   computed: {
