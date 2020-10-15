@@ -143,6 +143,6 @@ export default {
       },
       MAX
     };
-  },
+  }
 };
 </script>
