@@ -40,7 +40,7 @@ export default {
     _trunc(value: number, decimals: number): number {
       return trunc(value, decimals);
     },
-    _etherscanLink(str: string, type: string = 'address'): string {
+    _etherscanLink(str: string, type = 'address'): string {
       return `${config.explorer}/${type}/${str}`;
     },
     _ticker(address: string): string {
