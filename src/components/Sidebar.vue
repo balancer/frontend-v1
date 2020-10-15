@@ -9,21 +9,6 @@
       :items="items"
       class="flex-auto mb-4"
     />
-    <FormWrapper class="p-4 border-top" />
-    <div class="p-4 border-top">
-      <div v-text="$t('myWallet')" class="eyebrow mb-4" />
-      <div v-if="web3.account" class="text-white">
-        <div v-for="(balance, i) in balances" :key="i" class="d-flex mb-3">
-          <Token :address="i" size="20" class="mr-2" />
-          <div v-text="_ticker(i)" v-if="i !== 'ether'" class="flex-auto" />
-          <div v-else class="flex-auto">ETH</div>
-          <div v-text="_num(formatBalance(balance, i))" />
-        </div>
-      </div>
-      <div v-else class="text-white mb-3">
-        {{ $t('connectWalletForBalance') }}
-      </div>
-    </div>
   </div>
 </template>
 
@@ -69,6 +54,10 @@ export default {
         items.push({
           name: 'myPools',
           to: { name: 'my-pools' }
+        });
+        items.push({
+          name: 'myWallet',
+          to: { name: 'wallet' }
         });
       }
 

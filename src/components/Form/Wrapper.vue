@@ -2,16 +2,19 @@
   <div>
     <div v-text="'ETH → WETH'" class="eyebrow mb-2" />
     <div class="d-flex mb-3">
-      <div class="input d-flex flex-justify-end">
+      <UiButton class="d-flex flex-auto">
         <input
           v-model="wrapAmount"
-          class="flex-auto text-right amount-input"
+          class="width-full amount-input"
           :class="wrapInputValid ? 'text-white' : 'text-red'"
           placeholder="0.0"
         />
-      </div>
+        <a @click="handleWrapMax()" class="mr-n2 ml-2">
+          <UiLabel v-text="'Max'" />
+        </a>
+      </UiButton>
       <UiButton
-        class="ml-2 px-4"
+        class="ml-2 col-4"
         @click="wrapEther"
         :loading="wrapLoading"
         :disabled="!wrapInputValid"
@@ -21,21 +24,19 @@
     </div>
     <div v-text="'WETH → ETH'" class="eyebrow mb-2" />
     <div class="d-flex mb-2">
-      <div
-        class="input d-flex flex-items-center flex-justify-between position-relative"
-      >
-        <a @click="handleMax()">
-          <UiLabel v-text="'Max'" />
-        </a>
+      <UiButton class="d-flex flex-auto position-relative">
         <input
           v-model="unwrapAmount"
-          class="flex-auto text-right amount-input ml-1"
+          class="width-full amount-input ml-1"
           :class="unwrapInputValid ? 'text-white' : 'text-red'"
           placeholder="0.0"
         />
-      </div>
+        <a @click="handleUnwrapMax()" class="mr-n2 ml-2">
+          <UiLabel v-text="'Max'" />
+        </a>
+      </UiButton>
       <UiButton
-        class="ml-2 px-3"
+        class="ml-2 col-4"
         @click="unwrapEther"
         :loading="unwrapLoading"
         :disabled="!unwrapInputValid"
@@ -90,7 +91,12 @@ export default {
       await this.unwrap(this.unwrapAmount);
       this.unwrapLoading = false;
     },
-    handleMax() {
+    handleWrapMax() {
+      const ethBalance = this.web3.balances['ether'] || '0';
+      const balance = normalizeBalance(ethBalance, 18);
+      this.wrapAmount = balance.toString();
+    },
+    handleUnwrapMax() {
       const weth = this.config.tokens[this.config.addresses.weth];
       const wethBalance = this.web3.balances[weth.address];
       const balance = normalizeBalance(wethBalance, weth.decimals);
@@ -102,7 +108,6 @@ export default {
 
 <style lang="scss">
 .amount-input {
-  width: 50%;
   background-color: transparent;
   border: none;
 }

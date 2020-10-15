@@ -1,78 +1,95 @@
 <template>
-  <div class="px-0 px-md-5 py-4">
-    <ListPools
-      title="$t('myLiquidity')"
-      v-if="Object.keys(subgraph.poolShares).length > 0"
-      :query="queryMyLiquidity"
-      class="mb-4"
-    />
-    <!-- <h3 class="mb-4 px-4 px-md-0">My Wallet</h3>
+  <Page>
+    <Container class="d-flex flex-items-center mb-3">
+      <h3 v-text="$t('myWallet')" class="flex-auto" />
+    </Container>
     <UiTable>
       <UiTableTh>
         <div v-text="'Asset'" class="flex-auto text-left" />
-        <div v-text="'Price'" class="column" />
         <div v-text="'Balance'" class="column" />
+        <div v-text="'Value'" class="column" />
       </UiTableTh>
-      <UiTableTr
-        :to="{ name: 'token', params: { id: i } }"
-        v-for="(tokenPrice, i) in tokenPrices"
-        :key="i"
-      >
+      <UiTableTr v-for="(balance, i) in balances" :key="i">
         <Token :address="i" class="mr-3" size="32" />
         <div class="flex-auto text-left">
-          {{ tokenPrice.name }}
-          <span class="text-gray" v-text="tokenPrice.symbol" />
-        </div>
-        <div class="column">
-          <div>{{ $n(tokenPrice.price, 'price') }}</div>
-          <div class="text-gray">{{ $n(tokenPrice.priceETH) }} ETH</div>
-        </div>
-        <div class="column">
-          <div>{{ $n(tokenPrice.balance) }} {{ tokenPrice.symbol }}</div>
-          <div class="text-gray">
-            {{ $n(tokenPrice.balanceUSD, 'currency') }}
+          <div v-if="i !== 'ether'" class="flex-auto">
+            {{ _ticker(i) }}
+            <UiButton
+              v-if="i === config.addresses.weth"
+              @click="modalWrapperOpen = true"
+              type="button"
+              class="button-primary button-sm ml-2"
+            >
+              Unwrap to ETH
+            </UiButton>
+          </div>
+          <div v-else class="flex-auto">
+            ETH
+            <UiButton
+              @click="modalWrapperOpen = true"
+              type="button"
+              class="button-primary button-sm ml-2"
+            >
+              Wrap to WETH
+            </UiButton>
           </div>
         </div>
+        <div v-text="_num(formatBalance(balance, i))" class="column" />
+        <div
+          v-text="_num(getTokenValue([i, balance]), 'currency')"
+          class="column"
+        />
       </UiTableTr>
-    </UiTable> -->
-  </div>
+    </UiTable>
+    <ModalWrapper :open="modalWrapperOpen" @close="modalWrapperOpen = false" />
+  </Page>
 </template>
 
 <script>
-// import { getAddress } from '@ethersproject/address';
-// import { normalizeBalance } from '@/helpers/utils';
+import { clone, normalizeBalance } from '@/helpers/utils';
+import config from '@/config';
 
 export default {
+  data() {
+    return {
+      modalWrapperOpen: false
+    };
+  },
   computed: {
-    queryMyLiquidity() {
-      const poolShares = this.subgraph.poolShares;
-      const ids = Object.keys(poolShares).map(share => share.toLowerCase());
-      return {
-        where: {
-          id_in: ids
-        }
-      };
+    balances() {
+      const balances = Object.fromEntries(
+        Object.entries(clone(this.web3.balances))
+          .filter(entry => this.getTokenValue(entry) > 0.001)
+          .sort((a, b) => {
+            const aValue = this.getTokenValue(a);
+            const bValue = this.getTokenValue(b);
+            return bValue - aValue;
+          })
+      );
+      const target = { ether: balances.ether };
+      target[config.addresses.weth] = balances[config.addresses.weth];
+      return Object.assign(target, balances);
     }
-    // tokenPrices() {
-    //   const ethPrice = this.getPrice(this.config.addresses.weth, 1);
-    //   return Object.fromEntries(
-    //     Object.entries(this.subgraph.tokenPrices)
-    //       .map(tokenPrice => {
-    //         const address = getAddress(tokenPrice[0]);
-    //         const balance = this.web3.balances[address];
-    //         const decimals = tokenPrice.decimals;
-    //         tokenPrice[1].priceETH = tokenPrice[1].price / ethPrice;
-    //         tokenPrice[1].balance = normalizeBalance(balance, decimals);
-    //         tokenPrice[1].balanceUSD = this.getPrice(
-    //           tokenPrice[0],
-    //           tokenPrice[1].balance
-    //         );
-    //         return tokenPrice;
-    //       })
-    //       .filter(tokenPrice => tokenPrice[1].balanceUSD > 0)
-    //       .sort((a, b) => b[1].balanceUSD - a[1].balanceUSD)
-    //   );
-    // }
+  },
+  methods: {
+    getTokenValue([address, balanceStr]) {
+      if (!this.web3.tokenMetadata[address] && address !== 'ether') return 0;
+      const decimals =
+        address === 'ether' ? 18 : this.web3.tokenMetadata[address].decimals;
+      const balance = normalizeBalance(balanceStr, decimals);
+      const weth = this.config.tokens[this.config.addresses.weth];
+      const price =
+        address === 'ether'
+          ? this.price.values[weth.address]
+          : this.price.values[address];
+      return balance.times(price).toNumber();
+    },
+    formatBalance(balanceString, address) {
+      const decimals =
+        address === 'ether' ? 18 : this.web3.tokenMetadata[address].decimals;
+      const rawBalance = normalizeBalance(balanceString || '0', decimals);
+      return this._precision(rawBalance.toNumber(), address);
+    }
   }
 };
 </script>
