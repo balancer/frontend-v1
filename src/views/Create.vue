@@ -258,7 +258,7 @@ export default {
       // Weight validation
       for (const token of this.tokens) {
         const weight = parseFloat(this.weights[token]);
-        if (weight < 2 || weight > 98) {
+        if (weight < 1 || weight > 49) {
           return this.$t('errInvalidWeight');
         }
       }
@@ -266,7 +266,7 @@ export default {
         const weight = parseFloat(this.weights[token]);
         return acc + weight;
       }, 0);
-      if (totalWeight > 100) {
+      if (totalWeight > 50) {
         return this.$t('errInvalidMaxWeight');
       }
       // Amount validation
@@ -475,10 +475,18 @@ export default {
       if (!this.weights[tokenAddress] || isNaN(this.weights[tokenAddress])) {
         return false;
       }
-      const weight = bnum(this.weights[tokenAddress]);
-      if (weight.lt(2) || weight.gt(98)) {
+      let weight = bnum(this.weights[tokenAddress]);
+      if (weight.lt(1) || weight.gt(49)) {
         return false;
       }
+      const totalWeight = this.tokens.reduce((acc, token) => {
+        weight = parseFloat(this.weights[token]);
+        return acc + weight;
+      }, 0);
+      if (totalWeight > 50) {
+        return false;
+      }
+
       return true;
     },
     isAmountInputValid(tokenAddress) {

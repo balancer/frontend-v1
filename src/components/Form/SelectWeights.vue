@@ -26,8 +26,8 @@
             class="input text-right ml-4"
             placeholder="0.0"
             maxlength="2"
-            min="2"
-            max="98"
+            min="1"
+            max="49"
             @input="$emit('input', startWeights)"
           />
         </div>
