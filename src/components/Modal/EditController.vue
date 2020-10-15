@@ -8,6 +8,10 @@
         <h5 class="px-4 mb-4 mx-auto overflow-hidden" style="max-width: 340px;">
           {{ $t('changePoolController') }}
         </h5>
+        <div class="d-flex flex-items-center p-4 warning-box">
+          <Icon name="warning" size="22" class="mr-4" />
+          {{ $t('changeControllerWarning') }}
+        </div>
         <input
           class="h3 py-2 px-3 input text-center"
           :class="isValid ? 'text-white' : 'text-red'"
@@ -72,3 +76,13 @@ export default {
   }
 };
 </script>
+
+<style scoped lang="scss">
+@import '../../vars';
+
+.warning-box {
+  border: 1px solid $warning;
+  border-radius: 4px;
+  color: $warning;
+}
+</style>

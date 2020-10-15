@@ -126,8 +126,7 @@
 </template>
 
 <script>
-import { getAddress } from '@ethersproject/address';
-import { bnum, scale, MAX } from '@/helpers/utils';
+import { MAX } from '@/helpers/utils';
 
 export default {
   props: ['pool', 'bPool'],
@@ -145,14 +144,5 @@ export default {
       MAX
     };
   },
-  computed: {
-    cap() {
-      const address = getAddress(this.pool.controller);
-      const crp = this.web3.crps[address];
-      if (!crp) return '0';
-      const capNumber = scale(bnum(crp.bspCap), -18);
-      return capNumber.toString();
-    }
-  }
 };
 </script>
