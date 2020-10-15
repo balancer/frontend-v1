@@ -56,8 +56,7 @@ export default {
       loading: false,
       input: false,
       type: false,
-      capInputOptions,
-      MAX
+      capInputOptions
     };
   },
   watch: {

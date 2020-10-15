@@ -58,7 +58,7 @@
       <div v-text="$t('smartPoolController')" class="mb-2" />
       <h5>
         <a
-          :href="_etherscanLink(bPool.metadata.crpController, 'address')"
+          :href="_etherscanLink(bPool.metadata.crpController)"
           target="_blank"
           class="text-white"
         >

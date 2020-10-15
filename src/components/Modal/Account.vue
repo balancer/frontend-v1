@@ -28,7 +28,7 @@
       <h3 v-text="$t('account')" class="p-4 border-bottom text-center" />
       <div v-if="web3.account" class="m-4">
         <a
-          :href="_etherscanLink(web3.account, 'address')"
+          :href="_etherscanLink(web3.account)"
           target="_blank"
           class="mb-2 d-block"
         >
