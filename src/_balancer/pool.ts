@@ -69,6 +69,7 @@ export default class Pool {
         totalShares,
         rights,
         bspCap,
+        crpController,
         minimumWeightChangeBlockPeriod,
         addTokenTimeLockInBlocks
       ] = await multicall(
@@ -82,6 +83,7 @@ export default class Pool {
           'totalSupply',
           'rights',
           'bspCap',
+          'getController',
           'minimumWeightChangeBlockPeriod',
           'addTokenTimeLockInBlocks'
         ].map(method => [address, method, []])
@@ -95,6 +97,7 @@ export default class Pool {
           Object.entries(poolRights).map((right, i) => [right[0], rights[i]])
         ),
         bspCap: formatUnits(bspCap.toString(), decimals),
+        crpController: crpController[0],
         minimumWeightChangeBlockPeriod: minimumWeightChangeBlockPeriod.toString(),
         addTokenTimeLockInBlocks: addTokenTimeLockInBlocks.toString()
       };
