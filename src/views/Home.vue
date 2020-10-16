@@ -21,6 +21,9 @@ export default {
         }
       };
     }
+  },
+  beforeMount() {
+    if (!this.web3.account) this.$router.push({ name: 'explore' });
   }
 };
 </script>

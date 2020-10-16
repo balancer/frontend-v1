@@ -26,16 +26,17 @@ export default {
   },
   computed: {
     items() {
-      const items = [
-        {
+      const items = [];
+      if (this.web3.account) {
+        items.push({
           name: 'dashboard',
           to: { name: 'home' }
-        },
-        {
-          name: 'explorePools',
-          to: { name: 'explore' }
-        }
-      ];
+        });
+      }
+      items.push({
+        name: 'explorePools',
+        to: { name: 'explore' }
+      });
       if (this.web3.account) {
         items.push({
           name: 'createPool',
