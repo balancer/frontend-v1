@@ -27,6 +27,20 @@
       </template>
       <h5 v-else v-text="$t('none')" class="text-white" />
     </div>
+    <div v-if="rights.canChangeWeights" class="mb-3">
+      <div v-text="$t('minimumUpdatePeriod')" class="mb-2" />
+      <h5
+        v-text="_num(bPool.metadata.minimumWeightChangeBlockPeriod)"
+        class="text-white"
+      />
+    </div>
+    <div v-if="rights.canAddRemoveTokens" class="mb-3">
+      <div v-text="$t('addTokenTimelock')" class="mb-2" />
+      <h5
+        v-text="_num(bPool.metadata.addTokenTimeLockInBlocks)"
+        class="text-white"
+      />
+    </div>
     <div v-if="rights.canChangeCap" class="mb-3">
       <div v-text="$t('cap')" class="mb-2" />
       <h5 v-text="_num(bPool.metadata.bspCap)" class="text-white" />
