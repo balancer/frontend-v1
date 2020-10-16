@@ -164,7 +164,8 @@ import {
   isTxReverted,
   getTokenBySymbol,
   liquidityToggleOptions,
-  isLocked
+  isLocked,
+  shortenAddress
 } from '@/helpers/utils';
 import { calcPoolOutGivenSingleIn } from '@/helpers/math';
 import { validateNumberInput, formatError } from '@/helpers/validation';
@@ -306,17 +307,24 @@ export default {
       if (this.tokenError || this.validationError) {
         return undefined;
       }
-      for (const token of this.pool.tokensList) {
+      for (const token of this.pool.tokens) {
+        const tokenAddress = token.checksum;
+
         if (
           isLocked(
             this.web3.allowances,
-            token,
+            tokenAddress,
             this.web3.dsProxyAddress,
-            this.amounts[token],
-            this.web3.tokenMetadata[token].decimals
+            this.amounts[tokenAddress],
+            this.web3.tokenMetadata[tokenAddress].decimals
           )
         ) {
-          return `${this.$t('unlock')} ${token.symbol} ${this.$t(
+          const displaySymbol =
+            typeof token.symbol === 'undefined'
+              ? shortenAddress(tokenAddress)
+              : token.symbol;
+
+          return `${this.$t('unlock')} ${displaySymbol} ${this.$t(
             'toContinue'
           )}`;
         }
