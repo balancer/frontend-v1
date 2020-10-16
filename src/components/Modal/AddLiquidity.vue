@@ -321,7 +321,7 @@ export default {
         ) {
           const displaySymbol =
             typeof token.symbol === 'undefined'
-              ? shortenAddress(tokenAddress)
+              ? this._shortenAddress(tokenAddress)
               : token.symbol;
 
           return `${this.$t('unlock')} ${displaySymbol} ${this.$t(
