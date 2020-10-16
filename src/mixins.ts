@@ -27,6 +27,7 @@ export default {
       if (key === 'raw-currency') format = '$(0.[00])';
       if (key === 'price') format = '$(0.[00]a)';
       if (key === 'percent') format = '(0.[00]a)%';
+      if (key === 'percent-short') format = '(0a)%';
       if (number < 0.0001) number = 0;
       return numeral(number)
         .format(format)

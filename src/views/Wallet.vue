@@ -10,7 +10,7 @@
       </div>
       <div class="text-right">
         <h3 v-text="_num(balancesTotalValue, 'raw-currency')" />
-        Total value
+        {{ $t('totalValue') }}
       </div>
     </Container>
     <UiTable>

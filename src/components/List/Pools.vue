@@ -2,7 +2,6 @@
   <div>
     <Container v-if="title" class="d-flex flex-items-center px-4 px-md-0 mb-3">
       <h3 class="flex-auto" v-text="title" />
-      <Filters v-if="withFilters" :value="filters" v-model="filters" />
     </Container>
     <UiTable>
       <UiTableTh>

@@ -103,6 +103,8 @@
     "myLiquidity": "My liquidity",
     "myPools": "My pools",
     "myWallet": "My wallet",
+    "dashboard": "Dashboard",
+    "explorePools": "Explore pools",
     "none": "None",
     "noTokenFound": "No token found for this search",
     "of": "of",

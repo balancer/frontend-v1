@@ -6,13 +6,6 @@
       title="My liquidity"
       class="mb-4"
     />
-    <ListPools
-      :query="querySharedPools"
-      :key="JSON.stringify(querySharedPools)"
-      title="Shared pools"
-      withFilters="1"
-      class="mb-4"
-    />
   </Page>
 </template>
 
@@ -25,13 +18,6 @@ export default {
       return {
         where: {
           id_in: ids
-        }
-      };
-    },
-    querySharedPools() {
-      return {
-        where: {
-          finalized: true
         }
       };
     }

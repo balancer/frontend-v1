@@ -13,23 +13,7 @@
 </template>
 
 <script>
-import config from '@/config';
 import { clone, normalizeBalance } from '@/helpers/utils';
-
-const startItems = [
-  {
-    name: 'sharedPools',
-    to: { name: 'home' }
-  },
-  {
-    name: 'smartPools',
-    to: { name: 'smart' }
-  },
-  {
-    name: 'privatePools',
-    to: { name: 'private' }
-  }
-];
 
 export default {
   data() {
@@ -42,10 +26,16 @@ export default {
   },
   computed: {
     items() {
-      const items = clone(startItems);
-      items[0].count = this.subgraph.balancer.finalizedPoolCount;
-      // items[1].count = this.subgraph.balancer.crpCount;
-      items[2].count = this.subgraph.balancer.privatePoolCount;
+      const items = [
+        {
+          name: 'dashboard',
+          to: { name: 'home' }
+        },
+        {
+          name: 'explorePools',
+          to: { name: 'explore' }
+        }
+      ];
       if (this.web3.account) {
         items.push({
           name: 'createPool',
@@ -80,7 +70,7 @@ export default {
           .slice(0, 5)
       );
       const target = { ether: balances.ether };
-      target[config.addresses.weth] = balances[config.addresses.weth];
+      target[this.config.addresses.weth] = balances[this.config.addresses.weth];
       return Object.assign(target, balances);
     }
   },
