@@ -24,6 +24,7 @@ export default {
       format = number > 100 ? '(0.[00]a)' : format;
       if (key === 'raw') format = '0.[000000]';
       if (key === 'currency') format = '$(0.[00]a)';
+      if (key === 'raw-currency') format = '$(0.[00])';
       if (key === 'price') format = '$(0.[00]a)';
       if (key === 'percent') format = '(0.[00]a)%';
       if (number < 0.0001) number = 0;

@@ -1,21 +1,33 @@
 <template>
   <Page>
-    <Container class="d-flex flex-items-center mb-3">
-      <h3 v-text="$t('myWallet')" class="flex-auto" />
+    <Container class="d-flex mb-3">
+      <div class="flex-auto">
+        <h3 v-text="$t('myWallet')" />
+        <a :href="_etherscanLink(web3.account)" target="_blank">
+          <span v-text="_shortenAddress(web3.account)" />
+          <Icon name="external-link" size="16" class="ml-1 mr-2" />
+        </a>
+      </div>
+      <div class="text-right">
+        <h3 v-text="_num(balancesTotalValue, 'raw-currency')" />
+        Total value
+      </div>
     </Container>
     <UiTable>
       <UiTableTh>
         <div v-text="'Asset'" class="flex-auto text-left" />
-        <div v-text="'Balance'" class="column" />
-        <div v-text="'Value'" class="column" />
+        <div v-text="'Holdings'" class="column" />
       </UiTableTh>
       <UiTableTr v-for="(balance, i) in balances" :key="i">
-        <Token :address="i" class="mr-3" size="32" />
+        <Token :address="balance.address" class="mr-3" size="32" />
+        <div class="text-left">
+          <div v-text="balance.name" />
+          <div v-text="balance.symbol" class="text-gray" />
+        </div>
         <div class="flex-auto text-left">
-          <div v-if="i !== 'ether'" class="flex-auto">
-            {{ _ticker(i) }}
+          <div v-if="balance.address !== 'ether'" class="flex-auto">
             <UiButton
-              v-if="i === config.addresses.weth"
+              v-if="balance.address === config.addresses.weth"
               @click="modalWrapperOpen = true"
               type="button"
               class="button-primary button-sm ml-2"
@@ -24,7 +36,6 @@
             </UiButton>
           </div>
           <div v-else class="flex-auto">
-            ETH
             <UiButton
               @click="modalWrapperOpen = true"
               type="button"
@@ -34,11 +45,13 @@
             </UiButton>
           </div>
         </div>
-        <div v-text="_num(formatBalance(balance, i))" class="column" />
-        <div
-          v-text="_num(getTokenValue([i, balance]), 'currency')"
-          class="column"
-        />
+        <div class="column">
+          <div>
+            {{ _num(balance.balance) }}
+            {{ balance.symbol }}
+          </div>
+          <div v-text="_num(balance.value, 'currency')" class="text-gray" />
+        </div>
       </UiTableTr>
     </UiTable>
     <ModalWrapper :open="modalWrapperOpen" @close="modalWrapperOpen = false" />
@@ -46,8 +59,7 @@
 </template>
 
 <script>
-import { clone, normalizeBalance } from '@/helpers/utils';
-import config from '@/config';
+import { formatUnits } from '@ethersproject/units';
 
 export default {
   data() {
@@ -57,38 +69,40 @@ export default {
   },
   computed: {
     balances() {
-      const balances = Object.fromEntries(
-        Object.entries(clone(this.web3.balances))
-          .filter(entry => this.getTokenValue(entry) > 0.001)
-          .sort((a, b) => {
-            const aValue = this.getTokenValue(a);
-            const bValue = this.getTokenValue(b);
-            return bValue - aValue;
-          })
-      );
-      const target = { ether: balances.ether };
-      target[config.addresses.weth] = balances[config.addresses.weth];
-      return Object.assign(target, balances);
-    }
-  },
-  methods: {
-    getTokenValue([address, balanceStr]) {
-      if (!this.web3.tokenMetadata[address] && address !== 'ether') return 0;
-      const decimals =
-        address === 'ether' ? 18 : this.web3.tokenMetadata[address].decimals;
-      const balance = normalizeBalance(balanceStr, decimals);
-      const weth = this.config.tokens[this.config.addresses.weth];
-      const price =
-        address === 'ether'
-          ? this.price.values[weth.address]
-          : this.price.values[address];
-      return balance.times(price).toNumber();
+      const balances = Object.entries(this.web3.balances)
+        .filter(([address]) => address !== 'ether')
+        .map(([address, denormBalance]) => {
+          const price = this.price.values[address];
+          const balance = formatUnits(
+            denormBalance,
+            this.web3.tokenMetadata[address].decimals
+          );
+          return {
+            address,
+            name: this.web3.tokenMetadata[address].name,
+            symbol: this.web3.tokenMetadata[address].symbol,
+            price,
+            balance,
+            value: balance * price
+          };
+        })
+        .filter(({ value }) => value > 0.001);
+      const ethPrice = this.price.values[this.config.addresses.weth];
+      const ethBalance = formatUnits(this.web3.balances['ether'] || 0, 18);
+      return [
+        {
+          address: 'ether',
+          name: 'ETH',
+          symbol: 'ETH',
+          price: ethPrice,
+          balance: ethBalance,
+          value: ethPrice * ethBalance
+        },
+        ...balances
+      ];
     },
-    formatBalance(balanceString, address) {
-      const decimals =
-        address === 'ether' ? 18 : this.web3.tokenMetadata[address].decimals;
-      const rawBalance = normalizeBalance(balanceString || '0', decimals);
-      return this._precision(rawBalance.toNumber(), address);
+    balancesTotalValue() {
+      return this.balances.reduce((a, b) => a + b.value, 0);
     }
   }
 };
