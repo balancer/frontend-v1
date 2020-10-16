@@ -35,7 +35,6 @@
       "controller": true,
       "finalized": true,
       "crp": true,
-      "crpController": true,
       "swapFee": true,
       "totalWeight": true,
       "totalSwapVolume": true,

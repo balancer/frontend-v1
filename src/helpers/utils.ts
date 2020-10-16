@@ -11,6 +11,8 @@ export const MAX_GAS = new BigNumber('0xffffffff');
 export const MAX_UINT = MaxUint256;
 export const POOL_TOKENS_DECIMALS = 18;
 export const GAS_LIMIT_BUFFER = 0.1;
+export const MAX =
+  '115792089237316195423570985008687907853269984665640564039457.584007913129639935';
 
 export const unknownColors = [
   '#5d6872',
@@ -22,6 +24,11 @@ export const unknownColors = [
   '#c7bdf4',
   '#c28d75'
 ];
+
+export const capInputOptions = {
+  NUMERIC: 'Value',
+  UNLIMITED: 'Unlimited'
+};
 
 export const liquidityToggleOptions = {
   MULTI_ASSET: 'Multi asset',
