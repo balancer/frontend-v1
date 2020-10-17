@@ -36,46 +36,6 @@
         <div v-else v-text="_num(pool.bspCap)" />
       </div>
     </div>
-    <div
-      v-if="bPool.metadata.rights.canAddRemoveTokens && 1 === 2"
-      class="border-bottom mb-4 pb-3"
-    >
-      <div class="float-right">
-        <UiButton v-text="$t('add')" @click="modalOpen.tokens = true" />
-      </div>
-      <label v-text="$t('tokens')" class="d-block mb-2" />
-      <div v-if="pool.tokens.length" class="mb-2">
-        <div
-          class="text-center mr-2 d-inline-block"
-          v-for="token in pool.tokens"
-          :key="token.address"
-        >
-          <Token
-            :key="token.address"
-            :address="token.address"
-            class="mb-2"
-            size="28"
-          />
-          <div v-text="token.symbol" />
-        </div>
-      </div>
-    </div>
-    <div
-      v-if="bPool.metadata.rights.canChangeWeights && 1 === 2"
-      class="border-bottom mb-4 pb-3"
-    >
-      <div class="float-right">
-        <UiButton
-          v-text="$t('updateGradually')"
-          @click="modalOpen.gradualWeights = true"
-        />
-      </div>
-      <div class="float-right mr-2">
-        <UiButton v-text="$t('update')" @click="modalOpen.weights = true" />
-      </div>
-      <label v-text="$t('weights')" class="d-block mb-2" />
-      <Pie :tokens="pool.tokens" size="64" class="mr-2" />
-    </div>
     <div>
       <div class="float-right">
         <UiButton v-text="$t('change')" @click="modalOpen.controller = true" />
@@ -107,21 +67,6 @@
       :open="modalOpen.cap"
       @close="modalOpen.cap = false"
     />
-    <ModalEditWeights
-      :pool="pool"
-      :open="modalOpen.weights"
-      @close="modalOpen.weights = false"
-    />
-    <ModalEditWeightsGradually
-      :pool="pool"
-      :open="modalOpen.gradualWeights"
-      @close="modalOpen.gradualWeights = false"
-    />
-    <ModalEditTokens
-      :value="pool.tokensList"
-      :open="modalOpen.tokens"
-      @close="modalOpen.tokens = false"
-    />
   </div>
 </template>
 
@@ -136,10 +81,7 @@ export default {
         swapFee: false,
         publicSwap: false,
         controller: false,
-        cap: false,
-        weights: false,
-        gradualWeights: false,
-        tokens: false
+        cap: false
       },
       MAX
     };

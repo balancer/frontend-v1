@@ -49,6 +49,13 @@ export const poolRights = {
   canChangeCap: 'Can change pool cap'
 };
 
+export const gradualUpdates = {
+  startBlock: 0,
+  endBlock: 0,
+  startWeights: [],
+  endWeights: []
+};
+
 export function jsonParse(input, fallback?) {
   try {
     return JSON.parse(input);

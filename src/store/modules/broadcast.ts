@@ -102,6 +102,15 @@ const mutations = {
   SET_SWAP_FEE_FAILURE(_state, payload) {
     console.debug('SET_SWAP_FEE_FAILURE', payload);
   },
+  POKE_WEIGHTS_REQUEST() {
+    console.debug('POKE_WEIGHTS_REQUEST');
+  },
+  POKE_WEIGHTS_SUCCESS() {
+    console.debug('POKE_WEIGHTS_SUCCESS');
+  },
+  POKE_WEIGHTS_FAILURE(_state, payload) {
+    console.debug('POKE_WEIGHTS_FAILURE', payload);
+  },
   SET_CONTROLLER_REQUEST() {
     console.debug('SET_CONTROLLER_REQUEST');
   },
@@ -502,6 +511,27 @@ const actions = {
       if (!e || isTxReverted(e)) return e;
       dispatch('notify', ['red', 'Ooops, something went wrong']);
       commit('SET_SWAP_FEE_FAILURE', e);
+    }
+  },
+  pokeWeights: async ({ commit, dispatch, rootState }, { poolAddress }) => {
+    commit('POKE_WEIGHTS_REQUEST');
+    const dsProxyAddress = rootState.web3.dsProxyAddress;
+    try {
+      const underlyingParams = [
+        'BActions',
+        config.addresses.bActions,
+        'pokeWeights',
+        [poolAddress],
+        {}
+      ];
+      const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
+      await dispatch('sendTransaction', params);
+      dispatch('notify', ['green', "You've successfully poked the smart pool"]);
+      commit('POKE_WEIGHTS_SUCCESS');
+    } catch (e) {
+      if (!e || isTxReverted(e)) return e;
+      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      commit('POKE_WEIGHTS_FAILURE', e);
     }
   },
   setController: async (

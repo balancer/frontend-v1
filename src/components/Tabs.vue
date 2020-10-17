@@ -42,6 +42,25 @@ export default {
           to: { name: 'pool-settings' }
         });
       }
+
+      // Show Actions if the person is logged in
+      // AND (the pool can change weights (so potentially provide pokeWeights to anyone)
+      //      OR this user is the controller, and it has one of the rights with associated actions)
+      if (
+        this.web3.account &&
+        (this.pool.rights.canChangeWeights ||
+          (this.web3.dsProxyAddress.toLowerCase() ===
+            this.pool.crpController.toLowerCase() &&
+            (this.pool.rights.canChangeWeights ||
+              this.pool.rights.canAddRemoveTokens ||
+              this.pool.rights.canWhitelistLPs)))
+      ) {
+        items.push({
+          name: this.$t('actions'),
+          to: { name: 'pool-actions' }
+        });
+      }
+
       return items;
     }
   }

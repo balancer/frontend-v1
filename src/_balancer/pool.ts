@@ -3,7 +3,7 @@ import { getAddress, isAddress } from '@ethersproject/address';
 import { multicall, subgraphRequest } from './utils';
 import provider from '@/helpers/rpc';
 import abi from '@/helpers/abi';
-import { poolRights, formatPool } from '@/helpers/utils';
+import { poolRights, formatPool, gradualUpdates } from '@/helpers/utils';
 import { formatUnits } from '@ethersproject/units';
 import queries from '@/helpers/queries.json';
 import pools from './pools.json';
@@ -71,7 +71,8 @@ export default class Pool {
         bspCap,
         crpController,
         minimumWeightChangeBlockPeriod,
-        addTokenTimeLockInBlocks
+        addTokenTimeLockInBlocks,
+        gradualUpdate
       ] = await multicall(
         provider,
         abi['ConfigurableRightsPool'],
@@ -85,7 +86,8 @@ export default class Pool {
           'bspCap',
           'getController',
           'minimumWeightChangeBlockPeriod',
-          'addTokenTimeLockInBlocks'
+          'addTokenTimeLockInBlocks',
+          'gradualUpdate'
         ].map(method => [address, method, []])
       );
       return {
@@ -99,7 +101,8 @@ export default class Pool {
         bspCap: formatUnits(bspCap.toString(), decimals),
         crpController: crpController[0],
         minimumWeightChangeBlockPeriod: minimumWeightChangeBlockPeriod.toString(),
-        addTokenTimeLockInBlocks: addTokenTimeLockInBlocks.toString()
+        addTokenTimeLockInBlocks: addTokenTimeLockInBlocks.toString(),
+        gradualUpdate: Object.fromEntries(Object.entries(gradualUpdates))
       };
     }
     const [
@@ -130,7 +133,8 @@ export default class Pool {
       rights: [],
       bspCap: 0,
       minimumWeightChangeBlockPeriod: 10,
-      addTokenTimeLockInBlocks: 10
+      addTokenTimeLockInBlocks: 10,
+      gradualUpdate: []
     };
   }
 
