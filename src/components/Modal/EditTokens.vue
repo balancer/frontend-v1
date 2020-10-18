@@ -1,80 +1,85 @@
 <template>
-  <UiModal :open="open" @close="$emit('close')">
-    <div
-      class="modal-body py-6 text-center"
-      :class="{ 'bg-blue mosaic anim-scroll': step > lastStep }"
-    >
-      <form @submit.prevent="handleSubmit">
-        <div v-if="step === 0">
-          <FormSelectTokens v-model="tokens" :value="tokens" />
-          <div class="text-left mx-4 mb-4">
-            <label
-              v-text="$t('addTokenTimelock')"
-              class="d-block text-center"
-            />
-            <input
-              v-model="addTokenTimeLockInBlocks"
-              type="number"
-              class="h2 border-0 form-control text-center width-full"
-              placeholder="1"
-              min="1"
-            />
+  <UiModal :open="open" @close="$emit('close')" style="max-width: 440px;">
+    <UiModalForm @submit="handleSubmit">
+      <template slot="header">
+        <h3 v-text="$t('addRemoveTokens')" class="text-white" />
+      </template>
+      <UiTable v-if="step === 0" class="m-4">
+        <UiTableTh>
+          <div v-text="$t('tokens')" class="flex-auto text-left" />
+        </UiTableTh>
+        <UiTableTr v-for="(token, i) in pool.metadata.tokens" :key="i">
+          <Token :address="token.checksum" class="mr-2" />
+          <div class="flex-auto text-left">
+            {{ _ticker(token.checksum) }}
           </div>
-          <div class="mx-3 overflow-hidden">
-            <button
-              type="button"
-              class="btn-outline d-inline-block column mx-1"
-              @click="$emit('close')"
-            >
-              {{ $t('cancel') }}
-            </button>
-            <button
-              :disabled="
-                loading ||
-                  JSON.stringify(tokens) === JSON.stringify(value) ||
-                  tokens.length < 2
-              "
-              type="submit"
-              class="btn-mktg d-inline-block column mx-1"
-            >
-              {{ $t('confirm') }}
-            </button>
-          </div>
+          <a @click="handleRemoveToken(token.checksum)" class="mt-n2 mr-n3">
+            <Icon name="close" class="p-3" />
+          </a>
+        </UiTableTr>
+      </UiTable>
+      <div v-if="step === 1" class="m-4 px-4 text-center">
+        <h4
+          v-text="
+            `Are you sure you want to remove the token ${_ticker(
+              pendingRemove
+            )} from the pool?`
+          "
+          class="mb-3"
+        />
+        <div class="d-flex flex-items-center text-left p-3 warning-box">
+          <Icon name="warning" size="22" class="mr-3" />
+          <div v-html="$t('removeTokenWarning')" />
         </div>
-        <FormBroadcast v-if="step === 1" @close="$emit('close')" />
-      </form>
-    </div>
+      </div>
+      <template slot="footer">
+        <UiButton @click="$emit('close')" type="button" class="mx-1">
+          {{ $t('cancel') }}
+        </UiButton>
+        <UiButton
+          :disabled="step !== 1 || loading"
+          :loading="loading"
+          class="button-primary mx-1"
+        >
+          {{ $t('confirm') }}
+        </UiButton>
+      </template>
+    </UiModalForm>
   </UiModal>
 </template>
 
 <script>
-import { delay, clone } from '@/helpers/utils';
+import { mapActions } from 'vuex';
 
 export default {
-  props: ['open', 'value'],
+  props: ['open', 'pool'],
   data() {
     return {
-      loading: false,
       step: 0,
-      lastStep: 0,
-      tokens: [],
-      addTokenTimeLockInBlocks: 64
+      loading: false,
+      pendingRemove: ''
     };
   },
   watch: {
-    open() {
+    async open() {
       this.step = 0;
       this.loading = false;
-      this.tokens = clone(this.value);
+      this.pendingRemove = '';
     }
   },
   methods: {
+    ...mapActions(['removeToken']),
     async handleSubmit() {
       this.loading = true;
-      await delay(1e3);
-      // @TODO Broadcast tx
+      await this.removeToken({
+        poolAddress: this.pool.getBptAddress(),
+        token: this.pendingRemove
+      });
       this.loading = false;
-      this.step++;
+    },
+    handleRemoveToken(token) {
+      this.pendingRemove = token;
+      this.step = 1;
     }
   }
 };

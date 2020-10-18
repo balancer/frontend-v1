@@ -29,48 +29,6 @@
       <Pie :tokens="pool.tokens" size="64" class="mr-2" />
     </div>
 
-    <div
-      v-if="bPool.metadata.rights.canAddRemoveTokens && isOwner"
-      class="border-bottom mb-4 pb-3"
-    >
-      <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
-        <h4 v-text="$t('addRemoveTokens')" class="flex-auto" />
-      </div>
-      <UiTable class="mb-4">
-        <div v-for="token in pool.tokens" :key="token.address">
-          <UiTableTr>
-            <div class="d-flex flex-auto flex-items-center text-left">
-              <Token :address="token" :symbol="token" class="mr-3" />
-              {{ token.symbol }}
-            </div>
-            <div class="column-xs">
-              <a
-                class="d-flex flex-justify-end text-white"
-                :disabled="ongoingUpdate"
-                @click="handleRemoveToken(token)"
-              >
-                <Icon name="close" />
-              </a>
-            </div>
-          </UiTableTr>
-        </div>
-      </UiTable>
-
-      <!-- disabled for now -->
-      <UiButton
-        v-if="pool.tokens.length < 8"
-        class="mb-4"
-        :disabled="ongoingUpdate || true"
-      >
-        {{ $t('addToken') }}
-      </UiButton>
-
-      <div class="d-flex flex-items-center p-4 warning-box">
-        <Icon name="warning" size="22" class="mr-4" />
-        <div v-html="$t('removeTokenWarning')" />
-      </div>
-    </div>
-
     <!-- disabled for now -->
     <UiButton
       v-if="bPool.metadata.rights.canWhitelistLPs && isOwner"
@@ -97,11 +55,6 @@
       :open="modalOpen.gradualWeights"
       @close="modalOpen.gradualWeights = false"
     />
-    <ModalEditTokens
-      :value="pool.tokensList"
-      :open="modalOpen.tokens"
-      @close="modalOpen.tokens = false"
-    />
     <ModalManageWhitelist
       :pool="pool"
       :open="modalOpen.manageWhitelist"
@@ -121,7 +74,6 @@ export default {
       modalOpen: {
         weights: false,
         gradualWeights: false,
-        tokens: false,
         manageWhitelist: false
       },
       transactionReverted: false
@@ -165,13 +117,3 @@ export default {
   }
 };
 </script>
-
-<style scoped lang="scss">
-@import '../../vars';
-
-.warning-box {
-  border: 1px solid $warning;
-  border-radius: 4px;
-  color: $warning;
-}
-</style>

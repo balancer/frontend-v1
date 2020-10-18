@@ -1,5 +1,5 @@
 <template>
-  <div class="border rounded-1 panel-background p-4 text-white">
+  <div class="border rounded-1 panel-background p-4">
     <div
       v-if="bPool.metadata.rights.canPauseSwapping"
       class="border-bottom mb-4 pb-3"
@@ -7,11 +7,30 @@
       <div class="float-right">
         <UiButton v-text="$t('toggle')" @click="modalOpen.publicSwap = true" />
       </div>
-      <label v-text="$t('publicSwap')" class="d-block mb-2" />
-      <p
-        v-text="pool.publicSwap ? $t('active') : $t('paused')"
-        class="text-gray"
+      <div v-text="$t('publicSwap')" class="mb-2" />
+      <h5
+        v-text="bPool.metadata.publicSwap ? 'Enabled' : 'Disabled'"
+        class="text-white"
       />
+    </div>
+    <div
+      v-if="bPool.metadata.rights.canAddRemoveTokens"
+      class="border-bottom mb-4 pb-3"
+    >
+      <div class="float-right">
+        <UiButton v-text="$t('change')" @click="modalOpen.tokens = true" />
+      </div>
+      <label v-text="$t('tokens')" class="d-block mb-2" />
+      <div class="overflow-hidden">
+        <span
+          v-for="(token, i) in bPool.metadata.tokens"
+          :key="i"
+          class="float-left d-flex flex-items-center mr-3"
+        >
+          <Token :address="token.checksum" class="mr-2" />
+          <span v-text="_ticker(token.checksum)" class="text-white" />
+        </span>
+      </div>
     </div>
     <div
       v-if="bPool.metadata.rights.canChangeSwapFee"
@@ -20,8 +39,8 @@
       <div class="float-right">
         <UiButton v-text="$t('change')" @click="modalOpen.swapFee = true" />
       </div>
-      <label v-text="$t('swapFee')" class="d-block mb-2" />
-      <p v-text="_num(pool.swapFee, 'percent')" class="text-gray" />
+      <div v-text="$t('swapFee')" class="mb-2" />
+      <h5 v-text="_num(pool.swapFee, 'percent')" class="text-white" />
     </div>
     <div
       v-if="bPool.metadata.rights.canChangeCap"
@@ -41,8 +60,13 @@
         <UiButton v-text="$t('change')" @click="modalOpen.controller = true" />
       </div>
       <label v-text="$t('controller')" class="d-block mb-2" />
-      <p v-text="pool.crpController" class="text-gray" />
+      <h5 v-text="pool.crpController" class="text-white" />
     </div>
+    <ModalEditTokens
+      :pool="bPool"
+      :open="modalOpen.tokens"
+      @close="modalOpen.tokens = false"
+    />
     <ModalEditPublicSwap
       :pool="pool"
       :value="pool.publicSwap"
@@ -78,6 +102,7 @@ export default {
   data() {
     return {
       modalOpen: {
+        tokens: false,
         swapFee: false,
         publicSwap: false,
         controller: false,

@@ -113,8 +113,7 @@ export function calcOutGivenIn(
   const y = bdiv(tokenBalanceIn, tokenBalanceIn.plus(adjustedIn));
   const foo = bpow(y, weightRatio);
   const bar = BONE.minus(foo);
-  const tokenAmountOut = bmul(tokenBalanceOut, bar);
-  return tokenAmountOut;
+  return bmul(tokenBalanceOut, bar);
 }
 
 export function calcInGivenOut(

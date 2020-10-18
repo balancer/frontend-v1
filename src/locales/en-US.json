@@ -9,7 +9,7 @@
     "addTransferBlocked": "Adding liquidity failed as one of the underlying tokens blocked the transfer.",
     "addCompoundUnderwater": "Adding liquidity failed as your Compound position might go underwater. ",
     "addLiquidity": "Add liquidity",
-    "addRemoveTokens": "Add/Remove tokens",
+    "addRemoveTokens": "Add and remove tokens",
     "addStakedSNX": "Adding liquidity failed as your SNX is locked in staking.",
     "addSNXUnderwater": "Adding liquidity failed as your Synthetix position might go underwater. ",
     "addToken": "Add token",

@@ -727,7 +727,7 @@ const actions = {
         'BActions',
         config.addresses.bActions,
         'removeToken',
-        [poolAddress, token],
+        [poolAddress, token], // @TODO calculate poolAmountIn
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
