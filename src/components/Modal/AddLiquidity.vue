@@ -165,7 +165,6 @@ import {
   getTokenBySymbol,
   liquidityToggleOptions,
   isLocked,
-  shortenAddress
 } from '@/helpers/utils';
 import { calcPoolOutGivenSingleIn } from '@/helpers/math';
 import { validateNumberInput, formatError } from '@/helpers/validation';
