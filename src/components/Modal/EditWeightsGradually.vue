@@ -84,15 +84,13 @@
 </template>
 
 <script>
-import { getAddress } from '@ethersproject/address';
 import { mapActions } from 'vuex';
-
 import { blockNumberToTimestamp } from '@/helpers/utils';
 
 const BLOCK_BUFFER = 100;
 
 export default {
-  props: ['open', 'pool'],
+  props: ['open', 'pool', 'bPool'],
   data() {
     return {
       loading: false,
@@ -112,7 +110,7 @@ export default {
         await this.getLatestBlock();
         this.currentTime = Date.now();
         this.startBlock = this.web3.blockNumber + BLOCK_BUFFER;
-        this.endBlock = this.startBlock + this.minimumWeightChangeBlockPeriod;
+        this.endBlock = parseInt(this.startBlock) + parseInt(this.minimumWeightChangeBlockPeriod);
       }
     }
   },
@@ -127,11 +125,7 @@ export default {
       return this.weights.reduce((a, b) => a + parseFloat(b), 0);
     },
     minimumWeightChangeBlockPeriod() {
-      const crp = this.web3.crps[getAddress(this.pool.controller)];
-      if (!crp) {
-        return 0;
-      }
-      return crp.minimumWeightChangeBlockPeriod;
+      return this.bPool.metadata.minimumWeightChangeBlockPeriod || 0;
     },
     isValid() {
       const correctStartBlock = this.startBlock >= this.web3.blockNumber;

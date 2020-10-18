@@ -92,6 +92,7 @@
       @close="modalOpen.weights = false"
     />
     <ModalEditWeightsGradually
+      :bPool="bPool"
       :pool="pool"
       :open="modalOpen.gradualWeights"
       @close="modalOpen.gradualWeights = false"
