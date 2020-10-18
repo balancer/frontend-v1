@@ -106,7 +106,6 @@ export default {
   },
   methods: {
     ...mapActions([
-      'getSupplies',
       'getBalances',
       'getAllowances',
       'getPoolBalances',
@@ -139,7 +138,6 @@ export default {
       }
       if (this.$auth.isAuthenticated) {
         const data = await Promise.all([
-          this.getSupplies([this.bPool.getBptAddress()]),
           this.getBalances([
             ...this.pool.tokensList,
             getAddress(this.bPool.getBptAddress())
@@ -153,7 +151,7 @@ export default {
             tokens: this.pool.tokensList
           })
         ]);
-        this.fixPoolBalances(data[3]);
+        this.fixPoolBalances(data[2]);
       }
     },
     fixPoolBalances(poolBalances) {
