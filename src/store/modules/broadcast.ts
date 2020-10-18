@@ -516,7 +516,13 @@ const actions = {
   pokeWeights: async ({ commit, dispatch }, { poolAddress }) => {
     commit('POKE_WEIGHTS_REQUEST');
     try {
-      const params = ['ConfigurableRightsPool', poolAddress, 'pokeWeights', [], {}];
+      const params = [
+        'ConfigurableRightsPool',
+        poolAddress,
+        'pokeWeights',
+        [],
+        {}
+      ];
       await dispatch('sendTransaction', params);
       dispatch('notify', ['green', "You've successfully poked the smart pool"]);
       commit('POKE_WEIGHTS_SUCCESS');
