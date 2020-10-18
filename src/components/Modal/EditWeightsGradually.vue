@@ -110,7 +110,8 @@ export default {
         await this.getLatestBlock();
         this.currentTime = Date.now();
         this.startBlock = this.web3.blockNumber + BLOCK_BUFFER;
-        this.endBlock = parseInt(this.startBlock) + parseInt(this.minimumWeightChangeBlockPeriod);
+        this.endBlock =
+          this.startBlock + parseInt(this.minimumWeightChangeBlockPeriod);
       }
     }
   },
