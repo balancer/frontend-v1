@@ -33,7 +33,7 @@ export default {
         to: { name: 'pool-about' }
       });
       if (
-        this.web3.account &&
+        this.web3.account && this.pool.crpController && 
         this.web3.dsProxyAddress.toLowerCase() ===
           this.pool.crpController.toLowerCase()
       ) {
@@ -49,8 +49,9 @@ export default {
       if (
         this.web3.account &&
         (this.pool.rights.canChangeWeights ||
-          (this.web3.dsProxyAddress.toLowerCase() ===
-            this.pool.crpController.toLowerCase() &&
+          (this.pool.crpController &&
+            (this.web3.dsProxyAddress.toLowerCase() ===
+            this.pool.crpController.toLowerCase()) &&
             (this.pool.rights.canChangeWeights ||
               this.pool.rights.canAddRemoveTokens ||
               this.pool.rights.canWhitelistLPs)))

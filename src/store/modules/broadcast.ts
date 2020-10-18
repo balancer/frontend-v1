@@ -513,19 +513,16 @@ const actions = {
       commit('SET_SWAP_FEE_FAILURE', e);
     }
   },
-  pokeWeights: async ({ commit, dispatch, rootState }, { poolAddress }) => {
+  pokeWeights: async ({ commit, dispatch }, { poolAddress }) => {
     commit('POKE_WEIGHTS_REQUEST');
-    const dsProxyAddress = rootState.web3.dsProxyAddress;
     try {
-      const underlyingParams = [
-        'BActions',
-        config.addresses.bActions,
+      const params = [
+        'ConfigurableRightsPool',
+        poolAddress,
         'pokeWeights',
-        [poolAddress],
         {}
       ];
-      const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-      await dispatch('sendTransaction', params);
+      const tx = await dispatch('sendTransaction', params);
       dispatch('notify', ['green', "You've successfully poked the smart pool"]);
       commit('POKE_WEIGHTS_SUCCESS');
     } catch (e) {

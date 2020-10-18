@@ -9,7 +9,7 @@
           {{ $t('cancel') }}
         </UiButton>
         <UiButton
-          :disabled="loading || (input === value && 'NUMERIC' == type)"
+          :disabled="loading"
           :loading="loading"
           type="submit"
           class="button-primary mx-1"
@@ -33,6 +33,18 @@ export default {
     open() {
       this.loading = false;
     }
+  },
+  methods: {
+    async handleSubmit() {
+      this.loading = true;
+      try {
+        // Call function
+        this.$emit('close');
+      } catch (e) {
+        console.error(e);
+      }
+      this.loading = false;
+    },
   }
 };
 </script>
