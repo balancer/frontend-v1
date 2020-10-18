@@ -4,7 +4,7 @@
       <template slot="header">
         <h3 v-text="$t('gradualWeightUpdate')" class="text-white" />
       </template>
-      <UiTable>
+      <UiTable class="m-4 mb-0">
         <UiTableTh>
           <div v-text="$t('tokens')" class="flex-auto text-left" />
           <div v-text="$t('weights')" class="column-sm" />
@@ -36,23 +36,35 @@
           </div>
         </UiTableTr>
       </UiTable>
-      <div class="ml-2 my-2">
-        {{ $t('startBlock') }}:
-        <input
-          v-model="startBlock"
-          class="input input-blocknumber text-right ml-2"
-          placeholder="0.0"
-        />
-        {{ formatBlockNumber(startBlock) }}
-      </div>
-      <div class="ml-2 my-2">
-        {{ $t('endBlock') }}:
-        <input
-          v-model="endBlock"
-          class="input input-blocknumber text-right ml-2"
-          placeholder="0.0"
-        />
-        {{ formatBlockNumber(endBlock) }}
+      <div class="m-4">
+        <div class="d-flex flex-items-center mb-2">
+          <div v-text="$t('startBlock')" class="flex-auto" />
+          <div class="column-sm">
+            <input
+              v-model="startBlock"
+              class="input input-blocknumber text-right ml-2"
+              placeholder="0.0"
+            />
+          </div>
+          <div
+            v-text="formatBlockNumber(startBlock)"
+            class="column-lg text-right"
+          />
+        </div>
+        <div class="d-flex flex-items-center mb-2">
+          <div v-text="$t('endBlock')" class="flex-auto" />
+          <div class="column-sm">
+            <input
+              v-model="endBlock"
+              class="input input-blocknumber text-right ml-2"
+              placeholder="0.0"
+            />
+          </div>
+          <div
+            v-text="formatBlockNumber(endBlock)"
+            class="column-lg text-right"
+          />
+        </div>
       </div>
       <template slot="footer">
         <UiButton @click="$emit('close')" type="button" class="mx-1">

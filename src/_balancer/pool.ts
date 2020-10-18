@@ -71,8 +71,8 @@ export default class Pool {
         bspCap,
         crpController,
         minimumWeightChangeBlockPeriod,
-        addTokenTimeLockInBlocks,
-        gradualUpdate
+        addTokenTimeLockInBlocks
+        // gradualUpdate
       ] = await multicall(
         provider,
         abi['ConfigurableRightsPool'],
