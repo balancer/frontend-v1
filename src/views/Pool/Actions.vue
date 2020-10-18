@@ -145,13 +145,13 @@ export default {
   methods: {
     ...mapActions(['pokeWeights', 'removeToken']),
     async handlePokeWeights() {
-      const txResult = await this.pokeWeights();
+      const txResult = await this.pokeWeights({ poolAddress: this.bPool.metadata.controller });
       if (isTxReverted(txResult)) {
         this.transactionReverted = true;
       }
     },
     async handleRemoveToken(tokenAddress) {
-      const txResult = await this.removeToken(tokenAddress);
+      const txResult = await this.removeToken({ poolAddress: this.bPool.metadata.controller, token: tokenAddress });
       if (isTxReverted(txResult)) {
         this.transactionReverted = true;
       }

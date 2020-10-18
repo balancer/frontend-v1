@@ -516,7 +516,7 @@ const actions = {
   pokeWeights: async ({ commit, dispatch }, { poolAddress }) => {
     commit('POKE_WEIGHTS_REQUEST');
     try {
-      const params = ['ConfigurableRightsPool', poolAddress, 'pokeWeights', {}];
+      const params = ['ConfigurableRightsPool', poolAddress, 'pokeWeights', [], {gasLimit: 12e6}];
       await dispatch('sendTransaction', params);
       dispatch('notify', ['green', "You've successfully poked the smart pool"]);
       commit('POKE_WEIGHTS_SUCCESS');
@@ -712,17 +712,16 @@ const actions = {
   },
   removeToken: async (
     { commit, dispatch, rootState },
-    { poolAddress, token, poolAmountIn }
+    { poolAddress, token }
   ) => {
     commit('REMOVE_TOKEN_REQUEST');
-    poolAmountIn = toWei(poolAmountIn);
     const dsProxyAddress = rootState.web3.dsProxyAddress;
     try {
       const underlyingParams = [
         'BActions',
         config.addresses.bActions,
         'removeToken',
-        [poolAddress, token, poolAmountIn.toString()],
+        [poolAddress, token],
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
