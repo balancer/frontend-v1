@@ -6,7 +6,7 @@
     v-if="locked"
     :loading="loading"
   >
-    Unlock
+    {{ $t('unlock') }}
   </UiButton>
 </template>
 
