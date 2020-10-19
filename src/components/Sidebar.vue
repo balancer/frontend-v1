@@ -4,8 +4,8 @@
     class="d-flex flex-column bottom-0 top-0 overflow-y-auto animate"
     :class="ui.sidebarIsOpen ? 'is-open' : 'is-closed'"
   >
-    <nav class="nav">
-      <ul class="list-style-none">
+    <nav class="nav d-flex flex-column height-full">
+      <ul class="border-bottom py-3">
         <li v-if="$auth.isAuthenticated">
           <router-link
             :to="{ name: 'home' }"
@@ -28,14 +28,9 @@
               v-text="$t('createPool')"
             />
           </li>
-          <li>
-            <router-link
-              :to="{ name: 'my-pools' }"
-              :class="{ active: $router.currentRoute.name === 'my-pools' }"
-              v-text="$t('myPools')"
-            />
-          </li>
         </template>
+      </ul>
+      <ul class="py-3">
         <li>
           <a href="https://balancer.exchange" target="_blank">
             {{ $t('exchange') }}
@@ -70,7 +65,6 @@ export default {
   position: fixed;
   background-color: $panel-background;
   margin-top: 79px;
-  padding-top: 20px;
   width: 264px;
   left: -264px;
   transition: left 0.2s;

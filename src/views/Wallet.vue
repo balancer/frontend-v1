@@ -70,7 +70,9 @@ export default {
   computed: {
     balances() {
       const balances = Object.entries(this.web3.balances)
-        .filter(([address]) => address !== 'ether')
+        .filter(
+          ([address]) => address !== 'ether' && this.web3.tokenMetadata[address]
+        )
         .map(([address, denormBalance]) => {
           const price = this.price.values[address];
           const balance = formatUnits(

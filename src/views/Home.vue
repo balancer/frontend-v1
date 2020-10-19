@@ -8,6 +8,10 @@
       :query="queryMyLiquidity"
       class="mb-4"
     />
+    <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
+      <h3 class="flex-auto" v-text="$t('myPools')" />
+    </div>
+    <ListPools :key="JSON.stringify(queryMyPools)" :query="queryMyPools" />
   </Page>
 </template>
 
@@ -20,6 +24,13 @@ export default {
       return {
         where: {
           id_in: ids
+        }
+      };
+    },
+    queryMyPools() {
+      return {
+        where: {
+          crpController: this.web3.dsProxyAddress
         }
       };
     }
