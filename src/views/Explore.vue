@@ -1,7 +1,7 @@
 <template>
   <Page>
-    <div class="d-flex mb-4">
-      <div class="flex-auto">
+    <Container class="d-block d-sm-flex flex-items-center px-4 px-md-0">
+      <div class="flex-auto mb-4">
         <Toggle
           v-if="config.env !== 'production'"
           :value="type"
@@ -9,8 +9,8 @@
           @select="selectType"
         />
       </div>
-      <Filters :value="filters" v-model="filters" />
-    </div>
+      <Filters :value="filters" v-model="filters" class="mb-4" />
+    </Container>
     <ListPools :query="query" :key="JSON.stringify(query)" class="mb-4" />
   </Page>
 </template>
@@ -25,9 +25,9 @@ export default {
       type: 'shared',
       filters: formatFilters(this.$route.query),
       poolTypes: {
-        shared: 'Shared pools',
-        smart: 'Smart pools',
-        private: 'Private pools'
+        shared: 'Shared',
+        smart: 'Smart',
+        private: 'Private'
       }
     };
   },

@@ -26,9 +26,13 @@
       <div :key="web3.account">
         <template v-if="$auth.isAuthenticated && !wrongNetwork">
           <UiButton @click="modalOpen = true" :loading="loading">
-            <Avatar :address="web3.account" size="16" class="mr-2 ml-n1" />
+            <Avatar :address="web3.account" size="16" class="ml-n1" />
             <span v-if="web3.name" v-text="web3.name" />
-            <span v-else v-text="_shortenAddress(web3.account)" />
+            <span
+              class="hide-sm ml-2"
+              v-else
+              v-text="_shortenAddress(web3.account)"
+            />
           </UiButton>
         </template>
         <UiButton v-if="web3.injectedLoaded && wrongNetwork" class="button-red">
@@ -43,7 +47,7 @@
         >
           {{ $t('connectWallet') }}
         </UiButton>
-        <router-link :to="{ name: 'wallet' }" class="ml-2">
+        <router-link v-if="!wrongNetwork" :to="{ name: 'wallet' }" class="ml-2">
           <UiButton class="v-align-bottom p-0">
             <Icon name="wallet" size="20" class="mx-3" />
           </UiButton>

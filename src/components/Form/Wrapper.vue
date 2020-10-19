@@ -2,10 +2,10 @@
   <div>
     <div v-text="'ETH → WETH'" class="eyebrow mb-2" />
     <div class="d-flex mb-3">
-      <UiButton class="d-flex flex-auto">
+      <UiButton class="d-flex flex-items-center flex-auto">
         <input
           v-model="wrapAmount"
-          class="width-full amount-input"
+          class="flex-auto amount-input col-8"
           :class="wrapInputValid ? 'text-white' : 'text-red'"
           placeholder="0.0"
         />
@@ -24,10 +24,10 @@
     </div>
     <div v-text="'WETH → ETH'" class="eyebrow mb-2" />
     <div class="d-flex mb-2">
-      <UiButton class="d-flex flex-auto position-relative">
+      <UiButton class="d-flex flex-items-center flex-auto">
         <input
           v-model="unwrapAmount"
-          class="width-full amount-input ml-1"
+          class="flex-auto amount-input col-8"
           :class="unwrapInputValid ? 'text-white' : 'text-red'"
           placeholder="0.0"
         />
