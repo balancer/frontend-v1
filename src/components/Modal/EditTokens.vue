@@ -7,23 +7,33 @@
       <UiTable v-if="step === 0" class="m-4">
         <UiTableTh>
           <div v-text="$t('tokens')" class="flex-auto text-left" />
+          <div v-text="$t('balance')" class="flex-auto text-left"/>
         </UiTableTh>
         <UiTableTr v-for="(token, i) in pool.metadata.tokens" :key="i">
           <Token :address="token.checksum" class="mr-2" />
           <div class="flex-auto text-left">
             {{ _ticker(token.checksum) }}
           </div>
-          <a @click="handleRemoveToken(token.checksum)" class="mt-n2 mr-n3">
+          <div v-text="_precision(parseFloat(token.balance), token.checksum)" class="flex-auto text-left" />
+          <a @click="handleRemoveToken(token.checksum, token.denormWeight)" class="mt-n2 mr-n3">
             <Icon name="close" class="p-3" />
           </a>
         </UiTableTr>
       </UiTable>
+      <!-- disabled for now -->
+      <UiButton
+        v-if="pool.metadata.tokens.length < 8 && step === 0"
+        class="m-4"
+        :disabled="true"
+      >
+        {{ $t('addToken') }}
+      </UiButton>
       <div v-if="step === 1" class="m-4 px-4 text-center">
         <h4
           v-text="
-            `Are you sure you want to remove the token ${_ticker(
+            `${$t('confirmRemove')} ${_ticker(
               pendingRemove
-            )} from the pool?`
+            )} ${$t('fromPool')}`
           "
           class="mb-3"
         />
@@ -50,6 +60,8 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { calcPoolInGivenTokenRemove } from '@/helpers/math';
+import { bnum, denormalizeBalance } from '@/helpers/utils';
 
 export default {
   props: ['open', 'pool'],
@@ -57,7 +69,8 @@ export default {
     return {
       step: 0,
       loading: false,
-      pendingRemove: ''
+      pendingRemove: '',
+      pendingWeight: 0
     };
   },
   watch: {
@@ -65,20 +78,34 @@ export default {
       this.step = 0;
       this.loading = false;
       this.pendingRemove = '';
+      this.pendingWeight = 0;
     }
   },
   methods: {
     ...mapActions(['removeToken']),
     async handleSubmit() {
       this.loading = true;
+
+      const totalWeight = bnum(this.pool.metadata.totalWeight).times('1e18');
+      const poolSupply = denormalizeBalance(this.pool.metadata.totalShares, 18);
+      const tokenWeight = bnum(this.pendingWeight).times('1e18');
+
+      const poolAmountIn = calcPoolInGivenTokenRemove(
+        totalWeight,
+        tokenWeight,
+        poolSupply
+      );
+
       await this.removeToken({
-        poolAddress: this.pool.getBptAddress(),
-        token: this.pendingRemove
+        poolAddress: this.pool.metadata.controller,
+        token: this.pendingRemove,
+        poolAmountIn: poolAmountIn
       });
       this.loading = false;
     },
-    handleRemoveToken(token) {
-      this.pendingRemove = token;
+    handleRemoveToken(tokenAddress, tokenWeight) {
+      this.pendingRemove = tokenAddress;
+      this.pendingWeight = tokenWeight;
       this.step = 1;
     }
   }

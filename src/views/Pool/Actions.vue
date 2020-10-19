@@ -22,7 +22,7 @@
           />
         </div>
         <div class="float-right mr-2">
-          <UiButton v-text="$t('update')" @click="modalOpen.weights = true" />
+          <UiButton v-text="$t('update')" :disabled="ongoingUpdate" @click="modalOpen.weights = true" />
         </div>
       </div>
       <label v-text="$t('weights')" class="d-block mb-2" />
@@ -33,7 +33,6 @@
     <UiButton
       v-if="bPool.metadata.rights.canWhitelistLPs && isOwner"
       class="mb-4"
-      :disabled="true"
       @click="modalOpen.manageWhitelist = true"
     >
       {{ $t('manageWhitelist') }}
@@ -87,8 +86,9 @@ export default {
   computed: {
     isOwner() {
       return (
-        this.web3.dsProxyAddress.toLowerCase() ===
-        this.pool.crpController.toLowerCase()
+        this.pool.crpController && 
+        (this.web3.dsProxyAddress.toLowerCase() ===
+         this.pool.crpController.toLowerCase())
       );
     },
     ongoingUpdate() {
@@ -100,15 +100,6 @@ export default {
     async handlePokeWeights() {
       const txResult = await this.pokeWeights({
         poolAddress: this.bPool.metadata.controller
-      });
-      if (isTxReverted(txResult)) {
-        this.transactionReverted = true;
-      }
-    },
-    async handleRemoveToken(tokenAddress) {
-      const txResult = await this.removeToken({
-        poolAddress: this.bPool.metadata.controller,
-        token: tokenAddress
       });
       if (isTxReverted(txResult)) {
         this.transactionReverted = true;

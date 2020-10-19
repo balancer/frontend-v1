@@ -18,7 +18,7 @@
       class="border-bottom mb-4 pb-3"
     >
       <div class="float-right">
-        <UiButton v-text="$t('change')" @click="modalOpen.tokens = true" />
+        <UiButton v-text="$t('change')" :disabled="ongoingUpdate" @click="modalOpen.tokens = true" />
       </div>
       <label v-text="$t('tokens')" class="d-block mb-2" />
       <div class="overflow-hidden">
@@ -110,6 +110,11 @@ export default {
       },
       MAX
     };
+  },
+  computed: {
+    ongoingUpdate() {
+      return this.pool.gradualUpdate.startBlock > 0;
+    }
   }
 };
 </script>
