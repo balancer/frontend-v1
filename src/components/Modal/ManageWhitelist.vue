@@ -67,8 +67,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['whitelistLiquidityProvider',
-                   'removeWhitelistedLiquidityProvider']),
+    ...mapActions([
+      'whitelistLiquidityProvider',
+      'removeWhitelistedLiquidityProvider'
+    ]),
     async handleSubmit() {
       this.loading = true;
       try {
@@ -77,8 +79,7 @@ export default {
             poolAddress: this.pool.controller,
             provider: this.input
           });
-        }
-        else {
+        } else {
           this.tx = await this.removeWhitelistedLiquidityProvider({
             poolAddress: this.pool.controller,
             provider: this.input
@@ -90,7 +91,7 @@ export default {
         console.error(e);
       }
       this.loading = false;
-    },
+    }
   }
 };
 </script>

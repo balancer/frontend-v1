@@ -506,7 +506,7 @@ const actions = {
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
       await dispatch('sendTransaction', params);
-      dispatch('notify', ['green', ]);
+      dispatch('notify', ['green'], i18n.tc('successChangeSwapFee'));
       commit('SET_SWAP_FEE_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;

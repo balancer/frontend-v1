@@ -7,15 +7,21 @@
       <UiTable v-if="step === 0" class="m-4">
         <UiTableTh>
           <div v-text="$t('tokens')" class="flex-auto text-left" />
-          <div v-text="$t('balance')" class="flex-auto text-left"/>
+          <div v-text="$t('balance')" class="flex-auto text-left" />
         </UiTableTh>
         <UiTableTr v-for="(token, i) in pool.metadata.tokens" :key="i">
           <Token :address="token.checksum" class="mr-2" />
           <div class="flex-auto text-left">
             {{ _ticker(token.checksum) }}
           </div>
-          <div v-text="_precision(parseFloat(token.balance), token.checksum)" class="flex-auto text-left" />
-          <a @click="handleRemoveToken(token.checksum, token.denormWeight)" class="mt-n2 mr-n3">
+          <div
+            v-text="_precision(parseFloat(token.balance), token.checksum)"
+            class="flex-auto text-left"
+          />
+          <a
+            @click="handleRemoveToken(token.checksum, token.denormWeight)"
+            class="mt-n2 mr-n3"
+          >
             <Icon name="close" class="p-3" />
           </a>
         </UiTableTr>
@@ -31,9 +37,7 @@
       <div v-if="step === 1" class="m-4 px-4 text-center">
         <h4
           v-text="
-            `${$t('confirmRemove')} ${_ticker(
-              pendingRemove
-            )} ${$t('fromPool')}`
+            `${$t('confirmRemove')} ${_ticker(pendingRemove)} ${$t('fromPool')}`
           "
           class="mb-3"
         />
