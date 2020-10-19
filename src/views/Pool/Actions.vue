@@ -96,7 +96,7 @@ export default {
       );
     },
     ongoingUpdate() {
-      return this.bPool.metadata.gradualUpdate.startBlock > 0;
+      return this.bPool.metadata.startBlock != "0";
     }
   },
   methods: {

@@ -116,6 +116,7 @@
     "noTokenFound": "No token found for this search",
     "of": "of",
     "ofSlippage": "of slippage",
+    "ongoingUpdateWarning": "There is a gradual weights update underway until ",
     "paused": "Paused",
     "percent": "percent",
     "poke": "Poke weights",

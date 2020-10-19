@@ -27,6 +27,13 @@
       </template>
       <h5 v-else v-text="$t('none')" class="text-white" />
     </div>
+    <div v-if="ongoingUpdate" class="mb-3">
+        <div class="d-flex flex-items-center p-4 warning-box">
+          <Icon name="warning" size="22" class="mr-4" />
+          <div v-text="`${$t('ongoingUpdateWarning')} ${endTime()}`" />
+        </div>
+    </div>
+
     <div v-if="rights.canChangeWeights" class="mb-3">
       <div v-text="$t('minimumUpdatePeriod')" class="mb-2" />
       <h5
@@ -115,6 +122,7 @@
         <h5 v-text="_num(bPool.metadata.totalShares)" class="text-white" />
       </div>
     </template>
+
     <div class="mb-3">
       <div v-text="$t('publicSwap')" class="mb-2" />
       <h5
@@ -144,19 +152,41 @@
 </template>
 
 <script>
-import { filterObj, poolRights, MAX } from '@/helpers/utils';
+import { filterObj, poolRights, MAX, blockNumberToTimestamp } from '@/helpers/utils';
+import { mapActions } from 'vuex';
 
 export default {
   props: ['bPool'],
   data() {
     return {
       poolRights,
-      MAX
+      MAX,
+      currentBlock: 0
     };
+  },
+  watch: {
+    async open() {
+      this.currentBlock = await this.getLatestBlock();
+    }
   },
   computed: {
     rights() {
       return filterObj(this.bPool.metadata.rights, right => right[1]);
+    },
+    ongoingUpdate() {
+      return this.bPool.metadata.startBlock != "0";
+    }
+  },
+  methods: {
+    ...mapActions(['getLatestBlock']),
+    endTime() {
+      const blockTimestamp = blockNumberToTimestamp(
+        Date.now(),
+        this.currentBlock,
+        this.bPool.metadata.endBlock
+      );
+      const blockDate = new Date(blockTimestamp);
+      return blockDate.toLocaleString('en-US');
     }
   }
 };
