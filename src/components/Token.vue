@@ -9,7 +9,7 @@
       :style="style"
       :title="symbol"
     />
-    <Avatar :style="style" :address="address" v-else />
+    <Avatar :size="size" :address="address" v-else />
   </span>
 </template>
 

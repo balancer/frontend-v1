@@ -1,5 +1,5 @@
 <template>
-  <div class="px-0 px-md-5 pt-4">
+  <Page>
     <div v-if="loading" class="text-center">
       <UiLoading class="big" />
     </div>
@@ -57,7 +57,7 @@
       :open="modalCustomTokenOpen"
       @close="modalCustomTokenOpen = false"
     />
-  </div>
+  </Page>
 </template>
 
 <script>

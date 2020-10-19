@@ -1,6 +1,6 @@
 <template>
-  <div class="px-0 px-md-5 py-4">
-    <div class="d-flex flex-justify-center px-4 px-md-0 mb-3">
+  <Page>
+    <div class="d-flex px-4 px-md-0 mb-3">
       <Toggle
         v-if="config.env !== 'production'"
         :value="type"
@@ -151,7 +151,7 @@
       @close="confirmModalOpen = false"
       @create="create"
     />
-  </div>
+  </Page>
 </template>
 
 <script>
