@@ -207,6 +207,7 @@
     "weightConstraints": "Denormalized weights should be numbers from 2 to 98. Total weight should not exceed 100.",
     "weights": "Weights",
     "weightsPct": "Weights percent",
+    "willBurn": "This operation will burn",
     "withdraw": "Withdraw",
     "wrap": "Wrap",
     "wrongNetwork": "Wrong network"

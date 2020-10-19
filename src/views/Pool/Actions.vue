@@ -100,7 +100,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['pokeWeights', 'removeToken']),
+    ...mapActions(['pokeWeights']),
     async handlePokeWeights() {
       const txResult = await this.pokeWeights({
         poolAddress: this.bPool.metadata.controller

@@ -46,8 +46,8 @@
         />
 
         <h5 class="mb-3">
-          This operation will burn
-          {{ _num(Math.log(poolAmountIn) / Math.log(18)) }}
+          {{ $t('willBurn') }}
+          {{ _num(poolAmountIn / 1e18) }}
           {{ pool.metadata.symbol }}
         </h5>
 
