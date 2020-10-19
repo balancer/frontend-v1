@@ -164,7 +164,7 @@ import {
   isTxReverted,
   getTokenBySymbol,
   liquidityToggleOptions,
-  isLocked,
+  isLocked
 } from '@/helpers/utils';
 import { calcPoolOutGivenSingleIn } from '@/helpers/math';
 import { validateNumberInput, formatError } from '@/helpers/validation';
