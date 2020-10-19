@@ -117,7 +117,7 @@ export default {
   },
   computed: {
     ongoingUpdate() {
-      return this.pool.startBlock != "0";
+      return this.pool.startBlock != '0';
     }
   }
 };

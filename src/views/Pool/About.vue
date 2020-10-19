@@ -28,10 +28,10 @@
       <h5 v-else v-text="$t('none')" class="text-white" />
     </div>
     <div v-if="ongoingUpdate" class="mb-3">
-        <div class="d-flex flex-items-center p-4 warning-box">
-          <Icon name="warning" size="22" class="mr-4" />
-          <div v-text="`${$t('ongoingUpdateWarning')} ${endTime()}`" />
-        </div>
+      <div class="d-flex flex-items-center p-4 warning-box">
+        <Icon name="warning" size="22" class="mr-4" />
+        <div v-text="`${$t('ongoingUpdateWarning')} ${endTime()}`" />
+      </div>
     </div>
 
     <div v-if="rights.canChangeWeights" class="mb-3">
@@ -152,7 +152,12 @@
 </template>
 
 <script>
-import { filterObj, poolRights, MAX, blockNumberToTimestamp } from '@/helpers/utils';
+import {
+  filterObj,
+  poolRights,
+  MAX,
+  blockNumberToTimestamp
+} from '@/helpers/utils';
 import { mapActions } from 'vuex';
 
 export default {
@@ -174,7 +179,7 @@ export default {
       return filterObj(this.bPool.metadata.rights, right => right[1]);
     },
     ongoingUpdate() {
-      return this.bPool.metadata.startBlock != "0";
+      return this.bPool.metadata.startBlock != '0';
     }
   },
   methods: {
