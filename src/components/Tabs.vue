@@ -35,6 +35,7 @@ export default {
       if (
         this.web3.account &&
         this.web3.dsProxyAddress &&
+        this.pool.crpController &&
         this.web3.dsProxyAddress.toLowerCase() ===
           this.pool.crpController.toLowerCase()
       ) {
