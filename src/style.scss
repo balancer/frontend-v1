@@ -66,8 +66,6 @@ a {
   .shell {
     @extend .border-0;
     @extend .border-md;
-    @extend .rounded-md-1;
-    @extend .rounded-lg-1;
     background-color: $panel-background;
     padding-left: 0 !important;
     padding-right: 0 !important;

@@ -1,78 +1,111 @@
 <template>
-  <div class="px-0 px-md-5 py-4">
-    <ListPools
-      title="$t('myLiquidity')"
-      v-if="Object.keys(subgraph.poolShares).length > 0"
-      :query="queryMyLiquidity"
-      class="mb-4"
-    />
-    <!-- <h3 class="mb-4 px-4 px-md-0">My Wallet</h3>
+  <Page>
+    <Container class="d-flex mb-3">
+      <div class="flex-auto">
+        <h3 v-text="$t('myWallet')" />
+        <a :href="_etherscanLink(web3.account)" target="_blank">
+          <span v-text="_shortenAddress(web3.account)" />
+          <Icon name="external-link" size="16" class="ml-1 mr-2" />
+        </a>
+      </div>
+      <div class="text-right">
+        <h3 v-text="_num(balancesTotalValue, 'raw-currency')" />
+        {{ $t('totalValue') }}
+      </div>
+    </Container>
     <UiTable>
       <UiTableTh>
         <div v-text="'Asset'" class="flex-auto text-left" />
-        <div v-text="'Price'" class="column" />
-        <div v-text="'Balance'" class="column" />
+        <div v-text="'Holdings'" class="column" />
       </UiTableTh>
-      <UiTableTr
-        :to="{ name: 'token', params: { id: i } }"
-        v-for="(tokenPrice, i) in tokenPrices"
-        :key="i"
-      >
-        <Token :address="i" class="mr-3" size="32" />
+      <UiTableTr v-for="(balance, i) in balances" :key="i">
+        <Token :address="balance.address" class="mr-3" size="32" />
+        <div class="text-left">
+          <div v-text="balance.name" />
+          <div v-text="balance.symbol" class="text-gray" />
+        </div>
         <div class="flex-auto text-left">
-          {{ tokenPrice.name }}
-          <span class="text-gray" v-text="tokenPrice.symbol" />
-        </div>
-        <div class="column">
-          <div>{{ $n(tokenPrice.price, 'price') }}</div>
-          <div class="text-gray">{{ $n(tokenPrice.priceETH) }} ETH</div>
-        </div>
-        <div class="column">
-          <div>{{ $n(tokenPrice.balance) }} {{ tokenPrice.symbol }}</div>
-          <div class="text-gray">
-            {{ $n(tokenPrice.balanceUSD, 'currency') }}
+          <div v-if="balance.address !== 'ether'" class="flex-auto">
+            <UiButton
+              v-if="balance.address === config.addresses.weth"
+              @click="modalWrapperOpen = true"
+              type="button"
+              class="button-primary button-sm ml-2"
+            >
+              Unwrap to ETH
+            </UiButton>
+          </div>
+          <div v-else class="flex-auto">
+            <UiButton
+              @click="modalWrapperOpen = true"
+              type="button"
+              class="button-primary button-sm ml-2"
+            >
+              Wrap to WETH
+            </UiButton>
           </div>
         </div>
+        <div class="column">
+          <div>
+            {{ _num(balance.balance) }}
+            {{ balance.symbol }}
+          </div>
+          <div v-text="_num(balance.value, 'currency')" class="text-gray" />
+        </div>
       </UiTableTr>
-    </UiTable> -->
-  </div>
+    </UiTable>
+    <ModalWrapper :open="modalWrapperOpen" @close="modalWrapperOpen = false" />
+  </Page>
 </template>
 
 <script>
-// import { getAddress } from '@ethersproject/address';
-// import { normalizeBalance } from '@/helpers/utils';
+import { formatUnits } from '@ethersproject/units';
 
 export default {
+  data() {
+    return {
+      modalWrapperOpen: false
+    };
+  },
   computed: {
-    queryMyLiquidity() {
-      const poolShares = this.subgraph.poolShares;
-      const ids = Object.keys(poolShares).map(share => share.toLowerCase());
-      return {
-        where: {
-          id_in: ids
-        }
-      };
+    balances() {
+      const balances = Object.entries(this.web3.balances)
+        .filter(
+          ([address]) => address !== 'ether' && this.web3.tokenMetadata[address]
+        )
+        .map(([address, denormBalance]) => {
+          const price = this.price.values[address];
+          const balance = formatUnits(
+            denormBalance,
+            this.web3.tokenMetadata[address].decimals
+          );
+          return {
+            address,
+            name: this.web3.tokenMetadata[address].name,
+            symbol: this.web3.tokenMetadata[address].symbol,
+            price,
+            balance,
+            value: balance * price
+          };
+        })
+        .filter(({ value }) => value > 0.001);
+      const ethPrice = this.price.values[this.config.addresses.weth];
+      const ethBalance = formatUnits(this.web3.balances['ether'] || 0, 18);
+      return [
+        {
+          address: 'ether',
+          name: 'ETH',
+          symbol: 'ETH',
+          price: ethPrice,
+          balance: ethBalance,
+          value: ethPrice * ethBalance
+        },
+        ...balances
+      ];
+    },
+    balancesTotalValue() {
+      return this.balances.reduce((a, b) => a + b.value, 0);
     }
-    // tokenPrices() {
-    //   const ethPrice = this.getPrice(this.config.addresses.weth, 1);
-    //   return Object.fromEntries(
-    //     Object.entries(this.subgraph.tokenPrices)
-    //       .map(tokenPrice => {
-    //         const address = getAddress(tokenPrice[0]);
-    //         const balance = this.web3.balances[address];
-    //         const decimals = tokenPrice.decimals;
-    //         tokenPrice[1].priceETH = tokenPrice[1].price / ethPrice;
-    //         tokenPrice[1].balance = normalizeBalance(balance, decimals);
-    //         tokenPrice[1].balanceUSD = this.getPrice(
-    //           tokenPrice[0],
-    //           tokenPrice[1].balance
-    //         );
-    //         return tokenPrice;
-    //       })
-    //       .filter(tokenPrice => tokenPrice[1].balanceUSD > 0)
-    //       .sort((a, b) => b[1].balanceUSD - a[1].balanceUSD)
-    //   );
-    // }
   }
 };
 </script>

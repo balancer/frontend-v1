@@ -21,7 +21,7 @@ export default {
   color: $secondary-button-text;
   border: 1px solid $secondary-button-border;
   border-radius: 22px;
-  padding: 0 24px 3px;
+  padding: 0 22px 3px;
   outline: none;
   height: 44px;
   line-height: 40px;

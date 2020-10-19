@@ -1,23 +1,18 @@
 <template>
-  <div>
-    <div class="px-0 px-md-5">
-      <ListPools
-        v-if="Object.keys(subgraph.poolShares).length > 0"
-        :query="queryMyLiquidity"
-        title="My liquidity"
-        class="pt-4"
-      />
+  <Page>
+    <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
+      <h3 class="flex-auto" v-text="$t('myLiquidity')" />
     </div>
-    <div class="px-0 px-md-5">
-      <ListPools
-        :query="querySharedPools"
-        :key="JSON.stringify(querySharedPools)"
-        title="Shared pools"
-        withFilters="1"
-        class="mb-4 pt-4"
-      />
+    <ListPools
+      :key="JSON.stringify(queryMyLiquidity)"
+      :query="queryMyLiquidity"
+      class="mb-4"
+    />
+    <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
+      <h3 class="flex-auto" v-text="$t('myPools')" />
     </div>
-  </div>
+    <ListPools :key="JSON.stringify(queryMyPools)" :query="queryMyPools" />
+  </Page>
 </template>
 
 <script>
@@ -32,13 +27,16 @@ export default {
         }
       };
     },
-    querySharedPools() {
+    queryMyPools() {
       return {
         where: {
-          finalized: true
+          crpController: this.web3.dsProxyAddress
         }
       };
     }
+  },
+  beforeMount() {
+    if (!this.web3.account) this.$router.push({ name: 'explore' });
   }
 };
 </script>
