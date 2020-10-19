@@ -1,5 +1,4 @@
-import { Interface } from '@ethersproject/abi';
-import abi from '@/helpers/abi';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue';
 import config from '@/config';
 import i18n from '@/i18n';
 import {
@@ -11,15 +10,7 @@ import {
   shortenAddress
 } from '@/helpers/utils';
 import BigNumber from '@/helpers/bignumber';
-
-function makeProxyTransaction(
-  dsProxy,
-  [contractType, contractAddress, action, params, overrides]: any
-) {
-  const iface = new Interface(abi[contractType]);
-  const data = iface.encodeFunctionData(action, params);
-  return ['DSProxy', dsProxy, 'execute', [contractAddress, data], overrides];
-}
+import { sendTransaction, makeProxyTransaction } from '@/helpers/web3';
 
 const mutations = {
   CREATE_PROXY_REQUEST() {
@@ -242,7 +233,7 @@ const actions = {
         [],
         {}
       ];
-      const tx = await dispatch('sendTransaction', params);
+      const tx = await sendTransaction(getInstance().web3, params);
       dispatch('notify', ['green', i18n.tc('successCreateProxy')]);
       dispatch('getProxy');
       commit('CREATE_PROXY_SUCCESS');
@@ -285,7 +276,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-      await dispatch('sendTransaction', params);
+      await sendTransaction(getInstance().web3, params);
       dispatch('notify', ['green', i18n.tc('successCreatePool')]);
       commit('CREATE_POOL_SUCCESS');
     } catch (e) {
@@ -354,7 +345,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-      const tx = await dispatch('sendTransaction', params);
+      const tx = await sendTransaction(getInstance().web3, params);
       await tx.wait(6);
       dispatch('notify', ['green', i18n.tc('successCreatePool')]);
       commit('CREATE_SMART_POOL_SUCCESS');
@@ -379,7 +370,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-      const tx = await dispatch('sendTransaction', params);
+      const tx = await sendTransaction(getInstance().web3, params);
       dispatch('syncFetch', { tx, action: 'getBalances' });
       dispatch('syncFetch', { tx, action: 'getUserPoolShares' });
       dispatch('notify', ['green', i18n.tc('successAddLiquidity')]);
@@ -405,7 +396,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-      const tx = await dispatch('sendTransaction', params);
+      const tx = await sendTransaction(getInstance().web3, params);
       dispatch('syncFetch', { tx, action: 'getBalances' });
       dispatch('syncFetch', { tx, action: 'getUserPoolShares' });
       dispatch('notify', ['green', i18n.tc('successAddLiquidity')]);
@@ -429,7 +420,7 @@ const actions = {
         [toWei(poolAmountIn).toString(), minAmountsOut],
         {}
       ];
-      const tx = await dispatch('sendTransaction', params);
+      const tx = await sendTransaction(getInstance().web3, params);
       dispatch('syncFetch', { tx, action: 'getBalances' });
       dispatch('syncFetch', { tx, action: 'getUserPoolShares' });
       dispatch('notify', ['green', i18n.tc('successRemoveLiquidity')]);
@@ -453,7 +444,7 @@ const actions = {
         [tokenOutAddress, toWei(poolAmountIn).toString(), minTokenAmountOut],
         {}
       ];
-      const tx = await dispatch('sendTransaction', params);
+      const tx = await sendTransaction(getInstance().web3, params);
       dispatch('syncFetch', { tx, action: 'getBalances' });
       dispatch('syncFetch', { tx, action: 'getUserPoolShares' });
       dispatch('notify', ['green', i18n.tc('successRemoveLiquidity')]);
@@ -479,7 +470,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-      await dispatch('sendTransaction', params);
+      await sendTransaction(getInstance().web3, params);
       commit('SET_PUBLIC_SWAP_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
@@ -505,7 +496,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-      await dispatch('sendTransaction', params);
+      await sendTransaction(getInstance().web3, params);
       dispatch('notify', ['green'], i18n.tc('successChangeSwapFee'));
       commit('SET_SWAP_FEE_SUCCESS');
     } catch (e) {
@@ -548,7 +539,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-      await dispatch('sendTransaction', params);
+      await sendTransaction(getInstance().web3, params);
       dispatch('notify', ['green', i18n.tc('successSetController')]);
       commit('SET_CONTROLLER_SUCCESS');
     } catch (e) {
@@ -580,7 +571,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-      await dispatch('sendTransaction', params);
+      await sendTransaction(getInstance().web3, params);
       dispatch('notify', ['green', i18n.tc('successChangeWeight')]);
       commit('INCREASE_WEIGHT_SUCCESS');
     } catch (e) {
@@ -608,7 +599,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-      await dispatch('sendTransaction', params);
+      await sendTransaction(getInstance().web3, params);
       dispatch('notify', ['green', i18n.tc('successChangeWeight')]);
       commit('DECREASE_WEIGHT_SUCCESS');
     } catch (e) {
@@ -637,7 +628,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-      await dispatch('sendTransaction', params);
+      await sendTransaction(getInstance().web3, params);
       dispatch('notify', ['green', i18n.tc('successUpdateGradually')]);
       commit('UPDATE_WEIGHTS_GRADUALLY_SUCCESS');
     } catch (e) {
@@ -659,7 +650,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-      await dispatch('sendTransaction', params);
+      await sendTransaction(getInstance().web3, params);
       dispatch('notify', ['green', i18n.tc('successChangeCap')]);
       commit('SET_CAP_SUCCESS');
     } catch (e) {
@@ -691,7 +682,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-      await dispatch('sendTransaction', params);
+      await sendTransaction(getInstance().web3, params);
       commit('COMMIT_ADD_TOKEN_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
@@ -714,7 +705,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-      await dispatch('sendTransaction', params);
+      await sendTransaction(getInstance().web3, params);
       commit('APPLY_ADD_TOKEN_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
@@ -741,7 +732,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-      await dispatch('sendTransaction', params);
+      await sendTransaction(getInstance().web3, params);
       dispatch('notify', ['green', i18n.tc('successRemoveToken')]);
       commit('REMOVE_TOKEN_SUCCESS');
     } catch (e) {
@@ -765,7 +756,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-      await dispatch('sendTransaction', params);
+      await sendTransaction(getInstance().web3, params);
       dispatch('notify', ['green', i18n.tc('successAddLP')]);
       commit('WHITELIST_LP_SUCCESS');
     } catch (e) {
@@ -789,7 +780,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-      await dispatch('sendTransaction', params);
+      await sendTransaction(getInstance().web3, params);
       dispatch('notify', ['green', i18n.tc('successRemoveLP')]);
       commit('REMOVE_WHITELISTED_LP_SUCCESS');
     } catch (e) {
@@ -811,7 +802,7 @@ const actions = {
         [spender, MAX_UINT.toString()],
         {}
       ];
-      const tx = await dispatch('sendTransaction', params);
+      const tx = await sendTransaction(getInstance().web3, params);
       dispatch('syncFetch', {
         tx,
         action: 'getAllowances',
@@ -835,7 +826,7 @@ const actions = {
         [],
         { value: toWei(amount).toString() }
       ];
-      const tx = await dispatch('sendTransaction', params);
+      const tx = await sendTransaction(getInstance().web3, params);
       dispatch('syncFetch', { tx, action: 'getBalances' });
       dispatch('notify', [
         'green',
@@ -858,7 +849,7 @@ const actions = {
         [toWei(amount).toString()],
         {}
       ];
-      const tx = await dispatch('sendTransaction', params);
+      const tx = await sendTransaction(getInstance().web3, params);
       dispatch('syncFetch', { tx, action: 'getBalances' });
       dispatch('notify', [
         'green',

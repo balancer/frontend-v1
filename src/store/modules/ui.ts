@@ -35,7 +35,6 @@ const actions = {
       dispatch('loadPricesById', tokenIds),
       dispatch('initTokenMetadata')
     ]);
-    await dispatch('loadBackupProvider');
     const connector = await Vue.prototype.$auth.getConnector();
     if (connector) await dispatch('login', connector);
     commit('SET', { loading: false, init: true });
