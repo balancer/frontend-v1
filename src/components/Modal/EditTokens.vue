@@ -26,20 +26,38 @@
           </a>
         </UiTableTr>
       </UiTable>
+
       <!-- disabled for now -->
-      <UiButton
-        v-if="pool.metadata.tokens.length < 8 && step === 0"
-        class="m-4"
-        :disabled="true"
-      >
-        {{ $t('addToken') }}
-      </UiButton>
+      <div class="text-center mb-4">
+        <UiButton
+          v-if="pool.metadata.tokens.length < 8 && step === 0"
+          :disabled="true"
+        >
+          {{ $t('addToken') }}
+        </UiButton>
+      </div>
+
       <div v-if="step === 1" class="m-4 px-4 text-center">
         <h4
           v-text="
             `${$t('confirmRemove')} ${_ticker(pendingRemove)} ${$t('fromPool')}`
           "
           class="mb-3"
+        />
+
+        <h5 class="mb-3">
+          This operation will burn
+          {{ _num(Math.log(poolAmountIn) / Math.log(18)) }}
+          {{ pool.metadata.symbol }}
+        </h5>
+
+        <ButtonUnlock
+          v-if="allowance < poolAmountIn"
+          :tokenAddress="pool.getBptAddress()"
+          :amount="poolAmountIn"
+          :decimals="18"
+          @approved="allowance = poolAmountIn"
+          class="button-primary mb-3"
         />
         <div class="d-flex flex-items-center text-left p-3 warning-box">
           <Icon name="warning" size="22" class="mr-3" />
@@ -51,7 +69,7 @@
           {{ $t('cancel') }}
         </UiButton>
         <UiButton
-          :disabled="step !== 1 || loading"
+          :disabled="step !== 1 || loading || poolAmountIn > allowance"
           :loading="loading"
           class="button-primary mx-1"
         >
@@ -72,6 +90,7 @@ export default {
   data() {
     return {
       step: 0,
+      allowance: 0,
       loading: false,
       pendingRemove: '',
       pendingWeight: 0
@@ -85,32 +104,38 @@ export default {
       this.pendingWeight = 0;
     }
   },
+  computed: {
+    poolAmountIn() {
+      return calcPoolInGivenTokenRemove(
+        bnum(this.pool.metadata.totalWeight).times('1e18'),
+        denormalizeBalance(this.pool.metadata.totalShares, 18),
+        bnum(this.pendingWeight).times('1e18')
+      );
+    }
+  },
   methods: {
-    ...mapActions(['removeToken']),
+    ...mapActions(['removeToken', 'getAllowances']),
     async handleSubmit() {
       this.loading = true;
-
-      const totalWeight = bnum(this.pool.metadata.totalWeight).times('1e18');
-      const poolSupply = denormalizeBalance(this.pool.metadata.totalShares, 18);
-      const tokenWeight = bnum(this.pendingWeight).times('1e18');
-
-      const poolAmountIn = calcPoolInGivenTokenRemove(
-        totalWeight,
-        tokenWeight,
-        poolSupply
-      );
-
       await this.removeToken({
         poolAddress: this.pool.metadata.controller,
         token: this.pendingRemove,
-        poolAmountIn: poolAmountIn
+        poolAmountIn: this.poolAmountIn
       });
       this.loading = false;
+      this.$emit('close');
     },
-    handleRemoveToken(tokenAddress, tokenWeight) {
+    async handleRemoveToken(tokenAddress, tokenWeight) {
       this.pendingRemove = tokenAddress;
       this.pendingWeight = tokenWeight;
       this.step = 1;
+      const allowances = await this.getAllowances({
+        tokens: [this.pool.getBptAddress()],
+        spender: this.web3.dsProxyAddress
+      });
+      this.allowance = parseInt(
+        allowances[this.pool.getBptAddress()][this.web3.dsProxyAddress]
+      );
     }
   }
 };

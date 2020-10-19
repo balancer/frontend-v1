@@ -69,31 +69,31 @@
     <ModalEditTokens
       :pool="bPool"
       :open="modalOpen.tokens"
-      @close="modalOpen.tokens = false"
+      @close="closeModal('tokens')"
     />
     <ModalEditPublicSwap
       :pool="pool"
       :value="pool.publicSwap"
       :open="modalOpen.publicSwap"
-      @close="modalOpen.publicSwap = false"
+      @close="closeModal('publicSwap')"
     />
     <ModalEditSwapFee
       :pool="pool"
       :value="pool.swapFee * 1e2"
       :open="modalOpen.swapFee"
-      @close="modalOpen.swapFee = false"
+      @close="closeModal('swapFee')"
     />
     <ModalEditController
       :value="pool.crpController"
       :pool="pool"
       :open="modalOpen.controller"
-      @close="modalOpen.controller = false"
+      @close="closeModal('controller')"
     />
     <ModalEditCap
       :value="pool.bspCap"
       :pool="pool"
       :open="modalOpen.cap"
-      @close="modalOpen.cap = false"
+      @close="closeModal('cap')"
     />
   </div>
 </template>
@@ -117,7 +117,13 @@ export default {
   },
   computed: {
     ongoingUpdate() {
-      return this.pool.startBlock != '0';
+      return this.pool.startBlock !== '0';
+    }
+  },
+  methods: {
+    closeModal(key) {
+      this.modalOpen[key] = false;
+      this.$emit('reload');
     }
   }
 };

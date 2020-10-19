@@ -16,7 +16,7 @@ import { mapActions } from 'vuex';
 import { isLocked } from '@/helpers/utils';
 
 export default {
-  props: ['tokenAddress', 'amount'],
+  props: ['tokenAddress', 'amount', 'decimals'],
   data() {
     return {
       loading: false,
@@ -25,20 +25,27 @@ export default {
   },
   computed: {
     locked() {
-      return isLocked(
+      const res = isLocked(
         this.web3.allowances,
         this.tokenAddress,
         this.web3.dsProxyAddress,
         this.amount,
-        this.web3.tokenMetadata[this.tokenAddress].decimals
+        this.decimals || this.web3.tokenMetadata[this.tokenAddress].decimals
       );
+      this.$emit('input', res);
+      return res;
     }
   },
   methods: {
     ...mapActions(['approve']),
     async handleSubmit() {
       this.loading = true;
-      await this.approve(this.tokenAddress);
+      try {
+        await this.approve(this.tokenAddress);
+        this.$emit('approved', true);
+      } catch (e) {
+        console.log(e);
+      }
       this.loading = false;
     }
   }

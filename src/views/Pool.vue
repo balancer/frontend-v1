@@ -31,7 +31,12 @@
       <PoolBoxes :pool="pool" :bPool="bPool" />
       <Chart :pool="pool" />
       <Tabs :pool="pool" />
-      <router-view :key="$route.path" :pool="pool" :bPool="bPool" />
+      <router-view
+        :key="$route.path"
+        :pool="pool"
+        :bPool="bPool"
+        @reload="loadPool"
+      />
     </div>
     <ModalAddLiquidity
       :pool="pool"

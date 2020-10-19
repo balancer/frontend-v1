@@ -820,7 +820,7 @@ const actions = {
       dispatch('notify', ['green', `${i18n.tc('successUnlock')} ${symbol}`]);
       commit('APPROVE_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) return e;
+      if (!e || isTxReverted(e)) return Promise.reject();
       dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('APPROVE_FAILURE', e);
     }
