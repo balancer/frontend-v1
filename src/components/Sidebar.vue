@@ -4,96 +4,59 @@
     class="d-flex flex-column bottom-0 top-0 overflow-y-auto animate"
     :class="ui.sidebarIsOpen ? 'is-open' : 'is-closed'"
   >
-    <Nav
-      :key="$router.currentRoute.name"
-      :items="items"
-      class="flex-auto mb-4"
-    />
+    <nav class="nav">
+      <ul class="list-style-none">
+        <li v-if="$auth.isAuthenticated">
+          <router-link
+            :to="{ name: 'home' }"
+            :class="{ active: $router.currentRoute.name === 'home' }"
+            v-text="$t('dashboard')"
+          />
+        </li>
+        <li>
+          <router-link
+            :to="{ name: 'explore' }"
+            :class="{ active: $router.currentRoute.name === 'explore' }"
+            v-text="$t('explorePools')"
+          />
+        </li>
+        <template v-if="$auth.isAuthenticated">
+          <li>
+            <router-link
+              :to="{ name: 'create' }"
+              :class="{ active: $router.currentRoute.name === 'create' }"
+              v-text="$t('createPool')"
+            />
+          </li>
+          <li>
+            <router-link
+              :to="{ name: 'my-pools' }"
+              :class="{ active: $router.currentRoute.name === 'my-pools' }"
+              v-text="$t('myPools')"
+            />
+          </li>
+        </template>
+        <li>
+          <a href="https://balancer.exchange" target="_blank">
+            {{ $t('exchange') }}
+            <Icon name="external-link" class="ml-1" />
+          </a>
+        </li>
+        <li>
+          <a @click="modalOpen = true" v-text="$t('about')" />
+        </li>
+      </ul>
+    </nav>
+    <ModalAbout :open="modalOpen" @close="modalOpen = false" />
   </div>
 </template>
 
 <script>
-import { clone, normalizeBalance } from '@/helpers/utils';
-
 export default {
   data() {
     return {
-      weth: {
-        wrapAmount: '',
-        unwrapAmount: ''
-      }
+      modalOpen: false
     };
-  },
-  computed: {
-    items() {
-      const items = [];
-      if (this.web3.account) {
-        items.push({
-          name: 'dashboard',
-          to: { name: 'home' }
-        });
-      }
-      items.push({
-        name: 'explorePools',
-        to: { name: 'explore' }
-      });
-      if (this.web3.account) {
-        items.push({
-          name: 'createPool',
-          to: { name: 'create' }
-        });
-        items.push({
-          name: 'myPools',
-          to: { name: 'my-pools' }
-        });
-        items.push({
-          name: 'myWallet',
-          to: { name: 'wallet' }
-        });
-      }
-
-      // Translate names
-      for (let i = 0; i < items.length; i++) {
-        items[i].name = this.$t(items[i].name);
-      }
-
-      return items;
-    },
-    balances() {
-      const balances = Object.fromEntries(
-        Object.entries(clone(this.web3.balances))
-          .filter(entry => this.getTokenValue(entry) > 0.001)
-          .sort((a, b) => {
-            const aValue = this.getTokenValue(a);
-            const bValue = this.getTokenValue(b);
-            return bValue - aValue;
-          })
-          .slice(0, 5)
-      );
-      const target = { ether: balances.ether };
-      target[this.config.addresses.weth] = balances[this.config.addresses.weth];
-      return Object.assign(target, balances);
-    }
-  },
-  methods: {
-    getTokenValue([address, balanceStr]) {
-      if (!this.web3.tokenMetadata[address] && address !== 'ether') return 0;
-      const decimals =
-        address === 'ether' ? 18 : this.web3.tokenMetadata[address].decimals;
-      const balance = normalizeBalance(balanceStr, decimals);
-      const weth = this.config.tokens[this.config.addresses.weth];
-      const price =
-        address === 'ether'
-          ? this.price.values[weth.address]
-          : this.price.values[address];
-      return balance.times(price).toNumber();
-    },
-    formatBalance(balanceString, address) {
-      const decimals =
-        address === 'ether' ? 18 : this.web3.tokenMetadata[address].decimals;
-      const rawBalance = normalizeBalance(balanceString || '0', decimals);
-      return this._precision(rawBalance.toNumber(), address);
-    }
   }
 };
 </script>
@@ -117,26 +80,20 @@ export default {
   }
 
   ul > li > a {
+    font-size: 16px;
     color: $white;
-    padding: 11px 24px;
+    display: block;
+    padding: 10px 22px 12px;
 
     &.active {
       background: $blue-900;
       border-left: 3px solid $blue;
-      padding-left: 21px;
+      padding-left: 19px;
     }
   }
 
   &.is-open {
     left: 0 !important;
   }
-}
-</style>
-
-<style scoped>
-.amount-input {
-  width: 60%;
-  background-color: transparent;
-  border: none;
 }
 </style>

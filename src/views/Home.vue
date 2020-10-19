@@ -1,9 +1,11 @@
 <template>
   <Page>
+    <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
+      <h3 class="flex-auto" v-text="$t('myLiquidity')" />
+    </div>
     <ListPools
-      v-if="Object.keys(subgraph.poolShares).length > 0"
+      :key="JSON.stringify(queryMyLiquidity)"
       :query="queryMyLiquidity"
-      title="My liquidity"
       class="mb-4"
     />
   </Page>

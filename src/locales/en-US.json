@@ -73,6 +73,7 @@
     "errMaxPoolTokens": "Pool should contain no more than 8 tokens",
     "errMinPoolTokens": "Pool should contain at least 2 tokens",
     "errMinTokenBalance": "Token balance in wei form needs to be at least 1,000,000. For example, WBTC has 8 decimals, so the minimum is 0.01 WBTC.",
+    "exchange": "Exchange",
     "fee": "fee",
     "feeReturns": "Fee returns",
     "filterByAsset": "Filter by asset",

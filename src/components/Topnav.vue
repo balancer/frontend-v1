@@ -43,9 +43,11 @@
         >
           {{ $t('connectWallet') }}
         </UiButton>
-        <UiButton @click="modalAboutOpen = true" class="ml-2 hide-sm">
-          <span v-text="'?'" class="ml-n1 mr-n1" />
-        </UiButton>
+        <router-link :to="{ name: 'wallet' }" class="ml-2">
+          <UiButton class="v-align-bottom p-0">
+            <Icon name="wallet" size="20" class="mx-3" />
+          </UiButton>
+        </router-link>
       </div>
     </div>
     <ModalAccount
@@ -53,7 +55,6 @@
       @close="modalOpen = false"
       @login="handleLogin"
     />
-    <ModalAbout :open="modalAboutOpen" @close="modalAboutOpen = false" />
   </nav>
 </template>
 
@@ -64,8 +65,7 @@ export default {
   data() {
     return {
       loading: false,
-      modalOpen: false,
-      modalAboutOpen: false
+      modalOpen: false
     };
   },
   computed: {
