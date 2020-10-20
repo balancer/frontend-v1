@@ -4,11 +4,18 @@ import { Web3Provider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
 import { AddressZero } from '@ethersproject/constants';
 import { Interface } from '@ethersproject/abi';
+import store from '@/store';
 import abi from '@/helpers/abi';
 import config from '@/config';
-import provider from '@/helpers/rpc';
+import provider from '@/helpers/provider';
 
 let auth;
+
+if (provider) {
+  provider.on('block', blockNumber => {
+    store.commit('GET_BLOCK_SUCCESS', blockNumber);
+  });
+}
 
 const state = {
   injectedLoaded: false,
@@ -136,6 +143,10 @@ const mutations = {
   },
   GET_PROXY_FAILURE(_state, payload) {
     console.debug('GET_PROXY_FAILURE', payload);
+  },
+  GET_BLOCK_SUCCESS(_state, blockNumber) {
+    Vue.set(_state, 'blockNumber', blockNumber);
+    console.debug('GET_BLOCK_SUCCESS', blockNumber);
   }
 };
 
@@ -272,17 +283,6 @@ const actions = {
       });
     } catch (e) {
       commit('LOAD_PROVIDER_FAILURE', e);
-      return Promise.reject();
-    }
-  },
-  getLatestBlock: async ({ commit }) => {
-    commit('GET_LATEST_BLOCK_REQUEST');
-    try {
-      const block = await provider.getBlockNumber();
-      commit('GET_LATEST_BLOCK_SUCCESS', block);
-      return block;
-    } catch (e) {
-      commit('GET_LATEST_BLOCK_FAILURE', e);
       return Promise.reject();
     }
   },

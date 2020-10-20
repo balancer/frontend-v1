@@ -2,7 +2,7 @@ import { Contract } from '@ethersproject/contracts';
 import { getAddress } from '@ethersproject/address';
 import abi from '@/helpers/abi';
 import { GAS_LIMIT_BUFFER, isTxRejected, logRevertedTx } from '@/helpers/utils';
-import provider from '@/helpers/rpc';
+import provider from '@/helpers/provider';
 import { Interface } from '@ethersproject/abi';
 
 export async function sendTransaction(
