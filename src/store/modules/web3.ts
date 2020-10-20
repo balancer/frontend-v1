@@ -289,7 +289,7 @@ const actions = {
   syncFetch: async ({ dispatch }, { tx, action, params }) => {
     // We need to wait for few blocks before the fetch
     // otherwise we have a high chance of fetching the old data
-    await tx.wait(2);
+    await provider.waitForTransaction(tx.hash, 1);
     await dispatch(action, params);
   },
   loadAccount: async ({ dispatch }) => {
