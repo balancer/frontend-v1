@@ -14,7 +14,7 @@
           @click="handlePokeWeights()"
         />
       </div>
-      <label class="d-block mb-2" />      
+      <label class="d-block mb-2" />
       <div class="overflow-hidden">
         <Pie :tokens="pool.tokens" size="64" class="float-left mr-2" />
         <br />
@@ -26,8 +26,7 @@
           <Token :address="token.checksum" class="mr-2" />
           <span v-text="_ticker(token.checksum)" class="text-white" />
         </span>
-       </div>
-
+      </div>
     </div>
 
     <MessageError

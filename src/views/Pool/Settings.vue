@@ -23,26 +23,31 @@
       <div v-text="$t('swapFee')" class="mb-2" />
       <h5 v-text="_num(pool.swapFee, 'percent')" class="text-white" />
     </div>
-    <div v-if="bPool.metadata.rights.canChangeWeights" class="border-bottom mb-4 pb-3">
+    <div
+      v-if="bPool.metadata.rights.canChangeWeights"
+      class="border-bottom mb-4 pb-3"
+    >
       <div class="float-right mr-2">
         <UiButton
           v-text="$t('poke')"
           class="float-right"
           @click="handlePokeWeights()"
         />
-        <UiButton class="mr-2"
-            v-text="$t('updateGradually')"
-            @click="modalOpen.gradualWeights = true"
+        <UiButton
+          class="mr-2"
+          v-text="$t('updateGradually')"
+          @click="modalOpen.gradualWeights = true"
         />
-        <UiButton class="mr-2"
-            v-text="$t('update')"
-            :disabled="ongoingUpdate"
-            @click="modalOpen.weights = true"
+        <UiButton
+          class="mr-2"
+          v-text="$t('update')"
+          :disabled="ongoingUpdate"
+          @click="modalOpen.weights = true"
         />
       </div>
       <div v-text="$t('manageWeights')" class="mb-2" />
       <br />
-    </div>         
+    </div>
     <div
       v-if="bPool.metadata.rights.canAddRemoveTokens"
       class="border-bottom mb-4 pb-3"
@@ -84,12 +89,15 @@
       class="border-bottom mb-4 pb-3"
     >
       <div class="float-right">
-        <UiButton v-text="$t('manage')" @click="modalOpen.manageWhitelist = true" />
+        <UiButton
+          v-text="$t('manage')"
+          @click="modalOpen.manageWhitelist = true"
+        />
       </div>
       <label v-text="$t('manageWhitelist')" class="d-block mb-2" />
-        <br />
+      <br />
     </div>
-    <div class="border-bottom mb-4 pb-3">      
+    <div class="border-bottom mb-4 pb-3">
       <div class="float-right">
         <UiButton v-text="$t('change')" @click="modalOpen.controller = true" />
       </div>
