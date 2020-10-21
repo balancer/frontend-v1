@@ -515,7 +515,7 @@ const actions = {
         [],
         {}
       ];
-      await dispatch('sendTransaction', params);
+      await sendTransaction(getInstance().web3, params);
       dispatch('notify', ['green', i18n.tc('successPokeWeights')]);
       commit('POKE_WEIGHTS_SUCCESS');
     } catch (e) {
