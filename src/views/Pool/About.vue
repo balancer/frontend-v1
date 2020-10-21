@@ -179,7 +179,7 @@ export default {
       return filterObj(this.bPool.metadata.rights, right => right[1]);
     },
     ongoingUpdate() {
-      return this.bPool.metadata.startBlock != '0';
+      return this.bPool.isCrp() && this.bPool.metadata.startBlock != '0';
     }
   },
   methods: {

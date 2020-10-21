@@ -55,7 +55,7 @@ export default {
   },
   computed: {
     ongoingUpdate() {
-      return this.bPool.metadata.startBlock != '0';
+      return this.bPool.isCrp() && this.bPool.metadata.startBlock != '0';
     }
   },
   methods: {
