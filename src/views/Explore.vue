@@ -1,7 +1,7 @@
 <template>
   <Page>
-    <Container class="d-block d-sm-flex flex-items-center px-4 px-md-0">
-      <div class="flex-auto mb-4">
+    <Container>
+      <div class="flex-auto mb-3">
         <Toggle
           v-if="config.env !== 'production'"
           :value="type"
@@ -9,9 +9,9 @@
           @select="selectType"
         />
       </div>
-      <Filters :value="filters" v-model="filters" class="mb-4" />
+      <Filters :value="filters" v-model="filters" class="mb-3" />
     </Container>
-    <ListPools :query="query" :key="JSON.stringify(query)" class="mb-4" />
+    <ListPools :query="query" :key="JSON.stringify(query)" />
   </Page>
 </template>
 

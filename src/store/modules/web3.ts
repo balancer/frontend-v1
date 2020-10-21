@@ -8,6 +8,7 @@ import store from '@/store';
 import abi from '@/helpers/abi';
 import config from '@/config';
 import provider from '@/helpers/provider';
+import { multicall } from '@/_balancer/utils';
 
 let auth;
 
@@ -183,43 +184,26 @@ const actions = {
   },
   loadTokenMetadata: async ({ commit }, tokens) => {
     commit('LOAD_TOKEN_METADATA_REQUEST');
-    const multi = new Contract(
-      config.addresses.multicall,
-      abi['Multicall'],
-      provider
-    );
-    const calls = [];
-    const testToken = new Interface(abi.TestToken);
-    tokens.forEach(token => {
-      // @ts-ignore
-      calls.push([token, testToken.encodeFunctionData('decimals', [])]);
-      // @ts-ignore
-      calls.push([token, testToken.encodeFunctionData('symbol', [])]);
-      // @ts-ignore
-      calls.push([token, testToken.encodeFunctionData('name', [])]);
-    });
-    const tokenMetadata: any = {};
     try {
-      const [, response] = await multi.aggregate(calls);
-      for (let i = 0; i < tokens.length; i++) {
-        const [decimals] = testToken.decodeFunctionResult(
-          'decimals',
-          response[3 * i]
-        );
-        const [symbol] = testToken.decodeFunctionResult(
-          'symbol',
-          response[3 * i + 1]
-        );
-        const [name] = testToken.decodeFunctionResult(
-          'name',
-          response[3 * i + 2]
-        );
-        tokenMetadata[tokens[i]] = {
-          decimals,
-          symbol,
-          name
-        };
-      }
+      const calls = tokens
+        .map(token => [
+          [token, 'decimals', []],
+          [token, 'symbol', []],
+          [token, 'name', []]
+        ])
+        .reduce((a, b) => [...a, ...b]);
+      const res = await multicall(provider, abi['TestToken'], calls);
+      const tokenMetadata = Object.fromEntries(
+        tokens.map((token, i) => [
+          token,
+          Object.fromEntries(
+            calls.map((call, callIndex) => [
+              call[1],
+              ...res[callIndex + i * calls.length]
+            ])
+          )
+        ])
+      );
       commit('LOAD_TOKEN_METADATA_SUCCESS', tokenMetadata);
       return tokenMetadata;
     } catch (e) {
@@ -270,11 +254,7 @@ const actions = {
       const accounts = await auth.web3.listAccounts();
       const account = accounts.length > 0 ? accounts[0] : null;
       let name;
-      try {
-        name = await provider.lookupAddress(account);
-      } catch (e) {
-        console.log(e);
-      }
+      if (config.chainId === 1) name = await provider.lookupAddress(account);
       commit('LOAD_PROVIDER_SUCCESS', {
         injectedLoaded: true,
         injectedChainId: network.chainId,
@@ -390,9 +370,7 @@ const actions = {
   },
   getAllowances: async ({ commit }, { tokens, spender }) => {
     commit('GET_ALLOWANCES_REQUEST');
-    if (!spender) {
-      return;
-    }
+    if (!spender) return;
     const address = state.account;
     const promises: any = [];
     const multi = new Contract(
