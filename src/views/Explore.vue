@@ -1,6 +1,6 @@
 <template>
   <Page>
-    <Container class="d-block d-md-flex">
+    <Container class="d-block d-sm-flex">
       <div class="flex-auto mb-4">
         <Toggle
           v-if="config.env !== 'production'"

@@ -215,8 +215,10 @@ const actions = {
     commit('LOAD_WEB3_REQUEST');
     try {
       if (auth.provider) await dispatch('loadProvider');
-      if (state.injectedChainId === config.chainId)
+      if (state.injectedChainId === config.chainId) {
         await dispatch('loadAccount');
+        await dispatch('checkPendingTransactions');
+      }
       commit('LOAD_WEB3_SUCCESS');
     } catch (e) {
       commit('LOAD_WEB3_FAILURE', e);

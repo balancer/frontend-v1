@@ -59,6 +59,15 @@ const actions = {
     commit('confirmTransaction', receipt);
 
     return receipt;
+  },
+  async checkPendingTransactions({ commit, getters }) {
+    getters.myPendingTransactions.forEach(tx => {
+      provider.waitForTransaction(tx.hash, 1).then(receipt => {
+        console.log('Confirm transaction', receipt);
+        commit('confirmTransaction', receipt);
+      });
+    });
+    return;
   }
 };
 
