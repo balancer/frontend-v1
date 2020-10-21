@@ -5,7 +5,7 @@
       class="border-bottom mb-4 pb-3"
     >
       <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
-        <h4 v-text="$t('manageWeights')" class="flex-auto" />
+        <h4 v-text="$t('weights')" class="flex-auto" />
       </div>
       <div>
         <UiButton
@@ -14,54 +14,26 @@
           @click="handlePokeWeights()"
         />
       </div>
-      <div v-if="isOwner">
-        <div class="float-right mr-2">
-          <UiButton
-            v-text="$t('updateGradually')"
-            @click="modalOpen.gradualWeights = true"
-          />
-        </div>
-        <div class="float-right mr-2">
-          <UiButton
-            v-text="$t('update')"
-            :disabled="ongoingUpdate"
-            @click="modalOpen.weights = true"
-          />
-        </div>
-      </div>
-      <label v-text="$t('weights')" class="d-block mb-2" />
-      <Pie :tokens="pool.tokens" size="64" class="mr-2" />
-    </div>
+      <label class="d-block mb-2" />      
+      <div class="overflow-hidden">
+        <Pie :tokens="pool.tokens" size="64" class="float-left mr-2" />
+        <br />
+        <span
+          v-for="(token, i) in bPool.metadata.tokens"
+          :key="i"
+          class="float-left d-flex flex-items-right mr-3"
+        >
+          <Token :address="token.checksum" class="mr-2" />
+          <span v-text="_ticker(token.checksum)" class="text-white" />
+        </span>
+       </div>
 
-    <!-- disabled for now -->
-    <UiButton
-      v-if="bPool.metadata.rights.canWhitelistLPs && isOwner"
-      class="mb-4"
-      @click="modalOpen.manageWhitelist = true"
-    >
-      {{ $t('manageWhitelist') }}
-    </UiButton>
+    </div>
 
     <MessageError
       v-if="this.transactionReverted"
       :text="$t('txReverted')"
       class="mt-4"
-    />
-    <ModalEditWeights
-      :pool="pool"
-      :open="modalOpen.weights"
-      @close="modalOpen.weights = false"
-    />
-    <ModalEditWeightsGradually
-      :bPool="bPool"
-      :pool="pool"
-      :open="modalOpen.gradualWeights"
-      @close="modalOpen.gradualWeights = false"
-    />
-    <ModalManageWhitelist
-      :pool="pool"
-      :open="modalOpen.manageWhitelist"
-      @close="modalOpen.manageWhitelist = false"
     />
   </div>
 </template>
@@ -74,11 +46,6 @@ export default {
   props: ['pool', 'bPool'],
   data() {
     return {
-      modalOpen: {
-        weights: false,
-        gradualWeights: false,
-        manageWhitelist: false
-      },
       transactionReverted: false
     };
   },
@@ -88,13 +55,6 @@ export default {
     }
   },
   computed: {
-    isOwner() {
-      return (
-        this.pool.crpController &&
-        this.web3.dsProxyAddress.toLowerCase() ===
-          this.pool.crpController.toLowerCase()
-      );
-    },
     ongoingUpdate() {
       return this.bPool.metadata.startBlock != '0';
     }

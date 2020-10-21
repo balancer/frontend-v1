@@ -14,6 +14,36 @@
       />
     </div>
     <div
+      v-if="bPool.metadata.rights.canChangeSwapFee"
+      class="border-bottom mb-4 pb-3"
+    >
+      <div class="float-right">
+        <UiButton v-text="$t('change')" @click="modalOpen.swapFee = true" />
+      </div>
+      <div v-text="$t('swapFee')" class="mb-2" />
+      <h5 v-text="_num(pool.swapFee, 'percent')" class="text-white" />
+    </div>
+    <div v-if="bPool.metadata.rights.canChangeWeights" class="border-bottom mb-4 pb-3">
+      <div class="float-right mr-2">
+        <UiButton
+          v-text="$t('poke')"
+          class="float-right"
+          @click="handlePokeWeights()"
+        />
+        <UiButton class="mr-2"
+            v-text="$t('updateGradually')"
+            @click="modalOpen.gradualWeights = true"
+        />
+        <UiButton class="mr-2"
+            v-text="$t('update')"
+            :disabled="ongoingUpdate"
+            @click="modalOpen.weights = true"
+        />
+      </div>
+      <div v-text="$t('manageWeights')" class="mb-2" />
+      <br />
+    </div>         
+    <div
       v-if="bPool.metadata.rights.canAddRemoveTokens"
       class="border-bottom mb-4 pb-3"
     >
@@ -37,16 +67,6 @@
       </div>
     </div>
     <div
-      v-if="bPool.metadata.rights.canChangeSwapFee"
-      class="border-bottom mb-4 pb-3"
-    >
-      <div class="float-right">
-        <UiButton v-text="$t('change')" @click="modalOpen.swapFee = true" />
-      </div>
-      <div v-text="$t('swapFee')" class="mb-2" />
-      <h5 v-text="_num(pool.swapFee, 'percent')" class="text-white" />
-    </div>
-    <div
       v-if="bPool.metadata.rights.canChangeCap"
       class="border-bottom mb-4 pb-3"
     >
@@ -59,13 +79,29 @@
         <div v-else v-text="_num(pool.bspCap)" />
       </div>
     </div>
-    <div>
+    <div
+      v-if="bPool.metadata.rights.canWhitelistLPs"
+      class="border-bottom mb-4 pb-3"
+    >
+      <div class="float-right">
+        <UiButton v-text="$t('manage')" @click="modalOpen.manageWhitelist = true" />
+      </div>
+      <label v-text="$t('manageWhitelist')" class="d-block mb-2" />
+        <br />
+    </div>
+    <div class="border-bottom mb-4 pb-3">      
       <div class="float-right">
         <UiButton v-text="$t('change')" @click="modalOpen.controller = true" />
       </div>
       <label v-text="$t('controller')" class="d-block mb-2" />
       <h5 v-text="pool.crpController" class="text-white" />
     </div>
+
+    <MessageError
+      v-if="this.transactionReverted"
+      :text="$t('txReverted')"
+      class="mt-4"
+    />
     <ModalEditTokens
       :pool="bPool"
       :open="modalOpen.tokens"
@@ -83,6 +119,17 @@
       :open="modalOpen.swapFee"
       @close="closeModal('swapFee')"
     />
+    <ModalEditWeights
+      :pool="pool"
+      :open="modalOpen.weights"
+      @close="modalOpen.weights = false"
+    />
+    <ModalEditWeightsGradually
+      :bPool="bPool"
+      :pool="pool"
+      :open="modalOpen.gradualWeights"
+      @close="modalOpen.gradualWeights = false"
+    />
     <ModalEditController
       :value="pool.crpController"
       :pool="pool"
@@ -95,11 +142,17 @@
       :open="modalOpen.cap"
       @close="closeModal('cap')"
     />
+    <ModalManageWhitelist
+      :pool="pool"
+      :open="modalOpen.manageWhitelist"
+      @close="modalOpen.manageWhitelist = false"
+    />
   </div>
 </template>
 
 <script>
-import { MAX } from '@/helpers/utils';
+import { mapActions } from 'vuex';
+import { isTxReverted, MAX } from '@/helpers/utils';
 
 export default {
   props: ['pool', 'bPool'],
@@ -109,11 +162,20 @@ export default {
         tokens: false,
         swapFee: false,
         publicSwap: false,
+        weights: false,
+        gradualWeights: false,
         controller: false,
-        cap: false
+        cap: false,
+        manageWhitelist: false
       },
+      transactionReverted: false,
       MAX
     };
+  },
+  watch: {
+    open() {
+      this.transactionReverted = false;
+    }
   },
   computed: {
     ongoingUpdate() {
@@ -121,6 +183,15 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['pokeWeights']),
+    async handlePokeWeights() {
+      const txResult = await this.pokeWeights({
+        poolAddress: this.bPool.metadata.controller
+      });
+      if (isTxReverted(txResult)) {
+        this.transactionReverted = true;
+      }
+    },
     closeModal(key) {
       this.modalOpen[key] = false;
       this.$emit('reload');

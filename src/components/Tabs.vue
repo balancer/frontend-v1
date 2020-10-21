@@ -50,14 +50,7 @@ export default {
       //      OR this user is the controller, and it has one of the rights with associated actions)
       if (
         this.web3.account &&
-        (this.pool.rights.canChangeWeights ||
-          (this.pool.crpController &&
-            this.web3.dsProxyAddress.toLowerCase() ===
-              this.pool.crpController.toLowerCase() &&
-            (this.pool.rights.canChangeWeights ||
-              this.pool.rights.canAddRemoveTokens ||
-              this.pool.rights.canWhitelistLPs)))
-      ) {
+        this.pool.rights.canChangeWeights) {
         items.push({
           name: this.$t('actions'),
           to: { name: 'pool-actions' }
