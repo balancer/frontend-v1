@@ -24,10 +24,7 @@ export async function sendTransaction(
     );
     const gasLimit = gasLimitNumber.toNumber();
     overrides.gasLimit = Math.floor(gasLimit * (1 + GAS_LIMIT_BUFFER));
-
-    const tx = await contractWithSigner[action](...params, overrides);
-    await tx.wait();
-    return tx;
+    return await contractWithSigner[action](...params, overrides);
   } catch (e) {
     if (isTxRejected(e)) return Promise.reject();
     logRevertedTx(provider, contract, action, params);

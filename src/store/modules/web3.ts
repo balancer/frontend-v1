@@ -266,10 +266,6 @@ const actions = {
       return Promise.reject();
     }
   },
-  syncFetch: async ({ dispatch }, { tx, action, params }) => {
-    await provider.waitForTransaction(tx.hash, 1);
-    await dispatch(action, params);
-  },
   loadAccount: async ({ dispatch }) => {
     if (!state.account) return;
     // @ts-ignore
