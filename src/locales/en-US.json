@@ -197,6 +197,8 @@
     "untrustedTokens": "This pool contains an untrusted token that may cause loss of funds. Do not deposit.",
     "unwrap": "Unwrap",
     "update": "Update",
+    "updateFinishedCoda": "(Call pokeWeights to terminate.)",
+    "updateFinishedWarning": "There was a gradual update underway until ",
     "updateGradually": "Update gradually",
     "value": "Value",
     "version": "Version",
