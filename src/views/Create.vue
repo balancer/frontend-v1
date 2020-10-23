@@ -14,6 +14,7 @@
     <UiTable class="mb-4">
       <UiTableTh>
         <div v-text="$t('asset')" class="flex-auto text-left" />
+        <div v-text="$t('myBalance')" class="column" />
         <div v-text="$t('weight')" class="column" />
         <div v-text="'%'" class="column-sm hide-sm" />
         <div class="column">
@@ -47,6 +48,7 @@
               :amount="amounts[token]"
             />
           </div>
+          <div v-text="getBalance(token)" class="column-ms hide-sm" />
           <div class="column">
             <input
               class="input pool-input text-right"
@@ -67,11 +69,17 @@
             />
           </div>
           <div class="column-sm hide-sm">
-            <div v-text="_num(price.values[token], 'usd')" v-if="padlock" />
+            <div
+              v-text="_num(parseFloat(price.values[token]).toFixed(2), 'usd')"
+              v-if="padlock"
+            />
             <div v-text="'-'" v-else />
           </div>
           <div class="column hide-sm">
-            <div v-text="_num(getValue(token), 'usd')" v-if="padlock" />
+            <div
+              v-text="_num(parseFloat(getValue(token)).toFixed(2), 'usd')"
+              v-if="padlock"
+            />
             <div v-text="'-'" v-else />
           </div>
           <div class="column-xs">
@@ -97,7 +105,12 @@
         class="input pool-input text-right"
         :class="isSwapFeeInputValid() ? 'text-white' : 'text-red'"
         v-model="swapFee"
-        placeholder="0.00"
+        placeholder="0.15"
+        type="number"
+        value="0.15"
+        step="0.0001"
+        min="0.0001"
+        max="10"
       />
     </div>
     <div v-if="type === 'SMART_POOL'">
@@ -185,7 +198,7 @@ export default {
       type: 'SHARED_POOL',
       amounts: {},
       weights: {},
-      swapFee: '',
+      swapFee: '0.15',
       tokens: [],
       loading: false,
       crp: {
@@ -302,12 +315,14 @@ export default {
           this.crp.minimumWeightChangeBlockPeriod
         );
         const weightPeriodErrorText = formatError(weightPeriodError);
-        if (weightPeriodErrorText) return weightPeriodErrorText;
+        if (this.crp.rights.canChangeWeights && weightPeriodErrorText)
+          return weightPeriodErrorText;
         const addTimelockError = validateNumberInput(
           this.crp.addTokenTimeLockInBlocks
         );
         const addTimelockErrorText = formatError(addTimelockError);
-        if (addTimelockErrorText) return addTimelockErrorText;
+        if (this.crp.rights.canAddRemoveTokens && addTimelockErrorText)
+          return addTimelockErrorText;
         const initialSupplyError = validateNumberInput(this.crp.initialSupply);
         const initialSupplyErrorText = formatError(initialSupplyError);
         if (initialSupplyErrorText) return initialSupplyErrorText;
@@ -316,7 +331,11 @@ export default {
           this.crp.minimumWeightChangeBlockPeriod
         );
         const addTimelock = parseFloat(this.crp.addTokenTimeLockInBlocks);
-        if (weightPeriod < addTimelock) {
+        if (
+          this.crp.rights.canChangeWeights &&
+          this.crp.rights.canAddRemoveTokens &&
+          weightPeriod < addTimelock
+        ) {
           return this.$t('errInconsistentTimelock');
         }
         const initialSupply = parseFloat(this.crp.initialSupply);
@@ -514,6 +533,13 @@ export default {
         return false;
       }
       return true;
+    },
+    getBalance(tokenAddress) {
+      const balance = normalizeBalance(
+        this.web3.balances[tokenAddress],
+        this.web3.tokenMetadata[tokenAddress].decimals
+      );
+      return parseFloat(balance).toFixed(3);
     },
     getValue(tokenAddress) {
       const tokenPrice = this.price.values[tokenAddress];
