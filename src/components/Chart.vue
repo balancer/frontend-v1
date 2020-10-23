@@ -170,7 +170,7 @@ export default {
           priceLineVisible: false,
           priceFormat: {
             type: 'custom',
-            formatter: value => `${this._num(value, 'currency')}`
+            formatter: value => `${this._num(value, 'usd')}`
           }
         });
       }
@@ -179,7 +179,7 @@ export default {
           color,
           priceFormat: {
             type: 'custom',
-            formatter: value => `${this._num(value, 'currency')}`
+            formatter: value => `${this._num(value, 'usd')}`
           }
         });
       }

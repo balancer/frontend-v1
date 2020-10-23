@@ -4,7 +4,7 @@
     <div class="m-4 mb-0 p-4 border rounded-2 text-white">
       <div class="d-flex">
         <span v-text="$t('version')" class="flex-auto text-gray mr-1" />
-        {{ pkg.version }}#{{ hash.slice(0, 7) }}
+        {{ pkg.version }}
       </div>
       <div class="d-flex">
         <span v-text="$t('license')" class="flex-auto text-gray mr-1" />
@@ -38,8 +38,7 @@ export default {
   props: ['open'],
   data() {
     return {
-      pkg,
-      hash: __webpack_hash__
+      pkg
     };
   }
 };
