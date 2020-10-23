@@ -107,7 +107,6 @@ export default {
         this.weights = this.pool.tokens.map(
           token => 2 * parseFloat(token.denormWeight)
         );
-        await this.getLatestBlock();
         this.currentTime = Date.now();
         this.startBlock = this.web3.blockNumber + BLOCK_BUFFER;
         this.endBlock =
@@ -138,7 +137,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['updateWeightsGradually', 'getLatestBlock']),
+    ...mapActions(['updateWeightsGradually']),
     async handleSubmit() {
       this.loading = true;
       const newWeights = {};

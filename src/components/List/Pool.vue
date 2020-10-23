@@ -24,14 +24,14 @@
       format="percent"
       class="column hide-sm hide-md"
     />
-    <UiNum :value="poolLiquidity" format="currency" class="column" />
-    <UiNum
-      :value="myLiquidity"
+    <div v-text="_num(poolLiquidity, 'usd')" class="column" />
+    <div
+      v-text="_num(myLiquidity, 'usd')"
       format="currency"
       class="column hide-sm hide-md hide-lg"
     />
-    <UiNum
-      :value="pool.lastSwapVolume"
+    <div
+      v-text="_num(pool.lastSwapVolume, 'usd')"
       format="currency"
       class="column hide-sm hide-md hide-lg"
     />
