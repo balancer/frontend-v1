@@ -1,16 +1,16 @@
 <template>
   <Page>
-    <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
+    <Container class="mb-3">
       <h3 class="flex-auto" v-text="$t('myLiquidity')" />
-    </div>
+    </Container>
     <ListPools
       :key="JSON.stringify(queryMyLiquidity)"
       :query="queryMyLiquidity"
       class="mb-4"
     />
-    <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
+    <Container class="mb-3">
       <h3 class="flex-auto" v-text="$t('myPools')" />
-    </div>
+    </Container>
     <ListPools :key="JSON.stringify(queryMyPools)" :query="queryMyPools" />
   </Page>
 </template>

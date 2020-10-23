@@ -1,6 +1,6 @@
 <template>
   <Page>
-    <Container class="d-block d-sm-flex flex-items-center px-4 px-md-0">
+    <Container class="d-block d-sm-flex">
       <div class="flex-auto mb-4">
         <Toggle
           v-if="config.env !== 'production'"
@@ -11,7 +11,7 @@
       </div>
       <Filters :value="filters" v-model="filters" class="mb-4" />
     </Container>
-    <ListPools :query="query" :key="JSON.stringify(query)" class="mb-4" />
+    <ListPools :query="query" :key="JSON.stringify(query)" />
   </Page>
 </template>
 

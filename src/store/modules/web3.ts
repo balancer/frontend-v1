@@ -4,11 +4,19 @@ import { Web3Provider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
 import { AddressZero } from '@ethersproject/constants';
 import { Interface } from '@ethersproject/abi';
+import store from '@/store';
 import abi from '@/helpers/abi';
 import config from '@/config';
-import provider from '@/helpers/rpc';
+import provider from '@/helpers/provider';
+import { multicall } from '@/_balancer/utils';
 
 let auth;
+
+if (provider) {
+  provider.on('block', blockNumber => {
+    store.commit('GET_BLOCK_SUCCESS', blockNumber);
+  });
+}
 
 const state = {
   injectedLoaded: false,
@@ -136,6 +144,10 @@ const mutations = {
   },
   GET_PROXY_FAILURE(_state, payload) {
     console.debug('GET_PROXY_FAILURE', payload);
+  },
+  GET_BLOCK_SUCCESS(_state, blockNumber) {
+    Vue.set(_state, 'blockNumber', blockNumber);
+    console.debug('GET_BLOCK_SUCCESS', blockNumber);
   }
 };
 
@@ -172,43 +184,26 @@ const actions = {
   },
   loadTokenMetadata: async ({ commit }, tokens) => {
     commit('LOAD_TOKEN_METADATA_REQUEST');
-    const multi = new Contract(
-      config.addresses.multicall,
-      abi['Multicall'],
-      provider
-    );
-    const calls = [];
-    const testToken = new Interface(abi.TestToken);
-    tokens.forEach(token => {
-      // @ts-ignore
-      calls.push([token, testToken.encodeFunctionData('decimals', [])]);
-      // @ts-ignore
-      calls.push([token, testToken.encodeFunctionData('symbol', [])]);
-      // @ts-ignore
-      calls.push([token, testToken.encodeFunctionData('name', [])]);
-    });
-    const tokenMetadata: any = {};
     try {
-      const [, response] = await multi.aggregate(calls);
-      for (let i = 0; i < tokens.length; i++) {
-        const [decimals] = testToken.decodeFunctionResult(
-          'decimals',
-          response[3 * i]
-        );
-        const [symbol] = testToken.decodeFunctionResult(
-          'symbol',
-          response[3 * i + 1]
-        );
-        const [name] = testToken.decodeFunctionResult(
-          'name',
-          response[3 * i + 2]
-        );
-        tokenMetadata[tokens[i]] = {
-          decimals,
-          symbol,
-          name
-        };
-      }
+      const calls = tokens
+        .map(token => [
+          [token, 'decimals', []],
+          [token, 'symbol', []],
+          [token, 'name', []]
+        ])
+        .reduce((a, b) => [...a, ...b]);
+      const res = await multicall(provider, abi['TestToken'], calls);
+      const tokenMetadata = Object.fromEntries(
+        tokens.map((token, i) => [
+          token,
+          Object.fromEntries(
+            calls.map((call, callIndex) => [
+              call[1],
+              ...res[callIndex + i * calls.length]
+            ])
+          )
+        ])
+      );
       commit('LOAD_TOKEN_METADATA_SUCCESS', tokenMetadata);
       return tokenMetadata;
     } catch (e) {
@@ -220,8 +215,10 @@ const actions = {
     commit('LOAD_WEB3_REQUEST');
     try {
       if (auth.provider) await dispatch('loadProvider');
-      if (state.injectedChainId === config.chainId)
+      if (state.injectedChainId === config.chainId) {
         await dispatch('loadAccount');
+        await dispatch('checkPendingTransactions');
+      }
       commit('LOAD_WEB3_SUCCESS');
     } catch (e) {
       commit('LOAD_WEB3_FAILURE', e);
@@ -259,11 +256,7 @@ const actions = {
       const accounts = await auth.web3.listAccounts();
       const account = accounts.length > 0 ? accounts[0] : null;
       let name;
-      try {
-        name = await provider.lookupAddress(account);
-      } catch (e) {
-        console.log(e);
-      }
+      if (config.chainId === 1) name = await provider.lookupAddress(account);
       commit('LOAD_PROVIDER_SUCCESS', {
         injectedLoaded: true,
         injectedChainId: network.chainId,
@@ -274,21 +267,6 @@ const actions = {
       commit('LOAD_PROVIDER_FAILURE', e);
       return Promise.reject();
     }
-  },
-  getLatestBlock: async ({ commit }) => {
-    commit('GET_LATEST_BLOCK_REQUEST');
-    try {
-      const block = await provider.getBlockNumber();
-      commit('GET_LATEST_BLOCK_SUCCESS', block);
-      return block;
-    } catch (e) {
-      commit('GET_LATEST_BLOCK_FAILURE', e);
-      return Promise.reject();
-    }
-  },
-  syncFetch: async ({ dispatch }, { tx, action, params }) => {
-    await provider.waitForTransaction(tx.hash, 1);
-    await dispatch(action, params);
   },
   loadAccount: async ({ dispatch }) => {
     if (!state.account) return;
@@ -388,9 +366,7 @@ const actions = {
   },
   getAllowances: async ({ commit }, { tokens, spender }) => {
     commit('GET_ALLOWANCES_REQUEST');
-    if (!spender) {
-      return;
-    }
+    if (!spender) return;
     const address = state.account;
     const promises: any = [];
     const multi = new Contract(
