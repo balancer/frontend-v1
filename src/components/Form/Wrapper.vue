@@ -52,6 +52,9 @@ import { mapActions } from 'vuex';
 import { normalizeBalance } from '@/helpers/utils';
 import { validateNumberInput, ValidationError } from '@/helpers/validation';
 
+const GAS_BUFFER = 0.01;
+const GAS_BUFFER_NO_PROXY = 0.05;
+
 export default {
   data() {
     return {
@@ -64,16 +67,17 @@ export default {
   computed: {
     wrapInputValid() {
       const error = validateNumberInput(this.wrapAmount);
-      if (error !== ValidationError.NONE && error !== ValidationError.EMPTY)
-        return false;
+      if (error !== ValidationError.NONE) return false;
       const ethBalance = this.web3.balances['ether'] || '0';
       const balance = normalizeBalance(ethBalance, 18);
-      return !balance.lt(this.wrapAmount);
+      const balanceAfterGas = this.web3.dsProxyAddress
+        ? balance.minus(GAS_BUFFER)
+        : balance.minus(GAS_BUFFER_NO_PROXY);
+      return !balanceAfterGas.lt(this.wrapAmount);
     },
     unwrapInputValid() {
       const error = validateNumberInput(this.unwrapAmount);
-      if (error !== ValidationError.NONE && error !== ValidationError.EMPTY)
-        return false;
+      if (error !== ValidationError.NONE) return false;
       const wethBalance = this.web3.balances[this.config.addresses.weth] || '0';
       const balance = normalizeBalance(wethBalance, 18);
       return !balance.lt(this.unwrapAmount);
@@ -94,7 +98,12 @@ export default {
     handleWrapMax() {
       const ethBalance = this.web3.balances['ether'] || '0';
       const balance = normalizeBalance(ethBalance, 18);
-      this.wrapAmount = balance.toString();
+      const balanceAfterGas = this.web3.dsProxyAddress
+        ? balance.minus(GAS_BUFFER)
+        : balance.minus(GAS_BUFFER_NO_PROXY);
+      this.wrapAmount = balanceAfterGas.isPositive()
+        ? balanceAfterGas.toString()
+        : '0';
     },
     handleUnwrapMax() {
       const weth = this.config.tokens[this.config.addresses.weth];
