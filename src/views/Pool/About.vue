@@ -30,7 +30,14 @@
     <div v-if="ongoingUpdate" class="mb-3">
       <div class="d-flex flex-items-center p-4 warning-box">
         <Icon name="warning" size="22" class="mr-4" />
-        <div v-if="updateFinished" v-text="`${$t('updateFinishedWarning')} ${endTime()}\. ${$t('updateFinishedCoda')}`" />
+        <div
+          v-if="updateFinished"
+          v-text="
+            `${$t('updateFinishedWarning')} ${endTime()}\. ${$t(
+              'updateFinishedCoda'
+            )}`
+          "
+        />
         <div v-else v-text="`${$t('ongoingUpdateWarning')} ${endTime()}`" />
       </div>
     </div>
@@ -184,28 +191,33 @@ export default {
       return this.bPool.isCrp() && this.bPool.metadata.startBlock != '0';
     },
     updateFinished() {
-      return this.ongoingUpdate && this.currentBlock >= this.bPool.metadata.endBlock;
+      return (
+        this.ongoingUpdate && this.currentBlock >= this.bPool.metadata.endBlock
+      );
     }
   },
   methods: {
     ...mapActions(['getLatestBlock']),
-      async getCurrentBlock() {
-        return await this.getLatestBlock();
-      },
-      endTime() {
-        this.getCurrentBlock().then( () => {
-            this.currentBlock = this.web3.blockNumber;
+    async getCurrentBlock() {
+      return await this.getLatestBlock();
+    },
+    endTime() {
+      this.getCurrentBlock().then(() => {
+        this.currentBlock = this.web3.blockNumber;
 
-            const blockTimestamp = blockNumberToTimestamp(
-              Date.now(),
-              this.currentBlock,
-              this.bPool.metadata.endBlock
-            );
-            this.blockDate = new Date(blockTimestamp);
-        });
-        
-        return this.blockDate.toLocaleString('en-US', { hour: '2-digit', minute:'2-digit' })
-      }
-   }
+        const blockTimestamp = blockNumberToTimestamp(
+          Date.now(),
+          this.currentBlock,
+          this.bPool.metadata.endBlock
+        );
+        this.blockDate = new Date(blockTimestamp);
+      });
+
+      return this.blockDate.toLocaleString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+  }
 };
 </script>

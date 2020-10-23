@@ -278,13 +278,8 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-<<<<<<< HEAD
-      await sendTransaction(getInstance().web3, params);
-      dispatch('notify', ['green', i18n.tc('successCreatePool')]);
-=======
       await dispatch('processTransaction', { params, title: 'Create a pool' });
       dispatch('notify', ['green', "You've successfully created a pool"]);
->>>>>>> develop
       commit('CREATE_POOL_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
@@ -380,12 +375,6 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-<<<<<<< HEAD
-      const tx = await sendTransaction(getInstance().web3, params);
-      dispatch('syncFetch', { tx, action: 'getBalances' });
-      dispatch('syncFetch', { tx, action: 'getUserPoolShares' });
-      dispatch('notify', ['green', i18n.tc('successAddLiquidity')]);
-=======
       await dispatch('processTransaction', {
         params,
         title: 'Add liquidity'
@@ -395,7 +384,6 @@ const actions = {
         dispatch('getUserPoolShares')
       ]);
       dispatch('notify', ['green', "You've successfully added liquidity"]);
->>>>>>> develop
       commit('JOIN_POOL_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
@@ -418,12 +406,6 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-<<<<<<< HEAD
-      const tx = await sendTransaction(getInstance().web3, params);
-      dispatch('syncFetch', { tx, action: 'getBalances' });
-      dispatch('syncFetch', { tx, action: 'getUserPoolShares' });
-      dispatch('notify', ['green', i18n.tc('successAddLiquidity')]);
-=======
       await dispatch('processTransaction', {
         params,
         title: 'Add liquidity'
@@ -433,7 +415,6 @@ const actions = {
         dispatch('getUserPoolShares')
       ]);
       dispatch('notify', ['green', "You've successfully added liquidity"]);
->>>>>>> develop
       commit('JOINSWAP_EXTERN_AMOUNT_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
@@ -454,12 +435,6 @@ const actions = {
         [toWei(poolAmountIn).toString(), minAmountsOut],
         {}
       ];
-<<<<<<< HEAD
-      const tx = await sendTransaction(getInstance().web3, params);
-      dispatch('syncFetch', { tx, action: 'getBalances' });
-      dispatch('syncFetch', { tx, action: 'getUserPoolShares' });
-      dispatch('notify', ['green', i18n.tc('successRemoveLiquidity')]);
-=======
       await dispatch('processTransaction', {
         params,
         title: 'Remove liquidity'
@@ -469,7 +444,6 @@ const actions = {
         dispatch('getUserPoolShares')
       ]);
       dispatch('notify', ['green', "You've successfully removed liquidity"]);
->>>>>>> develop
       commit('EXIT_POOL_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
@@ -490,12 +464,6 @@ const actions = {
         [tokenOutAddress, toWei(poolAmountIn).toString(), minTokenAmountOut],
         {}
       ];
-<<<<<<< HEAD
-      const tx = await sendTransaction(getInstance().web3, params);
-      dispatch('syncFetch', { tx, action: 'getBalances' });
-      dispatch('syncFetch', { tx, action: 'getUserPoolShares' });
-      dispatch('notify', ['green', i18n.tc('successRemoveLiquidity')]);
-=======
       await dispatch('processTransaction', {
         params,
         title: 'Remove liquidity'
@@ -505,7 +473,6 @@ const actions = {
         dispatch('getUserPoolShares')
       ]);
       dispatch('notify', ['green', "You've successfully removed liquidity"]);
->>>>>>> develop
       commit('EXITSWAP_POOL_AMOUNT_IN_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
@@ -554,13 +521,8 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-<<<<<<< HEAD
-      await sendTransaction(getInstance().web3, params);
-      dispatch('notify', ['green'], i18n.tc('successChangeSwapFee'));
-=======
       await dispatch('processTransaction', { params });
       dispatch('notify', ['green', "You've successfully changed the swap fee"]);
->>>>>>> develop
       commit('SET_SWAP_FEE_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
@@ -578,7 +540,11 @@ const actions = {
         [],
         {}
       ];
-      await sendTransaction(getInstance().web3, params);
+      await dispatch('processTransaction', {
+        params,
+        title: 'Poke weights'
+      });
+
       dispatch('notify', ['green', i18n.tc('successPokeWeights')]);
       commit('POKE_WEIGHTS_SUCCESS');
     } catch (e) {
@@ -602,12 +568,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-<<<<<<< HEAD
-      await sendTransaction(getInstance().web3, params);
-      dispatch('notify', ['green', i18n.tc('successSetController')]);
-=======
       await dispatch('processTransaction', { params });
->>>>>>> develop
       commit('SET_CONTROLLER_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
@@ -638,12 +599,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-<<<<<<< HEAD
-      await sendTransaction(getInstance().web3, params);
-      dispatch('notify', ['green', i18n.tc('successChangeWeight')]);
-=======
       await dispatch('processTransaction', { params });
->>>>>>> develop
       commit('INCREASE_WEIGHT_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
@@ -670,12 +626,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-<<<<<<< HEAD
-      await sendTransaction(getInstance().web3, params);
-      dispatch('notify', ['green', i18n.tc('successChangeWeight')]);
-=======
       await dispatch('processTransaction', { params });
->>>>>>> develop
       commit('DECREASE_WEIGHT_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
@@ -703,12 +654,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-<<<<<<< HEAD
-      await sendTransaction(getInstance().web3, params);
-      dispatch('notify', ['green', i18n.tc('successUpdateGradually')]);
-=======
       await dispatch('processTransaction', { params });
->>>>>>> develop
       commit('UPDATE_WEIGHTS_GRADUALLY_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
@@ -729,12 +675,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-<<<<<<< HEAD
-      await sendTransaction(getInstance().web3, params);
-      dispatch('notify', ['green', i18n.tc('successChangeCap')]);
-=======
       await dispatch('processTransaction', { params });
->>>>>>> develop
       commit('SET_CAP_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
@@ -815,12 +756,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-<<<<<<< HEAD
-      await sendTransaction(getInstance().web3, params);
-      dispatch('notify', ['green', i18n.tc('successRemoveToken')]);
-=======
       await dispatch('processTransaction', { params });
->>>>>>> develop
       commit('REMOVE_TOKEN_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
@@ -843,12 +779,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-<<<<<<< HEAD
-      await sendTransaction(getInstance().web3, params);
-      dispatch('notify', ['green', i18n.tc('successAddLP')]);
-=======
       await dispatch('processTransaction', { params });
->>>>>>> develop
       commit('WHITELIST_LP_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
@@ -871,12 +802,7 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-<<<<<<< HEAD
-      await sendTransaction(getInstance().web3, params);
-      dispatch('notify', ['green', i18n.tc('successRemoveLP')]);
-=======
       await dispatch('processTransaction', { params });
->>>>>>> develop
       commit('REMOVE_WHITELISTED_LP_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
@@ -901,12 +827,8 @@ const actions = {
         params,
         title: `Approve ${symbol}`
       });
-<<<<<<< HEAD
-      dispatch('notify', ['green', `${i18n.tc('successUnlock')} ${symbol}`]);
-=======
       dispatch('getAllowances', { tokens: [token], spender });
       dispatch('notify', ['green', `You've successfully unlocked ${symbol}`]);
->>>>>>> develop
       commit('APPROVE_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return Promise.reject();
