@@ -27,7 +27,9 @@ export async function sendTransaction(
     return await contractWithSigner[action](...params, overrides);
   } catch (e) {
     if (isTxRejected(e)) return Promise.reject();
-    logRevertedTx(provider, contract, action, params);
+    // Use gas price field to store tx sender since "from" will be overwritten
+    overrides.gasPrice = signer.getAddress();
+    logRevertedTx(provider, contract, action, params, overrides);
     return Promise.reject(e);
   }
 }
