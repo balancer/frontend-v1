@@ -178,6 +178,13 @@ import {
 } from '@/helpers/utils';
 import { validateNumberInput, formatError } from '@/helpers/validation';
 
+// The contract defaults are 90,000 for the weight change duration, and 500 for the add token timelock
+// Since broadcast currently calls the createPool overload that passes in the block time parameters, we
+//   are overriding those defaults with these
+const DEFAULT_WEIGHT_CHANGE_DURATION = '10';
+const DEFAULT_ADD_TOKEN_TIMELOCK = '10';
+const DEFAULT_INITIAL_SUPPLY = '100';
+
 function getAnotherToken(tokens, selectedTokens) {
   const tokenAddresses = Object.keys(tokens);
   for (const tokenAddress of tokenAddresses) {
@@ -205,9 +212,9 @@ export default {
         poolTokenSymbol: '',
         poolTokenName: '',
         rights: {},
-        minimumWeightChangeBlockPeriod: '10',
-        addTokenTimeLockInBlocks: '10',
-        initialSupply: '100'
+        minimumWeightChangeBlockPeriod: DEFAULT_WEIGHT_CHANGE_DURATION,
+        addTokenTimeLockInBlocks: DEFAULT_ADD_TOKEN_TIMELOCK,
+        initialSupply: DEFAULT_INITIAL_SUPPLY
       },
       activeToken: 0,
       tokenModalOpen: false,
@@ -406,6 +413,18 @@ export default {
     },
     toggleRight(right) {
       Vue.set(this.crp.rights, right, !this.crp.rights[right]);
+      // If we remove the right, don't leave the old values (could be invalid, causing createPool to revert)
+      if (!this.crp.rights.canChangeWeights) {
+        Vue.set(
+          (this.crp.minimumWeightChangeBlockPeriod = DEFAULT_WEIGHT_CHANGE_DURATION)
+        );
+      }
+
+      if (!this.crp.rights.canAddRemoveTokens) {
+        Vue.set(
+          (this.crp.addTokenTimeLockInBlocks = DEFAULT_ADD_TOKEN_TIMELOCK)
+        );
+      }
     },
     changeWeightPeriod(weightPeriod) {
       this.crp.minimumWeightChangeBlockPeriod = weightPeriod;
