@@ -148,7 +148,7 @@ export default {
       )}`;
       const liquidityString = `${this.$t('liquidity')}: ${this._num(
         pool.liquidity,
-        'currency'
+        'usd'
       )}`;
 
       return `${tokenString}, ${feeString}, ${liquidityString}`;

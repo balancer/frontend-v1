@@ -9,7 +9,7 @@
         </a>
       </div>
       <div class="text-right">
-        <h3 v-text="_num(balancesTotalValue, 'raw-currency')" />
+        <h3 v-text="_num(balancesTotalValue, 'usd-long')" />
         {{ $t('totalValue') }}
       </div>
     </Container>
@@ -47,10 +47,10 @@
         </div>
         <div class="column">
           <div>
-            {{ _num(balance.balance) }}
+            {{ _num(balance.balance, 'long') }}
             {{ balance.symbol }}
           </div>
-          <div v-text="_num(balance.value, 'currency')" class="text-gray" />
+          <div v-text="_num(balance.value, 'usd-long')" class="text-gray" />
         </div>
       </UiTableTr>
     </UiTable>
