@@ -1,8 +1,7 @@
-import numeral from 'numeral';
 import { mapState } from 'vuex';
 import store from '@/store';
 import config from '@/config';
-import { shortenAddress, shorten, trunc } from '@/helpers/utils';
+import { shortenAddress, shorten, trunc, formatNumber } from '@/helpers/utils';
 
 // @ts-ignore
 const modules = Object.entries(store.state).map(module => module[0]);
@@ -18,28 +17,7 @@ export default {
   },
   methods: {
     _num(number, key) {
-      let format = '0.[000]';
-      if (number > 1000) format = '0.[0]a';
-      if (number < 1) format = '0.[000000]';
-      if (key === 'long') {
-        format = '0,000.[00]';
-        if (number < 1) format = '0.[000000]';
-      }
-      if (key === 'usd') {
-        format = '$(0.[00])';
-        if (number > 1000) format = '$(0.[0]a)';
-        if (number < 1) format = '$(0.[000000])';
-      }
-      if (key === 'usd-long') {
-        format = '$(0,000.[00])';
-        if (number < 1) format = '$(0.[000000])';
-      }
-      if (key === 'percent') format = '(0.[00]a)%';
-      if (key === 'percent-short') format = '(0a)%';
-      if (number < 0.0001) number = 0;
-      return numeral(number)
-        .format(format)
-        .toUpperCase();
+      return formatNumber(number, key);
     },
     _shortenAddress(str: string): string {
       return shortenAddress(str);
