@@ -129,14 +129,14 @@
     <div class="mb-3">
       <div v-text="$t('totalSwapVolume')" class="mb-2" />
       <h5
-        v-text="_num(bPool.metadata.totalSwapVolume, 'currency')"
+        v-text="_num(bPool.metadata.totalSwapVolume, 'usd')"
         class="text-white"
       />
     </div>
     <div class="mb-3">
       <div v-text="$t('totalSwapFee')" class="mb-2" />
       <h5
-        v-text="_num(bPool.metadata.totalSwapFee, 'currency')"
+        v-text="_num(bPool.metadata.totalSwapFee, 'usd')"
         class="text-white"
       />
     </div>

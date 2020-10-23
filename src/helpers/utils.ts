@@ -1,3 +1,4 @@
+import numeral from 'numeral';
 import { getAddress } from '@ethersproject/address';
 import { MaxUint256 } from '@ethersproject/constants';
 import { Contract } from '@ethersproject/contracts';
@@ -246,4 +247,35 @@ export function blockNumberToTimestamp(
 
 export function filterObj(obj, fn) {
   return Object.fromEntries(Object.entries(obj).filter(item => fn(item)));
+}
+
+export function formatNumber(number, key) {
+  if (number < 0.0001) number = 0;
+
+  let format = '0.[000]';
+  if (number > 1000) format = '0.[0]a';
+  if (number < 1) format = '0.[000000]';
+
+  if (key === 'long') {
+    format = '0,000.[00]';
+    if (number < 1) format = '0.[000000]';
+  }
+
+  if (key === 'usd') {
+    format = '$(0.[00])';
+    if (number > 1000) format = '$(0.[0]a)';
+    if (number < 1) format = '$(0.[000000])';
+  }
+
+  if (key === 'usd-long') {
+    format = '$(0,000.[00])';
+    if (number < 1) format = '$(0.[000000])';
+  }
+
+  if (key === 'percent') format = '(0.[00])%';
+  if (key === 'percent-short') format = '(0)%';
+
+  return numeral(number)
+    .format(format)
+    .toUpperCase();
 }
