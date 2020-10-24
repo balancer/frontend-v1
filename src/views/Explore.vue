@@ -1,15 +1,7 @@
 <template>
   <Page>
-    <Container class="d-block d-sm-flex">
-      <div class="flex-auto mb-4">
-        <Toggle
-          v-if="config.env !== 'production'"
-          :value="type"
-          :options="poolTypes"
-          @select="selectType"
-        />
-      </div>
-      <Filters :value="filters" v-model="filters" class="mb-4" />
+    <Container>
+      <Filters :value="filters" v-model="filters" />
     </Container>
     <ListPools :query="query" :key="JSON.stringify(query)" />
   </Page>
@@ -22,35 +14,23 @@ import pools from '@/_balancer/pools.json';
 export default {
   data() {
     return {
-      type: 'shared',
-      filters: formatFilters(this.$route.query),
-      poolTypes: {
-        shared: 'Shared',
-        smart: 'Smart',
-        private: 'Private'
-      }
+      filters: formatFilters(this.$route.query)
     };
   },
   watch: {
-    type() {
-      let query = formatFilters(this.filters);
-      if (query.token && query.token.length === 0) query = {};
-      query.type = this.type;
-      this.$router.push({ query });
-    },
     filters() {
-      let query = formatFilters(this.filters);
-      if (query.token && query.token.length === 0) query = {};
-      query.type = this.type;
+      const query = formatFilters(this.filters);
+      if (query.token && query.token.length === 0) delete query.token;
+      if (query.type && query.type.length === 0) delete query.type;
       this.$router.push({ query });
     }
   },
   computed: {
     query() {
       let query = this.querySharedPools;
-      if (this.type === 'smart') query = this.querySmartPools;
-      if (this.type === 'private') query = this.queryPrivatePools;
       const filters = formatFilters(this.filters);
+      if (filters.type === 'smart') query = this.querySmartPools;
+      if (filters.type === 'private') query = this.queryPrivatePools;
       if (filters.token && filters.token.length > 0) {
         query.where.tokensList_contains = filters.token;
       }
@@ -84,11 +64,6 @@ export default {
           finalized: false
         }
       };
-    }
-  },
-  methods: {
-    selectType(poolType) {
-      this.type = poolType;
     }
   }
 };

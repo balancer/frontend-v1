@@ -228,6 +228,7 @@ export function logRevertedTx(
 export function formatFilters(filters, fb) {
   if (!filters) return fb || {};
   if (!filters.token) filters.token = [];
+  if (!filters.type) filters.type = 'shared';
   if (!Array.isArray(filters.token)) filters.token = [filters.token];
   return filters;
 }
