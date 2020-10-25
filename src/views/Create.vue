@@ -256,7 +256,10 @@ export default {
     validationError() {
       for (const token of this.tokens) {
         const amountError = validateNumberInput(this.amounts[token]);
-        const amountErrorText = formatError(amountError, `${this.$t('token')} ${this.$t('amount')}`);
+        const amountErrorText = formatError(
+          amountError,
+          `${this.$t('token')} ${this.$t('amount')}`
+        );
         if (amountErrorText) return amountErrorText;
         const weightError = validateNumberInput(this.weights[token]);
         const weightErrorText = formatError(weightError, this.$t('weight'));
@@ -321,17 +324,26 @@ export default {
         const weightPeriodError = validateNumberInput(
           this.crp.minimumWeightChangeBlockPeriod
         );
-        const weightPeriodErrorText = formatError(weightPeriodError, this.$t('minimumUpdateErr'));
+        const weightPeriodErrorText = formatError(
+          weightPeriodError,
+          this.$t('minimumUpdateErr')
+        );
         if (this.crp.rights.canChangeWeights && weightPeriodErrorText)
           return weightPeriodErrorText;
         const addTimelockError = validateNumberInput(
           this.crp.addTokenTimeLockInBlocks
         );
-        const addTimelockErrorText = formatError(addTimelockError, this.$t('timeLockErr'));
+        const addTimelockErrorText = formatError(
+          addTimelockError,
+          this.$t('timeLockErr')
+        );
         if (this.crp.rights.canAddRemoveTokens && addTimelockErrorText)
           return addTimelockErrorText;
         const initialSupplyError = validateNumberInput(this.crp.initialSupply);
-        const initialSupplyErrorText = formatError(initialSupplyError, this.$t('initialSupply'));
+        const initialSupplyErrorText = formatError(
+          initialSupplyError,
+          this.$t('initialSupply')
+        );
         if (initialSupplyErrorText) return initialSupplyErrorText;
 
         const weightPeriod = parseFloat(

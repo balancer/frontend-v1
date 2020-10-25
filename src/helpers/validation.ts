@@ -21,9 +21,14 @@ export function validateNumberInput(input: string): ValidationError {
   return ValidationError.NONE;
 }
 
-export function formatError(error: ValidationError, name = i18n.tc('value')): string {
-  if (error === ValidationError.EMPTY) return `${name} ${i18n.tc('cannotBeEmpty')}`;
-  if (error === ValidationError.NOT_A_NUMBER) return `${name} ${i18n.tc('shouldBeNumber')}`;
+export function formatError(
+  error: ValidationError,
+  name = i18n.tc('value')
+): string {
+  if (error === ValidationError.EMPTY)
+    return `${name} ${i18n.tc('cannotBeEmpty')}`;
+  if (error === ValidationError.NOT_A_NUMBER)
+    return `${name} ${i18n.tc('shouldBeNumber')}`;
   if (error === ValidationError.NOT_POSITIVE)
     return `${name} ${i18n.tc('shouldBePositive')}`;
   return '';
