@@ -67,7 +67,8 @@ export function shorten(str = '', max = 14) {
 }
 
 export function bnum(val: string | number | BigNumber): BigNumber {
-  return new BigNumber(val.toString());
+  const number = typeof val === 'string' ? val : val ? val.toString() : '0';
+  return new BigNumber(number);
 }
 
 export function scale(input: BigNumber, decimalPlaces: number): BigNumber {
