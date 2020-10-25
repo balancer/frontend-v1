@@ -355,7 +355,7 @@ const actions = {
       dispatch('notify', ['green', i18n.tc('successCreatePool')]);
       commit('CREATE_SMART_POOL_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) return e;
+      if (!e || isTxReverted(e)) return Promise.reject(e);
       dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('CREATE_SMART_POOL_FAILURE', e);
     }

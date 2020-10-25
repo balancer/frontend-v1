@@ -461,12 +461,16 @@ export default {
           addTokenTimeLockInBlocks,
           initialSupply
         };
-        await this.createSmartPool({
-          poolParams,
-          crpParams,
-          rights
-        });
-        this.$router.push({ name: 'home' });
+        try {
+          await this.createSmartPool({
+            poolParams,
+            crpParams,
+            rights
+          });
+          this.$router.push({ name: 'home' });
+        } catch (e) {
+          console.error(e);
+        }
       }
       this.loading = false;
     },
