@@ -269,7 +269,7 @@ export default {
           continue;
         }
         const amountError = validateNumberInput(this.amounts[token]);
-        const amountErrorText = formatError(amountError);
+        const amountErrorText = formatError(amountError, this.$t('amount'));
         if (amountErrorText) return amountErrorText;
       }
       // Amount validation

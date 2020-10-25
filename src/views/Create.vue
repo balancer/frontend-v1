@@ -256,14 +256,14 @@ export default {
     validationError() {
       for (const token of this.tokens) {
         const amountError = validateNumberInput(this.amounts[token]);
-        const amountErrorText = formatError(amountError);
+        const amountErrorText = formatError(amountError, `${this.$t('token')} ${this.$t('amount')}`);
         if (amountErrorText) return amountErrorText;
         const weightError = validateNumberInput(this.weights[token]);
-        const weightErrorText = formatError(weightError);
+        const weightErrorText = formatError(weightError, this.$t('weight'));
         if (weightErrorText) return weightErrorText;
       }
       const feeError = validateNumberInput(this.swapFee);
-      const feeErrorText = formatError(feeError);
+      const feeErrorText = formatError(feeError, this.$t('swapFee'));
       if (feeErrorText) return feeErrorText;
       // Token count validation
       if (this.tokens.length < 2) {
@@ -321,17 +321,17 @@ export default {
         const weightPeriodError = validateNumberInput(
           this.crp.minimumWeightChangeBlockPeriod
         );
-        const weightPeriodErrorText = formatError(weightPeriodError);
+        const weightPeriodErrorText = formatError(weightPeriodError, this.$t('minimumUpdateErr'));
         if (this.crp.rights.canChangeWeights && weightPeriodErrorText)
           return weightPeriodErrorText;
         const addTimelockError = validateNumberInput(
           this.crp.addTokenTimeLockInBlocks
         );
-        const addTimelockErrorText = formatError(addTimelockError);
+        const addTimelockErrorText = formatError(addTimelockError, this.$t('timeLockErr'));
         if (this.crp.rights.canAddRemoveTokens && addTimelockErrorText)
           return addTimelockErrorText;
         const initialSupplyError = validateNumberInput(this.crp.initialSupply);
-        const initialSupplyErrorText = formatError(initialSupplyError);
+        const initialSupplyErrorText = formatError(initialSupplyError, this.$t('initialSupply'));
         if (initialSupplyErrorText) return initialSupplyErrorText;
 
         const weightPeriod = parseFloat(
