@@ -414,17 +414,10 @@ export default {
     toggleRight(right) {
       Vue.set(this.crp.rights, right, !this.crp.rights[right]);
       // If we remove the right, don't leave the old values (could be invalid, causing createPool to revert)
-      if (!this.crp.rights.canChangeWeights) {
-        Vue.set(
-          (this.crp.minimumWeightChangeBlockPeriod = DEFAULT_WEIGHT_CHANGE_DURATION)
-        );
-      }
-
-      if (!this.crp.rights.canAddRemoveTokens) {
-        Vue.set(
-          (this.crp.addTokenTimeLockInBlocks = DEFAULT_ADD_TOKEN_TIMELOCK)
-        );
-      }
+      if (!this.crp.rights.canChangeWeights)
+        this.crp.minimumWeightChangeBlockPeriod = DEFAULT_WEIGHT_CHANGE_DURATION;
+      if (!this.crp.rights.canAddRemoveTokens)
+        this.crp.addTokenTimeLockInBlocks = DEFAULT_ADD_TOKEN_TIMELOCK;
     },
     changeWeightPeriod(weightPeriod) {
       this.crp.minimumWeightChangeBlockPeriod = weightPeriod;
