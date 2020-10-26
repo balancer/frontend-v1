@@ -173,7 +173,6 @@ import {
   MAX,
   blockNumberToTimestamp
 } from '@/helpers/utils';
-import { mapActions } from 'vuex';
 
 export default {
   props: ['bPool'],
@@ -181,47 +180,31 @@ export default {
     return {
       poolRights,
       MAX,
-      currentBlock: 0,
       blockDate: 0
     };
-  },
-  watch: {
-    async open() {
-      this.currentBlock = await this.getLatestBlock();
-    }
   },
   computed: {
     rights() {
       return filterObj(this.bPool.metadata.rights, right => right[1]);
     },
     ongoingUpdate() {
-      return this.bPool.isCrp() && this.bPool.metadata.startBlock != '0';
+      return this.bPool.isCrp() && this.bPool.metadata.startBlock !== '0';
     },
     updateFinished() {
       return (
-        this.ongoingUpdate && this.currentBlock >= this.bPool.metadata.endBlock
+        this.ongoingUpdate &&
+        this.web3.blockNumber >= this.bPool.metadata.endBlock
       );
     }
   },
   methods: {
-    ...mapActions(['getLatestBlock']),
-    async getCurrentBlock() {
-      return await this.getLatestBlock();
-    },
     endTime() {
-      /* FIX ME! 
-      this.getCurrentBlock().then(() => {
-        this.currentBlock = this.web3.blockNumber;
-
-        const blockTimestamp = blockNumberToTimestamp(
-          Date.now(),
-          this.currentBlock,
-          this.bPool.metadata.endBlock
-        );
-        this.blockDate = new Date(blockTimestamp);
-      });*/
-      // Replace this with correct, calculated date
-      this.blockDate = new Date();
+      const blockTimestamp = blockNumberToTimestamp(
+        Date.now(),
+        this.web3.blockNumber,
+        this.bPool.metadata.endBlock
+      );
+      this.blockDate = new Date(blockTimestamp);
 
       return this.blockDate.toLocaleString('en-US', {
         month: 'long',
