@@ -185,21 +185,18 @@ const actions = {
   loadTokenMetadata: async ({ commit }, tokens) => {
     commit('LOAD_TOKEN_METADATA_REQUEST');
     try {
+      const keys = ['decimals', 'symbol', 'name'];
       const calls = tokens
-        .map(token => [
-          [token, 'decimals', []],
-          [token, 'symbol', []],
-          [token, 'name', []]
-        ])
+        .map(token => keys.map(key => [token, key, []]))
         .reduce((a, b) => [...a, ...b]);
       const res = await multicall(provider, abi['TestToken'], calls);
       const tokenMetadata = Object.fromEntries(
         tokens.map((token, i) => [
           token,
           Object.fromEntries(
-            calls.map((call, callIndex) => [
-              call[1],
-              ...res[callIndex + i * calls.length]
+            keys.map((key, keyIndex) => [
+              key,
+              ...res[keyIndex + i * keys.length]
             ])
           )
         ])
