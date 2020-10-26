@@ -81,6 +81,9 @@ export default {
         this.id = id;
         this.loadPool();
       }
+    },
+    'web3.account': async function(val, prev) {
+      if (val && val.toLowerCase() !== prev) await this.loadPool();
     }
   },
   computed: {
