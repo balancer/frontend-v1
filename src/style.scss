@@ -201,3 +201,23 @@ input {
   border-radius: 4px;
   color: $warning;
 }
+
+.tooltipped {
+  &::before {
+    border-top-color: $input-hover-border !important;
+    margin-bottom: 14px;
+    top: -14px !important;
+  }
+
+  &::after {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 320px;
+    margin-bottom: 14px;
+    border-radius: 20px;
+    padding: 4px 16px;
+    font-size: 14px;
+    background-color: $input-hover-border;
+    color: white;
+  }
+}
