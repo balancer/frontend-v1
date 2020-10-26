@@ -227,5 +227,9 @@
     "willBurn": "This operation will burn",
     "withdraw": "Withdraw",
     "wrap": "Wrap",
-    "wrongNetwork": "Wrong network"
+    "wrongNetwork": "Wrong network",
+    "wrapWethToEth": "Change wETH to ETH",
+    "wrapEthToWeth": "Change ETH to wETH",
+    "send": "Send",
+    "receive": "Receive"
 }

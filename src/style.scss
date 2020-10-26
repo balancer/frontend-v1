@@ -191,6 +191,11 @@ a {
   vertical-align: middle !important;
 }
 
+input {
+  background-color: transparent;
+  border: none;
+}
+
 .warning-box {
   border: 1px solid $warning;
   border-radius: 4px;
