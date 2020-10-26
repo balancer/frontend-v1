@@ -17,10 +17,14 @@
         <div v-text="$t('weight')" class="column" />
         <div v-text="'%'" class="column-sm hide-sm" />
         <div class="column">
-          <span @click="togglePadlock">
+          <a
+            @click="togglePadlock"
+            class="px-1 mr-1 tooltipped tooltipped-n"
+            :aria-label="$t(padlock ? 'marketAmounts' : 'customAmounts')"
+          >
             <span v-if="padlock"><Icon name="lock" size="16"/></span>
             <span v-else><Icon name="unlock" size="16"/></span>
-          </span>
+          </a>
           {{ $t('amount') }}
         </div>
         <div v-text="$t('price')" class="column-sm hide-sm" />

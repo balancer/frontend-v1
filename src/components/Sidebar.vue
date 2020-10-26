@@ -5,52 +5,70 @@
     :class="ui.sidebarIsOpen ? 'is-open' : 'is-closed'"
   >
     <nav class="nav d-flex flex-column height-full">
-      <ul class="border-bottom py-3">
-        <li v-if="$auth.isAuthenticated">
-          <router-link
-            :to="{ name: 'home' }"
-            :class="{ active: $router.currentRoute.name === 'home' }"
-            v-text="$t('dashboard')"
-          />
-        </li>
-        <li>
-          <router-link
-            :to="{ name: 'explore' }"
-            :class="{ active: $router.currentRoute.name === 'explore' }"
-            v-text="$t('explorePools')"
-          />
-        </li>
-        <template v-if="$auth.isAuthenticated">
-          <li>
+      <div class="flex-auto">
+        <ul class="border-bottom py-3">
+          <li v-if="$auth.isAuthenticated">
             <router-link
-              :to="{ name: 'create' }"
-              :class="{ active: $router.currentRoute.name === 'create' }"
-              v-text="$t('createPool')"
+              :to="{ name: 'home' }"
+              :class="{ active: $router.currentRoute.name === 'home' }"
+              v-text="$t('dashboard')"
             />
           </li>
-        </template>
-      </ul>
-      <ul class="py-3">
-        <li>
-          <a href="https://balancer.exchange" target="_blank">
-            {{ $t('exchange') }}
-            <Icon name="external-link" class="ml-1" />
-          </a>
-        </li>
-        <li>
-          <a @click="modalOpen = true" v-text="$t('about')" />
-        </li>
-      </ul>
+          <li>
+            <router-link
+              :to="{ name: 'explore' }"
+              :class="{ active: $router.currentRoute.name === 'explore' }"
+              v-text="$t('explorePools')"
+            />
+          </li>
+          <template v-if="$auth.isAuthenticated">
+            <li>
+              <router-link
+                :to="{ name: 'create' }"
+                :class="{ active: $router.currentRoute.name === 'create' }"
+                v-text="$t('createPool')"
+              />
+            </li>
+          </template>
+        </ul>
+        <ul class="py-3">
+          <li>
+            <a href="https://balancer.exchange" target="_blank">
+              {{ $t('exchange') }}
+              <Icon name="external-link" class="ml-1" />
+            </a>
+          </li>
+          <li>
+            <a @click="modalOpen = true" v-text="$t('about')" />
+          </li>
+        </ul>
+      </div>
+      <div class="d-block m-4">
+        <a
+          v-if="commitSha"
+          :href="`https://github.com/${pkg.repository}/tree/${commitSha}`"
+          target="_blank"
+        >
+          Build {{ pkg.version }}#{{ commitSha.slice(0, 7) }}
+          <Icon name="external-link" class="ml-1" />
+        </a>
+      </div>
     </nav>
     <ModalAbout :open="modalOpen" @close="modalOpen = false" />
   </div>
 </template>
 
 <script>
+import pkg from '@/../package.json';
+
+const commitSha = process.env.VUE_APP_COMMIT_SHA;
+
 export default {
   data() {
     return {
-      modalOpen: false
+      modalOpen: false,
+      pkg,
+      commitSha
     };
   }
 };
