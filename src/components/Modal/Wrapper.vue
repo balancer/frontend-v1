@@ -22,7 +22,7 @@
             class="flex-auto px-0"
           />
           <a @click="handleMax()" class="mx-3">
-            <UiLabel v-text="'Max'" />
+            <UiLabel v-text="$t('max')" />
           </a>
           {{ symbols.tokenIn }}
         </UiButton>
@@ -48,6 +48,7 @@
           />
           {{ symbols.tokenOut }}
         </UiButton>
+        <div v-text="$t('ethBuffer')" class="text-yellow text-center mt-3" v-if="!etherLeft" />
       </div>
       <template slot="footer">
         <UiButton @click="$emit('close')" type="button" class="mx-1">
@@ -70,6 +71,9 @@
 import { validateNumberInput, ValidationError } from '@/helpers/validation';
 import { normalizeBalance } from '@/helpers/utils';
 import { mapActions } from 'vuex';
+
+const GAS_BUFFER_ERROR = 0.01;
+const GAS_BUFFER_WARNING = 0.2;
 
 export default {
   props: ['open', 'side'],
@@ -105,9 +109,16 @@ export default {
     },
     isValid() {
       const error = validateNumberInput(this.amount);
-      if (error !== ValidationError.NONE && error !== ValidationError.EMPTY)
-        return false;
-      return !this.balance.lt(this.amount);
+      if (error !== ValidationError.NONE) return false;
+      return this.currentSide === 1
+        ? !this.balance.minus(GAS_BUFFER_ERROR).lt(this.amount)
+        : !this.balance.lt(this.amount);
+    },
+    etherLeft() {
+      return (
+        this.currentSide === 2 ||
+        !this.balance.minus(GAS_BUFFER_WARNING).lt(this.amount)
+      );
     }
   },
   methods: {
@@ -120,7 +131,10 @@ export default {
       this.$emit('close');
     },
     handleMax() {
-      this.amount = this.balance.toString();
+      this.amount =
+        this.currentSide === 1
+          ? this.balance.minus(GAS_BUFFER_WARNING).toString()
+          : this.balance.toString();
     },
     toggleSide() {
       this.currentSide = this.currentSide === 1 ? 2 : 1;

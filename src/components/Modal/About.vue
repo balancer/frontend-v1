@@ -4,7 +4,8 @@
     <div class="m-4 mb-0 p-4 border rounded-2 text-white">
       <div class="d-flex">
         <span v-text="$t('version')" class="flex-auto text-gray mr-1" />
-        {{ pkg.version }}
+        {{ pkg.version
+        }}<span v-if="commitSha" v-text="`#${commitSha.slice(0, 7)}`" />
       </div>
       <div class="d-flex">
         <span v-text="$t('license')" class="flex-auto text-gray mr-1" />
@@ -38,11 +39,14 @@
 <script>
 import pkg from '@/../package.json';
 
+const commitSha = process.env.VUE_APP_COMMIT_SHA;
+
 export default {
   props: ['open'],
   data() {
     return {
-      pkg
+      pkg,
+      commitSha
     };
   }
 };
