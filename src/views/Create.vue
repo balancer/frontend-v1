@@ -20,7 +20,7 @@
           <a
             @click="togglePadlock"
             class="px-1 mr-1 tooltipped tooltipped-n"
-            :aria-label="$t(padlock ? 'marketPrices' : 'customPrices')"
+            :aria-label="$t(padlock ? 'marketAmounts' : 'customAmounts')"
           >
             <span v-if="padlock"><Icon name="lock" size="16"/></span>
             <span v-else><Icon name="unlock" size="16"/></span>

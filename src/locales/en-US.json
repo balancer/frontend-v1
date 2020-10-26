@@ -192,6 +192,6 @@
   "send": "Send",
   "receive": "Receive",
   "wrongNetwork": "Wrong network",
-  "marketPrices": "Use market prices",
-  "customPrices": "Use custom prices"
+  "marketAmounts": "Calculate token amounts using market prices",
+  "customAmounts": "Enter token amounts manually"
 }
