@@ -74,7 +74,8 @@ import { validateNumberInput, ValidationError } from '@/helpers/validation';
 import { normalizeBalance } from '@/helpers/utils';
 import { mapActions } from 'vuex';
 
-const GAS_BUFFER = 0.2;
+const GAS_BUFFER_ERROR = 0.01;
+const GAS_BUFFER_WARNING = 0.2;
 
 export default {
   props: ['open', 'side'],
@@ -111,12 +112,14 @@ export default {
     isValid() {
       const error = validateNumberInput(this.amount);
       if (error !== ValidationError.NONE) return false;
-      return !this.balance.lt(this.amount);
+      return this.currentSide === 1
+        ? !this.balance.minus(GAS_BUFFER_ERROR).lt(this.amount)
+        : !this.balance.lt(this.amount);
     },
     etherLeft() {
       return (
         this.currentSide === 2 ||
-        !this.balance.minus(GAS_BUFFER).lt(this.amount)
+        !this.balance.minus(GAS_BUFFER_WARNING).lt(this.amount)
       );
     }
   },
@@ -132,7 +135,7 @@ export default {
     handleMax() {
       this.amount =
         this.currentSide === 1
-          ? this.balance.minus(GAS_BUFFER).toString()
+          ? this.balance.minus(GAS_BUFFER_WARNING).toString()
           : this.balance.toString();
     },
     toggleSide() {
