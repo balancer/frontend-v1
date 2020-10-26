@@ -58,6 +58,7 @@
     "createPool": "Create a pool",
     "createProxy": "Create a proxy contract to manage liquidity on Balancer. This is a one-time action and will save you gas in the long-term.",
     "currency": "currency",
+    "deadPoolWarning": "The controller has removed all tokens from this pool; you can no longer interact with it.",
     "deposit": "Deposit",
     "depositAmount": "Deposit amount",
     "deposits": "Deposits",

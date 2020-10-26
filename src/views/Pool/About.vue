@@ -18,6 +18,13 @@
       <div v-text="$t('poolType')" class="mb-2" />
       <h5 v-text="bPool.getTypeStr()" class="text-white" />
     </div>
+    <div v-if="bPool.metadata.tokens.length == 0">
+      <div class="d-flex flex-items-center p-4 warning-box">
+        <Icon name="warning" size="22" class="mr-4" />
+        <div v-text="$t('deadPoolWarning')" />
+      </div>
+      <br />
+    </div>
     <div v-if="bPool.isCrp()" class="mb-3">
       <div v-text="$t('rights')" class="mb-2" />
       <template v-if="Object.keys(rights).length > 0">
