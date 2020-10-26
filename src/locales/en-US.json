@@ -191,5 +191,7 @@
   "wrapEthToWeth": "Change ETH to wETH",
   "send": "Send",
   "receive": "Receive",
-  "wrongNetwork": "Wrong network"
+  "wrongNetwork": "Wrong network",
+  "marketPrices": "Use market prices",
+  "customPrices": "Use custom prices"
 }
