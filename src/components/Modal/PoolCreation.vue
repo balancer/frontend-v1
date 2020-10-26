@@ -2,13 +2,15 @@
   <UiModal :open="open" @close="$emit('close')" style="max-width: 600px;">
     <div class="modal-body p-6 text-white">
       <div class="mb-2">
-        {{ $t('beforeCreatingPre') }} {{ type }} {{ $t('beforeCreatingPost') }}:
+        {{ $t('beforeCreatingPre') }} {{ type.toLowerCase() }}
+        {{ $t('beforeCreatingPost') }}:
       </div>
       <div v-for="(value, index) in values" :key="index">
         <b>{{ value }}</b>
       </div>
       <div class="mt-2">
-        {{ $t('vulnerablePre') }}{{ type }}{{ $t('vulnerableMid') }}
+        {{ $t('vulnerablePre') }} {{ type.toLowerCase()
+        }}{{ $t('vulnerableMid') }}
         <Icon name="lock" size="16" />
         {{ $t('vulnerablePost') }}.
       </div>

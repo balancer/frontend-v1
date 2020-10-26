@@ -7,13 +7,16 @@ export default {
   props: ['pool'],
   computed: {
     items() {
-      const items = [
-        {
+      const items = [];
+
+      if (this.pool.tokens.length > 0) {
+        items.push({
           name: this.$t('balances'),
           to: { name: 'pool' },
           count: this.pool.tokens.length
-        }
-      ];
+        });
+      }
+
       if (this.pool.swapsCount > 0) {
         items.push({
           name: this.$t('swaps'),
@@ -38,7 +41,8 @@ export default {
         this.web3.dsProxyAddress &&
         this.pool.crpController &&
         this.web3.dsProxyAddress.toLowerCase() ===
-          this.pool.crpController.toLowerCase()
+          this.pool.crpController.toLowerCase() &&
+        this.pool.tokens.length > 0
       ) {
         items.push({
           name: this.$t('settings'),
@@ -49,7 +53,11 @@ export default {
       // Show Actions if the person is logged in
       // AND (the pool can change weights (so potentially provide pokeWeights to anyone)
       //      OR this user is the controller, and it has one of the rights with associated actions)
-      if (this.web3.account && this.pool.rights.canChangeWeights) {
+      if (
+        this.web3.account &&
+        this.pool.rights.canChangeWeights &&
+        this.pool.tokens.length > 0
+      ) {
         items.push({
           name: this.$t('actions'),
           to: { name: 'pool-actions' }

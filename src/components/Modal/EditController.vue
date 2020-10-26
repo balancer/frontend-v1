@@ -10,7 +10,7 @@
         </h5>
         <div class="d-flex flex-items-center p-4 warning-box">
           <Icon name="warning" size="22" class="mr-4" />
-          {{ $t('changeControllerWarning') }}
+          <div v-html="$t('changeControllerWarning')" />
         </div>
         <input
           class="h3 py-2 px-3 input text-center"

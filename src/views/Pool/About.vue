@@ -202,6 +202,7 @@ export default {
       return await this.getLatestBlock();
     },
     endTime() {
+      /* FIX ME! 
       this.getCurrentBlock().then(() => {
         this.currentBlock = this.web3.blockNumber;
 
@@ -211,9 +212,13 @@ export default {
           this.bPool.metadata.endBlock
         );
         this.blockDate = new Date(blockTimestamp);
-      });
+      });*/
+      // Replace this with correct, calculated date
+      this.blockDate = new Date();
 
       return this.blockDate.toLocaleString('en-US', {
+        month: 'long',
+        day: 'numeric',
         hour: '2-digit',
         minute: '2-digit'
       });

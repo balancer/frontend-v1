@@ -6,6 +6,7 @@ import { Provider } from '@ethersproject/providers';
 import { Wallet } from '@ethersproject/wallet';
 import BigNumber from '@/helpers/bignumber';
 import config from '@/config';
+import i18n from '@/i18n';
 
 export const ITEMS_PER_PAGE = 20;
 export const MAX_GAS = new BigNumber('0xffffffff');
@@ -27,27 +28,27 @@ export const unknownColors = [
 ];
 
 export const capInputOptions = {
-  NUMERIC: 'Value',
-  UNLIMITED: 'Unlimited'
+  NUMERIC: i18n.tc('value'),
+  UNLIMITED: i18n.tc('unlimited')
 };
 
 export const liquidityToggleOptions = {
-  MULTI_ASSET: 'Multi asset',
-  SINGLE_ASSET: 'Single asset'
+  MULTI_ASSET: i18n.tc('multiAsset'),
+  SINGLE_ASSET: i18n.tc('singleAsset')
 };
 
 export const poolTypes = {
-  SHARED_POOL: 'Shared',
-  SMART_POOL: 'Smart'
+  SHARED_POOL: i18n.tc('shared'),
+  SMART_POOL: i18n.tc('smart')
 };
 
 export const poolRights = {
-  canPauseSwapping: 'Can pause swapping',
-  canChangeSwapFee: 'Can change swap fee',
-  canChangeWeights: 'Can change weights',
-  canAddRemoveTokens: 'Can add and remove tokens',
-  canWhitelistLPs: 'Can whitelist LPs',
-  canChangeCap: 'Can change pool cap'
+  canPauseSwapping: i18n.tc('canPauseSwapping'),
+  canChangeSwapFee: i18n.tc('canChangeSwapFee'),
+  canChangeWeights: i18n.tc('canChangeWeights'),
+  canAddRemoveTokens: i18n.tc('canAddRemoveTokens'),
+  canWhitelistLPs: i18n.tc('canWhitelistLPs'),
+  canChangeCap: i18n.tc('canChangeCap')
 };
 
 export function jsonParse(input, fallback?) {
