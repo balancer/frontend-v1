@@ -134,7 +134,7 @@
     "ongoingUpdateWarning": "There is a gradual weights update underway until ",
     "paused": "Paused",
     "pendingTransactions": "Pending transaction(s)",
-    "percent": "percent",
+    "percent": "Percent",
     "poke": "Poke weights",
     "pokeWeightsInfo": "If the pool has an ongoing gradual weight update (see About), 'poke' will set the weights to values along the update curve, corresponding to the current block.<br>This operation may change token prices, and might be gas-intensive.",
     "pool": "Pool",
