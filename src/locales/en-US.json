@@ -136,7 +136,7 @@
     "pendingTransactions": "Pending transaction(s)",
     "percent": "Percent",
     "poke": "Poke weights",
-    "pokeWeightsInfo": "If the pool has an ongoing gradual weight update (see About), 'poke' will set the weights to values along the update curve, corresponding to the current block.<br>This operation may change token prices, and might be gas-intensive.",
+    "pokeWeightsInfo": "If the pool has an ongoing gradual weight update (see About), 'poke' will set the weights to values along the update curve, corresponding to the current block. This operation may change token prices, and might be gas-intensive.",
     "pool": "Pool",
     "poolAddress": "Pool address",
     "poolBalance": "Pool balance",

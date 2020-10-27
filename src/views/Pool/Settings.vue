@@ -79,7 +79,7 @@
         <UiButton v-text="$t('change')" @click="modalOpen.cap = true" />
       </div>
       <label v-text="$t('cap')" class="d-block mb-2" />
-      <div class="text-gray">
+      <div class="text-white">
         <div v-if="pool.bspCap === MAX" v-text="$t('unlimited')" />
         <div v-else v-text="_num(pool.bspCap)" />
       </div>

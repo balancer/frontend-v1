@@ -2,26 +2,13 @@
   <div class="border rounded-1 panel-background p-4 text-white">
     <div
       v-if="bPool.metadata.rights.canChangeWeights"
-      class="border-bottom mb-4 pb-3"
+      class="p-4 border rounded-1"
+      style="max-width: 440px;"
     >
-      <div>
-        <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
-          <h4 v-text="$t('weights')" class="flex-auto" />
-        </div>
-
-        <UiButton
-          v-text="$t('poke')"
-          class="float-right ml-4"
-          @click="handlePokeWeights()"
-        />
-      </div>
-      <label class="d-block mb-2" />
-      <div class="d-flex flex-items-left p-4 warning-box">
-        <Icon name="info" size="22" class="mr-4" />
-        <div v-html="$t('pokeWeightsInfo')" />
-      </div>
+      <h5 v-text="$t('poke')" class="mb-3" />
+      <p v-html="$t('pokeWeightsInfo')" class="mb-3" />
+      <UiButton v-text="$t('poke')" @click="handlePokeWeights()" />
     </div>
-
     <MessageError
       v-if="this.transactionReverted"
       :text="$t('txReverted')"
@@ -48,7 +35,7 @@ export default {
   },
   computed: {
     ongoingUpdate() {
-      return this.bPool.isCrp() && this.bPool.metadata.startBlock != '0';
+      return this.bPool.isCrp() && this.bPool.metadata.startBlock !== '0';
     }
   },
   methods: {
