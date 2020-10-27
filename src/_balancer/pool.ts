@@ -37,7 +37,12 @@ export default class Pool {
   }
 
   getBptPrice() {
-    if (!this.metadata.liquidity || !this.metadata.totalShares) return 0;
+    if (
+      !this.metadata.liquidity ||
+      !this.metadata.totalShares ||
+      (!this.metadata.finalized && !this.isCrp())
+    )
+      return 0;
     return this.metadata.liquidity / this.metadata.totalShares;
   }
 

@@ -28,13 +28,9 @@
           v-text="`(${_shorten(pool.config.symbol || pool.metadata.symbol)})`"
           class="ml-1"
         />
-        <UiLabel
-          v-if="!pool.metadata.finalized"
-          v-text="pool.getTypeStr()"
-          class="ml-2"
-        />
         <Icon name="external-link" size="16" class="ml-1 mr-2" />
       </a>
+      <UiLabel v-if="!pool.metadata.finalized" v-text="pool.getTypeStr()" />
       <h3 v-text="_num(pool.getBptPrice(), 'usd-long')" />
     </div>
   </div>
