@@ -58,7 +58,7 @@ const actions = {
     console.log('Confirm transaction', receipt);
     commit('confirmTransaction', receipt);
 
-    return receipt;
+    return tx;
   },
   async checkPendingTransactions({ commit, getters }) {
     getters.myPendingTransactions.forEach(tx => {

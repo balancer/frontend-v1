@@ -81,7 +81,8 @@ export default class Pool {
         bspCap,
         crpController,
         minimumWeightChangeBlockPeriod,
-        addTokenTimeLockInBlocks
+        addTokenTimeLockInBlocks,
+        { startBlock, endBlock }
       ] = await multicall(
         provider,
         abi['ConfigurableRightsPool'],
@@ -95,7 +96,8 @@ export default class Pool {
           'bspCap',
           'getController',
           'minimumWeightChangeBlockPeriod',
-          'addTokenTimeLockInBlocks'
+          'addTokenTimeLockInBlocks',
+          'gradualUpdate'
         ].map(method => [address, method, []])
       );
       return {
@@ -109,7 +111,9 @@ export default class Pool {
         bspCap: formatUnits(bspCap.toString(), decimals),
         crpController: crpController[0],
         minimumWeightChangeBlockPeriod: minimumWeightChangeBlockPeriod.toString(),
-        addTokenTimeLockInBlocks: addTokenTimeLockInBlocks.toString()
+        addTokenTimeLockInBlocks: addTokenTimeLockInBlocks.toString(),
+        startBlock: startBlock.toString(),
+        endBlock: endBlock.toString()
       };
     }
     const [
@@ -140,7 +144,8 @@ export default class Pool {
       rights: [],
       bspCap: 0,
       minimumWeightChangeBlockPeriod: 10,
-      addTokenTimeLockInBlocks: 10
+      addTokenTimeLockInBlocks: 10,
+      gradualUpdate: []
     };
   }
 

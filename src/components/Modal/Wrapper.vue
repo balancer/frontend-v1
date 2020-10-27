@@ -22,7 +22,7 @@
             class="flex-auto px-0"
           />
           <a @click="handleMax()" class="mx-3">
-            <UiLabel v-text="'Max'" />
+            <UiLabel v-text="$t('max')" />
           </a>
           {{ symbols.tokenIn }}
         </UiButton>
@@ -48,9 +48,11 @@
           />
           {{ symbols.tokenOut }}
         </UiButton>
-        <div class="text-yellow text-center mt-3" v-if="!etherLeft">
-          Keep some ether to pay for gas.
-        </div>
+        <div
+          v-text="$t('ethBuffer')"
+          class="text-yellow text-center mt-3"
+          v-if="!etherLeft"
+        />
       </div>
       <template slot="footer">
         <UiButton @click="$emit('close')" type="button" class="mx-1">
