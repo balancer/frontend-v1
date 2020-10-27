@@ -13,14 +13,14 @@
         <PoolHeader :pool="bPool" class="flex-auto pb-3" />
         <div class="pb-3">
           <UiButton
-            v-if="enableAddLiquidity"
+            v-if="enableAddLiquidity && pool.tokens.length > 0"
             class="button-primary ml-2"
             @click="openAddLiquidityModal"
           >
             {{ $t('addLiquidity') }}
           </UiButton>
           <UiButton
-            v-if="enableAddLiquidity"
+            v-if="enableAddLiquidity && pool.tokens.length > 0"
             class="ml-2"
             @click="openRemoveLiquidityModal"
           >
@@ -31,7 +31,12 @@
       <PoolBoxes :pool="pool" :bPool="bPool" />
       <Chart :pool="pool" />
       <Tabs :pool="pool" />
-      <router-view :key="$route.path" :pool="pool" :bPool="bPool" />
+      <router-view
+        :key="$route.path"
+        :pool="pool"
+        :bPool="bPool"
+        @reload="loadPool"
+      />
     </div>
     <ModalAddLiquidity
       :pool="pool"

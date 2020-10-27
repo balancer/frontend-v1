@@ -183,7 +183,7 @@ export default {
     },
     validationError() {
       const amountError = validateNumberInput(this.poolAmountIn);
-      const amountErrorText = formatError(amountError);
+      const amountErrorText = formatError(amountError, this.$t('amount'));
       if (amountErrorText) return amountErrorText;
       // Amount validation
       const amount = bnum(this.poolAmountIn);

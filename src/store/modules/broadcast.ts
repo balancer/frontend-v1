@@ -1,4 +1,5 @@
 import config from '@/config';
+import i18n from '@/i18n';
 import {
   bnum,
   denormalizeBalance,
@@ -91,6 +92,15 @@ const mutations = {
   },
   SET_SWAP_FEE_FAILURE(_state, payload) {
     console.debug('SET_SWAP_FEE_FAILURE', payload);
+  },
+  POKE_WEIGHTS_REQUEST() {
+    console.debug('POKE_WEIGHTS_REQUEST');
+  },
+  POKE_WEIGHTS_SUCCESS() {
+    console.debug('POKE_WEIGHTS_SUCCESS');
+  },
+  POKE_WEIGHTS_FAILURE(_state, payload) {
+    console.debug('POKE_WEIGHTS_FAILURE', payload);
   },
   SET_CONTROLLER_REQUEST() {
     console.debug('SET_CONTROLLER_REQUEST');
@@ -232,7 +242,7 @@ const actions = {
       return tx;
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
-      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('CREATE_PROXY_FAILURE', e);
     }
   },
@@ -273,7 +283,7 @@ const actions = {
       commit('CREATE_POOL_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
-      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('CREATE_POOL_FAILURE', e);
     }
   },
@@ -342,11 +352,11 @@ const actions = {
         title: 'Create a smart pool'
       });
       await tx.wait(6);
-      dispatch('notify', ['green', "You've successfully created a pool"]);
+      dispatch('notify', ['green', i18n.tc('successCreatePool')]);
       commit('CREATE_SMART_POOL_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) return e;
-      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      if (!e || isTxReverted(e)) return Promise.reject(e);
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('CREATE_SMART_POOL_FAILURE', e);
     }
   },
@@ -377,7 +387,7 @@ const actions = {
       commit('JOIN_POOL_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
-      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('JOIN_POOL_FAILURE', e);
     }
   },
@@ -408,7 +418,7 @@ const actions = {
       commit('JOINSWAP_EXTERN_AMOUNT_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
-      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('JOINSWAP_EXTERN_AMOUNT_FAILURE', e);
     }
   },
@@ -437,7 +447,7 @@ const actions = {
       commit('EXIT_POOL_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
-      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('EXIT_POOL_FAILURE', e);
     }
   },
@@ -466,7 +476,7 @@ const actions = {
       commit('EXITSWAP_POOL_AMOUNT_IN_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
-      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('EXITSWAP_POOL_AMOUNT_IN_FAILURE', e);
     }
   },
@@ -489,7 +499,7 @@ const actions = {
       commit('SET_PUBLIC_SWAP_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
-      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('SET_PUBLIC_SWAP_FAILURE', e);
     }
   },
@@ -516,8 +526,31 @@ const actions = {
       commit('SET_SWAP_FEE_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
-      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('SET_SWAP_FEE_FAILURE', e);
+    }
+  },
+  pokeWeights: async ({ commit, dispatch }, { poolAddress }) => {
+    commit('POKE_WEIGHTS_REQUEST');
+    try {
+      const params = [
+        'ConfigurableRightsPool',
+        poolAddress,
+        'pokeWeights',
+        [],
+        {}
+      ];
+      await dispatch('processTransaction', {
+        params,
+        title: 'Poke weights'
+      });
+
+      dispatch('notify', ['green', i18n.tc('successPokeWeights')]);
+      commit('POKE_WEIGHTS_SUCCESS');
+    } catch (e) {
+      if (!e || isTxReverted(e)) return e;
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
+      commit('POKE_WEIGHTS_FAILURE', e);
     }
   },
   setController: async (
@@ -539,7 +572,7 @@ const actions = {
       commit('SET_CONTROLLER_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
-      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('SET_CONTROLLER_FAILURE', e);
     }
   },
@@ -570,7 +603,7 @@ const actions = {
       commit('INCREASE_WEIGHT_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
-      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('INCREASE_WEIGHT_FAILURE', e);
     }
   },
@@ -597,7 +630,7 @@ const actions = {
       commit('DECREASE_WEIGHT_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
-      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('DECREASE_WEIGHT_FAILURE', e);
     }
   },
@@ -625,7 +658,7 @@ const actions = {
       commit('UPDATE_WEIGHTS_GRADUALLY_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
-      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('UPDATE_WEIGHTS_GRADUALLY_FAILURE', e);
     }
   },
@@ -646,7 +679,7 @@ const actions = {
       commit('SET_CAP_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
-      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('SET_CAP_FAILURE', e);
     }
   },
@@ -677,7 +710,7 @@ const actions = {
       commit('COMMIT_ADD_TOKEN_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
-      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('COMMIT_ADD_TOKEN_FAILURE', e);
     }
   },
@@ -700,7 +733,7 @@ const actions = {
       commit('APPLY_ADD_TOKEN_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
-      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('APPLY_ADD_TOKEN_FAILURE', e);
     }
   },
@@ -709,8 +742,11 @@ const actions = {
     { poolAddress, token, poolAmountIn }
   ) => {
     commit('REMOVE_TOKEN_REQUEST');
-    poolAmountIn = toWei(poolAmountIn);
     const dsProxyAddress = rootState.web3.dsProxyAddress;
+    console.log(`poolAddress = ${poolAddress}`);
+    console.log(`token = ${token}`);
+    console.log(`poolAmountIn = ${poolAmountIn}`);
+
     try {
       const underlyingParams = [
         'BActions',
@@ -724,7 +760,7 @@ const actions = {
       commit('REMOVE_TOKEN_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
-      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('REMOVE_TOKEN_FAILURE', e);
     }
   },
@@ -747,7 +783,7 @@ const actions = {
       commit('WHITELIST_LP_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
-      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('WHITELIST_LP_FAILURE', e);
     }
   },
@@ -770,7 +806,7 @@ const actions = {
       commit('REMOVE_WHITELISTED_LP_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
-      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('REMOVE_WHITELISTED_LP_FAILURE', e);
     }
   },
@@ -795,8 +831,8 @@ const actions = {
       dispatch('notify', ['green', `You've successfully unlocked ${symbol}`]);
       commit('APPROVE_SUCCESS');
     } catch (e) {
-      if (!e || isTxReverted(e)) return e;
-      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      if (!e || isTxReverted(e)) return Promise.reject();
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('APPROVE_FAILURE', e);
     }
   },
@@ -822,7 +858,7 @@ const actions = {
       commit('WRAP_ETH_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
-      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('WRAP_ETH_FAILURE', e);
     }
   },
@@ -848,7 +884,7 @@ const actions = {
       commit('UNWRAP_ETH_SUCCESS');
     } catch (e) {
       if (!e || isTxReverted(e)) return e;
-      dispatch('notify', ['red', 'Ooops, something went wrong']);
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('UNWRAP_ETH_FAILURE', e);
     }
   }

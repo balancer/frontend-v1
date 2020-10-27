@@ -2,9 +2,13 @@
   <Page>
     <div class="d-flex px-4 px-md-0 mb-3">
       <Toggle
+        class="tooltipped tooltipped-n"
         v-if="config.env !== 'production'"
         :value="type"
         :options="poolTypes"
+        :aria-label="
+          $t(type == 'SMART_POOL' ? 'createSmartTip' : 'createSharedTip')
+        "
         @select="handleSelectType"
       />
     </div>
@@ -14,6 +18,7 @@
     <UiTable class="mb-4">
       <UiTableTh>
         <div v-text="$t('asset')" class="flex-auto text-left" />
+        <div v-text="$t('myBalance')" class="column" />
         <div v-text="$t('weight')" class="column" />
         <div v-text="'%'" class="column-sm hide-sm" />
         <div class="column">
@@ -51,6 +56,7 @@
               :amount="amounts[token]"
             />
           </div>
+          <div v-text="getBalance(token)" class="column-ms hide-sm" />
           <div class="column">
             <input
               class="input pool-input text-right"
@@ -71,11 +77,17 @@
             />
           </div>
           <div class="column-sm hide-sm">
-            <div v-text="_num(price.values[token], 'usd')" v-if="padlock" />
+            <div
+              v-text="_num(parseFloat(price.values[token]).toFixed(2), 'usd')"
+              v-if="padlock"
+            />
             <div v-text="'-'" v-else />
           </div>
           <div class="column hide-sm">
-            <div v-text="_num(getValue(token), 'usd')" v-if="padlock" />
+            <div
+              v-text="_num(parseFloat(getValue(token)).toFixed(2), 'usd')"
+              v-if="padlock"
+            />
             <div v-text="'-'" v-else />
           </div>
           <div class="column-xs">
@@ -101,7 +113,12 @@
         class="input pool-input text-right"
         :class="isSwapFeeInputValid() ? 'text-white' : 'text-red'"
         v-model="swapFee"
-        placeholder="0.00"
+        placeholder="0.15"
+        type="number"
+        value="0.15"
+        step="0.0001"
+        min="0.0001"
+        max="10"
       />
     </div>
     <div v-if="type === 'SMART_POOL'">
@@ -169,6 +186,13 @@ import {
 } from '@/helpers/utils';
 import { validateNumberInput, formatError } from '@/helpers/validation';
 
+// The contract defaults are 90,000 for the weight change duration, and 500 for the add token timelock
+// Since broadcast currently calls the createPool overload that passes in the block time parameters, we
+//   are overriding those defaults with these
+const DEFAULT_WEIGHT_CHANGE_DURATION = '10';
+const DEFAULT_ADD_TOKEN_TIMELOCK = '10';
+const DEFAULT_INITIAL_SUPPLY = '100';
+
 function getAnotherToken(tokens, selectedTokens) {
   const tokenAddresses = Object.keys(tokens);
   for (const tokenAddress of tokenAddresses) {
@@ -189,16 +213,16 @@ export default {
       type: 'SHARED_POOL',
       amounts: {},
       weights: {},
-      swapFee: '',
+      swapFee: '0.15',
       tokens: [],
       loading: false,
       crp: {
         poolTokenSymbol: '',
         poolTokenName: '',
         rights: {},
-        minimumWeightChangeBlockPeriod: '10',
-        addTokenTimeLockInBlocks: '10',
-        initialSupply: '100'
+        minimumWeightChangeBlockPeriod: DEFAULT_WEIGHT_CHANGE_DURATION,
+        addTokenTimeLockInBlocks: DEFAULT_ADD_TOKEN_TIMELOCK,
+        initialSupply: DEFAULT_INITIAL_SUPPLY
       },
       activeToken: 0,
       tokenModalOpen: false,
@@ -240,14 +264,17 @@ export default {
     validationError() {
       for (const token of this.tokens) {
         const amountError = validateNumberInput(this.amounts[token]);
-        const amountErrorText = formatError(amountError);
+        const amountErrorText = formatError(
+          amountError,
+          `${this.$t('token')} ${this.$t('amount')}`
+        );
         if (amountErrorText) return amountErrorText;
         const weightError = validateNumberInput(this.weights[token]);
-        const weightErrorText = formatError(weightError);
+        const weightErrorText = formatError(weightError, this.$t('weight'));
         if (weightErrorText) return weightErrorText;
       }
       const feeError = validateNumberInput(this.swapFee);
-      const feeErrorText = formatError(feeError);
+      const feeErrorText = formatError(feeError, this.$t('swapFee'));
       if (feeErrorText) return feeErrorText;
       // Token count validation
       if (this.tokens.length < 2) {
@@ -305,22 +332,37 @@ export default {
         const weightPeriodError = validateNumberInput(
           this.crp.minimumWeightChangeBlockPeriod
         );
-        const weightPeriodErrorText = formatError(weightPeriodError);
-        if (weightPeriodErrorText) return weightPeriodErrorText;
+        const weightPeriodErrorText = formatError(
+          weightPeriodError,
+          this.$t('minimumUpdateErr')
+        );
+        if (this.crp.rights.canChangeWeights && weightPeriodErrorText)
+          return weightPeriodErrorText;
         const addTimelockError = validateNumberInput(
           this.crp.addTokenTimeLockInBlocks
         );
-        const addTimelockErrorText = formatError(addTimelockError);
-        if (addTimelockErrorText) return addTimelockErrorText;
+        const addTimelockErrorText = formatError(
+          addTimelockError,
+          this.$t('timeLockErr')
+        );
+        if (this.crp.rights.canAddRemoveTokens && addTimelockErrorText)
+          return addTimelockErrorText;
         const initialSupplyError = validateNumberInput(this.crp.initialSupply);
-        const initialSupplyErrorText = formatError(initialSupplyError);
+        const initialSupplyErrorText = formatError(
+          initialSupplyError,
+          this.$t('initialSupply')
+        );
         if (initialSupplyErrorText) return initialSupplyErrorText;
 
         const weightPeriod = parseFloat(
           this.crp.minimumWeightChangeBlockPeriod
         );
         const addTimelock = parseFloat(this.crp.addTokenTimeLockInBlocks);
-        if (weightPeriod < addTimelock) {
+        if (
+          this.crp.rights.canChangeWeights &&
+          this.crp.rights.canAddRemoveTokens &&
+          weightPeriod < addTimelock
+        ) {
           return this.$t('errInconsistentTimelock');
         }
         const initialSupply = parseFloat(this.crp.initialSupply);
@@ -391,6 +433,11 @@ export default {
     },
     toggleRight(right) {
       Vue.set(this.crp.rights, right, !this.crp.rights[right]);
+      // If we remove the right, don't leave the old values (could be invalid, causing createPool to revert)
+      if (!this.crp.rights.canChangeWeights)
+        this.crp.minimumWeightChangeBlockPeriod = DEFAULT_WEIGHT_CHANGE_DURATION;
+      if (!this.crp.rights.canAddRemoveTokens)
+        this.crp.addTokenTimeLockInBlocks = DEFAULT_ADD_TOKEN_TIMELOCK;
     },
     changeWeightPeriod(weightPeriod) {
       this.crp.minimumWeightChangeBlockPeriod = weightPeriod;
@@ -434,12 +481,16 @@ export default {
           addTokenTimeLockInBlocks,
           initialSupply
         };
-        await this.createSmartPool({
-          poolParams,
-          crpParams,
-          rights
-        });
-        this.$router.push({ name: 'my-pools' });
+        try {
+          await this.createSmartPool({
+            poolParams,
+            crpParams,
+            rights
+          });
+          this.$router.push({ name: 'home' });
+        } catch (e) {
+          console.error(e);
+        }
       }
       this.loading = false;
     },
@@ -518,6 +569,13 @@ export default {
         return false;
       }
       return true;
+    },
+    getBalance(tokenAddress) {
+      const balance = normalizeBalance(
+        this.web3.balances[tokenAddress],
+        this.web3.tokenMetadata[tokenAddress].decimals
+      );
+      return parseFloat(balance).toFixed(3);
     },
     getValue(tokenAddress) {
       const tokenPrice = this.price.values[tokenAddress];

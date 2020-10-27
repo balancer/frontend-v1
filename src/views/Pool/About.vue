@@ -18,6 +18,13 @@
       <div v-text="$t('poolType')" class="mb-2" />
       <h5 v-text="bPool.getTypeStr()" class="text-white" />
     </div>
+    <div v-if="bPool.metadata.tokens.length == 0">
+      <div class="d-flex flex-items-center p-4 warning-box">
+        <Icon name="warning" size="22" class="mr-4" />
+        <div v-text="$t('deadPoolWarning')" />
+      </div>
+      <br />
+    </div>
     <div v-if="bPool.isCrp()" class="mb-3">
       <div v-text="$t('rights')" class="mb-2" />
       <template v-if="Object.keys(rights).length > 0">
@@ -27,6 +34,21 @@
       </template>
       <h5 v-else v-text="$t('none')" class="text-white" />
     </div>
+    <div v-if="ongoingUpdate" class="mb-3">
+      <div class="d-flex flex-items-center p-4 warning-box">
+        <Icon name="warning" size="22" class="mr-4" />
+        <div
+          v-if="updateFinished"
+          v-text="
+            `${$t('updateFinishedWarning')} ${endTime()}\. ${$t(
+              'updateFinishedCoda'
+            )}`
+          "
+        />
+        <div v-else v-text="`${$t('ongoingUpdateWarning')} ${endTime()}`" />
+      </div>
+    </div>
+
     <div v-if="rights.canChangeWeights" class="mb-3">
       <div v-text="$t('minimumUpdatePeriod')" class="mb-2" />
       <h5
@@ -115,6 +137,7 @@
         <h5 v-text="_num(bPool.metadata.totalShares)" class="text-white" />
       </div>
     </template>
+
     <div class="mb-3">
       <div v-text="$t('publicSwap')" class="mb-2" />
       <h5
@@ -144,19 +167,51 @@
 </template>
 
 <script>
-import { filterObj, poolRights, MAX } from '@/helpers/utils';
+import {
+  filterObj,
+  poolRights,
+  MAX,
+  blockNumberToTimestamp
+} from '@/helpers/utils';
 
 export default {
   props: ['bPool'],
   data() {
     return {
       poolRights,
-      MAX
+      MAX,
+      blockDate: 0
     };
   },
   computed: {
     rights() {
       return filterObj(this.bPool.metadata.rights, right => right[1]);
+    },
+    ongoingUpdate() {
+      return this.bPool.isCrp() && this.bPool.metadata.startBlock !== '0';
+    },
+    updateFinished() {
+      return (
+        this.ongoingUpdate &&
+        this.web3.blockNumber >= this.bPool.metadata.endBlock
+      );
+    }
+  },
+  methods: {
+    endTime() {
+      const blockTimestamp = blockNumberToTimestamp(
+        Date.now(),
+        this.web3.blockNumber,
+        this.bPool.metadata.endBlock
+      );
+      this.blockDate = new Date(blockTimestamp);
+
+      return this.blockDate.toLocaleString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
     }
   }
 };

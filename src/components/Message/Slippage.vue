@@ -26,19 +26,3 @@ export default {
   }
 };
 </script>
-
-<style scoped lang="scss">
-@import '../../vars';
-
-.info-box {
-  border: 1px solid $info;
-  border-radius: 4px;
-  color: $info;
-}
-
-.warning-box {
-  border: 1px solid $warning;
-  border-radius: 4px;
-  color: $warning;
-}
-</style>
