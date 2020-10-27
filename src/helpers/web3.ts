@@ -17,7 +17,6 @@ export async function sendTransaction(
   );
   const contractWithSigner = contract.connect(signer);
   try {
-    /*
     // Gas estimation
     const gasLimitNumber = await contractWithSigner.estimateGas[action](
       ...params,
@@ -25,8 +24,7 @@ export async function sendTransaction(
     );
     const gasLimit = gasLimitNumber.toNumber();
     overrides.gasLimit = Math.floor(gasLimit * (1 + GAS_LIMIT_BUFFER));
-    */
-    return await contractWithSigner[action](...params, {});
+    return await contractWithSigner[action](...params, overrides);
   } catch (e) {
     if (isTxRejected(e)) return Promise.reject();
     // Use gas price field to store tx sender since "from" will be overwritten

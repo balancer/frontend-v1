@@ -346,7 +346,6 @@ const actions = {
         ],
         {}
       ];
-      console.log('Create smart pool', dsProxyAddress, JSON.stringify(underlyingParams));
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
       const tx = await dispatch('processTransaction', {
         params,
