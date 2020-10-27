@@ -2,9 +2,13 @@
   <Page>
     <div class="d-flex px-4 px-md-0 mb-3">
       <Toggle
+        class="tooltipped tooltipped-n"
         v-if="config.env !== 'production'"
         :value="type"
         :options="poolTypes"
+        :aria-label="
+          $t(type == 'SMART_POOL' ? 'createSmartTip' : 'createSharedTip')
+        "
         @select="handleSelectType"
       />
     </div>

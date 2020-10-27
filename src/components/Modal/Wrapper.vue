@@ -48,7 +48,11 @@
           />
           {{ symbols.tokenOut }}
         </UiButton>
-        <div v-text="$t('ethBuffer')" class="text-yellow text-center mt-3" v-if="!etherLeft" />
+        <div
+          v-text="$t('ethBuffer')"
+          class="text-yellow text-center mt-3"
+          v-if="!etherLeft"
+        />
       </div>
       <template slot="footer">
         <UiButton @click="$emit('close')" type="button" class="mx-1">

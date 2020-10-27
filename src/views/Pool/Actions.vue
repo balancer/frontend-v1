@@ -4,28 +4,21 @@
       v-if="bPool.metadata.rights.canChangeWeights"
       class="border-bottom mb-4 pb-3"
     >
-      <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
-        <h4 v-text="$t('weights')" class="flex-auto" />
-      </div>
       <div>
+        <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
+          <h4 v-text="$t('weights')" class="flex-auto" />
+        </div>
+
         <UiButton
           v-text="$t('poke')"
-          class="float-right"
+          class="float-right ml-4"
           @click="handlePokeWeights()"
         />
       </div>
       <label class="d-block mb-2" />
-      <div class="overflow-hidden">
-        <Pie :tokens="pool.tokens" size="64" class="float-left mr-2" />
-        <br />
-        <span
-          v-for="(token, i) in bPool.metadata.tokens"
-          :key="i"
-          class="float-left d-flex flex-items-right mr-3"
-        >
-          <Token :address="token.checksum" class="mr-2" />
-          <span v-text="_ticker(token.checksum)" class="text-white" />
-        </span>
+      <div class="d-flex flex-items-left p-4 warning-box">
+        <Icon name="info" size="22" class="mr-4" />
+        <div v-html="$t('pokeWeightsInfo')" />
       </div>
     </div>
 
