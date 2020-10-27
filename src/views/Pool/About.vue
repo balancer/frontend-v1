@@ -40,12 +40,12 @@
         <div
           v-if="updateFinished"
           v-text="
-            `${$t('updateFinishedWarning')} ${endTime()}\. ${$t(
+            `${$t('updateFinishedWarning')} ${endTime}\. ${$t(
               'updateFinishedCoda'
             )}`
           "
         />
-        <div v-else v-text="`${$t('ongoingUpdateWarning')} ${endTime()}`" />
+        <div v-else v-text="`${$t('ongoingUpdateWarning')} ${endTime}`" />
       </div>
     </div>
 
@@ -179,8 +179,7 @@ export default {
   data() {
     return {
       poolRights,
-      MAX,
-      blockDate: 0
+      MAX
     };
   },
   computed: {
@@ -195,17 +194,16 @@ export default {
         this.ongoingUpdate &&
         this.web3.blockNumber >= this.bPool.metadata.endBlock
       );
-    }
-  },
-  methods: {
-    endTime() {
+    },
+    blockDate() {
       const blockTimestamp = blockNumberToTimestamp(
         Date.now(),
         this.web3.blockNumber,
         this.bPool.metadata.endBlock
       );
-      this.blockDate = new Date(blockTimestamp);
-
+      return new Date(blockTimestamp);
+    },
+    endTime() {
       return this.blockDate.toLocaleString('en-US', {
         month: 'long',
         day: 'numeric',
