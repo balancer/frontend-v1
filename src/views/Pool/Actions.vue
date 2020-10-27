@@ -7,7 +7,13 @@
     >
       <h5 v-text="$t('poke')" class="mb-3" />
       <p v-html="$t('pokeWeightsInfo')" class="mb-3" />
-      <UiButton v-text="$t('poke')" @click="handlePokeWeights()" />
+      <UiButton
+        :disabled="!ongoingUpdate"
+        :loading="loading"
+        @click="handlePokeWeights()"
+      >
+        {{ $t('poke') }}
+      </UiButton>
     </div>
     <MessageError
       v-if="this.transactionReverted"
@@ -25,6 +31,7 @@ export default {
   props: ['pool', 'bPool'],
   data() {
     return {
+      loading: false,
       transactionReverted: false
     };
   },
@@ -41,12 +48,12 @@ export default {
   methods: {
     ...mapActions(['pokeWeights']),
     async handlePokeWeights() {
+      this.loading = true;
       const txResult = await this.pokeWeights({
         poolAddress: this.bPool.metadata.controller
       });
-      if (isTxReverted(txResult)) {
-        this.transactionReverted = true;
-      }
+      if (isTxReverted(txResult)) this.transactionReverted = true;
+      this.loading = false;
     }
   }
 };
