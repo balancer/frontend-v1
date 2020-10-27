@@ -40,12 +40,12 @@
         <div
           v-if="updateFinished"
           v-text="
-            `${$t('updateFinishedWarning')} ${endTime()}\. ${$t(
+            `${$t('updateFinishedWarning')} ${endTime}\. ${$t(
               'updateFinishedCoda'
             )}`
           "
         />
-        <div v-else v-text="`${$t('ongoingUpdateWarning')} ${endTime()}`" />
+        <div v-else v-text="`${$t('ongoingUpdateWarning')} ${endTime}`" />
       </div>
     </div>
 
