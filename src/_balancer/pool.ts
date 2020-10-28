@@ -36,6 +36,16 @@ export default class Pool {
       : 'Private';
   }
 
+  getBptPrice() {
+    if (
+      !this.metadata.liquidity ||
+      !this.metadata.totalShares ||
+      (!this.metadata.finalized && !this.isCrp())
+    )
+      return 0;
+    return this.metadata.liquidity / this.metadata.totalShares;
+  }
+
   isCrp() {
     if (this.isWhitelisted() && this.config.is_compatible) return true;
     return this.metadata.crp;

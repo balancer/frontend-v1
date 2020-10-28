@@ -254,6 +254,8 @@ export function filterObj(obj, fn) {
 }
 
 export function formatNumber(number, key) {
+  if (number === 0) return '-';
+
   if (number < 0.0001) number = 0;
 
   let format = '0.[000]';
