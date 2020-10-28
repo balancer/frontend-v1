@@ -45,7 +45,14 @@
             )}`
           "
         />
-        <div v-else v-text="`${$t('ongoingUpdateWarning')} ${endTime}`" />
+        <div
+          v-else
+          v-html="
+            `${$t('ongoingUpdateFrom')} ${startTime} (${
+              this.bPool.metadata.startBlock
+            }) <br>${$t('until')} ${endTime} (${this.bPool.metadata.endBlock})`
+          "
+        />
       </div>
     </div>
 
@@ -195,21 +202,37 @@ export default {
         this.web3.blockNumber >= this.bPool.metadata.endBlock
       );
     },
-    blockDate() {
+    startTime() {
+      return this.blockDate(this.bPool.metadata.startBlock).toLocaleString(
+        'en-US',
+        {
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        }
+      );
+    },
+    endTime() {
+      return this.blockDate(this.bPool.metadata.endBlock).toLocaleString(
+        'en-US',
+        {
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        }
+      );
+    }
+  },
+  methods: {
+    blockDate(block) {
       const blockTimestamp = blockNumberToTimestamp(
         Date.now(),
         this.web3.blockNumber,
-        this.bPool.metadata.endBlock
+        block
       );
       return new Date(blockTimestamp);
-    },
-    endTime() {
-      return this.blockDate.toLocaleString('en-US', {
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
     }
   }
 };
