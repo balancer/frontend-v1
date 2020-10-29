@@ -1,9 +1,11 @@
 <template>
   <div v-if="open" class="modal mx-auto">
     <div class="backdrop" @click="$emit('close')" />
-    <div class="shell overflow-hidden anim-scale-in position-relative">
+    <div
+      class="shell overflow-hidden anim-scale-in position-relative rounded-2"
+    >
       <slot />
-      <a @click="$emit('close')" class="position-absolute right-0 top-1 p-4">
+      <a @click="$emit('close')" class="position-absolute right-0 p-4">
         <Icon name="close" />
       </a>
     </div>

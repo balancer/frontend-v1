@@ -4,7 +4,7 @@
       <template slot="header">
         <h3 v-text="$t('editTokenWeights')" class="text-white" />
       </template>
-      <UiTable>
+      <UiTable class="m-4">
         <UiTableTh>
           <div v-text="$t('tokens')" class="flex-auto text-left" />
           <div v-text="$t('weights')" class="column-sm" />
@@ -104,7 +104,6 @@ export default {
         return tokenAmountIn.toString();
       }
       if (this.isWeightDecrease) {
-        const crp = this.web3.crps[getAddress(this.pool.controller)];
         const totalWeight =
           this.totalWeight +
           2 * parseFloat(token.denormWeight) -
@@ -113,7 +112,7 @@ export default {
           toWei(totalWeight),
           toWei(token.denormWeight).times(2),
           toWei(this.weights[this.tokenIndex]),
-          bnum(crp.totalSupply)
+          bnum(this.pool.metadata.totalShares)
         );
         return poolAmountIn.toString();
       }

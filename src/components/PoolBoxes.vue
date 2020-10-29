@@ -4,7 +4,7 @@
       <div
         class="border rounded-0 rounded-md-1 panel-background py-4 mx-0 mx-md-2"
       >
-        <h3 v-text="_num(poolLiquidity, 'currency')" />
+        <h3 v-text="_num(poolLiquidity, 'usd')" />
         <p v-text="$t('liquidity')" class="mb-0" />
       </div>
     </div>
@@ -12,7 +12,7 @@
       <div
         class="border rounded-0 rounded-md-1 panel-background py-4 mx-0 mx-md-2"
       >
-        <h3 v-text="_num(pool.lastSwapVolume, 'currency')" />
+        <h3 v-text="_num(pool.lastSwapVolume, 'usd')" />
         <p v-text="$t('volume24')" class="mb-0" />
       </div>
     </div>
@@ -49,10 +49,7 @@ export default {
       return normalizeBalance(balance || '0', 18);
     },
     totalShares() {
-      const poolAddress = this.bPool.getBptAddress();
-      const poolSupply = this.web3.supplies[poolAddress] || 0;
-      const totalShareNumber = normalizeBalance(poolSupply, 18);
-      return totalShareNumber.toString();
+      return parseFloat(this.bPool.metadata.totalShares);
     },
     poolLiquidity() {
       return getPoolLiquidity(this.pool, this.price.values);

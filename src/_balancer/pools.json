@@ -57,5 +57,14 @@
     "is_compatible": false,
     "logo": true,
     "bptAddress": "0x78f225869c08d478c34e5f645d07a87d3fe8eb78"
+  },
+  "0x5c0f17b1cfb6225628204e2b8e44239a9cc0ef9f": {
+    "chainId": 1,
+    "name": "Bankless BAP0 sale",
+    "about": "BAP0's are redeemable for tee shirts made by the Bankless team. To, claim burn the token and mail the transaction hash to apparel@banklesshq.com with your delivery address.",
+    "learn_more": "https://bankless.substack.com/p/the-ultimate-guide-to-balancer-smart",
+    "logo": true,
+    "is_visible": true,
+    "is_compatible": true
   }
 }

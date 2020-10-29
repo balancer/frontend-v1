@@ -1,5 +1,5 @@
 <template>
-  <div class="px-0 px-md-5 pt-4">
+  <Page>
     <div v-if="loading" class="text-center">
       <UiLoading class="big" />
     </div>
@@ -13,14 +13,14 @@
         <PoolHeader :pool="bPool" class="flex-auto pb-3" />
         <div class="pb-3">
           <UiButton
-            v-if="enableAddLiquidity"
+            v-if="enableAddLiquidity && pool.tokens.length > 0"
             class="button-primary ml-2"
             @click="openAddLiquidityModal"
           >
             {{ $t('addLiquidity') }}
           </UiButton>
           <UiButton
-            v-if="enableAddLiquidity"
+            v-if="enableAddLiquidity && pool.tokens.length > 0"
             class="ml-2"
             @click="openRemoveLiquidityModal"
           >
@@ -31,7 +31,12 @@
       <PoolBoxes :pool="pool" :bPool="bPool" />
       <Chart :pool="pool" />
       <Tabs :pool="pool" />
-      <router-view :key="$route.path" :pool="pool" :bPool="bPool" />
+      <router-view
+        :key="$route.path"
+        :pool="pool"
+        :bPool="bPool"
+        @reload="loadPool"
+      />
     </div>
     <ModalAddLiquidity
       :pool="pool"
@@ -52,7 +57,7 @@
       :open="modalCustomTokenOpen"
       @close="modalCustomTokenOpen = false"
     />
-  </div>
+  </Page>
 </template>
 
 <script>
@@ -81,6 +86,9 @@ export default {
         this.id = id;
         this.loadPool();
       }
+    },
+    'web3.account': async function(val, prev) {
+      if (val && val.toLowerCase() !== prev) await this.loadPool();
     }
   },
   computed: {
@@ -106,7 +114,6 @@ export default {
   },
   methods: {
     ...mapActions([
-      'getSupplies',
       'getBalances',
       'getAllowances',
       'getPoolBalances',
@@ -139,7 +146,6 @@ export default {
       }
       if (this.$auth.isAuthenticated) {
         const data = await Promise.all([
-          this.getSupplies([this.bPool.getBptAddress()]),
           this.getBalances([
             ...this.pool.tokensList,
             getAddress(this.bPool.getBptAddress())
@@ -153,7 +159,7 @@ export default {
             tokens: this.pool.tokensList
           })
         ]);
-        this.fixPoolBalances(data[3]);
+        this.fixPoolBalances(data[2]);
       }
     },
     fixPoolBalances(poolBalances) {

@@ -35,7 +35,7 @@
             <div v-if="token.balance">
               <span
                 v-if="token.price"
-                v-text="_num(token.value, 'currency')"
+                v-text="_num(token.value, 'usd')"
                 class="text-gray mr-2"
               />
               <span v-text="_num(token.balance)" />

@@ -25,10 +25,18 @@
       </div>
       <div :key="web3.account">
         <template v-if="$auth.isAuthenticated && !wrongNetwork">
-          <UiButton @click="modalOpen = true" :loading="loading">
-            <Avatar :address="web3.account" size="16" class="mr-2 ml-n1" />
-            <span v-if="web3.name" v-text="web3.name" />
-            <span v-else v-text="_shortenAddress(web3.account)" />
+          <UiButton @click="modalOpen.account = true" :loading="loading">
+            <Avatar :address="web3.account" size="16" class="ml-n1 mr-n1" />
+            <span
+              v-if="web3.name"
+              v-text="web3.name"
+              class="hide-sm ml-2 pl-1"
+            />
+            <span
+              v-else
+              v-text="_shortenAddress(web3.account)"
+              class="hide-sm ml-2 pl-1"
+            />
           </UiButton>
         </template>
         <UiButton v-if="web3.injectedLoaded && wrongNetwork" class="button-red">
@@ -37,38 +45,54 @@
         </UiButton>
         <UiButton
           v-if="showLogin"
-          @click="modalOpen = true"
+          @click="modalOpen.account = true"
           :loading="loading"
           class="button-primary"
         >
           {{ $t('connectWallet') }}
         </UiButton>
-        <UiButton @click="modalAboutOpen = true" class="ml-2 hide-sm">
-          <span v-text="'?'" class="ml-n1 mr-n1" />
+        <router-link v-if="!wrongNetwork" :to="{ name: 'wallet' }" class="ml-2">
+          <UiButton class="v-align-bottom p-0">
+            <Icon name="wallet" size="20" class="mx-3" />
+          </UiButton>
+        </router-link>
+        <UiButton
+          v-if="myPendingTransactions.length"
+          @click="modalOpen.activity = true"
+          class="button-primary ml-2"
+        >
+          {{ myPendingTransactions.length }}
         </UiButton>
       </div>
     </div>
     <ModalAccount
-      :open="modalOpen"
-      @close="modalOpen = false"
+      :open="modalOpen.account"
+      @close="modalOpen.account = false"
       @login="handleLogin"
     />
-    <ModalAbout :open="modalAboutOpen" @close="modalAboutOpen = false" />
+    <ModalActivity
+      :open="modalOpen.activity"
+      @close="modalOpen.activity = false"
+      @login="handleLogin"
+    />
   </nav>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   data() {
     return {
       loading: false,
-      modalOpen: false,
-      modalAboutOpen: false
+      modalOpen: {
+        account: false,
+        activity: false
+      }
     };
   },
   computed: {
+    ...mapGetters(['myPendingTransactions']),
     wrongNetwork() {
       return this.config.chainId !== this.web3.injectedChainId;
     },
@@ -83,7 +107,7 @@ export default {
     ...mapActions(['toggleSidebar']),
     ...mapActions(['login']),
     async handleLogin(connector) {
-      this.modalOpen = false;
+      this.modalOpen.account = false;
       this.loading = true;
       await this.login(connector);
       this.loading = false;
