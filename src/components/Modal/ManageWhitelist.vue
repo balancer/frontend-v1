@@ -2,16 +2,12 @@
   <UiModal :open="open" @close="$emit('close')" style="max-width: 440px;">
     <UiModalForm @submit="handleSubmit">
       <template slot="header">
-        <h3 v-text="$t('editController')" class="text-white" />
+        <h3 v-text="$t('manageWhitelist')" class="text-white" />
       </template>
       <div class="text-center m-4">
         <h5 class="px-4 mb-4 mx-auto overflow-hidden" style="max-width: 340px;">
-          {{ $t('changePoolController') }}
+          {{ $t('addOrRemoveLP') }}
         </h5>
-        <div class="d-flex flex-items-center p-4 warning-box">
-          <Icon name="warning" size="22" class="mr-4" />
-          <div v-html="$t('changeControllerWarning')" />
-        </div>
         <input
           class="h3 py-2 px-3 input text-center"
           :class="isValid ? 'text-white' : 'text-red'"
@@ -23,12 +19,22 @@
           {{ $t('cancel') }}
         </UiButton>
         <UiButton
-          :disabled="loading || input === value"
+          @click="operation = 'add'"
+          :disabled="loading"
           :loading="loading"
           type="submit"
           class="button-primary mx-1"
         >
-          {{ $t('confirm') }}
+          {{ $t('add') }}
+        </UiButton>
+        <UiButton
+          @click="operation = 'remove'"
+          :disabled="loading"
+          :loading="loading"
+          type="submit"
+          class="button-primary mx-1"
+        >
+          {{ $t('remove') }}
         </UiButton>
       </template>
     </UiModalForm>
@@ -44,13 +50,15 @@ export default {
   data() {
     return {
       loading: false,
-      input: false
+      input: false,
+      operation: false
     };
   },
   watch: {
     open() {
       this.loading = false;
       this.input = this.value;
+      this.operation = '';
     }
   },
   computed: {
@@ -59,14 +67,25 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setController']),
+    ...mapActions([
+      'whitelistLiquidityProvider',
+      'removeWhitelistedLiquidityProvider'
+    ]),
     async handleSubmit() {
       this.loading = true;
       try {
-        this.tx = await this.setController({
-          poolAddress: this.pool.controller,
-          newController: this.input
-        });
+        if (this.operation === 'add') {
+          this.tx = await this.whitelistLiquidityProvider({
+            poolAddress: this.pool.controller,
+            provider: this.input
+          });
+        } else {
+          this.tx = await this.removeWhitelistedLiquidityProvider({
+            poolAddress: this.pool.controller,
+            provider: this.input
+          });
+        }
+
         this.$emit('close');
       } catch (e) {
         console.error(e);

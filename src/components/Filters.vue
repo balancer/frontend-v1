@@ -1,30 +1,38 @@
 <template>
-  <div class="d-flex flex-items-center">
-    <div v-text="$t('filterByAsset')" class="pb-1" />
-    <div v-for="(token, i) in tokens" :key="i" class="topic ml-2">
-      <button
-        class="topic-button text-center line-height-0 position-absolute right-0"
-        @click="deleteToken(i)"
-      >
-        <Icon name="close" size="10" />
-      </button>
-      <span
-        class="ml-2 pl-1"
-        style="padding-right: 30px;"
-        v-text="_ticker(token)"
+  <div class="overflow-hidden">
+    <Toggle
+      :value="type"
+      :options="poolTypes"
+      @select="selectType"
+      class="mb-4"
+    />
+    <div class="d-flex flex-items-center mb-4 pt-2 float-none float-sm-right">
+      <div v-text="$t('filterByAsset')" class="pb-1" />
+      <div v-for="(token, i) in tokens" :key="i" class="topic ml-2">
+        <button
+          class="topic-button text-center line-height-0 position-absolute right-0"
+          @click="deleteToken(i)"
+        >
+          <Icon name="close" size="10" />
+        </button>
+        <span
+          class="ml-2 pl-1"
+          style="padding-right: 30px;"
+          v-text="_ticker(token)"
+        />
+      </div>
+      <div class="topic ml-2">
+        <button @click="modalOpen = true" class="topic-button mb-1">
+          <Icon name="plus" size="13" />
+        </button>
+      </div>
+      <ModalSelectToken
+        :open="modalOpen"
+        @close="modalOpen = false"
+        @input="addToken"
+        :not="tokens"
       />
     </div>
-    <div class="topic ml-2">
-      <button @click="modalOpen = true" class="topic-button mb-1">
-        <Icon name="plus" size="13" />
-      </button>
-    </div>
-    <ModalSelectToken
-      :open="modalOpen"
-      @close="modalOpen = false"
-      @input="addToken"
-      :not="tokens"
-    />
   </div>
 </template>
 
@@ -37,23 +45,43 @@ export default {
     return {
       input: {},
       tokens: [],
+      type: 'shared',
+      poolTypes: {
+        shared: 'Shared',
+        smart: 'Smart',
+        private: 'Private'
+      },
       modalOpen: false
     };
   },
   methods: {
     addToken(token) {
       this.tokens.push(token);
-      this.$emit('input', { token: this.tokens });
+      this.$emit('input', {
+        type: this.type,
+        token: this.tokens
+      });
     },
     deleteToken(i) {
       delete this.tokens[i];
       this.tokens = this.tokens.filter(() => true);
-      this.$emit('input', { token: this.tokens });
+      this.$emit('input', {
+        type: this.type,
+        token: this.tokens
+      });
+    },
+    selectType(poolType) {
+      this.type = poolType;
+      this.$emit('input', {
+        type: this.type,
+        token: this.tokens
+      });
     }
   },
   created() {
     const filters = formatFilters(this.value);
     this.tokens = filters.token;
+    this.type = filters.type;
   }
 };
 </script>

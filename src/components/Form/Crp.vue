@@ -29,6 +29,10 @@
       <input
         class="ml-2 input pool-input text-right text-white"
         :value="initialSupply"
+        type="number"
+        :min="100"
+        :max="1000000000"
+        :step="100"
         @change="$emit('change-initial-supply', $event.target.value)"
         placeholder="100"
       />
@@ -60,7 +64,10 @@
           <span v-text="$t('minimumUpdatePeriod')" />
           <input
             class="ml-2 input pool-input text-right text-white"
+            type="number"
             :value="minimumWeightChangeBlockPeriod"
+            :min="0"
+            :step="10"
             @change="$emit('change-weight-period', $event.target.value)"
             placeholder="10"
           />
@@ -75,6 +82,9 @@
           <span v-text="$t('addTokenTimelock')" />
           <input
             class="ml-2 input pool-input text-right text-white"
+            type="number"
+            :min="0"
+            :step="10"
             :value="addTokenTimeLockInBlocks"
             @change="$emit('change-add-timelock', $event.target.value)"
             placeholder="10"

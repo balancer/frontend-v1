@@ -216,10 +216,7 @@ export default {
       return normalizeBalance(balance || '0', 18);
     },
     totalShares() {
-      const poolAddress = this.bPool.getBptAddress();
-      const poolSupply = this.web3.supplies[poolAddress] || 0;
-      const totalShareNumber = normalizeBalance(poolSupply, 18);
-      return totalShareNumber.toString();
+      return this.bPool.metadata.totalShares;
     },
     userLiquidity() {
       const poolSharesFrom = parseFloat(this.poolTokenBalance);
@@ -272,7 +269,7 @@ export default {
           continue;
         }
         const amountError = validateNumberInput(this.amounts[token]);
-        const amountErrorText = formatError(amountError);
+        const amountErrorText = formatError(amountError, this.$t('amount'));
         if (amountErrorText) return amountErrorText;
       }
       // Amount validation

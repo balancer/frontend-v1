@@ -1,3 +1,5 @@
+import i18n from '@/i18n';
+
 export enum ValidationError {
   NONE,
   EMPTY,
@@ -19,10 +21,15 @@ export function validateNumberInput(input: string): ValidationError {
   return ValidationError.NONE;
 }
 
-export function formatError(error: ValidationError): string {
-  if (error === ValidationError.EMPTY) return `Value can't be empty`;
-  if (error === ValidationError.NOT_A_NUMBER) return 'Value should be a number';
+export function formatError(
+  error: ValidationError,
+  name = i18n.tc('value')
+): string {
+  if (error === ValidationError.EMPTY)
+    return `${name} ${i18n.tc('cannotBeEmpty')}`;
+  if (error === ValidationError.NOT_A_NUMBER)
+    return `${name} ${i18n.tc('shouldBeNumber')}`;
   if (error === ValidationError.NOT_POSITIVE)
-    return 'Value should be a positive number';
+    return `${name} ${i18n.tc('shouldBePositive')}`;
   return '';
 }

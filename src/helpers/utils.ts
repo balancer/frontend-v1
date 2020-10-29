@@ -1,3 +1,4 @@
+import numeral from 'numeral';
 import { getAddress } from '@ethersproject/address';
 import { MaxUint256 } from '@ethersproject/constants';
 import { Contract } from '@ethersproject/contracts';
@@ -5,6 +6,7 @@ import { Provider } from '@ethersproject/providers';
 import { Wallet } from '@ethersproject/wallet';
 import BigNumber from '@/helpers/bignumber';
 import config from '@/config';
+import i18n from '@/i18n';
 
 export const ITEMS_PER_PAGE = 20;
 export const MAX_GAS = new BigNumber('0xffffffff');
@@ -26,34 +28,34 @@ export const unknownColors = [
 ];
 
 export const capInputOptions = {
-  NUMERIC: 'Value',
-  UNLIMITED: 'Unlimited'
+  NUMERIC: i18n.tc('value'),
+  UNLIMITED: i18n.tc('unlimited')
 };
 
 export const liquidityToggleOptions = {
-  MULTI_ASSET: 'Multi asset',
-  SINGLE_ASSET: 'Single asset'
+  MULTI_ASSET: i18n.tc('multiAsset'),
+  SINGLE_ASSET: i18n.tc('singleAsset')
 };
 
 export const poolTypes = {
-  SHARED_POOL: 'Shared',
-  SMART_POOL: 'Smart'
+  SHARED_POOL: i18n.tc('shared'),
+  SMART_POOL: i18n.tc('smart')
 };
 
 export const poolRights = {
-  canPauseSwapping: 'Can pause swapping',
-  canChangeSwapFee: 'Can change swap fee',
-  canChangeWeights: 'Can change weights',
-  canAddRemoveTokens: 'Can add and remove tokens',
-  canWhitelistLPs: 'Can whitelist LPs',
-  canChangeCap: 'Can change pool cap'
+  canPauseSwapping: i18n.tc('canPauseSwapping'),
+  canChangeSwapFee: i18n.tc('canChangeSwapFee'),
+  canChangeWeights: i18n.tc('canChangeWeights'),
+  canAddRemoveTokens: i18n.tc('canAddRemoveTokens'),
+  canWhitelistLPs: i18n.tc('canWhitelistLPs'),
+  canChangeCap: i18n.tc('canChangeCap')
 };
 
 export function jsonParse(input, fallback?) {
   try {
     return JSON.parse(input);
   } catch (err) {
-    return fallback || {};
+    return fallback || undefined;
   }
 }
 
@@ -66,7 +68,8 @@ export function shorten(str = '', max = 14) {
 }
 
 export function bnum(val: string | number | BigNumber): BigNumber {
-  return new BigNumber(val.toString());
+  const number = typeof val === 'string' ? val : val ? val.toString() : '0';
+  return new BigNumber(number);
 }
 
 export function scale(input: BigNumber, decimalPlaces: number): BigNumber {
@@ -214,19 +217,21 @@ export function logRevertedTx(
   provider: Provider,
   contract: Contract,
   action: string,
-  params: any
+  params: any,
+  overrides: any
 ) {
   // address: 0xfffff6e3a909693c6e4dadbb72214fd6c3e47913
   const dummyPrivateKey =
     '0x651bd555534625dc2fd85e13369dc61547b2e3f2cfc8b98cee868b449c17a4d6';
   const dummyWallet = new Wallet(dummyPrivateKey).connect(provider);
   const loggingContract = contract.connect(dummyWallet);
-  loggingContract[action](...params);
+  loggingContract[action](...params, overrides);
 }
 
 export function formatFilters(filters, fb) {
   if (!filters) return fb || {};
   if (!filters.token) filters.token = [];
+  if (!filters.type) filters.type = 'shared';
   if (!Array.isArray(filters.token)) filters.token = [filters.token];
   return filters;
 }
@@ -246,4 +251,37 @@ export function blockNumberToTimestamp(
 
 export function filterObj(obj, fn) {
   return Object.fromEntries(Object.entries(obj).filter(item => fn(item)));
+}
+
+export function formatNumber(number, key) {
+  if (number === 0) return '-';
+
+  if (number < 0.0001) number = 0;
+
+  let format = '0.[000]';
+  if (number > 1000) format = '0.[0]a';
+  if (number < 1) format = '0.[000000]';
+
+  if (key === 'long') {
+    format = '0,000.[00]';
+    if (number < 1) format = '0.[000000]';
+  }
+
+  if (key === 'usd') {
+    format = '$(0.[00])';
+    if (number > 1000) format = '$(0.[0]a)';
+    if (number < 1) format = '$(0.[000000])';
+  }
+
+  if (key === 'usd-long') {
+    format = '$(0,000.[00])';
+    if (number < 1) format = '$(0.[000000])';
+  }
+
+  if (key === 'percent') format = '(0.[00])%';
+  if (key === 'percent-short') format = '(0)%';
+
+  return numeral(number)
+    .format(format)
+    .toUpperCase();
 }

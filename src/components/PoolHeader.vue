@@ -15,24 +15,23 @@
       />
     </div>
     <div>
-      <h3>
+      <a :href="_etherscanLink(pool.getBptAddress(), 'token')" target="_blank">
         <span
-          class="mr-2"
           v-if="pool.config.name || pool.metadata.name"
           v-text="_shorten(pool.config.name || pool.metadata.name, 24)"
         />
-        <span v-else class="mr-2">
+        <span v-else>
           {{ $t('pool') }} {{ _shortenAddress(pool.address) }}
         </span>
-        <UiLabel v-if="!pool.metadata.finalized" v-text="pool.getTypeStr()" />
-      </h3>
-      <a :href="_etherscanLink(pool.getBptAddress(), 'token')" target="_blank">
         <span
           v-if="pool.config.symbol || pool.metadata.symbol"
-          v-text="_shorten(pool.config.symbol || pool.metadata.symbol)"
+          v-text="`(${_shorten(pool.config.symbol || pool.metadata.symbol)})`"
+          class="ml-1"
         />
         <Icon name="external-link" size="16" class="ml-1 mr-2" />
       </a>
+      <UiLabel v-if="!pool.metadata.finalized" v-text="pool.getTypeStr()" />
+      <h3 v-text="_num(pool.getBptPrice(), 'usd-long')" />
     </div>
   </div>
 </template>
