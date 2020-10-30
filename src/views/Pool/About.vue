@@ -39,18 +39,17 @@
         <Icon name="warning" size="22" class="mr-4" />
         <div
           v-if="updateFinished"
-          v-text="
-            `${$t('updateFinishedWarning')} ${endTime}\. ${$t(
-              'updateFinishedCoda'
-            )}`
-          "
+          v-text="$t('updateFinishedWarning', { endTime })"
         />
         <div
           v-else
           v-html="
-            `${$t('ongoingUpdateFrom')} ${startTime} (${
-              this.bPool.metadata.startBlock
-            }) <br>${$t('until')} ${endTime} (${this.bPool.metadata.endBlock})`
+            $t('ongoingUpdate', {
+              startTime,
+              startBlock: bPool.metadata.startBlock,
+              endTime,
+              endBlock: bPool.metadata.endBlock
+            })
           "
         />
       </div>
@@ -203,26 +202,10 @@ export default {
       );
     },
     startTime() {
-      return this.blockDate(this.bPool.metadata.startBlock).toLocaleString(
-        'en-US',
-        {
-          month: 'long',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
-        }
-      );
+      return this.blockDate(this.bPool.metadata.startBlock);
     },
     endTime() {
-      return this.blockDate(this.bPool.metadata.endBlock).toLocaleString(
-        'en-US',
-        {
-          month: 'long',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
-        }
-      );
+      return this.blockDate(this.bPool.metadata.endBlock);
     }
   },
   methods: {
@@ -232,7 +215,12 @@ export default {
         this.web3.blockNumber,
         block
       );
-      return new Date(blockTimestamp);
+      return new Date(blockTimestamp).toLocaleString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
     }
   }
 };
