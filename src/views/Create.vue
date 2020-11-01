@@ -262,7 +262,7 @@ export default {
       const tokens = this.tokens.map(token => {
         return {
           checksum: token,
-          weightPercent: pctWeights(token)
+          weightPercent: pctWeights[token]
         };
       });
       const swapFee = (parseFloat(this.swapFee) / 100).toString();
@@ -313,7 +313,7 @@ export default {
         return acc + weight;
       }, 0);
       // Weights are percentages (not denorms), so max value is always 100
-      if (totalWeight > 100) {
+      if (totalWeight != 100) {
         return this.$t('errInvalidMaxWeight');
       }
       // Amount validation
