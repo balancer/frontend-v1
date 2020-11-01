@@ -39,13 +39,19 @@
         <Icon name="warning" size="22" class="mr-4" />
         <div
           v-if="updateFinished"
-          v-text="
-            `${$t('updateFinishedWarning')} ${endTime}\. ${$t(
-              'updateFinishedCoda'
-            )}`
+          v-text="$t('updateFinishedWarning', { endTime })"
+        />
+        <div
+          v-else
+          v-html="
+            $t('ongoingUpdate', {
+              startTime,
+              startBlock: bPool.metadata.startBlock,
+              endTime,
+              endBlock: bPool.metadata.endBlock
+            })
           "
         />
-        <div v-else v-text="`${$t('ongoingUpdateWarning')} ${endTime}`" />
       </div>
     </div>
 
@@ -195,16 +201,21 @@ export default {
         this.web3.blockNumber >= this.bPool.metadata.endBlock
       );
     },
-    blockDate() {
+    startTime() {
+      return this.blockDate(this.bPool.metadata.startBlock);
+    },
+    endTime() {
+      return this.blockDate(this.bPool.metadata.endBlock);
+    }
+  },
+  methods: {
+    blockDate(block) {
       const blockTimestamp = blockNumberToTimestamp(
         Date.now(),
         this.web3.blockNumber,
-        this.bPool.metadata.endBlock
+        block
       );
-      return new Date(blockTimestamp);
-    },
-    endTime() {
-      return this.blockDate.toLocaleString('en-US', {
+      return new Date(blockTimestamp).toLocaleString('en-US', {
         month: 'long',
         day: 'numeric',
         hour: '2-digit',
