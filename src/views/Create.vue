@@ -19,8 +19,8 @@
       <UiTableTh>
         <div v-text="$t('asset')" class="flex-auto text-left" />
         <div v-text="$t('myBalance')" class="column" />
-        <div v-text="$t('weight')" class="column" />
-        <div v-text="'%'" class="column-sm hide-sm" />
+        <div v-text="$t('weightsPctSymbol')" class="column" />
+        <div v-text="$t('denormWeight')" class="column-sm hide-sm" />
         <div class="column">
           <a
             @click="togglePadlock"
@@ -66,7 +66,10 @@
             />
           </div>
           <div class="column-sm hide-sm">
-            <div v-text="_num(getRelativeWeight(token), 'percent')" />
+            <div
+              v-text="_num(getDenorm(token))"
+              :class="isDenormValid(token) ? 'text-white' : 'text-red'"
+            />
           </div>
           <div class="column">
             <input
@@ -185,6 +188,7 @@ import {
   poolTypes
 } from '@/helpers/utils';
 import { validateNumberInput, formatError } from '@/helpers/validation';
+import { getMaxTotalWeight, calculateNewWeightsObj } from '@/helpers/weights';
 
 // The contract defaults are 90,000 for the weight change duration, and 500 for the add token timelock
 // Since broadcast currently calls the createPool overload that passes in the block time parameters, we
@@ -235,11 +239,14 @@ export default {
     if (!this.web3.dsProxyAddress) {
       return this.$router.push({ name: 'setup' });
     }
+
+    // Initialize an (arbitrary) two-token pool, with weights
     const dai = getTokenBySymbol('DAI').address;
     const usdc = getTokenBySymbol('USDC').address;
     this.tokens = [dai, usdc];
-    Vue.set(this.weights, dai, '30');
-    Vue.set(this.weights, usdc, '20');
+    // weights contain percentage values - denorms are calculated later
+    Vue.set(this.weights, dai, '60');
+    Vue.set(this.weights, usdc, '40');
     this.loading = false;
   },
   computed: {
@@ -247,10 +254,15 @@ export default {
       if (this.validationError) {
         return;
       }
+      const pctWeights = calculateNewWeightsObj(
+        this.tokens,
+        this.isSharedOrLocked(),
+        false
+      );
       const tokens = this.tokens.map(token => {
         return {
           checksum: token,
-          weightPercent: 100 * this.getRelativeWeight(token)
+          weightPercent: pctWeights(token)
         };
       });
       const swapFee = (parseFloat(this.swapFee) / 100).toString();
@@ -286,14 +298,21 @@ export default {
       // Weight validation
       for (const token of this.tokens) {
         const weight = parseFloat(this.weights[token]);
-        if (weight < 2 || weight > 98) {
-          return this.$t('errInvalidWeight');
+        if (
+          weight < this.getMinWeightEntry ||
+          weight > this.getMaxWeightEntry
+        ) {
+          return this.$t('errInvalidWeight', {
+            minWeight: this.getMinWeightEntry,
+            maxWeight: this.getMaxWeightEntry
+          });
         }
       }
       const totalWeight = this.tokens.reduce((acc, token) => {
         const weight = parseFloat(this.weights[token]);
         return acc + weight;
       }, 0);
+      // Weights are percentages (not denorms), so max value is always 100
       if (totalWeight > 100) {
         return this.$t('errInvalidMaxWeight');
       }
@@ -528,7 +547,10 @@ export default {
         return false;
       }
       const weight = bnum(this.weights[tokenAddress]);
-      if (weight.lt(2) || weight.gt(98)) {
+      if (
+        weight.lt(this.getMinWeightEntry()) ||
+        weight.gt(this.getMaxWeightEntry())
+      ) {
         return false;
       }
       return true;
@@ -586,16 +608,32 @@ export default {
         .times(tokenPrice)
         .toFixed(2);
     },
-    getRelativeWeight(tokenAddress) {
-      const absoluteWeight = this.weights[tokenAddress];
-      const totalWeight = this.tokens.reduce((acc, val) => {
-        const weight = parseFloat(this.weights[val]) || 0;
-        return acc + weight;
-      }, 0);
-      if (!absoluteWeight || !totalWeight) {
-        return 0;
-      }
-      return absoluteWeight / totalWeight;
+    isSharedOrLocked() {
+      // If it is a shared pool, or the user cannot change weights,
+      // we can safely allow the full range of denorm weights
+      return this.type === 'SHARED_POOL' || !this.crp.rights.canChangeWeights;
+    },
+    getMultiplier() {
+      // "Resolution" of the pool - 2% (for shared/locked), or 4% (smart with weight updates)
+      return 100 / getMaxTotalWeight(this.isSharedOrLocked());
+    },
+    getMinWeightEntry() {
+      // Minimum individual weight entry is the "resolution" of the pool (2% or 4%)
+      return this.getMultiplier();
+    },
+    getMaxWeightEntry() {
+      // Maximum individual weight entry is 100 - the "resolution" (98% or 96%)
+      return 100 - this.getMultiplier();
+    },
+    getDenorm(token) {
+      // Convert the percentage weight (in weights array) to a denorm; divide by resolution
+      return this.weights[token] / this.getMultiplier();
+    },
+    isDenormValid(token) {
+      const value = this.getDenorm(token);
+
+      // Denorm sent to the contract must be 1-49
+      return value < 1 || value > 49 ? false : true;
     }
   }
 };

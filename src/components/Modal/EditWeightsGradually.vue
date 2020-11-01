@@ -7,32 +7,45 @@
       <UiTable class="m-4 mb-0">
         <UiTableTh>
           <div v-text="$t('tokens')" class="flex-auto text-left" />
-          <div v-text="$t('weights')" class="column-sm" />
-          <div v-text="$t('percent')" class="column" />
+          <div class="column" />
+          <div v-text="$t('percentChange')" class="column" />
         </UiTableTh>
         <UiTableTr v-for="(token, i) in pool.tokens" :key="token.checksum">
           <Token :address="token.checksum" size="28" class="mr-2" />
           <div class="flex-auto text-left">
             {{ _ticker(token.checksum) }}
           </div>
-          <div class="column-sm text-right">
-            <input
-              v-model="weights[i]"
-              class="input text-right ml-4"
-              placeholder="0.0"
-            />
-          </div>
-          <div class="column text-right">
+          <div
+            class="column-sm text-right tooltipped tooltipped-n"
+            :aria-label="
+              _num(parseFloat(pool.tokens[i].denormWeight).toFixed(2))
+            "
+          >
             {{
               _num(
                 (
-                  (2 * parseFloat(pool.tokens[i].denormWeight)) /
-                  oldTotalWeight
+                  parseFloat(pool.tokens[i].denormWeight) / oldTotalWeight
                 ).toFixed(4),
                 'percent'
               )
             }}
-            → {{ _num((weights[i] / totalWeight).toFixed(4), 'percent') }}
+            →
+          </div>
+          <div
+            class="column-sm text-right mr-2 tooltipped tooltipped-n"
+            :aria-label="_num((weights[i] / multiplier).toFixed(2))"
+          >
+            <input
+              v-model="weights[i]"
+              class="input text-center ml-4"
+              placeholder="50"
+              type="number"
+              :min="multiplier"
+              :max="100 - multiplier"
+              :class="
+                isWeightInputValid(weights[i]) ? 'text-white' : 'text-red'
+              "
+            />
           </div>
         </UiTableTr>
       </UiTable>
@@ -85,7 +98,8 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { blockNumberToTimestamp } from '@/helpers/utils';
+import { blockNumberToTimestamp, bnum } from '@/helpers/utils';
+import { getMaxTotalWeight, calculateNewWeights } from '@/helpers/weights';
 
 const BLOCK_BUFFER = 100;
 
@@ -97,16 +111,23 @@ export default {
       weights: [],
       currentTime: 0,
       startBlock: 0,
-      endBlock: 0
+      endBlock: 0,
+      maxTotalWeight: 0,
+      multiplier: 0
     };
   },
   watch: {
     async open(value) {
       if (value) {
         this.loading = false;
-        this.weights = this.pool.tokens.map(
-          token => 2 * parseFloat(token.denormWeight)
-        );
+        // Calculate new denorm weights, equivalent to current weights
+        // If this is a legacy pool, could be 49/1 - would convert to 24/1 (98/2 -> 96/4)
+        // Reduce resolution if necessary
+        // Both flags false: Is not shared/locked pool, want percentages back, not denorms
+        this.weights = calculateNewWeights(this.pool.tokens, false, false);
+        this.maxTotalWeight = getMaxTotalWeight(false);
+        this.multiplier =
+          100 / getMaxTotalWeight(!this.pool.rights.canChangeWeights);
         this.currentTime = Date.now();
         this.startBlock = this.web3.blockNumber + BLOCK_BUFFER;
         this.endBlock =
@@ -117,11 +138,11 @@ export default {
   computed: {
     oldTotalWeight() {
       return this.pool.tokens.reduce(
-        (a, b) => a + 2 * parseFloat(b.denormWeight),
+        (a, b) => a + parseFloat(b.denormWeight),
         0
       );
     },
-    totalWeight() {
+    newTotalWeight() {
       return this.weights.reduce((a, b) => a + parseFloat(b), 0);
     },
     minimumWeightChangeBlockPeriod() {
@@ -131,9 +152,8 @@ export default {
       const correctStartBlock = this.startBlock >= this.web3.blockNumber;
       const correctEndBlock =
         this.endBlock - this.startBlock >= this.minimumWeightChangeBlockPeriod;
-      const correctBlocks = correctStartBlock && correctEndBlock;
-      const correctWeight = this.totalWeight >= 2 && this.totalWeight <= 100;
-      return correctBlocks && correctWeight;
+
+      return correctStartBlock && correctEndBlock && this.newTotalWeight == 100;
     }
   },
   methods: {
@@ -143,8 +163,10 @@ export default {
       const newWeights = {};
       for (let i = 0; i < this.pool.tokens.length; i++) {
         const token = this.pool.tokens[i];
-        newWeights[token.checksum] = this.weights[i];
+        // Convert from percent inputs to denorm values
+        newWeights[token.checksum] = this.weights[i] / this.multiplier;
       }
+
       await this.updateWeightsGradually({
         poolAddress: this.pool.controller,
         tokens: this.pool.tokensList,
@@ -163,6 +185,16 @@ export default {
       );
       const blockDate = new Date(blockTimestamp);
       return blockDate.toLocaleString('en-US');
+    },
+    isWeightInputValid(value) {
+      if (!value || isNaN(value)) {
+        return false;
+      }
+      const weight = bnum(value);
+      if (weight.lt(this.multiplier) || weight.gt(100 - this.multiplier)) {
+        return false;
+      }
+      return true;
     }
   }
 };
