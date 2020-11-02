@@ -24,27 +24,28 @@
         </router-link>
       </div>
       <div :key="web3.account">
-        <template v-if="$auth.isAuthenticated && !wrongNetwork">
-          <UiButton @click="modalOpen.account = true" :loading="loading">
-            <Avatar :address="web3.account" size="16" class="ml-n1 mr-n1" />
-            <span
-              v-if="web3.name"
-              v-text="web3.name"
-              class="hide-sm ml-2 pl-1"
-            />
-            <span
-              v-else
-              v-text="_shortenAddress(web3.account)"
-              class="hide-sm ml-2 pl-1"
-            />
-          </UiButton>
-        </template>
-        <UiButton v-if="web3.injectedLoaded && wrongNetwork" class="button-red">
+        <UiButton
+          v-if="$auth.isAuthenticated && !wrongNetwork"
+          @click="modalOpen.account = true"
+          :loading="loading"
+        >
+          <Avatar :address="web3.account" size="16" class="ml-n1 mr-n1" />
+          <span v-if="web3.name" v-text="web3.name" class="hide-sm ml-2 pl-1" />
+          <span
+            v-else
+            v-text="_shortenAddress(web3.account)"
+            class="hide-sm ml-2 pl-1"
+          />
+        </UiButton>
+        <UiButton
+          v-if="$auth.isAuthenticated && wrongNetwork"
+          class="button-red"
+        >
           <Icon name="warning" class="ml-n2 mr-1 v-align-middle" />
           {{ $t('wrongNetwork') }}
         </UiButton>
         <UiButton
-          v-if="showLogin"
+          v-if="!$auth.isAuthenticated"
           @click="modalOpen.account = true"
           :loading="loading"
           class="button-primary"
@@ -94,13 +95,7 @@ export default {
   computed: {
     ...mapGetters(['myPendingTransactions']),
     wrongNetwork() {
-      return this.config.chainId !== this.web3.injectedChainId;
-    },
-    showLogin() {
-      return (
-        (!this.$auth.isAuthenticated && !this.web3.injectedLoaded) ||
-        (!this.$auth.isAuthenticated && !this.wrongNetwork)
-      );
+      return this.config.chainId !== this.web3.injectedChainId && !this.loading;
     }
   },
   methods: {
