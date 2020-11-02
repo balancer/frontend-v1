@@ -131,11 +131,17 @@ export function formatPool(pool) {
   if (pool.shares) pool.holders = pool.shares.length;
   pool.tokensList = pool.tokensList.map(token => getAddress(token));
   pool.lastSwapVolume = 0;
+  pool.lastSwapFee = 0;
   const poolTotalSwapVolume =
     pool.swaps && pool.swaps[0] && pool.swaps[0].poolTotalSwapVolume
       ? parseFloat(pool.swaps[0].poolTotalSwapVolume)
       : 0;
+  const poolTotalSwapFee =
+    pool.swaps && pool.swaps[0] && pool.swaps[0].poolTotalSwapFee
+      ? parseFloat(pool.swaps[0].poolTotalSwapFee)
+      : 0;
   pool.lastSwapVolume = parseFloat(pool.totalSwapVolume) - poolTotalSwapVolume;
+  pool.lastSwapFee = parseFloat(pool.totalSwapFee) - poolTotalSwapFee;
   return pool;
 }
 
