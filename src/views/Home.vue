@@ -3,13 +3,13 @@
     <Container class="mb-3">
       <h3 class="flex-auto" v-text="$t('myLiquidity')" />
     </Container>
-    <ListPools
+    <ListMyLiquidityPools
       :key="JSON.stringify(queryMyLiquidity)"
       :query="queryMyLiquidity"
       class="mb-4"
     />
     <Container class="mb-3">
-      <h3 class="flex-auto" v-text="$t('myPools')" />
+      <h3 class="flex-auto" v-text="$t('mySmartPools')" />
     </Container>
     <ListPools :key="JSON.stringify(queryMyPools)" :query="queryMyPools" />
   </Page>

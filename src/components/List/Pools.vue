@@ -5,17 +5,9 @@
     </Container>
     <UiTable>
       <UiTableTh>
-        <div
-          v-text="$t('poolAddress')"
-          class="column-sm text-left hide-sm hide-md hide-lg"
-        />
         <div v-text="$t('assets')" class="flex-auto text-left" />
         <div v-text="$t('swapFee')" class="column hide-sm hide-md" />
         <div v-text="$t('marketCap')" class="column" />
-        <div
-          v-text="$t('myLiquidity')"
-          class="column hide-sm hide-md hide-lg"
-        />
         <div v-text="$t('volume24')" class="column hide-sm hide-md hide-lg" />
       </UiTableTh>
       <div
@@ -32,11 +24,9 @@
         <ListLoading
           v-if="loading"
           :classes="[
-            'column-sm text-left hide-sm hide-md hide-lg',
             'flex-auto text-left',
             'column hide-sm hide-md',
             'column',
-            'column hide-sm hide-md hide-lg',
             'column hide-sm hide-md hide-lg'
           ]"
           :height="29"
