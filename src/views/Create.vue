@@ -140,7 +140,7 @@
     <MessageError v-if="validationError" :text="validationError" class="mt-4" />
     <MessageSimilarPools v-if="pool" :pool="pool" class="mt-4" />
     <MessageCheckbox
-      v-if="!validationError"
+      v-if="!validationError && !hasLockedToken"
       :custom="hasCustomToken"
       :accepted="checkboxAccept"
       @toggle="checkboxAccept = !checkboxAccept"

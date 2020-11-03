@@ -114,7 +114,7 @@
         />
         <MessageError v-if="transferError" :text="transferError" class="mb-4" />
         <MessageCheckbox
-          v-if="!tokenError && !validationError"
+          v-if="!tokenError && !validationError && !lockedTokenError"
           :custom="hasCustomToken"
           :accepted="checkboxAccept"
           @toggle="checkboxAccept = !checkboxAccept"
