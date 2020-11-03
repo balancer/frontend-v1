@@ -1,159 +1,165 @@
 <template>
   <Page>
-    <div class="d-flex px-4 px-md-0 mb-3">
-      <Toggle
-        class="tooltipped tooltipped-n"
-        v-if="config.env !== 'production'"
-        :value="type"
-        :options="poolTypes"
-        :aria-label="
-          $t(type == 'SMART_POOL' ? 'createSmartTip' : 'createSharedTip')
-        "
-        @select="handleSelectType"
-      />
-    </div>
-    <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
-      <h4 v-text="$t('assets')" class="flex-auto" />
-    </div>
-    <UiTable class="mb-4">
-      <UiTableTh>
-        <div v-text="$t('asset')" class="flex-auto text-left" />
-        <div v-text="$t('myBalance')" class="column" />
-        <div v-text="$t('weight')" class="column" />
-        <div v-text="'%'" class="column-sm hide-sm" />
-        <div class="column">
-          <a
-            @click="togglePadlock"
-            class="px-1 mr-1 tooltipped tooltipped-n"
-            :aria-label="$t(padlock ? 'marketAmounts' : 'customAmounts')"
-          >
-            <span v-if="padlock"><Icon name="lock" size="16"/></span>
-            <span v-else><Icon name="unlock" size="16"/></span>
-          </a>
-          {{ $t('amount') }}
-        </div>
-        <div v-text="$t('price')" class="column-sm hide-sm" />
-        <div v-text="$t('totalValue')" class="column hide-sm" />
-        <div class="column-xs" />
-      </UiTableTh>
-      <div v-for="(token, i) in tokens" :key="token">
-        <UiTableTr>
-          <div class="d-flex flex-auto flex-items-center text-left">
-            <Token :address="token" :symbol="token" class="mr-3" />
-            {{ _ticker(token) }}
-            <a
-              class="d-block text-white p-1"
-              @click="
-                tokenModalOpen = true;
-                activeToken = i;
-              "
-            >
-              <Icon name="arrow-down" />
-            </a>
-            <ButtonUnlock
-              class="button-primary ml-2"
-              :tokenAddress="token"
-              :amount="amounts[token]"
-            />
-          </div>
-          <div v-text="getBalance(token)" class="column-ms hide-sm" />
-          <div class="column">
-            <input
-              class="input pool-input text-right"
-              :class="isWeightInputValid(token) ? 'text-white' : 'text-red'"
-              v-model="weights[token]"
-              @input="handleWeightChange(token)"
-            />
-          </div>
-          <div class="column-sm hide-sm">
-            <div v-text="_num(getRelativeWeight(token), 'percent')" />
-          </div>
-          <div class="column">
-            <input
-              class="input pool-input text-right"
-              :class="isAmountInputValid(token) ? 'text-white' : 'text-red'"
-              v-model="amounts[token]"
-              @input="handleAmountChange(token)"
-            />
-          </div>
-          <div class="column-sm hide-sm">
-            <div
-              v-text="_num(parseFloat(price.values[token]).toFixed(2), 'usd')"
-              v-if="padlock"
-            />
-            <div v-text="'-'" v-else />
-          </div>
-          <div class="column hide-sm">
-            <div
-              v-text="_num(parseFloat(getValue(token)).toFixed(2), 'usd')"
-              v-if="padlock"
-            />
-            <div v-text="'-'" v-else />
-          </div>
-          <div class="column-xs">
-            <a
-              v-if="tokens.length > 1"
-              class="d-flex flex-justify-end text-white"
-              @click="removeToken(token)"
-            >
-              <Icon name="close" />
-            </a>
-          </div>
-        </UiTableTr>
+    <Container>
+      <div class="d-flex px-4 px-md-0 mb-3">
+        <Toggle
+          class="tooltipped tooltipped-n"
+          v-if="config.env !== 'production'"
+          :value="type"
+          :options="poolTypes"
+          :aria-label="
+            $t(type == 'SMART_POOL' ? 'createSmartTip' : 'createSharedTip')
+          "
+          @select="handleSelectType"
+        />
       </div>
-    </UiTable>
-    <UiButton v-if="tokens.length < 8" class="mb-4" @click="addToken">
-      {{ $t('addToken') }}
-    </UiButton>
-    <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
-      <h4 v-text="$t('swapFeePct')" class="flex-auto" />
-    </div>
-    <div class="mb-4">
-      <input
-        class="input pool-input text-right"
-        :class="isSwapFeeInputValid() ? 'text-white' : 'text-red'"
-        v-model="swapFee"
-        placeholder="0.15"
-        type="number"
-        value="0.15"
-        step="0.0001"
-        min="0.0001"
-        max="10"
+      <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
+        <h4 v-text="$t('assets')" class="flex-auto" />
+      </div>
+      <UiTable class="mb-4">
+        <UiTableTh>
+          <div v-text="$t('asset')" class="flex-auto text-left" />
+          <div v-text="$t('myBalance')" class="column" />
+          <div v-text="$t('weight')" class="column" />
+          <div v-text="'%'" class="column-sm hide-sm" />
+          <div class="column">
+            <a
+              @click="togglePadlock"
+              class="px-1 mr-1 tooltipped tooltipped-n"
+              :aria-label="$t(padlock ? 'marketAmounts' : 'customAmounts')"
+            >
+              <span v-if="padlock"><Icon name="lock" size="16"/></span>
+              <span v-else><Icon name="unlock" size="16"/></span>
+            </a>
+            {{ $t('amount') }}
+          </div>
+          <div v-text="$t('price')" class="column-sm hide-sm" />
+          <div v-text="$t('totalValue')" class="column hide-sm" />
+          <div class="column-xs" />
+        </UiTableTh>
+        <div v-for="(token, i) in tokens" :key="token">
+          <UiTableTr>
+            <div class="d-flex flex-auto flex-items-center text-left">
+              <Token :address="token" :symbol="token" class="mr-3" />
+              {{ _ticker(token) }}
+              <a
+                class="d-block text-white p-1"
+                @click="
+                  tokenModalOpen = true;
+                  activeToken = i;
+                "
+              >
+                <Icon name="arrow-down" />
+              </a>
+              <ButtonUnlock
+                class="button-primary ml-2"
+                :tokenAddress="token"
+                :amount="amounts[token]"
+              />
+            </div>
+            <div v-text="getBalance(token)" class="column-ms hide-sm" />
+            <div class="column">
+              <input
+                class="input pool-input text-right"
+                :class="isWeightInputValid(token) ? 'text-white' : 'text-red'"
+                v-model="weights[token]"
+                @input="handleWeightChange(token)"
+              />
+            </div>
+            <div class="column-sm hide-sm">
+              <div v-text="_num(getRelativeWeight(token), 'percent')" />
+            </div>
+            <div class="column">
+              <input
+                class="input pool-input text-right"
+                :class="isAmountInputValid(token) ? 'text-white' : 'text-red'"
+                v-model="amounts[token]"
+                @input="handleAmountChange(token)"
+              />
+            </div>
+            <div class="column-sm hide-sm">
+              <div
+                v-text="_num(parseFloat(price.values[token]).toFixed(2), 'usd')"
+                v-if="padlock"
+              />
+              <div v-text="'-'" v-else />
+            </div>
+            <div class="column hide-sm">
+              <div
+                v-text="_num(parseFloat(getValue(token)).toFixed(2), 'usd')"
+                v-if="padlock"
+              />
+              <div v-text="'-'" v-else />
+            </div>
+            <div class="column-xs">
+              <a
+                v-if="tokens.length > 1"
+                class="d-flex flex-justify-end text-white"
+                @click="removeToken(token)"
+              >
+                <Icon name="close" />
+              </a>
+            </div>
+          </UiTableTr>
+        </div>
+      </UiTable>
+      <UiButton v-if="tokens.length < 8" class="mb-4" @click="addToken">
+        {{ $t('addToken') }}
+      </UiButton>
+      <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
+        <h4 v-text="$t('swapFeePct')" class="flex-auto" />
+      </div>
+      <div class="mb-4">
+        <input
+          class="input pool-input text-right"
+          :class="isSwapFeeInputValid() ? 'text-white' : 'text-red'"
+          v-model="swapFee"
+          placeholder="0.15"
+          type="number"
+          value="0.15"
+          step="0.0001"
+          min="0.0001"
+          max="10"
+        />
+      </div>
+      <div v-if="type === 'SMART_POOL'">
+        <FormCrp
+          :tokenSymbol="crp.poolTokenSymbol"
+          :tokenName="crp.poolTokenName"
+          :rights="crp.rights"
+          :minimumWeightChangeBlockPeriod="crp.minimumWeightChangeBlockPeriod"
+          :addTokenTimeLockInBlocks="crp.addTokenTimeLockInBlocks"
+          :initialSupply="crp.initialSupply"
+          @change-symbol="changeSymbol"
+          @change-name="changeName"
+          @toggle-right="toggleRight"
+          @change-weight-period="changeWeightPeriod"
+          @change-add-timelock="changeAddTimelock"
+          @change-initial-supply="changeInitialSupply"
+        />
+      </div>
+      <MessageError
+        v-if="validationError"
+        :text="validationError"
+        class="mt-4"
       />
-    </div>
-    <div v-if="type === 'SMART_POOL'">
-      <FormCrp
-        :tokenSymbol="crp.poolTokenSymbol"
-        :tokenName="crp.poolTokenName"
-        :rights="crp.rights"
-        :minimumWeightChangeBlockPeriod="crp.minimumWeightChangeBlockPeriod"
-        :addTokenTimeLockInBlocks="crp.addTokenTimeLockInBlocks"
-        :initialSupply="crp.initialSupply"
-        @change-symbol="changeSymbol"
-        @change-name="changeName"
-        @toggle-right="toggleRight"
-        @change-weight-period="changeWeightPeriod"
-        @change-add-timelock="changeAddTimelock"
-        @change-initial-supply="changeInitialSupply"
+      <MessageSimilarPools v-if="pool" :pool="pool" class="mt-4" />
+      <MessageCheckbox
+        v-if="!validationError"
+        :custom="hasCustomToken"
+        :accepted="checkboxAccept"
+        @toggle="checkboxAccept = !checkboxAccept"
+        class="mt-4"
       />
-    </div>
-    <MessageError v-if="validationError" :text="validationError" class="mt-4" />
-    <MessageSimilarPools v-if="pool" :pool="pool" class="mt-4" />
-    <MessageCheckbox
-      v-if="!validationError"
-      :custom="hasCustomToken"
-      :accepted="checkboxAccept"
-      @toggle="checkboxAccept = !checkboxAccept"
-      class="mt-4"
-    />
-    <UiButton
-      :loading="loading"
-      :disabled="validationError || hasLockedToken || !checkboxAccept"
-      class="button-primary mt-4"
-      @click="confirmModalOpen = true"
-    >
-      {{ $t('create') }}
-    </UiButton>
+      <UiButton
+        :loading="loading"
+        :disabled="validationError || hasLockedToken || !checkboxAccept"
+        class="button-primary mt-4"
+        @click="confirmModalOpen = true"
+      >
+        {{ $t('create') }}
+      </UiButton>
+    </Container>
     <ModalSelectToken
       :open="tokenModalOpen"
       @close="tokenModalOpen = false"

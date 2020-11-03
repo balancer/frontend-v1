@@ -1,42 +1,72 @@
 <template>
   <Page>
-    <Container class="mb-3">
-      <h3 class="flex-auto" v-text="$t('myLiquidity')" />
+    <Container>
+      <Filters :value="filters" v-model="filters" />
     </Container>
-    <ListMyLiquidityPools
-      :key="JSON.stringify(queryMyLiquidity)"
-      :query="queryMyLiquidity"
-      class="mb-4"
-    />
-    <Container class="mb-3">
-      <h3 class="flex-auto" v-text="$t('mySmartPools')" />
+    <Container :slim="true">
+      <ListPools :query="query" :key="JSON.stringify(query)" />
     </Container>
-    <ListPools :key="JSON.stringify(queryMyPools)" :query="queryMyPools" />
   </Page>
 </template>
 
 <script>
+import { formatFilters } from '@/helpers/utils';
+import pools from '@/_balancer/pools.json';
+
 export default {
+  data() {
+    return {
+      filters: formatFilters(this.$route.query)
+    };
+  },
+  watch: {
+    filters() {
+      const query = formatFilters(this.filters);
+      if (query.token && query.token.length === 0) delete query.token;
+      if (query.type && query.type.length === 0) delete query.type;
+      this.$router.push({ query });
+    }
+  },
   computed: {
-    queryMyLiquidity() {
-      const poolShares = this.subgraph.poolShares;
-      const ids = Object.keys(poolShares).map(share => share.toLowerCase());
+    query() {
+      let query = this.querySharedPools;
+      const filters = formatFilters(this.filters);
+      if (filters.type === 'smart') query = this.querySmartPools;
+      if (filters.type === 'private') query = this.queryPrivatePools;
+      if (filters.token && filters.token.length > 0) {
+        query.where.tokensList_contains = filters.token;
+      }
+      return query;
+    },
+    querySharedPools() {
       return {
         where: {
-          id_in: ids
+          finalized: true
         }
       };
     },
-    queryMyPools() {
+    querySmartPools() {
+      if (this.config.chainId === 1)
+        return {
+          where: {
+            id_in: Object.entries(pools)
+              .filter(crp => crp[1].is_compatible)
+              .map(crp => crp[0].toLowerCase())
+          }
+        };
       return {
         where: {
-          crpController: this.web3.dsProxyAddress
+          crp: true
+        }
+      };
+    },
+    queryPrivatePools() {
+      return {
+        where: {
+          finalized: false
         }
       };
     }
-  },
-  beforeMount() {
-    if (!this.web3.account) this.$router.push({ name: 'explore' });
   }
 };
 </script>

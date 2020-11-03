@@ -1,5 +1,26 @@
 <template>
   <Page>
+    <Container class="mb-3">
+      <h3 class="flex-auto" v-text="$t('myLiquidity')" />
+    </Container>
+    <Container :slim="true" class="mb-3">
+      <ListMyLiquidityPools
+        :key="JSON.stringify(queryMyLiquidity)"
+        :query="queryMyLiquidity"
+        class="mb-4"
+      />
+    </Container>
+
+    <Container class="mb-3">
+      <h3 class="flex-auto" v-text="$t('mySmartPools')" />
+    </Container>
+    <Container :slim="true" class="mb-3">
+      <ListMyLiquidityPools
+        :key="JSON.stringify(queryMyPools)"
+        :query="queryMyPools"
+        class="mb-4"
+      />
+    </Container>
     <Container class="d-flex mb-3">
       <div class="flex-auto">
         <h3 v-text="$t('myWallet')" />
@@ -13,47 +34,49 @@
         {{ $t('totalValue') }}
       </div>
     </Container>
-    <UiTable>
-      <UiTableTh>
-        <div v-text="'Asset'" class="flex-auto text-left" />
-        <div v-text="'Holdings'" class="column" />
-      </UiTableTh>
-      <UiTableTr v-for="(balance, i) in balances" :key="i">
-        <Token :address="balance.address" class="mr-3" size="32" />
-        <div class="text-left">
-          <div v-text="balance.name" />
-          <div v-text="balance.symbol" class="text-gray" />
-        </div>
-        <div class="flex-auto text-left">
-          <div v-if="balance.address !== 'ether'" class="flex-auto">
-            <UiButton
-              v-if="balance.address === config.addresses.weth"
-              @click="[(modalWrapperOpen = true), (side = 2)]"
-              type="button"
-              class="button-primary button-sm ml-2"
-            >
-              Unwrap to ETH
-            </UiButton>
+    <Container :slim="true" class="mb-3">
+      <UiTable>
+        <UiTableTh>
+          <div v-text="'Asset'" class="flex-auto text-left" />
+          <div v-text="'Holdings'" class="column" />
+        </UiTableTh>
+        <UiTableTr v-for="(balance, i) in balances" :key="i">
+          <Token :address="balance.address" class="mr-3" size="32" />
+          <div class="text-left">
+            <div v-text="balance.name" />
+            <div v-text="balance.symbol" class="text-gray" />
           </div>
-          <div v-else class="flex-auto">
-            <UiButton
-              @click="[(modalWrapperOpen = true), (side = 1)]"
-              type="button"
-              class="button-primary button-sm ml-2"
-            >
-              Wrap to WETH
-            </UiButton>
+          <div class="flex-auto text-left">
+            <div v-if="balance.address !== 'ether'" class="flex-auto">
+              <UiButton
+                v-if="balance.address === config.addresses.weth"
+                @click="[(modalWrapperOpen = true), (side = 2)]"
+                type="button"
+                class="button-primary button-sm ml-2"
+              >
+                Unwrap to ETH
+              </UiButton>
+            </div>
+            <div v-else class="flex-auto">
+              <UiButton
+                @click="[(modalWrapperOpen = true), (side = 1)]"
+                type="button"
+                class="button-primary button-sm ml-2"
+              >
+                Wrap to WETH
+              </UiButton>
+            </div>
           </div>
-        </div>
-        <div class="column">
-          <div>
-            {{ _num(balance.balance, 'long') }}
-            {{ balance.symbol }}
+          <div class="column">
+            <div>
+              {{ _num(balance.balance, 'long') }}
+              {{ balance.symbol }}
+            </div>
+            <div v-text="_num(balance.value, 'usd-long')" class="text-gray" />
           </div>
-          <div v-text="_num(balance.value, 'usd-long')" class="text-gray" />
-        </div>
-      </UiTableTr>
-    </UiTable>
+        </UiTableTr>
+      </UiTable>
+    </Container>
     <ModalWrapper
       :open="modalWrapperOpen"
       @close="modalWrapperOpen = false"
@@ -110,6 +133,22 @@ export default {
     },
     balancesTotalValue() {
       return this.balances.reduce((a, b) => a + b.value, 0);
+    },
+    queryMyLiquidity() {
+      const poolShares = this.subgraph.poolShares;
+      const ids = Object.keys(poolShares).map(share => share.toLowerCase());
+      return {
+        where: {
+          id_in: ids
+        }
+      };
+    },
+    queryMyPools() {
+      return {
+        where: {
+          crpController: this.web3.dsProxyAddress
+        }
+      };
     }
   }
 };
