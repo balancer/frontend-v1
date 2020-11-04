@@ -249,10 +249,12 @@ const actions = {
           }
         });
       }
-      const network = await auth.web3.getNetwork();
-      const accounts = await auth.web3.listAccounts();
+      const [network, accounts] = await Promise.all([
+        auth.web3.getNetwork(),
+        auth.web3.listAccounts()
+      ]);
       const account = accounts.length > 0 ? accounts[0] : null;
-      let name;
+      let name = '';
       if (config.chainId === 1) name = await provider.lookupAddress(account);
       commit('LOAD_PROVIDER_SUCCESS', {
         injectedLoaded: true,

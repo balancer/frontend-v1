@@ -4,7 +4,6 @@ import { getAddress } from '@ethersproject/address';
 import { jsonToGraphQLQuery } from 'json-to-graphql-query';
 import config from '../config';
 import { abi as multicallAbi } from '../helpers/abi/Multicall.json';
-import logos from '@balancer-labs/assets/assets/index.json';
 
 const MULTICALL = config.addresses.multicall;
 
@@ -41,18 +40,13 @@ export async function subgraphRequest(url, query) {
 }
 
 export function getTokenLogoUrl(address: string): string | null {
-  if (logos.includes(address.toLowerCase()))
-    return `https://raw.githubusercontent.com/balancer-labs/assets/master/assets/${address.toLowerCase()}.png`;
-  let trustwalletId: string | null = null;
   if (address === 'ether') {
-    trustwalletId = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
-  } else {
-    const checksum = getAddress(address);
-    const token = config.tokens[checksum];
-    if (token && token.hasIcon) {
-      trustwalletId = checksum;
-    }
+    address = config.addresses.weth;
   }
-  if (!trustwalletId) return null;
-  return `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${trustwalletId}/logo.png`;
+  address = getAddress(address);
+  const metadata = config.tokens[address];
+  if (!metadata) {
+    return `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`;
+  }
+  return metadata.logoUrl;
 }

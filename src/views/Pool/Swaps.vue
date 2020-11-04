@@ -5,9 +5,8 @@
         v-text="'Time'"
         class="flex-auto text-left hide-sm hide-md hide-lg"
       />
-      <div v-text="$t('tradeIn')" class="column-lg text-left" />
-      <div v-text="$t('tradeOut')" class="column-lg text-left" />
-      <div v-text="$t('transaction')" class="column hide-sm hide-md" />
+      <div v-text="$t('tradeIn')" class="column-xl text-left" />
+      <div v-text="$t('tradeOut')" class="column-xl text-left" />
       <div v-text="$t('swapFee')" class="column hide-sm hide-md hide-lg" />
     </UiTableTh>
     <div
@@ -17,33 +16,30 @@
     >
       <div v-if="swaps.length > 0">
         <UiTableTr v-for="(swap, i) in swaps" :key="i" :swap="swap">
-          <div
-            v-text="$d(new Date(swap.timestamp * 1e3), 'long')"
-            class="flex-auto text-left hide-sm hide-md hide-lg"
-          />
-          <div class="column-lg d-flex flex-items-center">
-            <Token :address="swap.tokenIn" class="mr-2" />
-            <UiNum :value="swap.tokenAmountIn" class="mr-1" />
-            {{ swap.tokenInSym }}
-          </div>
-          <div class="column-lg d-flex flex-items-center">
-            <Token :address="swap.tokenOut" class="mr-2" />
-            <UiNum :value="swap.tokenAmountOut" class="mr-1" />
-            {{ swap.tokenOutSym }}
-          </div>
-          <div class="column hide-sm hide-md">
+          <div class="flex-auto text-left hide-sm hide-md hide-lg">
             <a
               :href="_etherscanLink(getTxHashFromId(swap.id), 'tx')"
               class="text-white"
               target="_blank"
             >
-              {{ _shortenAddress(getTxHashFromId(swap.id)) }}
+              {{ $d(new Date(swap.timestamp * 1e3), 'long') }}
               <Icon name="external-link" />
             </a>
           </div>
-          <div class="column hide-sm hide-md hide-lg">
-            <UiNum :value="swap.feeValue" format="price" />
+          <div class="column-xl d-flex flex-items-center">
+            <Token :address="swap.tokenIn" class="mr-2" />
+            {{ _num(swap.tokenAmountIn) }}
+            {{ _shorten(swap.tokenInSym, 12) }}
           </div>
+          <div class="column-xl d-flex flex-items-center">
+            <Token :address="swap.tokenOut" class="mr-2" />
+            {{ _num(swap.tokenAmountOut) }}
+            {{ _shorten(swap.tokenOutSym, 12) }}
+          </div>
+          <div
+            v-text="_num(swap.feeValue, 'usd')"
+            class="column hide-sm hide-md hide-lg"
+          />
         </UiTableTr>
       </div>
       <ListLoading
@@ -52,7 +48,6 @@
           'flex-auto text-left hide-sm hide-md hide-lg',
           'column-lg text-left',
           'column-lg text-left',
-          'column hide-sm hide-md',
           'column hide-sm hide-md hide-lg'
         ]"
       />

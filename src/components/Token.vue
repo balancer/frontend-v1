@@ -4,10 +4,11 @@
     style="line-height: 0;"
   >
     <img
-      v-if="tokenLogoUrl"
+      v-if="tokenLogoUrl && !loadingFailed"
       :src="tokenLogoUrl"
       :style="style"
       :title="symbol"
+      @error="handleError"
     />
     <Avatar :size="size" :address="address" v-else />
   </span>
@@ -18,6 +19,11 @@ import { getTokenLogoUrl } from '@/_balancer/utils';
 
 export default {
   props: ['address', 'symbol', 'size'],
+  data() {
+    return {
+      loadingFailed: false
+    };
+  },
   computed: {
     style() {
       const size = this.size || 22;
@@ -30,6 +36,11 @@ export default {
     },
     tokenLogoUrl() {
       return getTokenLogoUrl(this.address);
+    }
+  },
+  methods: {
+    handleError() {
+      this.loadingFailed = true;
     }
   }
 };

@@ -10,6 +10,7 @@ import {
 } from '@/helpers/utils';
 import BigNumber from '@/helpers/bignumber';
 import { makeProxyTransaction } from '@/helpers/web3';
+import { setGoal } from '@/helpers/fathom';
 
 const mutations = {
   CREATE_PROXY_REQUEST() {
@@ -236,6 +237,7 @@ const actions = {
         params,
         title: 'Create proxy'
       });
+      setGoal('EV1XI0VM');
       dispatch('notify', ['green', "You've successfully created a proxy"]);
       dispatch('getProxy');
       commit('CREATE_PROXY_SUCCESS');
@@ -279,6 +281,7 @@ const actions = {
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
       await dispatch('processTransaction', { params, title: 'Create a pool' });
+      setGoal('MGYMGNXQ');
       dispatch('notify', ['green', "You've successfully created a pool"]);
       commit('CREATE_POOL_SUCCESS');
     } catch (e) {
@@ -357,6 +360,7 @@ const actions = {
         title: 'Create a smart pool'
       });
       await tx.wait(6);
+      setGoal('H854WJCE');
       dispatch('notify', ['green', i18n.tc('successCreatePool')]);
       commit('CREATE_SMART_POOL_SUCCESS');
     } catch (e) {
@@ -388,6 +392,7 @@ const actions = {
         dispatch('getBalances'),
         dispatch('getUserPoolShares')
       ]);
+      setGoal('OJGWYYDX');
       dispatch('notify', ['green', "You've successfully added liquidity"]);
       commit('JOIN_POOL_SUCCESS');
     } catch (e) {
@@ -419,6 +424,7 @@ const actions = {
         dispatch('getBalances'),
         dispatch('getUserPoolShares')
       ]);
+      setGoal('VW5X6ROK');
       dispatch('notify', ['green', "You've successfully added liquidity"]);
       commit('JOINSWAP_EXTERN_AMOUNT_SUCCESS');
     } catch (e) {
@@ -448,6 +454,7 @@ const actions = {
         dispatch('getBalances'),
         dispatch('getUserPoolShares')
       ]);
+      setGoal('WL0NJSJZ');
       dispatch('notify', ['green', "You've successfully removed liquidity"]);
       commit('EXIT_POOL_SUCCESS');
     } catch (e) {
@@ -477,6 +484,7 @@ const actions = {
         dispatch('getBalances'),
         dispatch('getUserPoolShares')
       ]);
+      setGoal('IFE3QZMO');
       dispatch('notify', ['green', "You've successfully removed liquidity"]);
       commit('EXITSWAP_POOL_AMOUNT_IN_SUCCESS');
     } catch (e) {
@@ -833,6 +841,7 @@ const actions = {
         title: `Approve ${symbol}`
       });
       dispatch('getAllowances', { tokens: [token], spender });
+      setGoal('R4TD1ELX');
       dispatch('notify', ['green', `You've successfully unlocked ${symbol}`]);
       commit('APPROVE_SUCCESS');
     } catch (e) {
@@ -856,6 +865,7 @@ const actions = {
         title: 'Wrap ETH to WETH'
       });
       await dispatch('getBalances');
+      setGoal('KFAFBADQ');
       dispatch('notify', [
         'green',
         `You've successfully wrapped ${amount} ether`
@@ -882,6 +892,7 @@ const actions = {
         title: 'Unwrap WETH to ETH'
       });
       await dispatch('getBalances');
+      setGoal('XSBEFNTT');
       dispatch('notify', [
         'green',
         `You've successfully unwrapped ${amount} ether`
