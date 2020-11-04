@@ -47,7 +47,7 @@
                   "
                 />
                 <Token :address="token.address" class="mr-2" size="20" />
-                <div v-text="token.symbol" class="text-white" />
+                <div v-text="_shorten(token.symbol, 12)" class="text-white" />
                 <ButtonUnlock
                   class="button-primary ml-2"
                   :tokenAddress="token.checksum"
@@ -114,7 +114,7 @@
         />
         <MessageError v-if="transferError" :text="transferError" class="mb-4" />
         <MessageCheckbox
-          v-if="!tokenError && !validationError"
+          v-if="!tokenError && !validationError && !lockedTokenError"
           :custom="hasCustomToken"
           :accepted="checkboxAccept"
           @toggle="checkboxAccept = !checkboxAccept"

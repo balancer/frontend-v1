@@ -260,22 +260,22 @@ export function formatNumber(number, key) {
 
   let format = '0.[000]';
   if (number > 1000) format = '0.[0]a';
-  if (number < 1) format = '0.[000000]';
+  if (number < 1) format = '0.[0000]';
 
   if (key === 'long') {
     format = '0,000.[00]';
-    if (number < 1) format = '0.[000000]';
+    if (number < 1) format = '0.[0000]';
   }
 
   if (key === 'usd') {
     format = '$(0.[00])';
     if (number > 1000) format = '$(0.[0]a)';
-    if (number < 1) format = '$(0.[000000])';
+    if (number < 1) format = '$(0.[0000])';
   }
 
   if (key === 'usd-long') {
     format = '$(0,000.[00])';
-    if (number < 1) format = '$(0.[000000])';
+    if (number < 1) format = '$(0.[0000])';
   }
 
   if (key === 'percent') format = '(0.[00])%';

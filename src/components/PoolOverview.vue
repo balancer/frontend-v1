@@ -26,7 +26,7 @@
     >
       <Icon name="bullet" size="16" :style="`color: ${token.color}`" />
       {{ _num(token.weightPercent / 100, 'percent') }}
-      {{ token.symbol }}
+      {{ _shorten(token.symbol, 12) }}
     </div>
   </div>
 </template>
