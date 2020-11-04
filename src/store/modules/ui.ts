@@ -3,15 +3,11 @@ import config from '@/config';
 
 const state = {
   init: false,
+  authLoading: false,
   loading: false,
   address: '',
-  name: '',
   balances: {},
   pools: [],
-  totalMarketcap: 0,
-  totalVolume1Day: 0,
-  sharesOwned: [],
-  poolsById: {},
   proxy: '',
   sidebarIsOpen: false
 };
@@ -31,12 +27,16 @@ const actions = {
       .map(tokenAddress => config.tokens[tokenAddress].id)
       .filter(tokenId => !!tokenId);
     await Promise.all([
-      dispatch('getBalancer'),
       dispatch('loadPricesById', tokenIds),
       dispatch('initTokenMetadata')
     ]);
     const connector = await Vue.prototype.$auth.getConnector();
-    if (connector) await dispatch('login', connector);
+    if (connector) {
+      commit('SET', { authLoading: true });
+      dispatch('login', connector).then(() =>
+        commit('SET', { authLoading: false })
+      );
+    }
     commit('SET', { loading: false, init: true });
   },
   loading: ({ commit }, payload) => {
