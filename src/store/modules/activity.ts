@@ -19,11 +19,9 @@ const mutations = {
     });
     lsSet('transactions', state.transactions);
   },
-  confirmTransaction(_state, { originalHash, receipt }) {
-    Vue.set(_state.transactions, originalHash, {
-      ...state.transactions[originalHash],
-      originalHash,
-      hash: receipt.transactionHash,
+  confirmTransaction(_state, receipt) {
+    Vue.set(_state.transactions, receipt.transactionHash, {
+      ...state.transactions[receipt.transactionHash],
       confirmedAt: Math.round(new Date().getTime() / 1000),
       blockHash: receipt.blockHash,
       blockNumber: receipt.blockNumber,
@@ -44,7 +42,7 @@ const getters = {
       .sort((a: any, b: any) => b.addedAt - a.addedAt);
   },
   myPendingTransactions: (state, getters) => {
-    const expiresIn = 60 * 60 * 3;
+    const expiresIn = 60 * 60 * 2;
     const now = Math.round(new Date().getTime() / 1000);
     return getters.myTransactions.filter(
       tx => !tx.confirmedAt && tx.addedAt > now - expiresIn
@@ -60,21 +58,17 @@ const actions = {
     console.log('Watch transaction', tx);
     commit('watchTransaction', { ...tx, title });
 
-    const web3Receipt = await tx.wait();
-    const receipt = await provider.waitForTransaction(
-      web3Receipt.transactionHash,
-      0
-    );
-    console.log('Confirm transaction', tx.hash);
-    commit('confirmTransaction', { originalHash: tx.hash, receipt });
+    const receipt = await provider.waitForTransaction(tx.hash, 1);
+    console.log('Confirm transaction', receipt);
+    commit('confirmTransaction', receipt);
 
     return tx;
   },
   async checkPendingTransactions({ commit, getters }) {
     getters.myPendingTransactions.forEach(tx => {
       provider.waitForTransaction(tx.hash, 1).then(receipt => {
-        console.log('Confirm transaction', tx.hash);
-        commit('confirmTransaction', { originalHash: tx.hash, receipt });
+        console.log('Confirm transaction', receipt);
+        commit('confirmTransaction', receipt);
       });
     });
     return;
