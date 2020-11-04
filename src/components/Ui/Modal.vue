@@ -1,9 +1,7 @@
 <template>
   <div v-if="open" class="modal mx-auto">
-    <div class="backdrop" @click="$emit('close')" />
-    <div
-      class="shell overflow-hidden anim-scale-in position-relative rounded-2"
-    >
+    <div class="backdrop anim-fade-in" @click="$emit('close')" />
+    <div class="shell anim-fade-left">
       <slot />
       <a @click="$emit('close')" class="position-absolute right-0 p-4">
         <Icon name="close" />
@@ -19,6 +17,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import '../../vars';
+
 .modal {
   position: fixed;
   display: flex;
@@ -29,6 +29,10 @@ export default {
   align-items: center;
   justify-content: center;
   z-index: 10;
+
+  .modal-body {
+    flex: auto;
+  }
 
   .backdrop {
     position: fixed;
@@ -41,14 +45,21 @@ export default {
   }
 
   .shell {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: $panel-background;
     display: flex;
     flex-direction: column;
     z-index: 999;
-    margin: 0 auto;
     width: 100%;
-    max-height: 90%;
+    max-width: 480px;
+    max-height: 100%;
+    border-left: $border;
 
     @media (max-width: 767px) {
+      border: none;
       width: 100% !important;
       max-width: 100% !important;
       max-height: 100% !important;

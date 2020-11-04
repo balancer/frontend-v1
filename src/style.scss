@@ -62,21 +62,6 @@ a {
   }
 }
 
-.modal {
-  .shell {
-    @extend .border-0;
-    @extend .border-md;
-    background-color: $panel-background;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    max-width: 810px;
-  }
-
-  .modal-body {
-    flex: auto;
-  }
-}
-
 .eyebrow {
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -109,7 +94,7 @@ a {
 }
 
 .anim-fade-in {
-  animation-duration: 0.6s !important;
+  animation-duration: 0.2s !important;
 }
 
 .line-height-0 {
@@ -219,5 +204,25 @@ input {
     font-size: 14px;
     background-color: $input-hover-border;
     color: white;
+  }
+}
+
+.anim-fade-left {
+  opacity: 0;
+  animation-name: fade-left;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+}
+
+@keyframes fade-left {
+  0% {
+    opacity: 0.6;
+    transform: translateX(10%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
   }
 }

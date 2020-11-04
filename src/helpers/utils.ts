@@ -286,6 +286,10 @@ export function formatNumber(number, key) {
 
   if (key === 'percent') format = '(0.[00])%';
   if (key === 'percent-short') format = '(0)%';
+  if (key === 'percent-long') {
+    format = '(0.[00])%';
+    if (number < 1) format = '(0.[0000])%';
+  }
 
   return numeral(number)
     .format(format)

@@ -4,7 +4,7 @@
       <template slot="header">
         <h3 v-text="$t('addLiquidity')" class="text-white" />
       </template>
-      <div class="text-center m-4 mt-0">
+      <div class="m-4 mt-0">
         <Toggle
           :value="type"
           :options="liquidityToggleOptions"
@@ -12,94 +12,92 @@
           class="mt-4"
         />
       </div>
-      <div class="m-4 d-block d-sm-flex">
-        <PoolOverview
-          :pool="pool"
-          :userShare="userLiquidity.relative"
-          class="hide-sm hide-md col-3 float-left"
-        />
-        <div class="col-12 col-md-9 float-left pl-0 pl-md-4">
-          <UiTable>
-            <UiTableTh>
-              <div v-text="$t('asset')" class="column-lg flex-auto text-left" />
-              <div v-text="$t('walletBalance')" class="column" />
-              <div v-text="$t('depositAmount')" class="column-sm" />
-            </UiTableTh>
-            <UiTableTr
-              v-for="token in pool.tokens"
-              :key="token.checksum"
-              class="asset"
-              :class="{
-                active: isMultiAsset || activeToken === token.checksum
-              }"
+      <div class="m-4">
+        <UiTable>
+          <UiTableTh>
+            <div v-text="$t('asset')" class="column-lg flex-auto text-left" />
+            <div v-text="$t('walletBalance')" class="column" />
+            <div v-text="$t('depositAmount')" class="column-sm" />
+          </UiTableTh>
+          <UiTableTr
+            v-for="token in pool.tokens"
+            :key="token.checksum"
+            class="asset"
+            :class="{
+              active: isMultiAsset || activeToken === token.checksum
+            }"
+          >
+            <div
+              class="column-lg flex-auto d-flex flex-items-center text-left d-flex"
             >
+              <UiRadio
+                class="mr-1"
+                v-if="!isMultiAsset"
+                :checked="activeToken === token.checksum"
+                :onChange="
+                  e => {
+                    handleTokenSelect(token.checksum);
+                  }
+                "
+              />
+              <Token :address="token.address" class="mr-2" size="20" />
+              <div v-text="_shorten(token.symbol, 12)" class="text-white" />
+              <ButtonUnlock
+                class="button-primary ml-2"
+                :tokenAddress="token.checksum"
+                :amount="amounts[token.checksum]"
+              />
+            </div>
+            <div class="column">
+              {{
+                _trunc(
+                  formatBalance(
+                    web3.balances[token.checksum] || '0',
+                    token.decimals
+                  ),
+                  2
+                )
+              }}
+              <a @click="handleMax(token)" class="ml-1">
+                <UiLabel v-text="$t('max')" />
+              </a>
+            </div>
+            <div class="column-sm">
               <div
-                class="column-lg flex-auto d-flex flex-items-center text-left d-flex"
+                class="flex-auto ml-3 text-left d-flex flex-items-center position-relative"
               >
-                <UiRadio
-                  class="mr-1"
-                  v-if="!isMultiAsset"
-                  :checked="activeToken === token.checksum"
-                  :onChange="
-                    e => {
-                      handleTokenSelect(token.checksum);
-                    }
-                  "
-                />
-                <Token :address="token.address" class="mr-2" size="20" />
-                <div v-text="_shorten(token.symbol, 12)" class="text-white" />
-                <ButtonUnlock
-                  class="button-primary ml-2"
-                  :tokenAddress="token.checksum"
-                  :amount="amounts[token.checksum]"
+                <input
+                  v-model="amounts[token.checksum]"
+                  v-if="isMultiAsset || activeToken === token.checksum"
+                  class="input flex-auto text-right"
+                  :class="isInputValid(token) ? 'text-white' : 'text-red'"
+                  placeholder="0.0"
+                  @input="handleChange(amounts[token.checksum], token)"
                 />
               </div>
-              <div class="column">
-                {{
-                  _trunc(
-                    formatBalance(
-                      web3.balances[token.checksum] || '0',
-                      token.decimals
-                    ),
-                    2
-                  )
-                }}
-                <a @click="handleMax(token)" class="ml-1">
-                  <UiLabel v-text="$t('max')" />
-                </a>
-              </div>
-              <div class="column-sm">
-                <div
-                  class="flex-auto ml-3 text-left d-flex flex-items-center position-relative"
-                >
-                  <input
-                    v-model="amounts[token.checksum]"
-                    v-if="isMultiAsset || activeToken === token.checksum"
-                    class="input flex-auto text-right"
-                    :class="isInputValid(token) ? 'text-white' : 'text-red'"
-                    placeholder="0.0"
-                    @input="handleChange(amounts[token.checksum], token)"
-                  />
-                </div>
-              </div>
-            </UiTableTr>
-          </UiTable>
-          <UiTable class="mt-4">
-            <UiTableTh class="text-left flex-items-center text-white">
-              <div class="flex-auto">
-                {{ _shorten(pool.symbol, 12) }} {{ $t('amount') }}
-              </div>
-              <div class="flex-auto text-right">
-                {{ _num(userLiquidity.absolute.current) }}
-                <span v-if="userLiquidity.absolute.future">
-                  → {{ _num(userLiquidity.absolute.future) }}
-                </span>
-                {{ _shorten(pool.symbol, 12) }}
-              </div>
-            </UiTableTh>
-          </UiTable>
-        </div>
+            </div>
+          </UiTableTr>
+        </UiTable>
+        <UiTable class="mt-4">
+          <UiTableTh class="text-left flex-items-center text-white">
+            <div class="flex-auto">
+              {{ _shorten(pool.symbol, 12) }} {{ $t('amount') }}
+            </div>
+            <div class="flex-auto text-right">
+              {{ _num(userLiquidity.absolute.current) }}
+              <span v-if="userLiquidity.absolute.future">
+                → {{ _num(userLiquidity.absolute.future) }}
+              </span>
+              {{ _shorten(pool.symbol, 12) }}
+            </div>
+          </UiTableTh>
+        </UiTable>
       </div>
+      <PoolOverview
+        :pool="pool"
+        :userShare="userLiquidity.relative"
+        class="m-4"
+      />
       <div class="mx-4">
         <MessageError v-if="tokenError" :text="tokenError" class="mb-4" />
         <MessageError
@@ -222,17 +220,6 @@ export default {
       const poolSharesFrom = parseFloat(this.poolTokenBalance);
       const totalShares = parseFloat(this.totalShares);
       const current = poolSharesFrom / totalShares;
-      if (this.validationError) {
-        return {
-          absolute: {
-            current: poolSharesFrom
-          },
-          relative: {
-            current
-          }
-        };
-      }
-
       const poolTokens = this.poolTokens
         ? bnum(this.poolTokens)
             .div('1e18')

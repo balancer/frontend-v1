@@ -24,7 +24,7 @@ const routes: Array<RouteConfig> = [
   { path: '/private', name: 'private', component: Private },
   { path: '/setup', name: 'setup', component: Setup },
   { path: '/wallet', name: 'wallet', component: Wallet },
-  { path: '/pool/new', name: 'create', component: Create },
+  { path: '/create', name: 'create', component: Create },
   {
     path: '/pool/:id',
     component: Pool,
