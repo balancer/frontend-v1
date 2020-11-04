@@ -9,3 +9,7 @@ export function lsGet(key) {
   const item = localStorage.getItem(`${name}.${key}`);
   return jsonParse(item);
 }
+
+export function lsRemove(key) {
+  localStorage.removeItem(`${name}.${key}`);
+}
