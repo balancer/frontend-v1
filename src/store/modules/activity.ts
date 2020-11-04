@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue';
-import { lsGet, lsSet } from '@/helpers/localStorage';
+import { lsGet, lsRemove, lsSet } from '@/helpers/localStorage';
 import { sendTransaction } from '@/helpers/web3';
 import provider from '@/helpers/provider';
 
@@ -28,6 +28,10 @@ const mutations = {
       to: receipt.to
     });
     lsSet('transactions', state.transactions);
+  },
+  clearTransactions(_state) {
+    Vue.set(_state, 'transactions', {});
+    lsRemove('transactions');
   }
 };
 
@@ -42,7 +46,11 @@ const getters = {
       .sort((a: any, b: any) => b.addedAt - a.addedAt);
   },
   myPendingTransactions: (state, getters) => {
-    return getters.myTransactions.filter(tx => !tx.confirmedAt);
+    const expiresIn = 60 * 60 * 24;
+    const now = Math.round(new Date().getTime() / 1000);
+    return getters.myTransactions.filter(
+      tx => !tx.confirmedAt && tx.addedAt > now - expiresIn
+    );
   }
 };
 
@@ -68,6 +76,9 @@ const actions = {
       });
     });
     return;
+  },
+  async clearTransactions({ commit }) {
+    commit('clearTransactions');
   }
 };
 
