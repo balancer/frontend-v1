@@ -33,16 +33,22 @@
         {{ $t('noPendingTransactions') }}
       </h5>
     </Block>
+    <div v-if="myPendingTransactions.length" class="text-center mb-4">
+      <UiButton @click="clearTransactions" v-text="$t('clearAll')" />
+    </div>
   </UiModal>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   props: ['open'],
   computed: {
     ...mapGetters(['myPendingTransactions'])
+  },
+  methods: {
+    ...mapActions(['clearTransactions'])
   }
 };
 </script>
