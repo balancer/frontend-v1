@@ -16,10 +16,12 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { pageView } from '@/helpers/fathom';
 
 export default {
   watch: {
     $route() {
+      pageView();
       this.hideSidebar();
     }
   },
@@ -27,7 +29,6 @@ export default {
     ...mapActions(['init', 'toggleSidebar', 'hideSidebar'])
   },
   mounted() {
-    // const x = GIT_DESCRIBE;
     this.init();
   }
 };

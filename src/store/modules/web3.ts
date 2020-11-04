@@ -254,7 +254,7 @@ const actions = {
         auth.web3.listAccounts()
       ]);
       const account = accounts.length > 0 ? accounts[0] : null;
-      let name;
+      let name = '';
       if (config.chainId === 1) name = await provider.lookupAddress(account);
       commit('LOAD_PROVIDER_SUCCESS', {
         injectedLoaded: true,
