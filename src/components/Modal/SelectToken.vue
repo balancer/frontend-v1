@@ -23,25 +23,26 @@
             class="p-3 d-flex flex-items-center text-white border-bottom highlight"
           >
             <div class="flex-auto d-flex flex-items-center">
-              <Token :address="i" class="mr-2" />
-              {{ token.name }}
-              <span
-                class="ml-2 text-gray"
-                v-text="_shorten(token.symbol, 12)"
-              />
-              <span
-                class="text-red ml-2"
-                v-if="isDisabled(i)"
-                v-text="$t('badERC20')"
-              />
+              <Token :address="i" size="32" class="mr-3" />
+              <div>
+                <div>{{ token.name }}</div>
+                <div>
+                  <span class="text-gray" v-text="_shorten(token.symbol, 12)" />
+                  <span
+                    class="text-red ml-2"
+                    v-if="isDisabled(i)"
+                    v-text="$t('badERC20')"
+                  />
+                </div>
+              </div>
             </div>
-            <div v-if="token.balance">
-              <span
+            <div v-if="token.balance" class="text-right">
+              <div v-text="_num(token.balance, 'long')" />
+              <div
                 v-if="token.price"
-                v-text="_num(token.value, 'usd')"
-                class="text-gray mr-2"
+                v-text="_num(token.value, 'usd-long')"
+                class="text-gray"
               />
-              <span v-text="_num(token.balance)" />
             </div>
           </a>
         </li>
@@ -114,6 +115,7 @@ export default {
             if (b[1].value) return 1;
             return b[1].balance - a[1].balance;
           })
+          .slice(0, 20)
       );
     }
   },
