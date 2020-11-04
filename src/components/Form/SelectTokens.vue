@@ -51,10 +51,10 @@ export default {
       return Object.fromEntries(
         Object.entries(this.config.tokens)
           .map(token => {
-            token[1].balance = this.ui.balances[token[1].address];
+            token[1].balance = this.app.balances[token[1].address];
             token[1].usdValue = this.getPrice(
               token[1].address,
-              this.ui.balances[token[1].address]
+              this.app.balances[token[1].address]
             );
             return token;
           })

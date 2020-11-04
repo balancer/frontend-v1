@@ -18,8 +18,8 @@
       class="mr-1 text-white"
     >
       <Icon name="bullet" size="16" :style="`color: ${token.color}`" />
-      {{ _num(token.weightPercent / 100, 'percent') }}
       {{ _shorten(token.symbol, 12) }}
+      {{ _num(token.weightPercent / 100, 'percent') }}
     </span>
   </div>
 </template>

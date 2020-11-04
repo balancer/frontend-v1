@@ -1,16 +1,14 @@
 <template>
-  <div id="app" class="overflow-hidden">
-    <UiLoading v-if="ui.loading || !ui.init" class="overlay big" />
+  <div id="app">
+    <UiLoading v-if="app.loading || !app.init" class="overlay big" />
     <div v-else>
       <Topnav />
-      <div
-        class="d-flex flex-row pb-6"
-        :style="ui.sidebarIsOpen && 'max-height: 100vh'"
-      >
-        <router-view id="view" class="flex-auto" />
+      <Notifications />
+      <portal-target name="modal" multiple />
+      <div class="pt-11 pb-6">
+        <router-view id="view" />
       </div>
     </div>
-    <Notifications />
   </div>
 </template>
 
@@ -22,7 +20,10 @@ export default {
   watch: {
     $route() {
       pageView();
-      this.hideSidebar();
+    },
+    'app.modalOpen': function(val) {
+      const el = document.body;
+      el.classList[val ? 'add' : 'remove']('overflow-hidden');
     }
   },
   methods: {
@@ -36,11 +37,6 @@ export default {
 
 <style lang="scss">
 @import './vars';
-
-#view {
-  margin-left: 0;
-  margin-top: 80px;
-}
 
 .shell {
   &.sidebar-is-open {

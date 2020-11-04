@@ -109,10 +109,8 @@
         {{ $t('addToken') }}
       </UiButton>
     </Container>
-    <div class="d-flex flex-items-center px-4 px-md-0 mb-3">
-      <h4 v-text="$t('swapFeePct')" class="flex-auto" />
-    </div>
-    <div class="mb-4">
+    <Container class="mb-3">
+      <h4 v-text="$t('swapFeePct')" class="mb-3" />
       <input
         class="input pool-input text-right"
         :class="isSwapFeeInputValid() ? 'text-white' : 'text-red'"
@@ -124,8 +122,8 @@
         min="0.0001"
         max="10"
       />
-    </div>
-    <div v-if="type === 'SMART_POOL'">
+    </Container>
+    <Container v-if="type === 'SMART_POOL'">
       <FormCrp
         :tokenSymbol="crp.poolTokenSymbol"
         :tokenName="crp.poolTokenName"
@@ -140,39 +138,47 @@
         @change-add-timelock="changeAddTimelock"
         @change-initial-supply="changeInitialSupply"
       />
-    </div>
-    <MessageError v-if="validationError" :text="validationError" class="mt-4" />
-    <MessageSimilarPools v-if="pool" :pool="pool" class="mt-4" />
-    <MessageCheckbox
-      v-if="!validationError && !hasLockedToken"
-      :custom="hasCustomToken"
-      :accepted="checkboxAccept"
-      @toggle="checkboxAccept = !checkboxAccept"
-      class="mt-4"
-    />
-    <UiButton
-      :loading="loading"
-      :disabled="validationError || hasLockedToken || !checkboxAccept"
-      class="button-primary mt-4"
-      @click="confirmModalOpen = true"
-    >
-      {{ $t('create') }}
-    </UiButton>
-    <ModalSelectToken
-      :open="tokenModalOpen"
-      @close="tokenModalOpen = false"
-      @input="changeToken"
-      :not="tokens"
-    />
-    <ModalPoolCreation
-      :open="confirmModalOpen"
-      :padlock="padlock"
-      :tokens="tokens"
-      :amounts="amounts"
-      :weights="weights"
-      @close="confirmModalOpen = false"
-      @create="create"
-    />
+    </Container>
+    <Container>
+      <MessageError
+        v-if="validationError"
+        :text="validationError"
+        class="mt-4"
+      />
+      <MessageSimilarPools v-if="pool" :pool="pool" class="mt-4" />
+      <MessageCheckbox
+        v-if="!validationError && !hasLockedToken"
+        :custom="hasCustomToken"
+        :accepted="checkboxAccept"
+        @toggle="checkboxAccept = !checkboxAccept"
+        class="mt-4"
+      />
+      <UiButton
+        :loading="loading"
+        :disabled="validationError || hasLockedToken || !checkboxAccept"
+        class="button-primary mt-4"
+        @click="confirmModalOpen = true"
+      >
+        {{ $t('create') }}
+      </UiButton>
+    </Container>
+    <portal to="modal">
+      <ModalSelectToken
+        :open="tokenModalOpen"
+        @close="tokenModalOpen = false"
+        @input="changeToken"
+        :not="tokens"
+      />
+      <ModalPoolCreation
+        :open="confirmModalOpen"
+        :padlock="padlock"
+        :tokens="tokens"
+        :amounts="amounts"
+        :weights="weights"
+        @close="confirmModalOpen = false"
+        @create="create"
+      />
+    </portal>
   </Page>
 </template>
 

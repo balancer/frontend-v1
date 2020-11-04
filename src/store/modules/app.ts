@@ -8,8 +8,7 @@ const state = {
   address: '',
   balances: {},
   pools: [],
-  proxy: '',
-  sidebarIsOpen: false
+  modalOpen: false
 };
 
 const mutations = {
@@ -42,8 +41,8 @@ const actions = {
   loading: ({ commit }, payload) => {
     commit('SET', { loading: payload });
   },
-  toggleSidebar: ({ commit }) => {
-    commit('SET', { sidebarIsOpen: !state.sidebarIsOpen });
+  toggleModal: ({ commit }) => {
+    commit('SET', { modalOpen: !state.modalOpen });
   },
   hideSidebar: ({ commit }) => {
     commit('SET', { sidebarIsOpen: false });

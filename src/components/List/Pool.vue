@@ -11,14 +11,13 @@
           class="d-flex flex-items-center mr-2"
         >
           <Icon name="bullet" size="16" :style="`color: ${token.color}`" />
-          {{ _num(token.weightPercent / 100, 'percent-short') }}
           {{ _shorten(token.symbol, 12) }}
+          {{ _num(token.weightPercent / 100, 'percent-short') }}
         </div>
       </div>
     </div>
-    <UiNum
-      :value="pool.swapFee"
-      format="percent"
+    <div
+      v-text="_num(pool.swapFee, 'percent')"
       class="column hide-sm hide-md"
     />
     <div v-text="_num(poolLiquidity, 'usd')" class="column" />

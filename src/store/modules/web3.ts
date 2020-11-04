@@ -19,7 +19,6 @@ if (provider) {
 }
 
 const state = {
-  injectedLoaded: false,
   injectedChainId: null,
   blockNumber: 0,
   account: null,
@@ -33,7 +32,6 @@ const state = {
 
 const mutations = {
   LOGOUT(_state) {
-    Vue.set(_state, 'injectedLoaded', false);
     Vue.set(_state, 'injectedChainId', null);
     Vue.set(_state, 'account', null);
     Vue.set(_state, 'dsProxyAddress', null);
@@ -67,7 +65,6 @@ const mutations = {
     console.debug('LOAD_PROVIDER_REQUEST');
   },
   LOAD_PROVIDER_SUCCESS(_state, payload) {
-    Vue.set(_state, 'injectedLoaded', payload.injectedLoaded);
     Vue.set(_state, 'injectedChainId', payload.injectedChainId);
     Vue.set(_state, 'account', payload.account);
     Vue.set(_state, 'name', payload.name);
@@ -75,7 +72,6 @@ const mutations = {
     console.debug('LOAD_PROVIDER_SUCCESS');
   },
   LOAD_PROVIDER_FAILURE(_state, payload) {
-    Vue.set(_state, 'injectedLoaded', false);
     Vue.set(_state, 'injectedChainId', null);
     Vue.set(_state, 'account', null);
     Vue.set(_state, 'active', false);
@@ -257,7 +253,6 @@ const actions = {
       let name = '';
       if (config.chainId === 1) name = await provider.lookupAddress(account);
       commit('LOAD_PROVIDER_SUCCESS', {
-        injectedLoaded: true,
         injectedChainId: network.chainId,
         account,
         name

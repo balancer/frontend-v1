@@ -1,10 +1,7 @@
 <template>
   <nav id="topnav" class="border-bottom position-fixed width-full">
     <div class="d-flex flex-items-center px-5" style="height: 78px;">
-      <div class="flex-auto d-flex flex-items-center">
-        <a class="d-block d-xl-none text-white" @click="toggleSidebar">
-          <Icon name="menu" size="28" class="mr-3" />
-        </a>
+      <div class="flex-auto d-flex flex-items-center" style="font-size: 16px;">
         <router-link
           :to="{ name: 'home' }"
           class="d-inline-block text-blue d-flex"
@@ -16,21 +13,27 @@
             width="32"
             height="32"
           />
-          <span
-            class="d-inline-block text-white"
-            style="letter-spacing: 1px; font-size: 16px;"
-            v-text="'Balancer'"
-          />
+          <span class="d-inline-block text-white mr-3" v-text="'Balancer'" />
         </router-link>
-        <router-link :to="{ name: 'home' }" class="text-white p-3 ml-2">
+        <router-link :to="{ name: 'home' }" class="text-white py-3 px-2">
           Explore pools
         </router-link>
+        <router-link :to="{ name: 'create' }" class="text-white py-3 px-2">
+          Create a pool
+        </router-link>
+        <a href="https://balancer.exchange" class="text-white py-3 px-2">
+          Exchange
+          <Icon name="external-link" class="ml-1" />
+        </a>
+        <a @click="modalOpen.about = true" class="text-white py-3 px-2">
+          About
+        </a>
       </div>
       <div :key="web3.account">
         <UiButton
           v-if="$auth.isAuthenticated && !wrongNetwork"
           @click="modalOpen.account = true"
-          :loading="loading || ui.authLoading"
+          :loading="loading || app.authLoading"
         >
           <Avatar :address="web3.account" size="16" class="ml-n1 mr-n1" />
           <span v-if="web3.name" v-text="web3.name" class="hide-sm ml-2 pl-1" />
@@ -48,7 +51,7 @@
           {{ $t('wrongNetwork') }}
         </UiButton>
         <UiButton
-          v-if="!$auth.isAuthenticated && !ui.authLoading"
+          v-if="!$auth.isAuthenticated && !app.authLoading"
           @click="modalOpen.account = true"
           :loading="loading"
           class="button-primary"
@@ -69,16 +72,18 @@
         </UiButton>
       </div>
     </div>
-    <ModalAccount
-      :open="modalOpen.account"
-      @close="modalOpen.account = false"
-      @login="handleLogin"
-    />
-    <ModalActivity
-      :open="modalOpen.activity"
-      @close="modalOpen.activity = false"
-      @login="handleLogin"
-    />
+    <portal to="modal">
+      <ModalAccount
+        :open="modalOpen.account"
+        @close="modalOpen.account = false"
+        @login="handleLogin"
+      />
+      <ModalActivity
+        :open="modalOpen.activity"
+        @close="modalOpen.activity = false"
+      />
+      <ModalAbout :open="modalOpen.about" @close="modalOpen.about = false" />
+    </portal>
   </nav>
 </template>
 
@@ -91,7 +96,8 @@ export default {
       loading: false,
       modalOpen: {
         account: false,
-        activity: false
+        activity: false,
+        about: false
       }
     };
   },
@@ -100,12 +106,12 @@ export default {
     wrongNetwork() {
       return (
         this.config.chainId !== this.web3.injectedChainId &&
-        !this.ui.authLoading && !this.loading
+        !this.app.authLoading &&
+        !this.loading
       );
     }
   },
   methods: {
-    ...mapActions(['toggleSidebar']),
     ...mapActions(['login']),
     async handleLogin(connector) {
       this.modalOpen.account = false;
