@@ -21,7 +21,11 @@
         <router-link :to="{ name: 'create' }" class="text-white py-3 px-2">
           Create a pool
         </router-link>
-        <a href="https://balancer.exchange" class="text-white py-3 px-2">
+        <a
+          href="https://balancer.exchange"
+          target="_blank"
+          class="text-white py-3 px-2"
+        >
           Exchange
           <Icon name="external-link" class="ml-1" />
         </a>

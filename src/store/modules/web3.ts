@@ -8,12 +8,13 @@ import store from '@/store';
 import abi from '@/helpers/abi';
 import config from '@/config';
 import provider from '@/helpers/provider';
+import wsProvider from '@/helpers/wsProvider';
 import { multicall } from '@/_balancer/utils';
 
 let auth;
 
-if (provider) {
-  provider.on('block', blockNumber => {
+if (wsProvider) {
+  wsProvider.on('block', blockNumber => {
     store.commit('GET_BLOCK_SUCCESS', blockNumber);
   });
 }
