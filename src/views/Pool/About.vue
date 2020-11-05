@@ -169,6 +169,21 @@
         class="text-white"
       />
     </div>
+    <div class="mb-3">
+      <div v-text="$t('liquidityMiningFactors')" class="mb-2" />
+      <h5
+        v-text="`${$t('feeFactor')}: ${feeFactor.toFixed(4)}`"
+        class="text-white"
+      />
+      <h5
+        v-text="`${$t('ratioFactor')}: ${ratioFactor.toFixed(4)}`"
+        class="text-white"
+      />
+      <h5
+        v-text="`${$t('wrapFactor')}: ${wrapFactor.toFixed(2)}`"
+        class="text-white"
+      />
+    </div>
   </UiTable>
 </template>
 
@@ -177,16 +192,30 @@ import {
   filterObj,
   poolRights,
   MAX,
-  blockNumberToTimestamp
+  blockNumberToTimestamp,
+  bnum
 } from '@/helpers/utils';
+import {
+  getFeeFactor,
+  computeRatioFactor,
+  computeWrapFactor
+} from '@/helpers/miningFactors';
 
 export default {
   props: ['bPool'],
   data() {
     return {
       poolRights,
-      MAX
+      MAX,
+      weights: []
     };
+  },
+  created() {
+    const totalWeight = parseFloat(this.bPool.metadata.totalWeight);
+
+    this.weights = this.bPool.metadata.tokens.map(token =>
+      bnum(parseFloat(token.denormWeight) / totalWeight)
+    );
   },
   computed: {
     rights() {
@@ -206,6 +235,23 @@ export default {
     },
     endTime() {
       return this.blockDate(this.bPool.metadata.endBlock);
+    },
+    feeFactor() {
+      return getFeeFactor(this.bPool.metadata.swapFee);
+    },
+    ratioFactor() {
+      return computeRatioFactor(
+        this.bPool.metadata.tokensList,
+        this.weights,
+        this.config.chainId
+      );
+    },
+    wrapFactor() {
+      return computeWrapFactor(
+        this.bPool.metadata.tokensList,
+        this.weights,
+        this.config.chainId
+      );
     }
   },
   methods: {
