@@ -6,7 +6,13 @@
       style="max-width: 440px;"
     >
       <h5 v-text="$t('poke')" class="mb-3" />
-      <p v-html="$t('pokeWeightsInfo')" class="mb-3" />
+      <p v-html="$t('pokeWeightsEarly')" class="mb-3" v-if="tooEarly" />
+      <p
+        v-html="$t('pokeWeightsOngoing')"
+        class="mb-3"
+        v-else-if="ongoingUpdate"
+      />
+      <p v-html="$t('pokeWeightsGeneral')" class="mb-3" v-else />
       <UiButton
         :disabled="!ongoingUpdate"
         :loading="loading"
@@ -42,7 +48,18 @@ export default {
   },
   computed: {
     ongoingUpdate() {
-      return this.bPool.isCrp() && this.bPool.metadata.startBlock !== '0';
+      return (
+        this.bPool.isCrp() &&
+        this.bPool.metadata.startBlock !== '0' &&
+        this.web3.blockNumber >= this.bPool.metadata.startBlock
+      );
+    },
+    tooEarly() {
+      return (
+        this.bPool.isCrp() &&
+        this.bPool.metadata.startBlock !== '0' &&
+        this.web3.blockNumber < this.bPool.metadata.startBlock
+      );
     }
   },
   methods: {

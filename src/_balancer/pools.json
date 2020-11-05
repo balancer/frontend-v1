@@ -66,5 +66,16 @@
     "logo": true,
     "is_visible": true,
     "is_compatible": true
+  },
+  "0xd485e6a0389a42d75f4b00ece91fc02340b73938": {
+    "chainId": 1,
+    "name": "PieDAO DEFI++",
+    "symbol": "DEFI++",
+    "about": "DEFI++ is a weighted combination of DEFI+L and DEFI+S.",
+    "learn_more": "https://pools.piedao.org/#/pie/0x8d1ce361eb68e9e05573443c407d4a3bed23b033",
+    "is_visible": false,
+    "is_compatible": false,
+    "logo": true,
+    "bptAddress": "0x8d1ce361eb68e9e05573443c407d4a3bed23b033"
   }
 }

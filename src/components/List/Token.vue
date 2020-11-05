@@ -12,7 +12,7 @@
           size="16"
           class="mt-1"
         />
-        {{ token.symbol }}
+        {{ _shorten(token.symbol, 12) }}
       </router-link>
     </div>
     <UiNum :value="token.weightPercent / 1e2" format="percent" class="column" />
