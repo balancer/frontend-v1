@@ -9,7 +9,7 @@ const FEE_FACTOR_K = 0.25;
 const WRAP_FACTOR_HARD = bnum(0.1);
 const WRAP_FACTOR_SOFT = bnum(0.2);
 
-export function getFeeFactor(swapFee) {
+function getFeeFactor(swapFee) {
   const exp = (FEE_FACTOR_K * swapFee * 100) ** 2;
 
   return Math.exp(-exp);
@@ -43,12 +43,7 @@ function getStakingBoostOfPair(
   }
 }
 
-export function computeRatioFactor(
-  tokens,
-  weights,
-  chainId,
-  balMultiplier = bnum(1)
-) {
+function computeRatioFactor(tokens, weights, chainId, balMultiplier = bnum(1)) {
   let brfSum = bnum(0);
   let pairWeightSum = bnum(0);
   const N = weights.length;
@@ -118,7 +113,7 @@ function getWrapFactorOfPair(tokenA, tokenB, chainId) {
   return bnum(1.0);
 }
 
-export function computeWrapFactor(tokens, weights, chainId) {
+function computeWrapFactor(tokens, weights, chainId) {
   let wrapFactorSum = bnum(0);
   let pairWeightSum = bnum(0);
   const N = weights.length;
@@ -139,4 +134,17 @@ export function computeWrapFactor(tokens, weights, chainId) {
   }
 
   return wrapFactorSum.div(pairWeightSum);
+}
+
+export function getFactors(pool, chainId) {
+  const totalWeight = parseFloat(pool.metadata.totalWeight);
+  const weights = pool.metadata.tokens.map(token =>
+    bnum(parseFloat(token.denormWeight) / totalWeight)
+  );
+
+  return {
+    feeFactor: getFeeFactor(pool.metadata.swapFee),
+    ratioFactor: computeRatioFactor(pool.metadata.tokensList, weights, chainId),
+    wrapFactor: computeWrapFactor(pool.metadata.tokensList, weights, chainId)
+  };
 }

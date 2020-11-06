@@ -172,15 +172,15 @@
     <div class="mb-3">
       <div v-text="$t('liquidityMiningFactors')" class="mb-2" />
       <h5
-        v-text="`${$t('feeFactor')}: ${feeFactor.toFixed(4)}`"
+        v-text="`${$t('feeFactor')}: ${factors.feeFactor.toFixed(4)}`"
         class="text-white"
       />
       <h5
-        v-text="`${$t('ratioFactor')}: ${ratioFactor.toFixed(4)}`"
+        v-text="`${$t('ratioFactor')}: ${factors.ratioFactor.toFixed(4)}`"
         class="text-white"
       />
       <h5
-        v-text="`${$t('wrapFactor')}: ${wrapFactor.toFixed(2)}`"
+        v-text="`${$t('wrapFactor')}: ${factors.wrapFactor.toFixed(2)}`"
         class="text-white"
       />
     </div>
@@ -192,32 +192,22 @@ import {
   filterObj,
   poolRights,
   MAX,
-  blockNumberToTimestamp,
-  bnum
+  blockNumberToTimestamp
 } from '@/helpers/utils';
-import {
-  getFeeFactor,
-  computeRatioFactor,
-  computeWrapFactor
-} from '@/helpers/miningFactors';
+import { getFactors } from '@/helpers/miningFactors';
 
 export default {
   props: ['bPool'],
   data() {
     return {
       poolRights,
-      MAX,
-      weights: []
+      MAX
     };
   },
-  created() {
-    const totalWeight = parseFloat(this.bPool.metadata.totalWeight);
-
-    this.weights = this.bPool.metadata.tokens.map(token =>
-      bnum(parseFloat(token.denormWeight) / totalWeight)
-    );
-  },
   computed: {
+    factors() {
+      return getFactors(this.bPool, this.config.chainId);
+    },
     rights() {
       return filterObj(this.bPool.metadata.rights, right => right[1]);
     },
@@ -235,23 +225,6 @@ export default {
     },
     endTime() {
       return this.blockDate(this.bPool.metadata.endBlock);
-    },
-    feeFactor() {
-      return getFeeFactor(this.bPool.metadata.swapFee);
-    },
-    ratioFactor() {
-      return computeRatioFactor(
-        this.bPool.metadata.tokensList,
-        this.weights,
-        this.config.chainId
-      );
-    },
-    wrapFactor() {
-      return computeWrapFactor(
-        this.bPool.metadata.tokensList,
-        this.weights,
-        this.config.chainId
-      );
     }
   },
   methods: {
