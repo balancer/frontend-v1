@@ -19,8 +19,8 @@
       <UiTableTh>
         <div v-text="$t('asset')" class="flex-auto text-left" />
         <div v-text="$t('myBalance')" class="column" />
-        <div v-text="$t('weightsPctSymbol')" class="column" />
-        <div v-text="$t('denormWeight')" class="column-sm hide-sm" />
+        <div v-text="$t('weights')" class="column" />
+        <div v-text="$t('percent')" class="column" />
         <div class="column">
           <a
             @click="togglePadlock"
@@ -57,7 +57,7 @@
             />
           </div>
           <div v-text="getBalance(token)" class="column-ms hide-sm" />
-          <div class="column">
+          <div class="column tooltipped tooltipped-n" :aria-label="currentDenorm(token)">
             <input
               class="input pool-input text-right"
               :class="isWeightInputValid(token) ? 'text-white' : 'text-red'"
@@ -67,9 +67,9 @@
           </div>
           <div class="column-sm hide-sm">
             <div
-              v-text="_num(getDenorm(token))"
-              :class="isDenormValid(token) ? 'text-white' : 'text-red'"
-            />
+              v-text="_num(getPercentage(token))"
+              :class="isPercentValid(token) ? 'text-white' : 'text-red'"
+             />
           </div>
           <div class="column">
             <input
@@ -188,7 +188,7 @@ import {
   poolTypes
 } from '@/helpers/utils';
 import { validateNumberInput, formatError } from '@/helpers/validation';
-import { getMaxTotalWeight, calculateNewWeightsObj } from '@/helpers/weights';
+import { getMaxTotalWeight, getDivisor, getMaxPercentage, getDenorm, isValidDenormValue} from '@/helpers/weights';
 
 // The contract defaults are 90,000 for the weight change duration, and 500 for the add token timelock
 // Since broadcast currently calls the createPool overload that passes in the block time parameters, we
@@ -217,6 +217,7 @@ export default {
       type: 'SHARED_POOL',
       amounts: {},
       weights: {},
+      totalWeight: 100,
       swapFee: '0.15',
       tokens: [],
       loading: false,
@@ -254,15 +255,10 @@ export default {
       if (this.validationError) {
         return;
       }
-      const pctWeights = calculateNewWeightsObj(
-        this.tokens,
-        this.isSharedOrLocked(),
-        false
-      );
       const tokens = this.tokens.map(token => {
         return {
           checksum: token,
-          weightPercent: pctWeights[token]
+          weightPercent: this.getPercentage(token)
         };
       });
       const swapFee = (parseFloat(this.swapFee) / 100).toString();
@@ -297,24 +293,10 @@ export default {
       }
       // Weight validation
       for (const token of this.tokens) {
-        const weight = parseFloat(this.weights[token]);
-        if (
-          weight < this.getMinWeightEntry ||
-          weight > this.getMaxWeightEntry
-        ) {
-          return this.$t('errInvalidWeight', {
-            minWeight: this.getMinWeightEntry,
-            maxWeight: this.getMaxWeightEntry
-          });
+        if (!this.isDenormValid(token)) {
+          return this.$t('errInvalidDenorm', 
+                  {min: getDivisor(this.isSharedOrLocked()), max: getMaxPercentage(this.isSharedOrLocked())});
         }
-      }
-      const totalWeight = this.tokens.reduce((acc, token) => {
-        const weight = parseFloat(this.weights[token]);
-        return acc + weight;
-      }, 0);
-      // Weights are percentages (not denorms), so max value is always 100
-      if (totalWeight != 100) {
-        return this.$t('errInvalidMaxWeight');
       }
       // Amount validation
       for (const token of this.tokens) {
@@ -443,6 +425,8 @@ export default {
     removeToken(tokenAddress) {
       const index = this.tokens.indexOf(tokenAddress);
       this.tokens.splice(index, 1);
+      // Need to recalculate weights if you remove a token!
+      this.tokens.map(token => { this.handleWeightChange(token) });
     },
     changeSymbol(symbol) {
       this.crp.poolTokenSymbol = symbol;
@@ -524,6 +508,11 @@ export default {
       const tokenValue = bnum(this.amounts[tokenAddress]).times(tokenPrice);
       const totalValue = tokenValue.div(this.weights[tokenAddress]);
 
+      this.totalWeight = this.tokens.reduce((acc, token) => {
+        const weight = parseFloat(this.weights[token]);
+        return acc + weight;
+      }, 0);
+
       for (const token of this.tokens) {
         if (token === tokenAddress || !this.padlock) {
           continue;
@@ -546,13 +535,12 @@ export default {
       if (!this.weights[tokenAddress] || isNaN(this.weights[tokenAddress])) {
         return false;
       }
+      // They can enter *any* positive number - system will figure out percentages, then denorms
       const weight = bnum(this.weights[tokenAddress]);
-      if (
-        weight.lt(this.getMinWeightEntry()) ||
-        weight.gt(this.getMaxWeightEntry())
-      ) {
+      if (weight.lte(0)) {
         return false;
       }
+
       return true;
     },
     isAmountInputValid(tokenAddress) {
@@ -613,27 +601,21 @@ export default {
       // we can safely allow the full range of denorm weights
       return this.type === 'SHARED_POOL' || !this.crp.rights.canChangeWeights;
     },
-    getMultiplier() {
-      // "Resolution" of the pool - 2% (for shared/locked), or 4% (smart with weight updates)
-      return 100 / getMaxTotalWeight(this.isSharedOrLocked());
+    getPercentage(token) {
+      return this.weights[token] / this.totalWeight * 100;
     },
-    getMinWeightEntry() {
-      // Minimum individual weight entry is the "resolution" of the pool (2% or 4%)
-      return this.getMultiplier();
-    },
-    getMaxWeightEntry() {
-      // Maximum individual weight entry is 100 - the "resolution" (98% or 96%)
-      return 100 - this.getMultiplier();
-    },
-    getDenorm(token) {
-      // Convert the percentage weight (in weights array) to a denorm; divide by resolution
-      return this.weights[token] / this.getMultiplier();
+    currentDenorm(token) {
+      return getDenorm(this.getPercentage(token), this.isSharedOrLocked()).toFixed(3);
     },
     isDenormValid(token) {
-      const value = this.getDenorm(token);
+      const denorm = getDenorm(this.getPercentage(token), this.isSharedOrLocked());
 
-      // Denorm sent to the contract must be 1-49
-      return value < 1 || value > 49 ? false : true;
+      return isValidDenormValue(denorm);
+    },
+    isPercentValid(token) {
+      const percentage = this.getPercentage(token);
+
+      return percentage >= getDivisor(this.isSharedOrLocked()) && percentage <= getMaxPercentage(this.isSharedOrLocked());
     }
   }
 };

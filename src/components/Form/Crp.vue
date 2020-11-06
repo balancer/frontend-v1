@@ -71,6 +71,10 @@
             @change="$emit('change-weight-period', $event.target.value)"
             placeholder="10"
           />
+            <div class="d-flex flex-items-center p-4 warning-box">
+              <Icon name="info" size="22" class="mr-4" />
+              {{ `${$t('percentRange', {min: divisor, max: maxPercentage})}` }}
+            </div>
         </div>
         <UiCheckbox
           :checked="rights.canAddRemoveTokens"
@@ -108,6 +112,8 @@
 </template>
 
 <script>
+import { getMaxTotalWeight, getMaxPercentage } from '@/helpers/weights';
+
 export default {
   props: [
     'tokenSymbol',
@@ -116,7 +122,20 @@ export default {
     'minimumWeightChangeBlockPeriod',
     'addTokenTimeLockInBlocks',
     'initialSupply'
-  ]
+  ],
+  computed: {
+    divisor() {
+      return 100 / getMaxTotalWeight(this.isSharedOrLocked());
+    },
+    maxPercentage() {
+      return getMaxPercentage(this.isSharedOrLocked());
+    }
+  },
+  methods: {
+    isSharedOrLocked() {
+      return !this.rights.canChangeWeights;
+    }
+  }
 };
 </script>
 
