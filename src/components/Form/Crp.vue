@@ -71,10 +71,10 @@
             @change="$emit('change-weight-period', $event.target.value)"
             placeholder="10"
           />
-            <div class="d-flex flex-items-center p-4 warning-box">
-              <Icon name="info" size="22" class="mr-4" />
-              {{ `${$t('percentRange', {min: divisor, max: maxPercentage})}` }}
-            </div>
+          <div class="d-flex flex-items-center p-4 warning-box">
+            <Icon name="info" size="22" class="mr-4" />
+            {{ `${$t('percentRange', { min: divisor, max: maxPercentage })}` }}
+          </div>
         </div>
         <UiCheckbox
           :checked="rights.canAddRemoveTokens"

@@ -15,20 +15,24 @@
           <div class="flex-auto text-left">
             {{ _ticker(token.checksum) }}
           </div>
-          <div class="column-sm text-right tooltipped tooltipped-n" :aria-label="currentDenorm(weights[i])">
+          <div
+            class="column-sm text-right tooltipped tooltipped-n"
+            :aria-label="currentDenorm(weights[i])"
+          >
             <input
               v-model="weights[i]"
               class="input text-right ml-4"
               placeholder="50"
-              :class="isWeightInputValid(weights[i]) ? 'text-white' : 'text-red'"
+              :class="
+                isWeightInputValid(weights[i]) ? 'text-white' : 'text-red'
+              "
             />
           </div>
           <div class="column text-right">
             {{
               _num(
                 (
-                  parseFloat(pool.tokens[i].denormWeight) /
-                  oldTotalWeight
+                  parseFloat(pool.tokens[i].denormWeight) / oldTotalWeight
                 ).toFixed(4),
                 'percent'
               )
@@ -87,7 +91,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { blockNumberToTimestamp, bnum } from '@/helpers/utils';
-import { getDenorm, isValidDenormValue} from '@/helpers/weights';
+import { getDenorm, isValidDenormValue } from '@/helpers/weights';
 
 const BLOCK_BUFFER = 100;
 
@@ -106,8 +110,8 @@ export default {
     async open(value) {
       if (value) {
         this.loading = false;
-        this.weights = this.pool.tokens.map(
-          token => parseFloat(token.denormWeight)
+        this.weights = this.pool.tokens.map(token =>
+          parseFloat(token.denormWeight)
         );
         this.currentTime = Date.now();
         this.startBlock = this.web3.blockNumber + BLOCK_BUFFER;
@@ -138,13 +142,16 @@ export default {
       let correctWeight = true;
 
       for (let i = 0; i < this.pool.tokens.length; i++) {
-        if (!isValidDenormValue(getDenorm(this.weights[i] / totalDenorm * 100, false))) {
+        if (
+          !isValidDenormValue(
+            getDenorm((this.weights[i] / totalDenorm) * 100, false)
+          )
+        ) {
           correctWeight = false;
           break;
         }
       }
 
-      
       return correctBlocks && correctWeight;
     }
   },
@@ -157,7 +164,10 @@ export default {
 
       for (let i = 0; i < this.pool.tokens.length; i++) {
         const token = this.pool.tokens[i];
-        newWeights[token.checksum] = getDenorm(this.weights[i] / totalWeight * 100, false);
+        newWeights[token.checksum] = getDenorm(
+          (this.weights[i] / totalWeight) * 100,
+          false
+        );
       }
       await this.updateWeightsGradually({
         poolAddress: this.pool.controller,
@@ -192,7 +202,7 @@ export default {
     currentDenorm(weight) {
       const total = this.weights.reduce((a, b) => a + parseFloat(b), 0);
 
-      return getDenorm(weight / total * 100, false).toFixed(3);
+      return getDenorm((weight / total) * 100, false).toFixed(3);
     }
   }
 };

@@ -57,7 +57,10 @@
             />
           </div>
           <div v-text="getBalance(token)" class="column-ms hide-sm" />
-          <div class="column tooltipped tooltipped-n" :aria-label="currentDenorm(token)">
+          <div
+            class="column tooltipped tooltipped-n"
+            :aria-label="currentDenorm(token)"
+          >
             <input
               class="input pool-input text-right"
               :class="isWeightInputValid(token) ? 'text-white' : 'text-red'"
@@ -69,7 +72,7 @@
             <div
               v-text="_num(getPercentage(token))"
               :class="isPercentValid(token) ? 'text-white' : 'text-red'"
-             />
+            />
           </div>
           <div class="column">
             <input
@@ -188,7 +191,12 @@ import {
   poolTypes
 } from '@/helpers/utils';
 import { validateNumberInput, formatError } from '@/helpers/validation';
-import { getMaxTotalWeight, getDivisor, getMaxPercentage, getDenorm, isValidDenormValue} from '@/helpers/weights';
+import {
+  getDivisor,
+  getMaxPercentage,
+  getDenorm,
+  isValidDenormValue
+} from '@/helpers/weights';
 
 // The contract defaults are 90,000 for the weight change duration, and 500 for the add token timelock
 // Since broadcast currently calls the createPool overload that passes in the block time parameters, we
@@ -294,8 +302,10 @@ export default {
       // Weight validation
       for (const token of this.tokens) {
         if (!this.isDenormValid(token)) {
-          return this.$t('errInvalidDenorm', 
-                  {min: getDivisor(this.isSharedOrLocked()), max: getMaxPercentage(this.isSharedOrLocked())});
+          return this.$t('errInvalidDenorm', {
+            min: getDivisor(this.isSharedOrLocked()),
+            max: getMaxPercentage(this.isSharedOrLocked())
+          });
         }
       }
       // Amount validation
@@ -426,7 +436,9 @@ export default {
       const index = this.tokens.indexOf(tokenAddress);
       this.tokens.splice(index, 1);
       // Need to recalculate weights if you remove a token!
-      this.tokens.map(token => { this.handleWeightChange(token) });
+      this.tokens.map(token => {
+        this.handleWeightChange(token);
+      });
     },
     changeSymbol(symbol) {
       this.crp.poolTokenSymbol = symbol;
@@ -602,20 +614,29 @@ export default {
       return this.type === 'SHARED_POOL' || !this.crp.rights.canChangeWeights;
     },
     getPercentage(token) {
-      return this.weights[token] / this.totalWeight * 100;
+      return (this.weights[token] / this.totalWeight) * 100;
     },
     currentDenorm(token) {
-      return getDenorm(this.getPercentage(token), this.isSharedOrLocked()).toFixed(3);
+      return getDenorm(
+        this.getPercentage(token),
+        this.isSharedOrLocked()
+      ).toFixed(3);
     },
     isDenormValid(token) {
-      const denorm = getDenorm(this.getPercentage(token), this.isSharedOrLocked());
+      const denorm = getDenorm(
+        this.getPercentage(token),
+        this.isSharedOrLocked()
+      );
 
       return isValidDenormValue(denorm);
     },
     isPercentValid(token) {
       const percentage = this.getPercentage(token);
 
-      return percentage >= getDivisor(this.isSharedOrLocked()) && percentage <= getMaxPercentage(this.isSharedOrLocked());
+      return (
+        percentage >= getDivisor(this.isSharedOrLocked()) &&
+        percentage <= getMaxPercentage(this.isSharedOrLocked())
+      );
     }
   }
 };
