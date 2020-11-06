@@ -121,9 +121,6 @@ export default {
       'loadPricesByAddress'
     ]),
     openAddLiquidityModal() {
-      if (!this.web3.dsProxyAddress) {
-        return this.$router.push({ name: 'setup' });
-      }
       this.modalAddLiquidityOpen = true;
     },
     openRemoveLiquidityModal() {
@@ -150,10 +147,7 @@ export default {
             ...this.pool.tokensList,
             getAddress(this.bPool.getBptAddress())
           ]),
-          this.getAllowances({
-            tokens: this.pool.tokensList,
-            spender: this.web3.dsProxyAddress
-          }),
+          this.getAllowances(this.pool.tokensList),
           this.getPoolBalances({
             poolAddress: this.id,
             tokens: this.pool.tokensList

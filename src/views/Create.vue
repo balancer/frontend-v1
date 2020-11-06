@@ -7,7 +7,7 @@
         :value="type"
         :options="poolTypes"
         :aria-label="
-          $t(type == 'SMART_POOL' ? 'createSmartTip' : 'createSharedTip')
+          $t(type === 'SMART_POOL' ? 'createSmartTip' : 'createSharedTip')
         "
         @select="handleSelectType"
       />
@@ -50,11 +50,6 @@
             >
               <Icon name="arrow-down" />
             </a>
-            <ButtonUnlock
-              class="button-primary ml-2"
-              :tokenAddress="token"
-              :amount="amounts[token]"
-            />
           </div>
           <div v-text="getBalance(token)" class="column-ms hide-sm" />
           <div class="column">
@@ -140,20 +135,23 @@
     <MessageError v-if="validationError" :text="validationError" class="mt-4" />
     <MessageSimilarPools v-if="pool" :pool="pool" class="mt-4" />
     <MessageCheckbox
-      v-if="!validationError && !hasLockedToken"
+      v-if="!validationError"
       :custom="hasCustomToken"
       :accepted="checkboxAccept"
       @toggle="checkboxAccept = !checkboxAccept"
       class="mt-4"
     />
-    <UiButton
+    <Button
+      :requireLogin="true"
+      :requireProxy="true"
+      :requireApprovals="requiredApprovals"
       :loading="loading"
-      :disabled="validationError || hasLockedToken || !checkboxAccept"
+      :disabled="validationError || !checkboxAccept"
+      @submit="confirmModalOpen = true"
       class="button-primary mt-4"
-      @click="confirmModalOpen = true"
     >
       {{ $t('create') }}
-    </UiButton>
+    </Button>
     <ModalSelectToken
       :open="tokenModalOpen"
       @close="tokenModalOpen = false"
@@ -181,7 +179,6 @@ import {
   normalizeBalance,
   denormalizeBalance,
   getTokenBySymbol,
-  isLocked,
   poolTypes
 } from '@/helpers/utils';
 import { validateNumberInput, formatError } from '@/helpers/validation';
@@ -232,9 +229,6 @@ export default {
     };
   },
   created() {
-    if (!this.web3.dsProxyAddress) {
-      return this.$router.push({ name: 'setup' });
-    }
     const dai = getTokenBySymbol('DAI').address;
     const usdc = getTokenBySymbol('USDC').address;
     this.tokens = [dai, usdc];
@@ -372,21 +366,10 @@ export default {
       }
       return undefined;
     },
-    hasLockedToken() {
-      for (const token of this.tokens) {
-        if (
-          isLocked(
-            this.web3.allowances,
-            token,
-            this.web3.dsProxyAddress,
-            this.amounts[token],
-            this.web3.tokenMetadata[token].decimals
-          )
-        ) {
-          return true;
-        }
-      }
-      return false;
+    requiredApprovals() {
+      return Object.fromEntries(
+        this.tokens.map(token => [token, this.amounts[token]])
+      );
     },
     hasCustomToken() {
       for (const token of this.tokens) {

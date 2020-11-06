@@ -4,7 +4,6 @@ import Home from '@/views/Home.vue';
 import Explore from '@/views/Explore.vue';
 import Smart from '@/views/Smart.vue';
 import Private from '@/views/Private.vue';
-import Setup from '@/views/Setup.vue';
 import Wallet from '@/views/Wallet.vue';
 import Create from '@/views/Create.vue';
 import Pool from '@/views/Pool.vue';
@@ -22,7 +21,6 @@ const routes: Array<RouteConfig> = [
   { path: '/explore', name: 'explore', component: Explore },
   { path: '/smart', name: 'smart', component: Smart },
   { path: '/private', name: 'private', component: Private },
-  { path: '/setup', name: 'setup', component: Setup },
   { path: '/wallet', name: 'wallet', component: Wallet },
   { path: '/pool/new', name: 'create', component: Create },
   {

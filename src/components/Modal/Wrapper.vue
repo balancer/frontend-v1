@@ -55,17 +55,22 @@
         />
       </div>
       <template slot="footer">
-        <UiButton @click="$emit('close')" type="button" class="mx-1">
-          {{ $t('cancel') }}
-        </UiButton>
-        <UiButton
-          :disabled="loading || !amount || !isValid"
-          :loading="loading"
-          type="submit"
-          class="button-primary mx-1"
-        >
-          {{ $t('confirm') }}
-        </UiButton>
+        <div class="col-6 float-left pr-2">
+          <UiButton @click="$emit('close')" type="button" class="width-full">
+            {{ $t('cancel') }}
+          </UiButton>
+        </div>
+        <div class="col-6 float-left pl-2">
+          <UiButton
+            :requireLogin="true"
+            :disabled="loading || !amount || !isValid"
+            :loading="loading"
+            type="submit"
+            class="button-primary width-full"
+          >
+            {{ $t('confirm') }}
+          </UiButton>
+        </div>
       </template>
     </UiModalForm>
   </UiModal>

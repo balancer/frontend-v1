@@ -274,7 +274,7 @@ const actions = {
     await dispatch('getProxy');
     await Promise.all([
       dispatch('getBalances', tokens),
-      dispatch('getAllowances', { tokens, spender: state.dsProxyAddress }),
+      dispatch('getAllowances', tokens),
       dispatch('getUserPoolShares')
     ]);
   },
@@ -363,8 +363,9 @@ const actions = {
       return Promise.reject();
     }
   },
-  getAllowances: async ({ commit }, { tokens, spender }) => {
+  getAllowances: async ({ commit }, tokens) => {
     commit('GET_ALLOWANCES_REQUEST');
+    const spender: any = state.dsProxyAddress;
     if (!spender) return;
     const address = state.account;
     const promises: any = [];
