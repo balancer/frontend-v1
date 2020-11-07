@@ -54,7 +54,23 @@
         />
       </div>
     </div>
-
+    <div v-if="bPool.isCrp() && lbpData.isLbpPool">
+      <h5
+        v-text="
+          `${$t('currentPrice', { token: lbpData.projectToken })}: ${_num(
+            lbpData.lbpPrice,
+            'usd'
+          )}`
+        "
+        format="currency"
+        class="text-white"
+      />
+      <br />
+      <div v-infinite-scroll="loadMore" class="overflow-hidden" />
+      <div v-if="ongoingUpdate && swaps.length > 0">
+        <PriceChart :bPool="bPool" :swaps="swaps" />
+      </div>
+    </div>
     <div v-if="rights.canChangeWeights" class="mb-3">
       <div v-text="$t('minimumUpdatePeriod')" class="mb-2" />
       <h5
@@ -179,13 +195,17 @@ import {
   MAX,
   blockNumberToTimestamp
 } from '@/helpers/utils';
+import { mapActions } from 'vuex';
+import { getLbpData } from '@/helpers/lbpData';
 
 export default {
-  props: ['bPool'],
+  props: ['bPool', 'pool'],
   data() {
     return {
       poolRights,
-      MAX
+      MAX,
+      page: 0,
+      swaps: []
     };
   },
   computed: {
@@ -194,6 +214,9 @@ export default {
     },
     ongoingUpdate() {
       return this.bPool.isCrp() && this.bPool.metadata.startBlock !== '0';
+    },
+    lbpData() {
+      return getLbpData(this.bPool, this.config.chainId);
     },
     updateFinished() {
       return (
@@ -209,6 +232,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['getLbpSwaps']),
     blockDate(block) {
       const blockTimestamp = blockNumberToTimestamp(
         Date.now(),
@@ -221,6 +245,22 @@ export default {
         hour: '2-digit',
         minute: '2-digit'
       });
+    },
+    async loadMore() {
+      if (this.swaps.length < this.page * 100) return;
+
+      this.loading = true;
+      this.page++;
+      const page = this.page;
+      let query = {
+        where: {
+          poolAddress: this.pool.id.toLowerCase()
+        }
+      };
+      query = { ...query, page };
+      const swaps = await this.getLbpSwaps(query);
+      this.swaps = this.swaps.concat(swaps);
+      this.loading = false;
     }
   }
 };

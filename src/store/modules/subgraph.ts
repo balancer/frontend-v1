@@ -161,6 +161,35 @@ const actions = {
       commit('GET_MY_POOLS_SHARES_FAILURE', e);
     }
   },
+  getLbpSwaps: async ({ commit }, payload) => {
+    commit('GET_POOLS_LBP_SWAPS_REQUEST');
+    try {
+      const {
+        first = 100,
+        page = 1,
+        orderBy = 'timestamp',
+        orderDirection = 'asc',
+        where = {}
+      } = payload;
+      const skip = (page - 1) * first;
+      const query = {
+        swaps: {
+          __args: {
+            where,
+            first,
+            skip,
+            orderBy,
+            orderDirection
+          }
+        }
+      };
+      const { swaps } = await request('getPoolSwaps', query);
+      commit('GET_POOLS_LBP_SWAPS_SUCCESS');
+      return swaps;
+    } catch (e) {
+      commit('GET_POOLS_LBP_SWAPS_FAILURE', e);
+    }
+  },
   getPoolSwaps: async ({ commit }, payload) => {
     commit('GET_POOLS_SWAPS_REQUEST');
     try {
