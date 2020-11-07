@@ -185,6 +185,21 @@
         class="text-white"
       />
     </div>
+    <div class="mb-3">
+      <div v-text="$t('liquidityMiningFactors')" class="mb-2" />
+      <h5
+        v-text="`${$t('feeFactor')}: ${factors.feeFactor.toFixed(4)}`"
+        class="text-white"
+      />
+      <h5
+        v-text="`${$t('ratioFactor')}: ${factors.ratioFactor.toFixed(4)}`"
+        class="text-white"
+      />
+      <h5
+        v-text="`${$t('wrapFactor')}: ${factors.wrapFactor.toFixed(2)}`"
+        class="text-white"
+      />
+    </div>
   </UiTable>
 </template>
 
@@ -197,6 +212,7 @@ import {
 } from '@/helpers/utils';
 import { mapActions } from 'vuex';
 import { getLbpData } from '@/helpers/lbpData';
+import { getFactors } from '@/helpers/miningFactors';
 
 export default {
   props: ['bPool', 'pool'],
@@ -209,6 +225,9 @@ export default {
     };
   },
   computed: {
+    factors() {
+      return getFactors(this.bPool, this.config.chainId);
+    },
     rights() {
       return filterObj(this.bPool.metadata.rights, right => right[1]);
     },
