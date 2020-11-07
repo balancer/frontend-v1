@@ -92,6 +92,7 @@
     "explorePools": "Explore pools",
     "failureOops": "Oops, something went wrong",
     "fee": "fee",
+    "feeFactor": "Fee factor",
     "feeReturns": "Fee returns",
     "filterByAsset": "Filter by asset",
     "fromPool": "from the pool?",
@@ -106,6 +107,7 @@
     "liquidity": "Liquidity",
     "liquidityFail": "Adding liquidity might fail with max balance if a trade occurs before the transaction is mined. Use high gas price or",
     "liquidityIncurs": "liquidity will incur",
+    "liquidityMiningFactors": "Liquidity mining factors",
     "logout": "Log out",
     "lowerAmounts": "lower amounts",
     "manage": "Manage",
@@ -153,6 +155,7 @@
     "price": "Price",
     "privatePools": "Private pools",
     "publicSwap": "Public swap",
+    "ratioFactor": "Ratio factor",
     "receive": "Receive",
     "remove": "Remove",
     "removeLiquidity": "Remove liquidity",
@@ -241,6 +244,7 @@
     "withdraw": "Withdraw",
     "wrap": "Wrap",
     "wrapEthToWeth": "Change ETH to wETH",
+    "wrapFactor": "Wrap factor",
     "wrapWethToEth": "Change wETH to ETH",
     "wrongNetwork": "Wrong network"
 }
