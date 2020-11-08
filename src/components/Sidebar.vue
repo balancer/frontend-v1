@@ -54,7 +54,9 @@
         </a>
       </div>
     </nav>
-    <ModalAbout :open="modalOpen" @close="modalOpen = false" />
+    <portal to="modal">
+      <ModalAbout :open="modalOpen" @close="modalOpen = false" />
+    </portal>
   </div>
 </template>
 

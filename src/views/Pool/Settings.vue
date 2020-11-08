@@ -105,57 +105,58 @@
       <label v-text="$t('controller')" class="d-block mb-2" />
       <h5 v-text="pool.crpController" class="text-white" />
     </div>
-
     <MessageError
       v-if="this.transactionReverted"
       :text="$t('txReverted')"
       class="mt-4"
     />
-    <ModalEditTokens
-      :pool="bPool"
-      :open="modalOpen.tokens"
-      @close="closeModal('tokens')"
-    />
-    <ModalEditPublicSwap
-      :pool="pool"
-      :value="pool.publicSwap"
-      :open="modalOpen.publicSwap"
-      @close="closeModal('publicSwap')"
-    />
-    <ModalEditSwapFee
-      :pool="pool"
-      :value="pool.swapFee * 1e2"
-      :open="modalOpen.swapFee"
-      @close="closeModal('swapFee')"
-    />
-    <ModalEditWeights
-      :pool="pool"
-      :open="modalOpen.weights"
-      @close="modalOpen.weights = false"
-    />
-    <ModalEditWeightsGradually
-      :bPool="bPool"
-      :pool="pool"
-      :open="modalOpen.gradualWeights"
-      @close="modalOpen.gradualWeights = false"
-    />
-    <ModalEditController
-      :value="pool.crpController"
-      :pool="pool"
-      :open="modalOpen.controller"
-      @close="closeModal('controller')"
-    />
-    <ModalEditCap
-      :value="pool.bspCap"
-      :pool="pool"
-      :open="modalOpen.cap"
-      @close="closeModal('cap')"
-    />
-    <ModalManageWhitelist
-      :pool="pool"
-      :open="modalOpen.manageWhitelist"
-      @close="modalOpen.manageWhitelist = false"
-    />
+    <portal to="modal">
+      <ModalEditTokens
+        :pool="bPool"
+        :open="modalOpen.tokens"
+        @close="closeModal('tokens')"
+      />
+      <ModalEditPublicSwap
+        :pool="pool"
+        :value="pool.publicSwap"
+        :open="modalOpen.publicSwap"
+        @close="closeModal('publicSwap')"
+      />
+      <ModalEditSwapFee
+        :pool="pool"
+        :value="pool.swapFee * 1e2"
+        :open="modalOpen.swapFee"
+        @close="closeModal('swapFee')"
+      />
+      <ModalEditWeights
+        :pool="pool"
+        :open="modalOpen.weights"
+        @close="modalOpen.weights = false"
+      />
+      <ModalEditWeightsGradually
+        :bPool="bPool"
+        :pool="pool"
+        :open="modalOpen.gradualWeights"
+        @close="modalOpen.gradualWeights = false"
+      />
+      <ModalEditController
+        :value="pool.crpController"
+        :pool="pool"
+        :open="modalOpen.controller"
+        @close="closeModal('controller')"
+      />
+      <ModalEditCap
+        :value="pool.bspCap"
+        :pool="pool"
+        :open="modalOpen.cap"
+        @close="closeModal('cap')"
+      />
+      <ModalManageWhitelist
+        :pool="pool"
+        :open="modalOpen.manageWhitelist"
+        @close="modalOpen.manageWhitelist = false"
+      />
+    </portal>
   </div>
 </template>
 

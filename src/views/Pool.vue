@@ -38,25 +38,26 @@
         @reload="loadPool"
       />
     </div>
-    <ModalAddLiquidity
-      :pool="pool"
-      :bPool="bPool"
-      :open="modalAddLiquidityOpen"
-      @close="modalAddLiquidityOpen = false"
-      @reload="loadPool"
-    />
-    <ModalRemoveLiquidity
-      :pool="pool"
-      :bPool="bPool"
-      :open="modalRemoveLiquidityOpen"
-      @close="modalRemoveLiquidityOpen = false"
-      @reload="loadPool"
-    />
-    <ModalCustomToken
-      v-if="hasCustomToken && !bPool.isWhitelisted()"
-      :open="modalCustomTokenOpen"
-      @close="modalCustomTokenOpen = false"
-    />
+    <portal to="modal">
+      <ModalAddLiquidity
+        :pool="pool"
+        :bPool="bPool"
+        :open="modalAddLiquidityOpen"
+        @close="modalAddLiquidityOpen = false"
+        @reload="loadPool"
+      />
+      <ModalRemoveLiquidity
+        :pool="pool"
+        :bPool="bPool"
+        :open="modalRemoveLiquidityOpen"
+        @close="modalRemoveLiquidityOpen = false"
+        @reload="loadPool"
+      />
+      <ModalCustomToken
+        :open="modalCustomTokenOpen"
+        @close="modalCustomTokenOpen = false"
+      />
+    </portal>
   </Page>
 </template>
 
@@ -76,7 +77,7 @@ export default {
       loading: false,
       modalAddLiquidityOpen: false,
       modalRemoveLiquidityOpen: false,
-      modalCustomTokenOpen: true
+      modalCustomTokenOpen: false
     };
   },
   watch: {
@@ -181,6 +182,8 @@ export default {
     this.loading = true;
     await this.loadPool();
     this.loading = false;
+    if (this.hasCustomToken && !this.bPool.isWhitelisted())
+      this.modalCustomTokenOpen = true;
   }
 };
 </script>
