@@ -121,6 +121,7 @@ export default {
     etherLeft() {
       return (
         this.currentSide === 2 ||
+        this.balance.isZero() ||
         !this.balance.minus(GAS_BUFFER_WARNING).lt(this.amount)
       );
     }
