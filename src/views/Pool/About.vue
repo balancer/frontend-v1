@@ -66,10 +66,6 @@
         class="text-white"
       />
       <br />
-      <div v-infinite-scroll="loadMore" class="overflow-hidden" />
-      <div v-if="ongoingUpdate && swaps.length > 0">
-        <PriceChart :bPool="bPool" :swaps="swaps" />
-      </div>
     </div>
     <div v-if="rights.canChangeWeights" class="mb-3">
       <div v-text="$t('minimumUpdatePeriod')" class="mb-2" />
@@ -235,7 +231,7 @@ export default {
       return this.bPool.isCrp() && this.bPool.metadata.startBlock !== '0';
     },
     lbpData() {
-      return getLbpData(this.bPool, this.config.chainId);
+      return getLbpData(this.pool, this.config.chainId);
     },
     updateFinished() {
       return (
@@ -264,22 +260,6 @@ export default {
         hour: '2-digit',
         minute: '2-digit'
       });
-    },
-    async loadMore() {
-      if (this.swaps.length < this.page * 100) return;
-
-      this.loading = true;
-      this.page++;
-      const page = this.page;
-      let query = {
-        where: {
-          poolAddress: this.pool.id.toLowerCase()
-        }
-      };
-      query = { ...query, page };
-      const swaps = await this.getLbpSwaps(query);
-      this.swaps = this.swaps.concat(swaps);
-      this.loading = false;
     }
   }
 };

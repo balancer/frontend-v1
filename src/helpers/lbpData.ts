@@ -16,7 +16,7 @@ const reserveCurrencies = {
 
 export function swapPrice(pool, chainId, swap) {
   const reserves = new Set(reserveCurrencies[chainId]);
-  const poolTokens = new Set(pool.metadata.tokensList);
+  const poolTokens = new Set(pool.tokensList);
 
   const intersection = new Set([...poolTokens].filter(x => reserves.has(x)));
 
@@ -32,7 +32,7 @@ export function swapPrice(pool, chainId, swap) {
 
 export function getLbpData(pool, chainId) {
   const reserves = new Set(reserveCurrencies[chainId]);
-  const poolTokens = new Set(pool.metadata.tokensList);
+  const poolTokens = new Set(pool.tokensList);
 
   let projectToken;
   let projectIdx;
@@ -45,12 +45,11 @@ export function getLbpData(pool, chainId) {
   const difference = new Set([...poolTokens].filter(x => !reserves.has(x)));
 
   // An LB Pool has to have two tokens, only one of which is a reserve token
-  const lbpPoolFlag =
-    pool.metadata.tokensList.length === 2 && intersection.size === 1;
+  const lbpPoolFlag = pool.tokensList.length === 2 && intersection.size === 1;
   if (lbpPoolFlag) {
     projectToken = difference.values().next().value;
 
-    if (pool.metadata.tokens[0].checksum === projectToken) {
+    if (pool.tokens[0].checksum === projectToken) {
       projectIdx = 0;
       reserveIdx = 1;
     } else {
@@ -65,12 +64,12 @@ export function getLbpData(pool, chainId) {
     // tokenIn is reserve; token out is project
     isLbpPool: lbpPoolFlag,
     lbpPrice: calcSpotPrice(
-      bnum(pool.metadata.tokens[reserveIdx].balance),
-      bnum(pool.metadata.tokens[reserveIdx].denormWeight),
-      bnum(pool.metadata.tokens[projectIdx].balance),
-      bnum(pool.metadata.tokens[projectIdx].denormWeight),
-      bnum(pool.metadata.swapFee * 1e18)
+      bnum(pool.tokens[reserveIdx].balance),
+      bnum(pool.tokens[reserveIdx].denormWeight),
+      bnum(pool.tokens[projectIdx].balance),
+      bnum(pool.tokens[projectIdx].denormWeight),
+      bnum(pool.swapFee * 1e18)
     ).div(1e18),
-    projectToken: pool.metadata.tokens[projectIdx].symbol
+    projectToken: pool.tokens[projectIdx].symbol
   };
 }

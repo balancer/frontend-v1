@@ -44,6 +44,15 @@ const mutations = {
   GET_POOLS_SWAPS_FAILURE(_state, payload) {
     console.debug('GET_POOLS_SWAPS_FAILURE', payload);
   },
+  GET_POOLS_LBP_SWAPS_REQUEST() {
+    console.debug('GET_POOLS_LBP_SWAPS_REQUEST');
+  },
+  GET_POOLS_LBP_SWAPS_SUCCESS() {
+    console.debug('GET_POOLS_LBP_SWAPS_SUCCESS');
+  },
+  GET_POOLS_LBP_SWAPS_FAILURE(_state, payload) {
+    console.debug('GET_POOLS_LBP_SWAPS_FAILURE', payload);
+  },
   GET_POOLS_SHARES_REQUEST() {
     console.debug('GET_POOLS_SHARES_REQUEST');
   },
