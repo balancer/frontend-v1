@@ -29,7 +29,7 @@ import * as TV from 'lightweight-charts';
 
 const items = [
   {
-    name: 'Price History',
+    name: 'priceHistory',
     id: 'PRICE'
   }
 ];
@@ -82,14 +82,12 @@ export default {
       const data = [];
       for (let i = 0; i < this.swaps.length; i++) {
         const swap = this.swaps[i];
-        const date = new Date(swap.timestamp * 1e3);
-
+ 
         data.push({
-          time: date.toISOString(),
+          time: swap.timestamp * 1e3,
           value: swapPrice(this.bPool, this.config.chainId, swap)
         });
       }
-
       return data;
     }
   },
@@ -117,6 +115,7 @@ export default {
       const color = '#ffffff';
       if (this.activeTab === 'PRICE') {
         this.series = this.chart.addAreaSeries({
+          color: color,
           lineColor: color,
           topColor: `${color}ff`,
           bottomColor: `${color}00`,
