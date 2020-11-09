@@ -27,7 +27,7 @@
         <UiButton
           v-if="$auth.isAuthenticated && !wrongNetwork"
           @click="modalOpen.account = true"
-          :loading="loading"
+          :loading="loading || ui.authLoading"
         >
           <Avatar :address="web3.account" size="16" class="ml-n1 mr-n1" />
           <span v-if="web3.name" v-text="web3.name" class="hide-sm ml-2 pl-1" />
@@ -45,7 +45,7 @@
           {{ $t('wrongNetwork') }}
         </UiButton>
         <UiButton
-          v-if="!$auth.isAuthenticated"
+          v-if="!$auth.isAuthenticated && !ui.authLoading"
           @click="modalOpen.account = true"
           :loading="loading"
           class="button-primary"
@@ -95,7 +95,11 @@ export default {
   computed: {
     ...mapGetters(['myPendingTransactions']),
     wrongNetwork() {
-      return this.config.chainId !== this.web3.injectedChainId && !this.loading;
+      return (
+        this.config.chainId !== this.web3.injectedChainId &&
+        !this.ui.authLoading &&
+        !this.loading
+      );
     }
   },
   methods: {
