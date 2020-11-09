@@ -93,7 +93,6 @@
       <template slot="footer">
         <Button
           :requireLogin="true"
-          :requireProxy="true"
           :disabled="validationError || loading"
           @submit="handleSubmit"
           :loading="loading"
