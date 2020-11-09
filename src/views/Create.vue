@@ -63,15 +63,14 @@
           >
             <input
               class="input pool-input text-right"
-              :class="isWeightInputValid(token) ? 'text-white' : 'text-red'"
+              :class="isWeightInputValid(token) && isPercentValid(token) ? 'text-white' : 'text-red'"
               v-model="weights[token]"
               @input="handleWeightChange(token)"
             />
           </div>
           <div class="column-sm hide-sm">
             <div
-              v-text="_num(getPercentage(token))"
-              :class="isPercentValid(token) ? 'text-white' : 'text-red'"
+              v-text="_num(getPercentage(token) / 100, 'percent')"
             />
           </div>
           <div class="column">
@@ -614,7 +613,7 @@ export default {
       return this.type === 'SHARED_POOL' || !this.crp.rights.canChangeWeights;
     },
     getPercentage(token) {
-      return (this.weights[token] / this.totalWeight) * 100;
+      return this.totalWeight == 0 ? 0 : (this.weights[token] / this.totalWeight) * 100;
     },
     currentDenorm(token) {
       return getDenorm(
