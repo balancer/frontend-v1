@@ -1,5 +1,5 @@
 <template>
-  <Page>
+  <Page :requireLogin="true">
     <Container class="d-flex mb-3">
       <div class="flex-auto">
         <h3 v-text="$t('myWallet')" />

@@ -152,13 +152,15 @@ const mutations = {
 };
 
 const actions = {
-  login: async ({ dispatch }, connector = 'injected') => {
+  login: async ({ dispatch, commit }, connector = 'injected') => {
+    commit('SET', { authLoading: true });
     auth = getInstance();
     await auth.login(connector);
     if (auth.provider) {
       auth.web3 = new Web3Provider(auth.provider);
       await dispatch('loadWeb3');
     }
+    commit('SET', { authLoading: false });
   },
   logout: async ({ commit }) => {
     Vue.prototype.$auth.logout();
