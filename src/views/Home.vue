@@ -3,15 +3,19 @@
     <Container class="mb-3">
       <h3 class="flex-auto" v-text="$t('myLiquidity')" />
     </Container>
-    <ListPools
-      :key="JSON.stringify(queryMyLiquidity)"
-      :query="queryMyLiquidity"
-      class="mb-4"
-    />
+    <Container :slim="true">
+      <ListPools
+        :key="JSON.stringify(queryMyLiquidity)"
+        :query="queryMyLiquidity"
+        class="mb-4"
+      />
+    </Container>
     <Container class="mb-3">
       <h3 class="flex-auto" v-text="$t('myPools')" />
     </Container>
-    <ListPools :key="JSON.stringify(queryMyPools)" :query="queryMyPools" />
+    <Container :slim="true">
+      <ListPools :key="JSON.stringify(queryMyPools)" :query="queryMyPools" />
+    </Container>
   </Page>
 </template>
 

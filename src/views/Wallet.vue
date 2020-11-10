@@ -13,47 +13,49 @@
         {{ $t('totalValue') }}
       </div>
     </Container>
-    <UiTable>
-      <UiTableTh>
-        <div v-text="'Asset'" class="flex-auto text-left" />
-        <div v-text="'Holdings'" class="column" />
-      </UiTableTh>
-      <UiTableTr v-for="(balance, i) in balances" :key="i">
-        <Token :address="balance.address" class="mr-3" size="32" />
-        <div class="text-left">
-          <div v-text="balance.name" />
-          <div v-text="balance.symbol" class="text-gray" />
-        </div>
-        <div class="flex-auto text-left">
-          <div v-if="balance.address !== 'ether'" class="flex-auto">
-            <UiButton
-              v-if="balance.address === config.addresses.weth"
-              @click="[(modalWrapperOpen = true), (side = 2)]"
-              type="button"
-              class="button-primary button-sm ml-2"
-            >
-              Unwrap to ETH
-            </UiButton>
+    <Container :slim="true">
+      <UiTable>
+        <UiTableTh>
+          <div v-text="'Asset'" class="flex-auto text-left" />
+          <div v-text="'Holdings'" class="column" />
+        </UiTableTh>
+        <UiTableTr v-for="(balance, i) in balances" :key="i">
+          <Token :address="balance.address" class="mr-3" size="32" />
+          <div class="text-left">
+            <div v-text="balance.name" />
+            <div v-text="balance.symbol" class="text-gray" />
           </div>
-          <div v-else class="flex-auto">
-            <UiButton
-              @click="[(modalWrapperOpen = true), (side = 1)]"
-              type="button"
-              class="button-primary button-sm ml-2"
-            >
-              Wrap to WETH
-            </UiButton>
+          <div class="flex-auto text-left">
+            <div v-if="balance.address !== 'ether'" class="flex-auto">
+              <UiButton
+                v-if="balance.address === config.addresses.weth"
+                @click="[(modalWrapperOpen = true), (side = 2)]"
+                type="button"
+                class="button-primary button-sm ml-2"
+              >
+                Unwrap to ETH
+              </UiButton>
+            </div>
+            <div v-else class="flex-auto">
+              <UiButton
+                @click="[(modalWrapperOpen = true), (side = 1)]"
+                type="button"
+                class="button-primary button-sm ml-2"
+              >
+                Wrap to WETH
+              </UiButton>
+            </div>
           </div>
-        </div>
-        <div class="column">
-          <div>
-            {{ _num(balance.balance, 'long') }}
-            {{ balance.symbol }}
+          <div class="column">
+            <div>
+              {{ _num(balance.balance, 'long') }}
+              {{ balance.symbol }}
+            </div>
+            <div v-text="_num(balance.value, 'usd-long')" class="text-gray" />
           </div>
-          <div v-text="_num(balance.value, 'usd-long')" class="text-gray" />
-        </div>
-      </UiTableTr>
-    </UiTable>
+        </UiTableTr>
+      </UiTable>
+    </Container>
     <ModalWrapper
       :open="modalWrapperOpen"
       @close="modalWrapperOpen = false"

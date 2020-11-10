@@ -18,7 +18,7 @@ Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   { path: '/', name: 'home', component: Home },
-  { path: '/explore', name: 'explore', component: Explore },
+  { path: '/explore/:tag?', name: 'explore', component: Explore },
   { path: '/smart', name: 'smart', component: Smart },
   { path: '/setup', name: 'setup', component: Setup },
   { path: '/wallet', name: 'wallet', component: Wallet },

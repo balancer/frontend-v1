@@ -3,17 +3,8 @@
     <UiLoading v-if="ui.loading || !ui.init" class="overlay big" />
     <div v-else>
       <Topnav />
-      <div
-        class="d-flex flex-row pb-6"
-        :style="ui.sidebarIsOpen && 'max-height: 100vh'"
-      >
-        <div
-          class="shell d-block d-xl-none"
-          :class="ui.sidebarIsOpen && 'sidebar-is-open'"
-          @click="toggleSidebar"
-        />
-        <Sidebar :key="$router.currentRoute.fullPath" />
-        <router-view id="view" class="flex-auto" />
+      <div class="pt-9">
+        <router-view class="flex-auto" />
       </div>
     </div>
     <Notifications />
@@ -42,15 +33,6 @@ export default {
 
 <style lang="scss">
 @import './vars';
-
-#view {
-  margin-left: 0;
-  margin-top: 80px;
-
-  @media (min-width: $width-xl) {
-    margin-left: 264px;
-  }
-}
 
 .shell {
   &.sidebar-is-open {

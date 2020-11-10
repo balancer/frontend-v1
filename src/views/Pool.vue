@@ -1,38 +1,40 @@
 <template>
   <Page :loading="loading">
-    <MessageSimilarPools
-      v-if="pool.liquidity < 1e7 && pool.finalized"
-      :pool="pool"
-      class="mb-4"
-    />
-    <div class="d-block text-center text-md-left d-md-flex mb-3 mb-md-0">
-      <PoolHeader :pool="bPool" class="flex-auto pb-3" />
-      <div class="pb-3">
-        <UiButton
-          v-if="enableAddLiquidity && pool.tokens.length > 0"
-          class="button-primary ml-2"
-          @click="openAddLiquidityModal"
-        >
-          {{ $t('addLiquidity') }}
-        </UiButton>
-        <UiButton
-          v-if="enableAddLiquidity && pool.tokens.length > 0"
-          class="ml-2"
-          @click="openRemoveLiquidityModal"
-        >
-          {{ $t('removeLiquidity') }}
-        </UiButton>
+    <Container>
+      <MessageSimilarPools
+        v-if="pool.liquidity < 1e7 && pool.finalized"
+        :pool="pool"
+        class="mb-4"
+      />
+      <div class="d-block text-center text-md-left d-md-flex mb-3 mb-md-0">
+        <PoolHeader :pool="bPool" class="flex-auto pb-3" />
+        <div class="pb-3">
+          <UiButton
+            v-if="enableAddLiquidity && pool.tokens.length > 0"
+            class="button-primary ml-2"
+            @click="openAddLiquidityModal"
+          >
+            {{ $t('addLiquidity') }}
+          </UiButton>
+          <UiButton
+            v-if="enableAddLiquidity && pool.tokens.length > 0"
+            class="ml-2"
+            @click="openRemoveLiquidityModal"
+          >
+            {{ $t('removeLiquidity') }}
+          </UiButton>
+        </div>
       </div>
-    </div>
-    <PoolBoxes :pool="pool" :bPool="bPool" />
-    <Chart :pool="pool" />
-    <Tabs :pool="pool" />
-    <router-view
-      :key="$route.path"
-      :pool="pool"
-      :bPool="bPool"
-      @reload="loadPool"
-    />
+      <PoolBoxes :pool="pool" :bPool="bPool" />
+      <Chart :pool="pool" />
+      <Tabs :pool="pool" />
+      <router-view
+        :key="$route.path"
+        :pool="pool"
+        :bPool="bPool"
+        @reload="loadPool"
+      />
+    </Container>
     <ModalAddLiquidity
       :pool="pool"
       :bPool="bPool"

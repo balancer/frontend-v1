@@ -1,26 +1,26 @@
 <template>
   <Page v-if="Object.keys(tokenList).length > 0">
-    <div class="mb-5">
+    <Container class="mb-5">
       <h1 class="mb-3">Explore pools</h1>
       <div class="mb-3">
         <router-link
-          :to="{ name: 'explore' }"
-          v-for="(list, i) in lists"
+          :to="{ name: 'explore', params: { tag: t } }"
+          v-for="(t, i) in tags"
           :key="i"
           class="mr-2"
         >
-          <Tag>{{ list.key }}</Tag>
+          <Tag :class="tag === t && 'active'">{{ t }}</Tag>
         </router-link>
       </div>
-    </div>
+    </Container>
     <div v-for="(list, i) in lists" :key="i" class="mb-3">
       <Container>
-        <router-link :to="{ name: 'explore' }" class="d-flex overflow-hidden">
+        <router-link
+          :to="{ name: 'explore', params: { tag: list.key } }"
+          class="d-flex overflow-hidden"
+        >
           <h3 v-text="list.name" class="mb-3 flex-auto" />
-          <i
-            class="iconfont icongo text-white v-align-top mt-n1"
-            style="font-size: 32px;"
-          />
+          <Icon name="go" class="text-white mt-n1" size="32" />
         </router-link>
       </Container>
       <Container :slim="true" v-if="loaded && !loading && list.pools">
@@ -120,6 +120,14 @@ export default {
     this.loaded = true;
   },
   computed: {
+    tag() {
+      return this.$route.params.tag;
+    },
+    tags() {
+      return Object.keys(this.tokenList.tags).sort(
+        (a, b) => (b === this.tag ? 1 : 0) - (a === this.tag ? 1 : 0)
+      );
+    },
     lists() {
       if (!this.tokenList) return {};
       return Object.fromEntries(

@@ -1,10 +1,7 @@
 <template>
   <nav id="topnav" class="border-bottom position-fixed width-full">
     <div class="d-flex flex-items-center px-5" style="height: 78px;">
-      <div class="flex-auto d-flex flex-items-center">
-        <a class="d-block d-xl-none text-white" @click="toggleSidebar">
-          <Icon name="menu" size="28" class="mr-3" />
-        </a>
+      <div class="flex-auto d-flex flex-items-center" style="font-size: 16px;">
         <router-link
           :to="{ name: 'home' }"
           class="d-inline-block text-blue d-flex"
@@ -16,12 +13,30 @@
             width="32"
             height="32"
           />
-          <span
-            class="d-inline-block text-white"
-            style="letter-spacing: 1px; font-size: 16px;"
-            v-text="'Balancer'"
-          />
+          <span class="d-inline-block text-white mr-3" v-text="'Balancer'" />
         </router-link>
+        <span class="hide-sm">
+          <router-link :to="{ name: 'explore' }" class="text-white py-3 px-2">
+            Explore pools
+          </router-link>
+          <router-link :to="{ name: 'create' }" class="text-white py-3 px-2">
+            Create a pool
+          </router-link>
+          <a
+            @click="modalOpen.about = true"
+            class="text-white py-3 px-2 hide-md"
+          >
+            About
+          </a>
+          <a
+            href="https://balancer.exchange"
+            target="_blank"
+            class="text-white py-3 px-2 hide-md"
+          >
+            Exchange
+            <Icon name="external-link" class="ml-1" />
+          </a>
+        </span>
       </div>
       <div :key="web3.account">
         <UiButton
@@ -30,11 +45,15 @@
           :loading="loading || ui.authLoading"
         >
           <Avatar :address="web3.account" size="16" class="ml-n1 mr-n1" />
-          <span v-if="web3.name" v-text="web3.name" class="hide-sm ml-2 pl-1" />
+          <span
+            v-if="web3.name"
+            v-text="web3.name"
+            class="hide-sm hide-md ml-2 pl-1"
+          />
           <span
             v-else
             v-text="_shortenAddress(web3.account)"
-            class="hide-sm ml-2 pl-1"
+            class="hide-sm hide-md ml-2 pl-1"
           />
         </UiButton>
         <UiButton
@@ -50,7 +69,8 @@
           :loading="loading"
           class="button-primary"
         >
-          {{ $t('connectWallet') }}
+          <Icon name="login" class="hide-lg hide-xl" />
+          <span class="hide-sm hide-md" v-text="$t('connectWallet')" />
         </UiButton>
         <router-link v-if="!wrongNetwork" :to="{ name: 'wallet' }" class="ml-2">
           <UiButton class="v-align-bottom p-0">
@@ -76,6 +96,7 @@
       @close="modalOpen.activity = false"
       @login="handleLogin"
     />
+    <ModalAbout :open="modalOpen.about" @close="modalOpen.about = false" />
   </nav>
 </template>
 
@@ -88,7 +109,8 @@ export default {
       loading: false,
       modalOpen: {
         account: false,
-        activity: false
+        activity: false,
+        about: false
       }
     };
   },
