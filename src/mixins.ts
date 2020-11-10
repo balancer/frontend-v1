@@ -1,7 +1,13 @@
 import { mapState } from 'vuex';
 import store from '@/store';
 import config from '@/config';
-import { shortenAddress, shorten, trunc, formatNumber } from '@/helpers/utils';
+import {
+  shortenAddress,
+  shorten,
+  trunc,
+  formatNumber,
+  bnum
+} from '@/helpers/utils';
 
 // @ts-ignore
 const modules = Object.entries(store.state).map(module => module[0]);
@@ -16,6 +22,9 @@ export default {
     ...mapState(modules)
   },
   methods: {
+    _bn(number) {
+      return bnum(number);
+    },
     _num(number, key) {
       return formatNumber(number, key);
     },
