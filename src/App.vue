@@ -3,7 +3,7 @@
     <UiLoading v-if="ui.loading || !ui.init" class="overlay big" />
     <div v-else>
       <Topnav />
-      <div class="pt-9">
+      <div class="pt-10">
         <router-view class="flex-auto" />
       </div>
     </div>
@@ -19,29 +19,13 @@ export default {
   watch: {
     $route() {
       pageView();
-      this.hideSidebar();
     }
   },
   methods: {
-    ...mapActions(['init', 'toggleSidebar', 'hideSidebar'])
+    ...mapActions(['init'])
   },
   mounted() {
     this.init();
   }
 };
 </script>
-
-<style lang="scss">
-@import './vars';
-
-.shell {
-  &.sidebar-is-open {
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.4);
-  }
-}
-</style>

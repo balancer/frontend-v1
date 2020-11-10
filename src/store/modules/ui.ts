@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import config from '@/config';
+import { getLists } from '@/_balancer/explore';
 
 const state = {
   init: false,
@@ -26,13 +27,15 @@ const actions = {
     const tokenIds = Object.keys(config.tokens)
       .map(tokenAddress => config.tokens[tokenAddress].id)
       .filter(tokenId => !!tokenId);
-    await Promise.all([
+    dispatch('loadFavorite');
+    const [lists] = await Promise.all([
+      getLists(),
       dispatch('loadPricesById', tokenIds),
       dispatch('initTokenMetadata')
     ]);
     const connector = await Vue.prototype.$auth.getConnector();
     if (connector) dispatch('login', connector);
-    commit('SET', { loading: false, init: true });
+    commit('SET', { loading: false, init: true, lists });
   },
   loading: ({ commit }, payload) => {
     commit('SET', { loading: payload });
