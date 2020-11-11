@@ -54,11 +54,13 @@
         </div>
       </UiTableTr>
     </UiTable>
-    <ModalWrapper
-      :open="modalWrapperOpen"
-      @close="modalWrapperOpen = false"
-      :side="side"
-    />
+    <portal to="modal">
+      <ModalWrapper
+        :open="modalWrapperOpen"
+        @close="modalWrapperOpen = false"
+        :side="side"
+      />
+    </portal>
   </Page>
 </template>
 

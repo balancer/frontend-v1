@@ -148,10 +148,7 @@ export default {
         this.loadTokenMetadata([address]),
         this.loadPricesByAddress([address]),
         this.getBalances([address]),
-        this.getAllowances({
-          tokens: [address],
-          spender: this.web3.dsProxyAddress
-        })
+        this.getAllowances([address])
       ]);
       this.loading = false;
     },

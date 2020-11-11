@@ -66,16 +66,18 @@
         </UiButton>
       </div>
     </div>
-    <ModalAccount
-      :open="modalOpen.account"
-      @close="modalOpen.account = false"
-      @login="handleLogin"
-    />
-    <ModalActivity
-      :open="modalOpen.activity"
-      @close="modalOpen.activity = false"
-      @login="handleLogin"
-    />
+    <portal to="modal">
+      <ModalAccount
+        :open="modalOpen.account"
+        @close="modalOpen.account = false"
+        @login="handleLogin"
+      />
+      <ModalActivity
+        :open="modalOpen.activity"
+        @close="modalOpen.activity = false"
+        @login="handleLogin"
+      />
+    </portal>
   </nav>
 </template>
 

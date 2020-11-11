@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import PortalVue from 'portal-vue';
 import autofocus from 'vue-autofocus-directive';
 import VueSwitch from '@vue/ui/src/components/VueSwitch.vue';
 import infiniteScroll from 'vue-infinite-scroll';
@@ -15,6 +16,7 @@ import '@/style.scss';
 import '@/helpers/fathom';
 
 Vue.use(infiniteScroll);
+Vue.use(PortalVue);
 
 const requireComponent = require.context('@/components', true, /[\w-]+\.vue$/);
 requireComponent.keys().forEach(fileName => {
