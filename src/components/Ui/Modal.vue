@@ -13,8 +13,20 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
-  props: ['open']
+  props: {
+    open: Boolean
+  },
+  watch: {
+    open(val, prev) {
+      if (val !== prev) this.toggleModal();
+    }
+  },
+  methods: {
+    ...mapActions(['toggleModal'])
+  }
 };
 </script>
 

@@ -154,21 +154,23 @@
     >
       {{ $t('create') }}
     </UiButton>
-    <ModalSelectToken
-      :open="tokenModalOpen"
-      @close="tokenModalOpen = false"
-      @input="changeToken"
-      :not="tokens"
-    />
-    <ModalPoolCreation
-      :open="confirmModalOpen"
-      :padlock="padlock"
-      :tokens="tokens"
-      :amounts="amounts"
-      :weights="weights"
-      @close="confirmModalOpen = false"
-      @create="create"
-    />
+    <portal to="modal">
+      <ModalSelectToken
+        :open="tokenModalOpen"
+        @close="tokenModalOpen = false"
+        @input="changeToken"
+        :not="tokens"
+      />
+      <ModalPoolCreation
+        :open="confirmModalOpen"
+        :padlock="padlock"
+        :tokens="tokens"
+        :amounts="amounts"
+        :weights="weights"
+        @close="confirmModalOpen = false"
+        @create="create"
+      />
+    </portal>
   </Page>
 </template>
 

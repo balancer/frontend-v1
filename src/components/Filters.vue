@@ -26,13 +26,15 @@
           <Icon name="plus" size="13" />
         </button>
       </div>
+    </div>
+    <portal to="modal">
       <ModalSelectToken
         :open="modalOpen"
         @close="modalOpen = false"
         @input="addToken"
         :not="tokens"
       />
-    </div>
+    </portal>
   </div>
 </template>
 
