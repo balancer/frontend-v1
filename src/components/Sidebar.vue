@@ -21,15 +21,13 @@
               v-text="$t('explorePools')"
             />
           </li>
-          <template v-if="$auth.isAuthenticated">
-            <li>
-              <router-link
-                :to="{ name: 'create' }"
-                :class="{ active: $router.currentRoute.name === 'create' }"
-                v-text="$t('createPool')"
-              />
-            </li>
-          </template>
+          <li>
+            <router-link
+              :to="{ name: 'create' }"
+              :class="{ active: $router.currentRoute.name === 'create' }"
+              v-text="$t('createPool')"
+            />
+          </li>
         </ul>
         <ul class="py-3">
           <li>

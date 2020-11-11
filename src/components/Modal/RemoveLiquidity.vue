@@ -1,6 +1,6 @@
 <template>
   <UiModal :open="open" @close="$emit('close')" v-if="pool.id">
-    <UiModalForm @submit="handleSubmit">
+    <UiModalForm>
       <template slot="header">
         <h3 v-text="$t('removeLiquidity')" class="text-white" />
       </template>
@@ -91,14 +91,15 @@
         />
       </div>
       <template slot="footer">
-        <UiButton
+        <Button
+          :requireLogin="true"
           :disabled="validationError || loading"
-          type="submit"
-          class="button-primary ml-2"
+          @submit="handleSubmit"
           :loading="loading"
+          class="button-primary"
         >
           {{ $t('removeLiquidity') }}
-        </UiButton>
+        </Button>
       </template>
     </UiModalForm>
   </UiModal>
