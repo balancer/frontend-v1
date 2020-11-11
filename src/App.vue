@@ -6,8 +6,9 @@
       <div class="pt-10">
         <router-view class="flex-auto" />
       </div>
+      <Notifications />
+      <portal-target name="modal" multiple />
     </div>
-    <Notifications />
   </div>
 </template>
 
@@ -19,6 +20,11 @@ export default {
   watch: {
     $route() {
       pageView();
+      this.hideSidebar();
+    },
+    'ui.modalOpen': function(val) {
+      const el = document.body;
+      el.classList[val ? 'add' : 'remove']('overflow-hidden');
     }
   },
   methods: {
