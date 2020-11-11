@@ -2,8 +2,8 @@
   <div id="app" class="overflow-hidden">
     <UiLoading v-if="ui.loading || !ui.init" class="overlay big" />
     <div v-else>
-      <Topnav />
-      <div class="pt-10">
+      <Topnav :key="$router.currentRoute.name" />
+      <div class="pt-9 pb-4">
         <router-view class="flex-auto" />
       </div>
       <Notifications />

@@ -114,6 +114,7 @@ export default {
             if (b[1].value) return 1;
             return b[1].balance - a[1].balance;
           })
+          .slice(0, 20)
       );
     }
   },

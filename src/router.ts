@@ -1,8 +1,7 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '@/views/Home.vue';
-import Explore from '@/views/Explore.vue';
-import Tag from '@/views/Tag.vue';
+import Dashboard from '@/views/Dashboard.vue';
 import Smart from '@/views/Smart.vue';
 import Wallet from '@/views/Wallet.vue';
 import Create from '@/views/Create.vue';
@@ -17,12 +16,12 @@ import PoolActions from '@/views/Pool/Actions.vue';
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
+  { path: '/explore/:tag', name: 'tag', component: Home },
   { path: '/', name: 'home', component: Home },
-  { path: '/explore', name: 'explore', component: Explore },
-  { path: '/explore/:tag', name: 'tag', component: Tag },
+  { path: '/dashboard', name: 'dashboard', component: Dashboard },
   { path: '/smart', name: 'smart', component: Smart },
-  { path: '/wallet', name: 'wallet', component: Wallet },
   { path: '/pool/new', name: 'create', component: Create },
+  { path: '/wallet', name: 'wallet', component: Wallet },
   {
     path: '/pool/:id',
     component: Pool,

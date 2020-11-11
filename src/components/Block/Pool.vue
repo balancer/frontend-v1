@@ -61,7 +61,7 @@
           <div>
             Volume (1d)
             <span class="float-right text-white">
-              {{ _num(0, 'usd') }}
+              {{ _num(poolVolume, 'usd') }}
             </span>
           </div>
         </div>
@@ -72,6 +72,7 @@
 
 <script>
 import { getPoolLiquidity } from '@/_balancer/explore';
+import registry from '@/_balancer/registry';
 
 export default {
   props: {
@@ -81,6 +82,9 @@ export default {
   computed: {
     poolLiquidity() {
       return getPoolLiquidity(this.pool, this.price.values);
+    },
+    poolVolume() {
+      return registry.volumes[this.pool.address] || 0;
     }
   }
 };

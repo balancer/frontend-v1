@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import config from '@/config';
-import { getLists } from '@/_balancer/explore';
+import registry from '@/_balancer/registry';
 
 const state = {
   init: false,
@@ -28,14 +28,14 @@ const actions = {
       .map(tokenAddress => config.tokens[tokenAddress].id)
       .filter(tokenId => !!tokenId);
     dispatch('loadFavorite');
-    const [lists] = await Promise.all([
-      getLists(),
+    await Promise.all([
+      registry.init(),
       dispatch('loadPricesById', tokenIds),
       dispatch('initTokenMetadata')
     ]);
     const connector = await Vue.prototype.$auth.getConnector();
     if (connector) dispatch('login', connector);
-    commit('SET', { loading: false, init: true, lists });
+    commit('SET', { loading: false, init: true });
   },
   loading: ({ commit }, payload) => {
     commit('SET', { loading: payload });

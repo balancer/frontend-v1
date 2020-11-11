@@ -2,7 +2,7 @@
   <UiTableTr>
     <div class="flex-auto text-left">
       <router-link
-        :to="{ name: 'explore', query: { token: [checksum], filter: 1 } }"
+        :to="{ name: 'home', query: { token: [checksum], filter: 1 } }"
         class="text-white d-flex flex-items-center"
       >
         <Token :address="token.address" :symbol="token.symbol" class="mr-1" />

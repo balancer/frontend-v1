@@ -1,4 +1,4 @@
-import { ipfsGet, multicall } from '@snapshot-labs/snapshot.js/src/utils';
+import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
 import abi from '@/helpers/abi';
 import config from '@/config';
 import { unknownColors } from '@/helpers/utils';
@@ -149,13 +149,4 @@ export function getPoolLiquidity(pool, prices) {
     poolLiquidity = (poolTokenValue / poolTokenWeight) * totalWeight;
   }
   return poolLiquidity;
-}
-
-export async function getLists() {
-  // const random = Math.random();
-  return await ipfsGet(
-    'cloudflare-ipfs.com',
-    `balancer-team-bucket.storage.fleek.co/balancer/tokenlists/explore`,
-    'ipns'
-  );
 }

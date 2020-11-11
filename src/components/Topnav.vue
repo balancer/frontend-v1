@@ -1,10 +1,10 @@
 <template>
-  <nav id="topnav" class="border-bottom position-fixed width-full">
-    <div class="d-flex flex-items-center px-5" style="height: 78px;">
-      <div class="flex-auto d-flex flex-items-center" style="font-size: 16px;">
+  <nav id="topnav" class="position-fixed width-full">
+    <div class="px-5 d-flex">
+      <div class="d-flex flex-auto" style="font-size: 16px;">
         <router-link
           :to="{ name: 'home' }"
-          class="d-inline-block text-blue d-flex"
+          class="d-inline-block d-flex pt-3 mt-1"
           style="padding-top: 2px;"
         >
           <img
@@ -13,32 +13,38 @@
             width="32"
             height="32"
           />
-          <span class="d-inline-block text-white mr-3" v-text="'Balancer'" />
+          <span class="d-inline-block text-white mr-6" v-text="'Balancer'" />
         </router-link>
-        <span class="hide-sm">
-          <router-link :to="{ name: 'explore' }" class="text-white py-3 px-2">
+        <div class="topnav-menu float-left">
+          <router-link :to="{ name: 'home' }" class="d-inline-block py-4 px-2">
             Explore pools
           </router-link>
-          <router-link :to="{ name: 'create' }" class="text-white py-3 px-2">
-            Create a pool
+          <router-link
+            v-if="$auth.isAuthenticated"
+            :to="{ name: 'dashboard' }"
+            class="d-inline-block py-4 px-2"
+          >
+            Dashboard
           </router-link>
-          <a
-            @click="modalOpen.about = true"
-            class="text-white py-3 px-2 hide-md"
-          >
-            About
-          </a>
-          <a
-            href="https://balancer.exchange"
-            target="_blank"
-            class="text-white py-3 px-2 hide-md"
-          >
-            Exchange
-            <Icon name="external-link" class="ml-1" />
-          </a>
-        </span>
+          <span class="hide-sm">
+            <a
+              @click="modalOpen.about = true"
+              class="d-inline-block py-4 px-2 hide-md"
+            >
+              About
+            </a>
+            <a
+              href="https://balancer.exchange"
+              target="_blank"
+              class="d-inline-block py-4 px-2 hide-md"
+            >
+              Exchange
+              <Icon name="external-link" class="ml-1" />
+            </a>
+          </span>
+        </div>
       </div>
-      <div :key="web3.account">
+      <div class="pt-2 mt-1" :key="web3.account">
         <UiButton
           v-if="$auth.isAuthenticated && !wrongNetwork"
           @click="modalOpen.account = true"
@@ -143,6 +149,15 @@ export default {
 
 #topnav {
   z-index: 10;
+  box-shadow: inset 0 -1px $panel-border;
   background-color: $panel-background;
+  color: $text-white;
+
+  .topnav-menu {
+    .router-link-exact-active {
+      color: $text-white;
+      box-shadow: inset 0 -4px $input-hover-border;
+    }
+  }
 }
 </style>

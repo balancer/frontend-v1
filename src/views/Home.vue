@@ -1,46 +1,119 @@
 <template>
   <Page>
-    <Container class="mb-3">
-      <h3 class="flex-auto" v-text="$t('myLiquidity')" />
+    <Container class="mb-4">
+      <div class="d-flex mb-4">
+        <h1 class="flex-auto">Explore pools</h1>
+        <router-link :to="{ name: 'create' }">
+          <UiButton class="button-primary">
+            Create a pool
+          </UiButton>
+        </router-link>
+      </div>
+    </Container>
+    <Container class="d-flex sliding mb-4">
+      <Filters v-model="filters" class="mr-2 flex-auto flex-lg-1" />
+      <Tags class="hide-sm hide-md hide-lg flex-auto mr-2" :tag="tag" />
+      <OrderBy v-model="orderBy" />
     </Container>
     <Container :slim="true">
-      <ListPools
-        :key="JSON.stringify(queryMyLiquidity)"
-        :query="queryMyLiquidity"
-        class="mb-4"
-      />
-    </Container>
-    <Container class="mb-3">
-      <h3 class="flex-auto" v-text="$t('myPools')" />
-    </Container>
-    <Container :slim="true">
-      <ListPools :key="JSON.stringify(queryMyPools)" :query="queryMyPools" />
+      <div
+        v-infinite-scroll="loadNextPage"
+        infinite-scroll-distance="0"
+        class="overflow-hidden mr-n3"
+      >
+        <div v-if="pools.length > 0" :key="tag">
+          <div
+            v-for="pool in pools"
+            :key="pool.address"
+            class="d-block float-left col-12 col-lg-4"
+          >
+            <BlockPool :pool="pool" class="mr-3 mb-3" />
+          </div>
+        </div>
+        <div v-if="loading">
+          <div
+            v-for="i in 3"
+            :key="i"
+            :class="i > 1 && 'hide-sm'"
+            class="d-block float-left col-12 col-lg-4"
+          >
+            <BlockPool :loading="true" class="mr-3 mb-3" />
+          </div>
+        </div>
+      </div>
     </Container>
   </Page>
 </template>
 
 <script>
+import { getPools } from '@/_balancer/explore';
+import provider from '@/helpers/provider';
+import registry from '@/_balancer/registry';
+
 export default {
-  computed: {
-    queryMyLiquidity() {
-      const poolShares = this.subgraph.poolShares;
-      const ids = Object.keys(poolShares).map(share => share.toLowerCase());
-      return {
-        where: {
-          id_in: ids
-        }
-      };
+  data() {
+    return {
+      page: 0,
+      loaded: false,
+      loading: false,
+      pools: [],
+      orderBy: 'volume',
+      filters: {}
+    };
+  },
+  watch: {
+    async tag() {
+      this.page = 0;
+      this.loaded = false;
+      this.pools = [];
+      await this.loadNextPage();
     },
-    queryMyPools() {
-      return {
-        where: {
-          crpController: this.web3.dsProxyAddress
-        }
-      };
+    async filters() {
+      this.page = 0;
+      this.loaded = false;
+      this.pools = [];
+      await this.loadNextPage();
+    },
+    async orderBy() {
+      this.page = 0;
+      this.loaded = false;
+      this.pools = [];
+      await this.loadNextPage();
     }
   },
-  beforeMount() {
-    if (!this.web3.account) this.$router.push({ name: 'explore' });
+  async created() {
+    await this.loadNextPage();
+  },
+  computed: {
+    tag() {
+      return this.$route.params.tag || 'all';
+    }
+  },
+  methods: {
+    async loadNextPage() {
+      if (this.loaded) return;
+      this.loading = true;
+      this.page++;
+      const poolIds =
+        this.tag === 'favorites'
+          ? Object.keys(this.favorite.favorites)
+          : registry.getPools({
+              orderBy: this.orderBy,
+              tokens: this.filters.token || [],
+              tag: this.tag,
+              limit: 9,
+              page: this.page
+            });
+      let pools = [];
+      if (poolIds.length > 0) {
+        pools = Object.values(
+          await getPools(this.config.chainId, provider, poolIds)
+        );
+      }
+      if (pools.length < 9) this.loaded = true;
+      this.pools = this.pools.concat(pools);
+      this.loading = false;
+    }
   }
 };
 </script>
