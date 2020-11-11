@@ -36,6 +36,7 @@ const mutations = {
     Vue.set(_state, 'injectedLoaded', false);
     Vue.set(_state, 'injectedChainId', null);
     Vue.set(_state, 'account', null);
+    Vue.set(_state, 'name', null);
     Vue.set(_state, 'dsProxyAddress', null);
     Vue.set(_state, 'active', false);
     Vue.set(_state, 'balances', {});
