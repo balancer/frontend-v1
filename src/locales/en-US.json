@@ -150,7 +150,7 @@
     "poolType": "Pool type",
     "preview": "Preview",
     "price": "Price",
-    "priceHistory": "Price history",
+    "priceHistory": "{token} price",
     "privatePools": "Private pools",
     "publicSwap": "Public swap",
     "ratioFactor": "Ratio factor",

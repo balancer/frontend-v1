@@ -110,7 +110,7 @@ export default {
 
       if (this.displayPriceHistory) {
         tabList.push({
-          name: 'priceHistory',
+          name: this.$t('priceHistory', { token: this.lbpData.projectToken }),
           id: 'PRICE'
         });
       }
