@@ -1,6 +1,6 @@
 <template>
   <UiModal :open="open" @close="$emit('close')" v-if="pool.id">
-    <UiModalForm @submit="handleSubmit">
+    <UiModalForm>
       <template slot="header">
         <h3 v-text="$t('addLiquidity')" class="text-white" />
       </template>
@@ -48,11 +48,6 @@
                 />
                 <Token :address="token.address" class="mr-2" size="20" />
                 <div v-text="_shorten(token.symbol, 12)" class="text-white" />
-                <ButtonUnlock
-                  class="button-primary ml-2"
-                  :tokenAddress="token.checksum"
-                  :amount="amounts[token.checksum]"
-                />
               </div>
               <div class="column">
                 {{
@@ -107,14 +102,9 @@
           :text="validationError"
           class="mb-4"
         />
-        <MessageError
-          v-if="lockedTokenError"
-          :text="lockedTokenError"
-          class="mb-4"
-        />
         <MessageError v-if="transferError" :text="transferError" class="mb-4" />
         <MessageCheckbox
-          v-if="!tokenError && !validationError && !lockedTokenError"
+          v-if="!tokenError && !validationError"
           :custom="hasCustomToken"
           :accepted="checkboxAccept"
           @toggle="checkboxAccept = !checkboxAccept"
@@ -133,20 +123,22 @@
         />
       </div>
       <template slot="footer">
-        <UiButton
-          class="button-primary"
-          type="submit"
+        <Button
+          :requireLogin="true"
+          :requireProxy="true"
+          :requireApprovals="requiredApprovals"
+          @submit="handleSubmit"
           :disabled="
             tokenError ||
               validationError ||
-              lockedTokenError ||
               !checkboxAccept ||
               transactionReverted
           "
           :loading="loading"
+          class="button-primary"
         >
           {{ $t('addLiquidity') }}
-        </UiButton>
+        </Button>
       </template>
     </UiModalForm>
   </UiModal>
@@ -163,8 +155,7 @@ import {
   denormalizeBalance,
   isTxReverted,
   getTokenBySymbol,
-  liquidityToggleOptions,
-  isLocked
+  liquidityToggleOptions
 } from '@/helpers/utils';
 import { calcPoolOutGivenSingleIn } from '@/helpers/math';
 import { validateNumberInput, formatError } from '@/helpers/validation';
@@ -299,37 +290,19 @@ export default {
       }
       return undefined;
     },
-    lockedTokenError() {
-      if (this.tokenError || this.validationError) {
-        return undefined;
-      }
-      for (const token of this.pool.tokens) {
-        const tokenAddress = token.checksum;
-
-        if (
-          isLocked(
-            this.web3.allowances,
-            tokenAddress,
-            this.web3.dsProxyAddress,
-            this.amounts[tokenAddress],
-            this.web3.tokenMetadata[tokenAddress].decimals
+    requiredApprovals() {
+      return Object.fromEntries(
+        this.bPool.metadata.tokensList
+          .filter(
+            token =>
+              this.isMultiAsset ||
+              (!this.isMultiAsset && this.activeToken === token)
           )
-        ) {
-          const displaySymbol =
-            typeof token.symbol === 'undefined'
-              ? this._shortenAddress(tokenAddress)
-              : token.symbol;
-
-          return `${this.$t('unlock')} ${displaySymbol} ${this.$t(
-            'toContinue'
-          )}`;
-        }
-      }
-      return undefined;
+          .map(token => [token, this.amounts[token]])
+      );
     },
     transferError() {
-      if (this.tokenError || this.validationError || this.lockedTokenError)
-        return undefined;
+      if (this.tokenError || this.validationError) return undefined;
       if (!this.transactionReverted) return undefined;
       if (hasToken(this.pool, 'SNX')) {
         return this.$t('addStakedSNX');

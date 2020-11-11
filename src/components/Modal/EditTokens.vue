@@ -129,10 +129,7 @@ export default {
       this.pendingRemove = tokenAddress;
       this.pendingWeight = tokenWeight;
       this.step = 1;
-      const allowances = await this.getAllowances({
-        tokens: [this.pool.getBptAddress()],
-        spender: this.web3.dsProxyAddress
-      });
+      const allowances = await this.getAllowances([this.pool.getBptAddress()]);
       this.allowance = parseInt(
         allowances[this.pool.getBptAddress()][this.web3.dsProxyAddress]
       );
