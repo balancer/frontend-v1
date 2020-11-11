@@ -126,6 +126,7 @@ export default {
     etherLeft() {
       return (
         this.currentSide === 2 ||
+        this.balance.isZero() ||
         !this.balance.minus(GAS_BUFFER_WARNING).lt(this.amount)
       );
     }
@@ -140,10 +141,13 @@ export default {
       this.$emit('close');
     },
     handleMax() {
-      this.amount =
+      const maxAllowedAmount =
         this.currentSide === 1
-          ? this.balance.minus(GAS_BUFFER_WARNING).toString()
-          : this.balance.toString();
+          ? this.balance.minus(GAS_BUFFER_WARNING)
+          : this.balance;
+      this.amount = maxAllowedAmount.isNegative()
+        ? '0'
+        : maxAllowedAmount.toString();
     },
     toggleSide() {
       this.currentSide = this.currentSide === 1 ? 2 : 1;

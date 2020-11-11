@@ -39,6 +39,7 @@
     "lightweight-charts": "^3.1.5",
     "lodash": "^4.17.19",
     "numeral": "^2.0.6",
+    "portal-vue": "^2.1.7",
     "primer-support": "^5.0.0",
     "typescript": "~3.9.3",
     "vue": "^2.6.11",

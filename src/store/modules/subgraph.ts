@@ -16,16 +16,6 @@ const mutations = {
     Vue.set(_state, 'myPools', []);
     console.debug('CLEAR_USER');
   },
-  GET_BALANCER_REQUEST() {
-    console.debug('GET_BALANCER_REQUEST');
-  },
-  GET_BALANCER_SUCCESS(_state, payload) {
-    Vue.set(_state, 'balancer', payload);
-    console.debug('GET_BALANCER_SUCCESS');
-  },
-  GET_BALANCER_FAILURE(_state, payload) {
-    console.debug('GET_BALANCER_FAILURE', payload);
-  },
   GET_POOLS_REQUEST() {
     console.debug('GET_POOLS_REQUEST');
   },
@@ -87,17 +77,6 @@ const mutations = {
 const actions = {
   clearUser: async ({ commit }) => {
     commit('CLEAR_USER');
-  },
-  getBalancer: async ({ commit }) => {
-    commit('GET_BALANCER_REQUEST');
-    try {
-      const { balancer } = await request('getBalancer');
-      balancer.privatePoolCount =
-        balancer.poolCount - balancer.finalizedPoolCount;
-      commit('GET_BALANCER_SUCCESS', balancer);
-    } catch (e) {
-      commit('GET_BALANCER_FAILURE', e);
-    }
   },
   getPools: async ({ commit }, payload) => {
     const {
