@@ -15,8 +15,9 @@
         <Sidebar :key="$router.currentRoute.fullPath" />
         <router-view id="view" class="flex-auto" />
       </div>
+      <Notifications />
+      <portal-target name="modal" multiple />
     </div>
-    <Notifications />
   </div>
 </template>
 
@@ -29,6 +30,10 @@ export default {
     $route() {
       pageView();
       this.hideSidebar();
+    },
+    'ui.modalOpen': function(val) {
+      const el = document.body;
+      el.classList[val ? 'add' : 'remove']('overflow-hidden');
     }
   },
   methods: {
