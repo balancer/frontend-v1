@@ -243,6 +243,10 @@ export default {
     };
   },
   created() {
+<<<<<<< HEAD
+=======
+    // Initialize an (arbitrary) two-token pool, with weights
+>>>>>>> 28091fcb184c9e3d492c92233f6de6bf0db33ba3
     const dai = getTokenBySymbol('DAI').address;
     const usdc = getTokenBySymbol('USDC').address;
     this.tokens = [dai, usdc];
