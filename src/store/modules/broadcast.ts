@@ -840,7 +840,7 @@ const actions = {
         params,
         title: `Approve ${symbol}`
       });
-      dispatch('getAllowances', { tokens: [token], spender });
+      dispatch('getAllowances', [token]);
       setGoal('R4TD1ELX');
       dispatch('notify', ['green', `You've successfully unlocked ${symbol}`]);
       commit('APPROVE_SUCCESS');
