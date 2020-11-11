@@ -86,17 +86,19 @@
         </UiButton>
       </div>
     </div>
-    <ModalAccount
-      :open="modalOpen.account"
-      @close="modalOpen.account = false"
-      @login="handleLogin"
-    />
-    <ModalActivity
-      :open="modalOpen.activity"
-      @close="modalOpen.activity = false"
-      @login="handleLogin"
-    />
-    <ModalAbout :open="modalOpen.about" @close="modalOpen.about = false" />
+    <portal to="modal">
+      <ModalAccount
+        :open="modalOpen.account"
+        @close="modalOpen.account = false"
+        @login="handleLogin"
+      />
+      <ModalActivity
+        :open="modalOpen.activity"
+        @close="modalOpen.activity = false"
+        @login="handleLogin"
+      />
+      <ModalAbout :open="modalOpen.about" @close="modalOpen.about = false" />
+    </portal>
   </nav>
 </template>
 
@@ -125,7 +127,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['toggleSidebar']),
     ...mapActions(['login']),
     async handleLogin(connector) {
       this.modalOpen.account = false;

@@ -10,7 +10,6 @@ const state = {
   balances: {},
   pools: [],
   proxy: '',
-  sidebarIsOpen: false,
   modalOpen: false
 };
 
@@ -40,12 +39,6 @@ const actions = {
   },
   loading: ({ commit }, payload) => {
     commit('SET', { loading: payload });
-  },
-  toggleSidebar: ({ commit }) => {
-    commit('SET', { sidebarIsOpen: !state.sidebarIsOpen });
-  },
-  hideSidebar: ({ commit }) => {
-    commit('SET', { sidebarIsOpen: false });
   },
   toggleModal: ({ commit }) => {
     commit('SET', { modalOpen: !state.modalOpen });

@@ -35,25 +35,27 @@
         @reload="loadPool"
       />
     </Container>
-    <ModalAddLiquidity
-      :pool="pool"
-      :bPool="bPool"
-      :open="modalAddLiquidityOpen"
-      @close="modalAddLiquidityOpen = false"
-      @reload="loadPool"
-    />
-    <ModalRemoveLiquidity
-      :pool="pool"
-      :bPool="bPool"
-      :open="modalRemoveLiquidityOpen"
-      @close="modalRemoveLiquidityOpen = false"
-      @reload="loadPool"
-    />
-    <ModalCustomToken
-      v-if="hasCustomToken && !bPool.isWhitelisted()"
-      :open="modalCustomTokenOpen"
-      @close="modalCustomTokenOpen = false"
-    />
+    <portal to="modal">
+      <ModalAddLiquidity
+        :pool="pool"
+        :bPool="bPool"
+        :open="modalAddLiquidityOpen"
+        @close="modalAddLiquidityOpen = false"
+        @reload="loadPool"
+      />
+      <ModalRemoveLiquidity
+        :pool="pool"
+        :bPool="bPool"
+        :open="modalRemoveLiquidityOpen"
+        @close="modalRemoveLiquidityOpen = false"
+        @reload="loadPool"
+      />
+      <ModalCustomToken
+        v-if="hasCustomToken && !bPool.isWhitelisted()"
+        :open="modalCustomTokenOpen"
+        @close="modalCustomTokenOpen = false"
+      />
+    </portal>
   </Page>
 </template>
 

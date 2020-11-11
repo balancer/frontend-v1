@@ -1,7 +1,7 @@
 <template>
-  <button :class="{ active }" @click="toggleFavorite(id)">
+  <a :class="{ active }" @click="toggleFavorite(id)">
     <Icon :name="active ? 'favorite-on' : 'favorite-off'" size="22" />
-  </button>
+  </a>
 </template>
 
 <script>
@@ -32,8 +32,7 @@ export default {
 <style lang="scss">
 @import '../vars';
 
-button {
-  z-index: 999999;
+a {
   border: 0;
   padding: 0;
   color: $text-gray;

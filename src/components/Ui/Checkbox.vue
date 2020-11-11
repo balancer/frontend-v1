@@ -3,7 +3,7 @@
     <Icon
       class="checkbox"
       :name="checked ? 'checkbox-on' : 'checkbox-off'"
-      size="32"
+      size="26"
     />
     <slot />
   </a>

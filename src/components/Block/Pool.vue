@@ -9,7 +9,7 @@
       <div class="position-relative">
         <Favorite
           :id="pool.address"
-          class="favorite position-absolute top-0 right-0"
+          class="favorite position-absolute p-3 top-n3 right-n3"
         />
       </div>
       <router-link :to="{ name: 'pool', params: { id: pool.address } }">

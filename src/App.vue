@@ -20,7 +20,6 @@ export default {
   watch: {
     $route() {
       pageView();
-      this.hideSidebar();
     },
     'ui.modalOpen': function(val) {
       const el = document.body;
