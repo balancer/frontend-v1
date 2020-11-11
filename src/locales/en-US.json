@@ -60,7 +60,7 @@
     "currency": "currency",
     "customAmounts": "Enter token amounts manually",
     "clearAll": "Clear all",
-    "currentPrice": "Current {token} price",
+    "currentPrice": "Current {token} spot price",
     "dashboard": "Dashboard",
     "deadPoolWarning": "The controller has removed all tokens from this pool; you can no longer interact with it.",
     "deposit": "Deposit",
