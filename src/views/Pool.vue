@@ -51,7 +51,6 @@
         @reload="loadPool"
       />
       <ModalCustomToken
-        v-if="hasCustomToken && !bPool.isWhitelisted()"
         :open="modalCustomTokenOpen"
         @close="modalCustomTokenOpen = false"
       />
@@ -75,7 +74,7 @@ export default {
       loading: false,
       modalAddLiquidityOpen: false,
       modalRemoveLiquidityOpen: false,
-      modalCustomTokenOpen: true
+      modalCustomTokenOpen: false
     };
   },
   watch: {
@@ -175,6 +174,10 @@ export default {
     this.loading = true;
     await this.loadPool();
     this.loading = false;
+    setTimeout(() => {
+      if (this.hasCustomToken && !this.bPool.isWhitelisted())
+        this.modalCustomTokenOpen = true;
+    }, 1e2);
   }
 };
 </script>
