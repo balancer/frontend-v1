@@ -48,7 +48,8 @@
             <input
               v-model="startBlock"
               class="input input-blocknumber text-right ml-2"
-              placeholder="0.0"
+              placeholder="0"
+              :class="isStartBlockValid ? 'text-white' : 'text-red'"
             />
           </div>
           <div
@@ -62,7 +63,8 @@
             <input
               v-model="endBlock"
               class="input input-blocknumber text-right ml-2"
-              placeholder="0.0"
+              placeholder="0"
+              :class="isEndBlockValid ? 'text-white' : 'text-red'"
             />
           </div>
           <div
@@ -93,6 +95,31 @@ import { mapActions } from 'vuex';
 import { blockNumberToTimestamp, bnum } from '@/helpers/utils';
 import { getDenorm, isValidDenormValue } from '@/helpers/weights';
 
+// Testing Guide
+//
+// 1) Open a 45/5 pool; "old" percentages will be 90/10
+//   Check that "new" denorms are 22.5/2.5 (max 25)
+//   90% -> 90% / 10% -> 10% -- same percentages, but denorms are different
+// 2) Open a 49/1 pool; "old" percentages are 98/2
+//      "new" percentages will show the same, but the "1" will be red (invalid)
+//    Change the 49 to 24
+//      Error cleared; now shows 98% -> 96%, 2% -> 4%
+// 3) Open a 15/5 pool (75%/25%)
+//      Shows 75% -> 75%, 25% -> 25%, but denorms show 18.75/6.25 (20 -> 25 total)
+//    Change the 5 to 50
+//      Shows 75% -> 23.08%, 25% -> 76.92%; denorms 5.769/19.231
+//    Change to 50 to 500
+//      15 is now red (out of range error), denorm 0.728, 75% -> 2.91%
+//    Change the 15 to 150
+//      Error cleared; percentages and denorms same as 15/50
+// 4) Confirm button desensitized whenever the input is red
+// 5) Type in a start block before the present
+//      Start block turns red; confirm button disabled
+// 6) Type in the end block equal to the start block
+//      End block turns red; confirm button disabled
+
+// Allow time to edit and submit the form before the update starts
+// Initialize the start block to the current block + BLOCK_BUFFER
 const BLOCK_BUFFER = 100;
 
 export default {
@@ -115,34 +142,54 @@ export default {
         );
         this.currentTime = Date.now();
         this.startBlock = this.web3.blockNumber + BLOCK_BUFFER;
+        // The contract imposes a minimum block duration; initialize to respect this
         this.endBlock =
           this.startBlock + parseInt(this.minimumWeightChangeBlockPeriod);
       }
     }
   },
   computed: {
+    // The initial denorm weights come from the contract, and can be anything valid (1-49)
+    // In particular, the total weight could still be 50 if you load a "legacy" pool, even though
+    //   current code would limit the max to 25
+    // So we need to compute the total from the data, then calculate the relative percentages
     oldTotalWeight() {
       return this.pool.tokens.reduce(
         (a, b) => a + parseFloat(b.denormWeight),
         0
       );
     },
+    // This is the "new" total weight, from which the current percentages will be calculated
+    // Note that *any* number > 0 is allowed, so this total could have any positive value at all
+    //   i.e., it is NOT a total denorm or total percentage
     totalWeight() {
       return this.weights.reduce((a, b) => a + parseFloat(b), 0);
     },
     minimumWeightChangeBlockPeriod() {
       return this.bPool.metadata.minimumWeightChangeBlockPeriod || 0;
     },
+    isStartBlockValid() {
+      return this.validStartBlock();
+    },
+    isEndBlockValid() {
+      return this.validEndBlock();
+    },
     isValid() {
-      const correctStartBlock = this.startBlock >= this.web3.blockNumber;
-      const correctEndBlock =
-        this.endBlock - this.startBlock >= this.minimumWeightChangeBlockPeriod;
-      const correctBlocks = correctStartBlock && correctEndBlock;
+      // Check three conditions:
+      // 1) The update is not starting in the past
+      // 2) The total duration respects the minimum duration set in the contract
+      // 3) The denorm weights that will be passed to the contract are in the valid range
+      const correctBlocks = this.validStartBlock() && this.validEndBlock();
       const totalDenorm = this.weights.reduce((a, b) => a + parseFloat(b), 0);
       let correctWeight = true;
 
       for (let i = 0; i < this.pool.tokens.length; i++) {
         if (
+          // The individual weights can be any positive number
+          // Calculate the corresponding percentage, and pass it to
+          //   the function that calculates the denorm from this percentage,
+          //   (isLockedOrSharedPool flag is false if we are on this form)
+          // This would be passed to the contract, so ensure it's valid
           !isValidDenormValue(
             getDenorm((this.weights[i] / totalDenorm) * 100, false)
           )
@@ -164,6 +211,7 @@ export default {
 
       for (let i = 0; i < this.pool.tokens.length; i++) {
         const token = this.pool.tokens[i];
+        // Denorm calculation matches the code in the validation above
         newWeights[token.checksum] = getDenorm(
           (this.weights[i] / totalWeight) * 100,
           false
@@ -197,12 +245,22 @@ export default {
         return false;
       }
 
-      return true;
+      return isValidDenormValue(this.currentDenorm(weight));
     },
     currentDenorm(weight) {
+      // Calculate what the denorm would be given current input
+      //   (e.g., for tooltip display)
       const total = this.weights.reduce((a, b) => a + parseFloat(b), 0);
 
       return getDenorm((weight / total) * 100, false).toFixed(3);
+    },
+    validStartBlock() {
+      return this.startBlock >= this.web3.blockNumber;
+    },
+    validEndBlock() {
+      return (
+        this.endBlock - this.startBlock >= this.minimumWeightChangeBlockPeriod
+      );
     }
   }
 };
