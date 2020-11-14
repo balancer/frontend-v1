@@ -22,23 +22,15 @@
         class="overflow-hidden mr-n3"
       >
         <div v-if="pools.length > 0" :key="tag">
-          <div
-            v-for="pool in pools"
-            :key="pool.address"
-            class="d-block float-left col-12 col-lg-4"
-          >
-            <BlockPool :pool="pool" class="mr-3 mb-3" />
-          </div>
+          <BlockPool v-for="pool in pools" :key="pool.address" :pool="pool" />
         </div>
         <div v-if="loading">
-          <div
+          <BlockPool
             v-for="i in 3"
             :key="i"
             :class="i > 1 && 'hide-sm'"
-            class="d-block float-left col-12 col-lg-4"
-          >
-            <BlockPool :loading="true" class="mr-3 mb-3" />
-          </div>
+            :loading="true"
+          />
         </div>
       </div>
     </Container>
@@ -87,6 +79,17 @@ export default {
   computed: {
     tag() {
       return this.$route.params.tag || 'all';
+    },
+    poolIds() {
+      return this.tag === 'favorites'
+        ? Object.keys(this.favorite.favorites)
+        : registry.getPools({
+            orderBy: this.orderBy,
+            tokens: this.filters.token || [],
+            tag: this.tag,
+            limit: 9,
+            page: this.page
+          });
     }
   },
   methods: {
@@ -94,22 +97,14 @@ export default {
       if (this.loaded) return;
       this.loading = true;
       this.page++;
-      const poolIds =
-        this.tag === 'favorites'
-          ? Object.keys(this.favorite.favorites)
-          : registry.getPools({
-              orderBy: this.orderBy,
-              tokens: this.filters.token || [],
-              tag: this.tag,
-              limit: 9,
-              page: this.page
-            });
+      const poolIds = this.poolIds;
       let pools = [];
       if (poolIds.length > 0) {
         pools = Object.values(
           await getPools(this.config.chainId, provider, poolIds)
         );
       }
+      if (JSON.stringify(poolIds) !== JSON.stringify(this.poolIds)) return;
       if (pools.length < 9) this.loaded = true;
       this.pools = this.pools.concat(pools);
       this.loading = false;

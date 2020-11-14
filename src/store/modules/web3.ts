@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue';
 import { Web3Provider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
@@ -9,7 +10,7 @@ import abi from '@/helpers/abi';
 import config from '@/config';
 import provider from '@/helpers/provider';
 import wsProvider from '@/helpers/provider';
-import { multicall } from '@/_balancer/utils';
+import { getBalances, getPoolSharesByAddress } from '@/_balancer/utils';
 
 let auth;
 
@@ -106,17 +107,11 @@ const mutations = {
   HANDLE_DISCONNECT() {
     console.debug('HANDLE_DISCONNECT');
   },
-  GET_BALANCES_REQUEST() {
-    console.debug('GET_BALANCES_REQUEST');
-  },
   GET_BALANCES_SUCCESS(_state, payload) {
     for (const address in payload) {
       Vue.set(_state.balances, address, payload[address]);
     }
     console.debug('GET_BALANCES_SUCCESS');
-  },
-  GET_BALANCES_FAILURE(_state, payload) {
-    console.debug('GET_BALANCES_FAILURE', payload);
   },
   GET_ALLOWANCES_REQUEST() {
     console.debug('GET_ALLOWANCES_REQUEST');
@@ -193,7 +188,12 @@ const actions = {
       const calls = tokens
         .map(token => keys.map(key => [token, key, []]))
         .reduce((a, b) => [...a, ...b]);
-      const res = await multicall(provider, abi['TestToken'], calls);
+      const res = await multicall(
+        config.chainId,
+        provider,
+        abi['BPool'],
+        calls
+      );
       const tokenMetadata = Object.fromEntries(
         tokens.map((token, i) => [
           token,
@@ -277,6 +277,7 @@ const actions = {
     const tokens = Object.entries(config.tokens).map(token => token[1].address);
     await dispatch('getProxy');
     await Promise.all([
+      // getPoolSharesByAddress(config.chainId, provider, state.dsProxyAddress, state.account),
       dispatch('getBalances', tokens),
       dispatch('getAllowances', tokens),
       dispatch('getUserPoolShares')
@@ -290,7 +291,7 @@ const actions = {
       provider
     );
     const calls = [];
-    const testToken = new Interface(abi.TestToken);
+    const testToken = new Interface(abi['BPool']);
     const tokensToFetch = tokens
       ? tokens
       : Object.keys(state.balances).filter(token => token !== 'ether');
@@ -324,48 +325,17 @@ const actions = {
     }
   },
   getBalances: async ({ commit }, tokens) => {
-    commit('GET_BALANCES_REQUEST');
-    const address = state.account;
-    const promises: any = [];
-    const multi = new Contract(
-      config.addresses.multicall,
-      abi['Multicall'],
-      provider
+    const balances = await getBalances(
+      config.chainId,
+      provider,
+      state.account,
+      tokens
     );
-    const calls = [];
-    const testToken = new Interface(abi.TestToken);
-    const tokensToFetch = tokens
-      ? tokens
-      : Object.keys(state.balances).filter(token => token !== 'ether');
-    tokensToFetch.forEach(token => {
-      // @ts-ignore
-      calls.push([token, testToken.encodeFunctionData('balanceOf', [address])]);
-    });
-    promises.push(multi.aggregate(calls));
-    promises.push(multi.getEthBalance(address));
-    const balances: any = {};
-    try {
-      // @ts-ignore
-      const [[, response], ethBalance] = await Promise.all(promises);
-      // @ts-ignore
-      balances.ether = ethBalance.toString();
-      let i = 0;
-      response.forEach(value => {
-        if (tokensToFetch && tokensToFetch[i]) {
-          const balanceNumber = testToken.decodeFunctionResult(
-            'balanceOf',
-            value
-          );
-          balances[tokensToFetch[i]] = balanceNumber.toString();
-        }
-        i++;
-      });
-      commit('GET_BALANCES_SUCCESS', balances);
-      return balances;
-    } catch (e) {
-      commit('GET_BALANCES_FAILURE', e);
-      return Promise.reject();
-    }
+    // @ts-ignore
+    const balance = await provider.getBalance(state.account);
+    balances.ether = balance.toString();
+    commit('GET_BALANCES_SUCCESS', balances);
+    return balances;
   },
   getAllowances: async ({ commit }, tokens) => {
     commit('GET_ALLOWANCES_REQUEST');
@@ -379,7 +349,7 @@ const actions = {
       provider
     );
     const calls = [];
-    const testToken = new Interface(abi.TestToken);
+    const testToken = new Interface(abi['BPool']);
     tokens.forEach(token => {
       calls.push([
         // @ts-ignore

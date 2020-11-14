@@ -830,7 +830,7 @@ const actions = {
     const symbol = tokenMetadata ? tokenMetadata.symbol : shortenAddress(token);
     try {
       const params = [
-        'TestToken',
+        'BPool',
         token,
         'approve',
         [spender, MAX_UINT.toString()],

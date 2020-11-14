@@ -1,6 +1,9 @@
 import merge from 'lodash/merge';
 import { getAddress, isAddress } from '@ethersproject/address';
-import { multicall, subgraphRequest } from './utils';
+import {
+  multicall,
+  subgraphRequest
+} from '@snapshot-labs/snapshot.js/src/utils';
 import provider from '@/helpers/provider';
 import abi from '@/helpers/abi';
 import { poolRights, formatPool } from '@/helpers/utils';
@@ -84,6 +87,7 @@ export default class Pool {
         addTokenTimeLockInBlocks,
         { startBlock, endBlock }
       ] = await multicall(
+        config.chainId,
         provider,
         abi['ConfigurableRightsPool'],
         [
@@ -124,6 +128,7 @@ export default class Pool {
       swapFee,
       totalShares
     ] = await multicall(
+      config.chainId,
       provider,
       abi['BPool'],
       [
