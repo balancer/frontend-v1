@@ -61,7 +61,8 @@ export default {
     queryPrivatePools() {
       return {
         where: {
-          finalized: false
+          finalized: false,
+          crp: false
         }
       };
     }
