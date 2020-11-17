@@ -53,8 +53,9 @@
           </div>
           <div v-text="getBalance(token)" class="column-ms hide-sm" />
           <div
-            class="column tooltipped tooltipped-n"
+            class="column"
             :aria-label="currentDenorm(token)"
+            :class="{tooltipped : currentDenorm(token), 'tooltipped-n': currentDenorm(token) }"
           >
             <input
               class="input pool-input text-right"
@@ -604,10 +605,15 @@ export default {
         : (this.weights[token] / this.totalWeight) * 100;
     },
     currentDenorm(token) {
-      return getDenorm(
+      const pct = this.getPercentage(token);
+      if (!pct || isNaN(pct)) {
+        return null;
+      }
+
+      return `Denorm: ${getDenorm(
         this.getPercentage(token),
         this.isSharedOrLocked()
-      ).toFixed(3);
+      ).toFixed(3)}`;
     },
     isDenormValid(token) {
       const denorm = getDenorm(
