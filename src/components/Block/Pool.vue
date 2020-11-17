@@ -15,7 +15,7 @@
         </div>
         <router-link :to="{ name: 'pool', params: { id: pool.address } }">
           <div class="mb-3">
-            {{ pool.finalized ? 'Shared pool' : 'Private pool' }}
+            {{ poolType }}
           </div>
           <div class="mt-8 mb-4">
             <span class="Progress position-relative">
@@ -62,7 +62,7 @@
             <div>
               Volume (1d)
               <span class="float-right text-white">
-                {{ _num(poolVolume, 'usd') }}
+                {{ _num(poolMetadata.volume, 'usd') }}
               </span>
             </div>
           </div>
@@ -85,8 +85,16 @@ export default {
     poolLiquidity() {
       return getPoolLiquidity(this.pool, this.price.values);
     },
-    poolVolume() {
-      return registry.volumes[this.pool.address] || 0;
+    poolMetadata() {
+      return registry.metadata[this.pool.address] || {};
+    },
+    poolType() {
+      let type = 'Shared pool';
+      if (this.poolMetadata.tags) {
+        if (this.poolMetadata.tags.includes('private')) type = 'Private pool';
+        if (this.poolMetadata.tags.includes('smart-pool')) type = 'Smart pool';
+      }
+      return type;
     }
   }
 };
