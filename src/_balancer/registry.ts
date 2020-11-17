@@ -1,22 +1,29 @@
 import { ipfsGet } from '@snapshot-labs/snapshot.js/src/utils';
+import config from '@/config';
+
+const REGISTRY_IPNS_DOMAIN = 'balancer-team-bucket.storage.fleek.co';
+const REGISTRY_IPNS_URLS = {
+  '1': `${REGISTRY_IPNS_DOMAIN}/balancer-pool-management/registry`,
+  '42': `${REGISTRY_IPNS_DOMAIN}/balancer-pool-management-kovan/registry`
+};
 
 export class Registry {
   public registry?;
-  public volumes?;
+  public metadata?;
 
   async init() {
     // const random = Math.random();
     this.registry = await ipfsGet(
       'cloudflare-ipfs.com',
-      `balancer-team-bucket.storage.fleek.co/balancer-pool-management/registry?cb=98`,
+      REGISTRY_IPNS_URLS[config.chainId],
       'ipns'
     );
     this.registry.pools = this.registry.pools.map((pool, i) => {
       pool.liquidity = this.registry.pools.length - i;
       return pool;
     });
-    this.volumes = Object.fromEntries(
-      this.registry.pools.map(pool => [pool.address, pool.volume])
+    this.metadata = Object.fromEntries(
+      this.registry.pools.map(pool => [pool.address, pool])
     );
   }
 
@@ -37,6 +44,10 @@ export class Registry {
       pools = pools.slice((page - 1) * query.limit, page * query.limit);
     }
     return pools.map(pool => pool.address);
+  }
+
+  getPoolIds() {
+    return this.registry.pools.map(pool => pool.address);
   }
 
   getTags() {

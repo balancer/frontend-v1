@@ -1,11 +1,8 @@
 import { getAddress } from '@ethersproject/address';
-import { hexZeroPad } from '@ethersproject/bytes';
-import { id } from '@ethersproject/hash';
-import { resolveProperties } from '@ethersproject/properties';
 import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
 import config from '../config';
 import abi from '@/helpers/abi';
-import { formatUnits } from '@ethersproject/units';
+import registry from '@/_balancer/registry';
 
 export function getTokenLogoUrl(address: string): string | null {
   if (address === 'ether') {
@@ -32,28 +29,13 @@ export async function getBalances(
     tokens.map(token => [token, 'balanceOf', [address]])
   );
   return Object.fromEntries(
-    result.map(([balance], i) => [tokens[i], balance.toString()])
+    result
+      .map(([balance], i) => [tokens[i], balance.toString()])
+      .filter(balance => balance[1] !== '0')
   );
 }
 
-export async function getPoolSharesByAddress(
-  network,
-  provider,
-  proxyAddress: string,
-  address: string
-) {
-  const events = await resolveProperties({
-    from: provider.getLogs({
-      fromBlock: 0,
-      toBlock: 'latest',
-      topics: [
-        id('LOG_JOIN(address,address,uint256)'),
-        hexZeroPad(proxyAddress, 32)
-      ]
-    })
-  });
-  const poolIds = events.from.map(event => event.address);
-  const balances = await getBalances(network, provider, address, poolIds);
-  console.log(balances);
-  return balances;
+export async function getPoolShares(network, provider, address: string) {
+  const poolIds = registry.getPoolIds();
+  return await getBalances(network, provider, address, poolIds);
 }

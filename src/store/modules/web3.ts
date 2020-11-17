@@ -10,7 +10,7 @@ import abi from '@/helpers/abi';
 import config from '@/config';
 import provider from '@/helpers/provider';
 import wsProvider from '@/helpers/provider';
-import { getBalances, getPoolSharesByAddress } from '@/_balancer/utils';
+import { getBalances } from '@/_balancer/utils';
 
 let auth;
 
@@ -24,9 +24,9 @@ const state = {
   injectedLoaded: false,
   injectedChainId: null,
   blockNumber: 0,
-  account: null,
-  name: null,
-  dsProxyAddress: null,
+  account: '',
+  name: '',
+  dsProxyAddress: '',
   active: false,
   balances: {},
   allowances: {},
@@ -277,7 +277,6 @@ const actions = {
     const tokens = Object.entries(config.tokens).map(token => token[1].address);
     await dispatch('getProxy');
     await Promise.all([
-      // getPoolSharesByAddress(config.chainId, provider, state.dsProxyAddress, state.account),
       dispatch('getBalances', tokens),
       dispatch('getAllowances', tokens),
       dispatch('getUserPoolShares')
