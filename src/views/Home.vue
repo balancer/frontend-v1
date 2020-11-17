@@ -9,10 +9,16 @@
           </UiButton>
         </router-link>
       </div>
+      <div class="d-flex sliding">
+        <Tags :tag="tag" />
+      </div>
     </Container>
     <Container class="d-flex sliding mb-4">
-      <Filters v-model="filters" class="mr-2 flex-auto flex-lg-1" />
-      <Tags class="hide-sm hide-md hide-lg flex-auto mr-2" :tag="tag" />
+      <Filters
+        v-model="tokens"
+        :value="tokens"
+        class="mr-2 flex-auto flex-lg-1"
+      />
       <OrderBy v-model="orderBy" />
     </Container>
     <Container :slim="true">
@@ -42,6 +48,8 @@ import { getPools } from '@/_balancer/explore';
 import provider from '@/helpers/provider';
 import registry from '@/_balancer/registry';
 
+const DEFAULT_ORDER_BY = 'liquidity';
+
 export default {
   data() {
     return {
@@ -49,8 +57,12 @@ export default {
       loaded: false,
       loading: false,
       pools: [],
-      orderBy: 'volume',
-      filters: {}
+      orderBy: DEFAULT_ORDER_BY,
+      tokens: this.$route.query.token
+        ? Array.isArray(this.$route.query.token)
+          ? this.$route.query.token
+          : [this.$route.query.token]
+        : []
     };
   },
   watch: {
@@ -60,16 +72,18 @@ export default {
       this.pools = [];
       await this.loadNextPage();
     },
-    async filters() {
+    async tokens() {
       this.page = 0;
       this.loaded = false;
       this.pools = [];
+      this.updateRoute();
       await this.loadNextPage();
     },
     async orderBy() {
       this.page = 0;
       this.loaded = false;
       this.pools = [];
+      this.updateRoute();
       await this.loadNextPage();
     }
   },
@@ -80,13 +94,18 @@ export default {
     tag() {
       return this.$route.params.tag || 'all';
     },
+    filters() {
+      return {
+        orderBy: this.orderBy,
+        tokens: this.tokens || [],
+        tag: this.tag
+      };
+    },
     poolIds() {
       return this.tag === 'favorites'
         ? Object.keys(this.favorite.favorites)
         : registry.getPools({
-            orderBy: this.orderBy,
-            tokens: this.filters.token || [],
-            tag: this.tag,
+            ...this.filters,
             limit: 9,
             page: this.page
           });
@@ -94,6 +113,8 @@ export default {
   },
   methods: {
     async loadNextPage() {
+      if (this.loading && this.page !== 0) return;
+      const filters = this.filters;
       if (this.loaded) return;
       this.loading = true;
       this.page++;
@@ -104,10 +125,18 @@ export default {
           await getPools(this.config.chainId, provider, poolIds)
         );
       }
-      if (JSON.stringify(poolIds) !== JSON.stringify(this.poolIds)) return;
+      if (JSON.stringify(filters) !== JSON.stringify(this.filters)) return;
       if (pools.length < 9) this.loaded = true;
       this.pools = this.pools.concat(pools);
       this.loading = false;
+    },
+    updateRoute() {
+      this.$router.push({
+        query: {
+          orderBy: this.orderBy === DEFAULT_ORDER_BY ? undefined : this.orderBy,
+          token: this.tokens
+        }
+      });
     }
   }
 };

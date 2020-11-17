@@ -35,8 +35,6 @@
 </template>
 
 <script>
-import { formatFilters } from '@/helpers/utils';
-
 export default {
   props: ['value'],
   data() {
@@ -49,23 +47,16 @@ export default {
   methods: {
     addToken(token) {
       this.tokens.push(token);
-      this.$emit('input', {
-        type: this.type,
-        token: this.tokens
-      });
+      this.$emit('input', this.tokens);
     },
     deleteToken(i) {
       delete this.tokens[i];
       this.tokens = this.tokens.filter(() => true);
-      this.$emit('input', {
-        type: this.type,
-        token: this.tokens
-      });
+      this.$emit('input', this.tokens);
     }
   },
   created() {
-    const filters = formatFilters(this.value);
-    this.tokens = filters.token;
+    this.tokens = this.value;
   }
 };
 </script>
