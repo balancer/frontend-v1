@@ -67,8 +67,18 @@ function bpowApprox(
   let term = BONE;
   let sum = term;
   let negative = false;
+  const LOOP_LIMIT = 1000;
 
+  let idx = 0;
   for (let i = 1; term.gte(precision); i++) {
+    idx +=1;
+    // Some values cause it to lock up the browser
+    // These seem to be cases where it's going to be invalid anyway
+    // So halt after a max iteration limit
+    if (LOOP_LIMIT == idx) {
+      break
+    }
+
     const bigK = new BigNumber(i).times(BONE);
     const { res: c, bool: cneg } = bsubSign(a, bigK.minus(BONE));
     term = bmul(term, bmul(c, x));
