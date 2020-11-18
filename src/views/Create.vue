@@ -55,7 +55,10 @@
           <div
             class="column"
             :aria-label="currentDenorm(token)"
-            :class="{tooltipped : currentDenorm(token), 'tooltipped-n': currentDenorm(token) }"
+            :class="{
+              tooltipped: currentDenorm(token),
+              'tooltipped-n': currentDenorm(token)
+            }"
           >
             <input
               class="input pool-input text-right"
@@ -189,7 +192,8 @@ import {
   normalizeBalance,
   denormalizeBalance,
   getTokenBySymbol,
-  poolTypes
+  poolTypes,
+  toWei
 } from '@/helpers/utils';
 import { validateNumberInput, formatError } from '@/helpers/validation';
 import {
@@ -451,11 +455,20 @@ export default {
     },
     async create() {
       this.loading = true;
+      const weights = this.tokens.map(token =>
+        toWei(
+          getDenorm(
+            this.getPercentage(token),
+            this.isSharedOrLocked()
+          ).toString()
+        ).toString()
+      );
+
       if (this.type === 'SHARED_POOL') {
         const poolParams = {
           tokens: this.tokens,
           balances: this.amounts,
-          weights: this.weights,
+          weights: weights,
           swapFee: this.swapFee
         };
         await this.createPool(poolParams);
@@ -474,7 +487,7 @@ export default {
           poolTokenName,
           constituentTokens: this.tokens,
           tokenBalances: this.amounts,
-          tokenWeights: this.weights,
+          tokenWeights: weights,
           swapFee: this.swapFee
         };
         const crpParams = {
