@@ -239,6 +239,7 @@
     "weightsPct": "Weights percent",
     "willBurn": "This operation will burn",
     "withdraw": "Withdraw",
+    "withdrawalAmt": "Withdrawal amt.",
     "wrap": "Wrap",
     "wrapEthToWeth": "Change ETH to wETH",
     "wrapFactor": "Wrap factor",
