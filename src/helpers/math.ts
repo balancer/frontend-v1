@@ -73,6 +73,7 @@ function bpowApprox(
   for (let i = 1; term.gte(precision); i++) {
     idx +=1;
     // Some values cause it to lock up the browser
+    // Test case: Remove Liquidity, single asset, poolAmountIn >> max
     // These seem to be cases where it's going to be invalid anyway
     // So halt after a max iteration limit
     if (LOOP_LIMIT == idx) {
