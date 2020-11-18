@@ -51,7 +51,20 @@ export class Registry {
   }
 
   getTags() {
-    return ['defi', 'stablecoin', 'smart-pool', 'private'];
+    return {
+      defi: {
+        name: 'DeFi'
+      },
+      stablecoin: {
+        name: 'Stablecoins'
+      },
+      'smart-pool': {
+        name: 'Smart pools'
+      },
+      private: {
+        name: 'Private pools'
+      }
+    };
   }
 }
 

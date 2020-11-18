@@ -1,12 +1,12 @@
 <template>
   <div>
     <router-link
-      :to="{ name: 'tag', params: { tag: t } }"
+      :to="{ name: 'tag', params: { tag: i } }"
       v-for="(t, i) in tags"
       :key="i"
       class="mr-2"
     >
-      <Tag :class="tag === t && 'active'">{{ t }}</Tag>
+      <Tag :class="tag === i && 'active'">{{ t.name }}</Tag>
     </router-link>
   </div>
 </template>
@@ -20,10 +20,16 @@ export default {
   },
   computed: {
     tags() {
-      const tags = ['all'];
+      const tags = {
+        all: {
+          name: 'All'
+        }
+      };
       if (Object.keys(this.favorite.favorites).length > 0)
-        tags.push('favorites');
-      return tags.concat(registry.getTags());
+        tags['favorites'] = {
+          name: 'Favorites'
+        };
+      return { ...tags, ...registry.getTags() };
     }
   }
 };
