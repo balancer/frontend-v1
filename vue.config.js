@@ -1,7 +1,13 @@
 const path = require('path');
 
 module.exports = {
-  publicPath: process.env.DEPLOY ? '././' : '/',
+  css: {
+    loaderOptions: {
+      sass: {
+        implementation: require('sass')
+      }
+    }
+  },
   pluginOptions: {
     express: {
       shouldServeApp: true,
