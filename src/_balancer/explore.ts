@@ -2,7 +2,6 @@ import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
 import abi from '@/helpers/abi';
 import config from '@/config';
 import { unknownColors } from '@/helpers/utils';
-import BigNumber from '@/helpers/bignumber';
 import { getAddress } from '@ethersproject/address';
 import { formatUnits } from '@ethersproject/units';
 
@@ -121,9 +120,9 @@ export async function getPools(network, provider, poolIds) {
             poolToken.color = unknownColors[colorIndex];
             colorIndex++;
           }
-          poolToken.weight = new BigNumber(100)
-            .div(pool[1].totalDenormWeight.toString())
-            .times(poolToken.denormWeight.toString());
+          poolToken.weight =
+            (100 / parseFloat(formatUnits(pool[1].totalDenormWeight))) *
+            parseFloat(formatUnits(poolToken.denormWeight));
           return poolToken;
         })
         .sort((a, b) => b.weight.toString() - a.weight.toString(), 0);

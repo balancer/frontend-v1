@@ -1,80 +1,96 @@
 <template>
-  <Page :requireLogin="true">
-    <Container class="d-flex mb-3">
-      <div class="flex-auto">
-        <h3 v-text="$t('myWallet')" />
-        <a :href="_etherscanLink(web3.account)" target="_blank">
-          <span v-text="_shortenAddress(web3.account)" />
+  <UiModal :open="open" @close="$emit('close')" class="side-modal">
+    <h3 v-text="$t('myWallet')" class="p-4 border-bottom text-center" />
+    <div v-if="side !== 0">
+      <a @click="side = 0" class="d-inline-block px-4 pt-4 pb-2">
+        <Icon name="back" size="22" class="v-align-middle" />
+        Back
+      </a>
+      <FormWrapper :side="side" @close="side = 0" />
+    </div>
+    <div v-else class="modal-body">
+      <Block class="m-4 py-4 text-center position-relative">
+        <a
+          :href="_etherscanLink(web3.account)"
+          target="_blank"
+          class="position-absolute right-2 top-3"
+        >
           <Icon name="external-link" size="16" class="ml-1 mr-2" />
         </a>
-      </div>
-      <div class="text-right">
         <h3 v-text="_num(balancesTotalValue, 'usd-long')" />
         {{ $t('totalValue') }}
-      </div>
-    </Container>
-    <Container :slim="true">
-      <UiTable>
-        <UiTableTh>
-          <div v-text="'Asset'" class="flex-auto text-left" />
-          <div v-text="'Holdings'" class="column" />
-        </UiTableTh>
-        <UiTableTr v-for="(balance, i) in balances" :key="i">
-          <Token :address="balance.address" class="mr-3" size="32" />
-          <div class="text-left">
-            <div v-text="balance.name" />
-            <div v-text="balance.symbol" class="text-gray" />
+      </Block>
+      <Block :slim="true" class="m-4">
+        <div class="d-flex p-3">
+          <div v-text="'Asset'" class="flex-auto" />
+          <div v-text="'Holdings'" class="column text-right" />
+        </div>
+        <div
+          v-for="(balance, i) in balances"
+          :key="i"
+          class="d-flex p-3 border-top"
+        >
+          <div>
+            <Token :address="balance.address" class="mr-3" size="32" />
           </div>
-          <div class="flex-auto text-left">
-            <div v-if="balance.address !== 'ether'" class="flex-auto">
+          <div class="text-left">
+            <div v-text="balance.name" class="text-white" />
+            <div v-text="balance.symbol" />
+          </div>
+          <div class="flex-auto">
+            <div
+              v-if="balance.address !== 'ether'"
+              class="flex-auto float-right"
+            >
               <UiButton
                 v-if="balance.address === config.addresses.weth"
-                @click="[(modalWrapperOpen = true), (side = 2)]"
+                @click="side = 2"
                 type="button"
                 class="button-primary button-sm ml-2"
               >
-                Unwrap to ETH
+                Unwrap
               </UiButton>
             </div>
-            <div v-else class="flex-auto">
+            <div v-else class="flex-auto float-right">
               <UiButton
-                @click="[(modalWrapperOpen = true), (side = 1)]"
+                @click="side = 1"
                 type="button"
                 class="button-primary button-sm ml-2"
               >
-                Wrap to WETH
+                Wrap
               </UiButton>
             </div>
           </div>
-          <div class="column">
-            <div>
+          <div class="column text-right">
+            <div class="text-white">
               {{ _num(balance.balance, 'long') }}
               {{ balance.symbol }}
             </div>
             <div v-text="_num(balance.value, 'usd-long')" class="text-gray" />
           </div>
-        </UiTableTr>
-      </UiTable>
-    </Container>
-    <portal to="modal">
-      <ModalWrapper
-        :open="modalWrapperOpen"
-        @close="modalWrapperOpen = false"
-        :side="side"
-      />
-    </portal>
-  </Page>
+        </div>
+      </Block>
+    </div>
+  </UiModal>
 </template>
 
 <script>
 import { formatUnits } from '@ethersproject/units';
 
 export default {
+  props: {
+    open: Boolean
+  },
   data() {
     return {
       modalWrapperOpen: false,
       side: 0
     };
+  },
+  watch: {
+    open() {
+      this.side = 0;
+    }
   },
   computed: {
     balances() {

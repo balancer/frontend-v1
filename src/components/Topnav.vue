@@ -16,15 +16,15 @@
           <span class="d-inline-block text-white mr-6" v-text="'Balancer'" />
         </router-link>
         <div class="topnav-menu float-left">
-          <router-link :to="{ name: 'home' }" class="d-inline-block py-4 px-2">
-            Explore pools
-          </router-link>
           <router-link
             v-if="$auth.isAuthenticated"
             :to="{ name: 'dashboard' }"
             class="d-inline-block py-4 px-2"
           >
             Dashboard
+          </router-link>
+          <router-link :to="{ name: 'home' }" class="d-inline-block py-4 px-2">
+            Explore pools
           </router-link>
           <span class="hide-sm">
             <a
@@ -78,11 +78,13 @@
           <Icon name="login" class="hide-lg hide-xl" />
           <span class="hide-sm hide-md" v-text="$t('connectWallet')" />
         </UiButton>
-        <router-link v-if="!wrongNetwork" :to="{ name: 'wallet' }" class="ml-2">
-          <UiButton class="v-align-bottom p-0">
-            <Icon name="wallet" size="20" class="mx-3" />
-          </UiButton>
-        </router-link>
+        <UiButton
+          v-if="$auth.isAuthenticated && !ui.authLoading && !wrongNetwork"
+          @click="modalOpen.wallet = true"
+          class="v-align-bottom p-0 ml-2"
+        >
+          <Icon name="wallet" size="20" class="mx-3" />
+        </UiButton>
         <UiButton
           v-if="myPendingTransactions.length"
           @click="modalOpen.activity = true"
@@ -104,6 +106,7 @@
         @login="handleLogin"
       />
       <ModalAbout :open="modalOpen.about" @close="modalOpen.about = false" />
+      <ModalWallet :open="modalOpen.wallet" @close="modalOpen.wallet = false" />
     </portal>
   </nav>
 </template>
@@ -118,7 +121,8 @@ export default {
       modalOpen: {
         account: false,
         activity: false,
-        about: false
+        about: false,
+        wallet: false
       }
     };
   },

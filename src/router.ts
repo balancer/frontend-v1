@@ -3,7 +3,6 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '@/views/Home.vue';
 import Dashboard from '@/views/Dashboard.vue';
 import Smart from '@/views/Smart.vue';
-import Wallet from '@/views/Wallet.vue';
 import Create from '@/views/Create.vue';
 import Pool from '@/views/Pool.vue';
 import PoolTokens from '@/views/Pool/Tokens.vue';
@@ -21,7 +20,6 @@ const routes: Array<RouteConfig> = [
   { path: '/dashboard', name: 'dashboard', component: Dashboard },
   { path: '/smart', name: 'smart', component: Smart },
   { path: '/pool/new', name: 'create', component: Create },
-  { path: '/wallet', name: 'wallet', component: Wallet },
   {
     path: '/pool/:id',
     component: Pool,
