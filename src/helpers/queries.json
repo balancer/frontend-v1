@@ -31,34 +31,14 @@
   },
   "getPool": {
     "pool": {
-      "id": true,
-      "controller": true,
-      "finalized": true,
       "crp": true,
-      "swapFee": true,
-      "totalWeight": true,
       "totalSwapVolume": true,
       "totalSwapFee": true,
       "createTime": true,
-      "joinsCount": true,
-      "exitsCount": true,
       "liquidity": true,
-      "tokensList": true,
       "swapsCount": true,
       "holdersCount": true,
       "tx": true,
-      "tokens": {
-        "__args": {
-          "orderBy": "denormWeight",
-          "orderDirection": "desc"
-        },
-        "id": true,
-        "address": true,
-        "balance": true,
-        "decimals": true,
-        "symbol": true,
-        "denormWeight": true
-      },
       "swaps": {
         "__args": {
           "first": 1,

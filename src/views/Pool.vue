@@ -27,7 +27,7 @@
       </div>
       <PoolBoxes :pool="pool" :bPool="bPool" />
       <Chart :pool="pool" />
-      <Tabs :pool="pool" />
+      <Tabs :pool="pool" class="sliding" />
       <router-view
         :key="$route.path"
         :pool="pool"

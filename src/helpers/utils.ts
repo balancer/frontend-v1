@@ -136,6 +136,7 @@ export function formatPool(pool) {
       ? parseFloat(pool.swaps[0].poolTotalSwapVolume)
       : 0;
   pool.lastSwapVolume = parseFloat(pool.totalSwapVolume) - poolTotalSwapVolume;
+  delete pool.swaps;
   return pool;
 }
 

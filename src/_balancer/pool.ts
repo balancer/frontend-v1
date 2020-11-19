@@ -11,6 +11,8 @@ import { formatUnits } from '@ethersproject/units';
 import queries from '@/helpers/queries.json';
 import pools from './pools.json';
 import config from '@/config';
+import { getPools } from '@/_balancer/explore';
+import registry from '@/_balancer/registry';
 
 export default class Pool {
   public readonly address: string;
@@ -60,20 +62,23 @@ export default class Pool {
   }
 
   async getMetadata() {
+    const poolFromNode = await this.getNodeMetadata();
+    let poolFromSubgraph = {};
     try {
-      this.metadata = await this.getSubgraphMetadata();
-      const metadata = await this.getNodeMetadata();
-      this.metadata = { ...this.metadata, ...metadata };
-      this.ready = true;
-      return this.metadata;
+      poolFromSubgraph = await this.getSubgraphMetadata();
     } catch (e) {
-      return Promise.reject();
+      console.log('Subgraph request failed', e);
     }
+    this.metadata = formatPool({ ...poolFromNode, ...poolFromSubgraph });
+    const crpMetadata = await this.getCrpMetadata();
+    this.metadata = { ...this.metadata, ...crpMetadata };
+    this.ready = true;
+    return this.metadata;
   }
 
-  async getNodeMetadata() {
-    const address = this.getBptAddress();
+  async getCrpMetadata() {
     if (this.isCrp()) {
+      const address = this.getBptAddress();
       const [
         publicSwap,
         name,
@@ -119,39 +124,9 @@ export default class Pool {
         startBlock: startBlock.toString(),
         endBlock: endBlock.toString()
       };
+    } else {
+      return {};
     }
-    const [
-      publicSwap,
-      name,
-      decimals,
-      symbol,
-      swapFee,
-      totalShares
-    ] = await multicall(
-      config.chainId,
-      provider,
-      abi['BPool'],
-      [
-        'isPublicSwap',
-        'name',
-        'decimals',
-        'symbol',
-        'getSwapFee',
-        'totalSupply'
-      ].map(method => [address, method, []])
-    );
-    return {
-      publicSwap: publicSwap[0],
-      name: name.toString(),
-      symbol: symbol.toString(),
-      swapFee: formatUnits(swapFee.toString(), decimals),
-      totalShares: formatUnits(totalShares.toString(), decimals),
-      rights: [],
-      bspCap: 0,
-      minimumWeightChangeBlockPeriod: 10,
-      addTokenTimeLockInBlocks: 10,
-      gradualUpdate: []
-    };
   }
 
   async getSubgraphMetadata() {
@@ -170,14 +145,52 @@ export default class Pool {
         }
       }
     };
-    try {
-      const response = await subgraphRequest(
-        config.subgraphUrl,
-        merge(queries['getPool'], query)
-      );
-      return formatPool(response.pool);
-    } catch (e) {
-      console.error(e);
-    }
+
+    const response = await subgraphRequest(
+      config.subgraphUrl,
+      merge(queries['getPool'], query)
+    );
+    return response.pool;
+  }
+
+  async getNodeMetadata() {
+    const copy = await getPools(config.chainId, provider, [this.address]);
+    const pool = copy[this.address];
+    pool.controller = pool.controller.toLowerCase();
+    pool.createTime = 0;
+    pool.crp =
+      registry.metadata[this.address].tags &&
+      registry.metadata[this.address].tags.includes('smart-pool');
+    pool.holdersCount = '0';
+    pool.id = pool.address;
+    pool.liquidity = '0';
+    delete pool.address;
+    pool.swapFee = formatUnits(pool.swapFee);
+    pool.swapCount = '0';
+    pool.tokens = pool.poolTokens.map(token => {
+      token.address = token.address.toLowerCase();
+      token.balance = formatUnits(token.balance, token.decimals);
+      token.id = `${this.address}-${token.address}`;
+      token.denormWeight = formatUnits(token.denormWeight);
+      delete token.color;
+      return token;
+    });
+    delete pool.poolTokens;
+    pool.totalSwapFee = '0';
+    pool.totalSwapVolume = '0';
+    pool.totalSwapVolume = '0';
+    pool.totalWeight = formatUnits(pool.totalDenormWeight);
+    delete pool.totalDenormWeight;
+    pool.totalShares = formatUnits(pool.totalSupply);
+    delete pool.totalSupply;
+    pool.symbol = 'BPT';
+    pool.name = 'Balancer Pool Token';
+    pool.tx = '';
+    pool.rights = [];
+    pool.bspCap = 0;
+    pool.minimumWeightChangeBlockPeriod = 10;
+    pool.addTokenTimeLockInBlocks = 10;
+    pool.gradualUpdate = [];
+    return pool;
   }
 }

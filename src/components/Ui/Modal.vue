@@ -50,7 +50,7 @@ export default {
       right: 0;
       top: 0;
       width: 100%;
-      max-width: 480px;
+      max-width: 460px;
       max-height: 100vh;
       border-radius: 0 !important;
       border-top: 0 !important;
