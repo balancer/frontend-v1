@@ -54,7 +54,19 @@
         />
       </div>
     </div>
-
+    <div v-if="bPool.isCrp() && lbpData.isLbpPool">
+      <h5
+        v-text="
+          `${$t('currentPrice', { token: lbpData.projectToken })}: ${_num(
+            lbpData.lbpPrice,
+            'usd'
+          )}`
+        "
+        format="currency"
+        class="text-white"
+      />
+      <br />
+    </div>
     <div v-if="rights.canChangeWeights" class="mb-3">
       <div v-text="$t('minimumUpdatePeriod')" class="mb-2" />
       <h5
@@ -194,14 +206,18 @@ import {
   MAX,
   blockNumberToTimestamp
 } from '@/helpers/utils';
+import { mapActions } from 'vuex';
+import { getLbpData } from '@/helpers/lbpData';
 import { getFactors } from '@/helpers/miningFactors';
 
 export default {
-  props: ['bPool'],
+  props: ['bPool', 'pool'],
   data() {
     return {
       poolRights,
-      MAX
+      MAX,
+      page: 0,
+      swaps: []
     };
   },
   computed: {
@@ -213,6 +229,9 @@ export default {
     },
     ongoingUpdate() {
       return this.bPool.isCrp() && this.bPool.metadata.startBlock !== '0';
+    },
+    lbpData() {
+      return getLbpData(this.pool, this.config.chainId);
     },
     updateFinished() {
       return (
@@ -228,6 +247,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['getLbpSwaps']),
     blockDate(block) {
       const blockTimestamp = blockNumberToTimestamp(
         Date.now(),
