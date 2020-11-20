@@ -65,7 +65,7 @@ export default {
       );
       let nextRequiredApproval = false;
       Object.entries(this.requireApprovals).forEach(requiredApproval => {
-        console.log(requiredApproval[1], allowances[requiredApproval[0]]);
+        // console.log(requiredApproval[1], allowances[requiredApproval[0]]);
         const token = this.web3.tokenMetadata[requiredApproval[0]];
         const requiredAmount = bnum(requiredApproval[1]).times(token.decimals);
         if (
@@ -74,7 +74,7 @@ export default {
           (!allowances[requiredApproval[0]] ||
             requiredAmount.gt(bnum(allowances[requiredApproval[0]])))
         ) {
-          console.log(requiredAmount, allowances[requiredApproval[0]]);
+          // console.log(requiredAmount, allowances[requiredApproval[0]]);
           nextRequiredApproval = {
             address: requiredApproval[0],
             symbol: token
