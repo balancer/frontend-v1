@@ -58,6 +58,8 @@ export function getLbpData(pool, chainId) {
     }
   }
 
+  if (reserveIdx === undefined || projectIdx === undefined) return {};
+
   return {
     // There are two tokens and (only) one of them is a reserve currency
     // We want the price of the pool token in terms of the reserve

@@ -8,8 +8,8 @@
 </template>
 
 <script>
+import pools from '@balancer-labs/assets/data/pools.json';
 import { formatFilters } from '@/helpers/utils';
-import pools from '@/_balancer/pools.json';
 
 export default {
   data() {
