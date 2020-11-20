@@ -2,7 +2,8 @@
 // To avoid this, limit the max to 25 for smart pools with canChangeWeights enabled
 // This lowers the resolution from 98%/2% to 96%/4%, but prevents contracts from locking up
 export function getMaxTotalWeight(isSharedOrLockedSmartPool) {
-  return isSharedOrLockedSmartPool ? 50 : 25;
+  // 50 can cause max weight errors on the last token rebind in some cases (with high precision weights)
+  return isSharedOrLockedSmartPool ? 49.9999 : 25;
 }
 
 // Allow entry of *any* positive number for a weight
