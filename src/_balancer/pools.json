@@ -77,5 +77,14 @@
     "is_compatible": false,
     "logo": true,
     "bptAddress": "0x8d1ce361eb68e9e05573443c407d4a3bed23b033"
+  },
+  "0xdd0b69d938c6e98bf8f16f04c4913a0c07e0bb6e": {
+    "chainId": 1,
+    "name": "PrimeDAO Smart Pool",
+    "about": "PrimeDAO's first DAO-governed Smart Pool. Liquidity providers should keep an eye on DAO governance results to monitor changes to the pool.",
+    "learn_more": "https://primedao.eth",
+    "logo": true,
+    "is_visible": true,
+    "is_compatible": true
   }
 }
