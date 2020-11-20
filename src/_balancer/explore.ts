@@ -67,24 +67,24 @@ export async function getPools(network, provider, poolIds) {
   i = 0;
   groupCalls = Object.fromEntries(
     Object.entries(pools)
-      .map(pool => pool[1].tokensList.map(poolToken => [pool[0], poolToken]))
+      .map(pool => pool[1].tokensList.map(token => [pool[0], token]))
       .reduce((a, b) => a.concat(b))
-      .map(([poolId, poolToken]) => {
+      .map(([poolId, token]) => {
         const tokenCalls = [
           ['decimals', 'decimals'],
           ['totalSupply', 'totalSupply'],
           ['balance', 'balanceOf', [poolId]],
-          ['denormWeight', 'getDenormalizedWeight', [poolToken]]
+          ['denormWeight', 'getDenormalizedWeight', [token]]
         ];
-        if (!tokenInvalids.includes(poolToken)) {
+        if (!tokenInvalids.includes(token)) {
           tokenCalls.push(['name', 'name']);
           tokenCalls.push(['symbol', 'symbol']);
         }
         return [
-          `${poolId}-${poolToken}`,
+          `${poolId}-${token}`,
           tokenCalls.map(call => {
             i++;
-            const address = call[0] === 'denormWeight' ? poolId : poolToken;
+            const address = call[0] === 'denormWeight' ? poolId : token;
             return {
               id: i - 1,
               name: call[0],
@@ -100,30 +100,30 @@ export async function getPools(network, provider, poolIds) {
     abi['BPool'],
     ungroupCalls(groupCalls)
   );
-  const poolTokens = groupResult(groupCalls, result);
+  const tokens = groupResult(groupCalls, result);
 
-  Object.entries(poolTokens).forEach(poolToken => {
-    const [poolId, address] = poolToken[0].split('-');
-    if (!pools[poolId].poolTokens) pools[poolId].poolTokens = [];
-    pools[poolId].poolTokens.push({ ...poolToken[1], address });
+  Object.entries(tokens).forEach(token => {
+    const [poolId, address] = token[0].split('-');
+    if (!pools[poolId].tokens) pools[poolId].tokens = [];
+    pools[poolId].tokens.push({ ...token[1], address });
   });
 
   pools = Object.fromEntries(
     Object.entries(pools).map(pool => {
       let colorIndex = 0;
       pool[1].address = pool[0];
-      pool[1].poolTokens = pool[1].poolTokens
-        .map(poolToken => {
-          if (config.tokens[poolToken.address]) {
-            poolToken.color = config.tokens[poolToken.address].color;
+      pool[1].tokens = pool[1].tokens
+        .map(token => {
+          if (config.tokens[token.address]) {
+            token.color = config.tokens[token.address].color;
           } else {
-            poolToken.color = unknownColors[colorIndex];
+            token.color = unknownColors[colorIndex];
             colorIndex++;
           }
-          poolToken.weight =
+          token.weight =
             (100 / parseFloat(formatUnits(pool[1].totalDenormWeight))) *
-            parseFloat(formatUnits(poolToken.denormWeight));
-          return poolToken;
+            parseFloat(formatUnits(token.denormWeight));
+          return token;
         })
         .sort((a, b) => b.weight.toString() - a.weight.toString(), 0);
       return pool;
@@ -135,17 +135,17 @@ export async function getPools(network, provider, poolIds) {
 
 export function getPoolLiquidity(pool, prices) {
   let poolLiquidity = 0;
-  const poolTokens: any = Object.values(pool.poolTokens);
-  const totalWeight = poolTokens
-    .map((poolToken: any) => parseFloat(formatUnits(poolToken.denormWeight)))
+  const tokens: any = Object.values(pool.tokens);
+  const totalWeight = tokens
+    .map((token: any) => parseFloat(formatUnits(token.denormWeight)))
     .reduce((a, b) => a + b, 0);
-  for (const poolToken of poolTokens) {
-    const price = prices[getAddress(poolToken.address)];
+  for (const token of tokens) {
+    const price = prices[getAddress(token.address)];
     if (!price) continue;
-    const poolTokenWeight = parseFloat(formatUnits(poolToken.denormWeight));
-    const poolTokenValue =
-      parseFloat(formatUnits(poolToken.balance, poolToken.decimals)) * price;
-    poolLiquidity = (poolTokenValue / poolTokenWeight) * totalWeight;
+    const tokenWeight = parseFloat(formatUnits(token.denormWeight));
+    const tokenValue =
+      parseFloat(formatUnits(token.balance, token.decimals)) * price;
+    poolLiquidity = (tokenValue / tokenWeight) * totalWeight;
   }
   return poolLiquidity;
 }

@@ -1,11 +1,9 @@
 <template>
   <div class="d-block float-left col-12 col-lg-4">
-    <Block class="b-pool-block p-3 mr-3 mb-3" :class="loading && 'anim-pulse'">
-      <template v-if="loading">
-        <div class="text-center">
-          <UiLoading class="big mt-8" />
-        </div>
-      </template>
+    <Block class="bpool-card p-3 mr-3 mb-3" :class="loading && 'anim-pulse'">
+      <div v-if="loading" class="text-center">
+        <UiLoading class="big mt-8" />
+      </div>
       <div v-else>
         <div class="position-relative">
           <Favorite
@@ -14,38 +12,8 @@
           />
         </div>
         <router-link :to="{ name: 'pool', params: { id: pool.address } }">
-          <div class="mb-3">
-            {{ poolType }}
-          </div>
-          <div class="mt-8 mb-4">
-            <span class="Progress position-relative">
-              <span
-                v-for="(token, i) in pool.poolTokens"
-                :key="i"
-                :style="
-                  `background-color: ${token.color}; width: ${token.weight}%;`
-                "
-                class="Progress-item text-center text-white"
-              >
-                <span
-                  :style="`left: ${i * 35}px`"
-                  class="position-absolute bottom-3 pr-2"
-                >
-                  <Token
-                    :size="30"
-                    :address="token.address"
-                    class="b-pool-block--logo border"
-                  />
-                </span>
-                <span
-                  class="position-absolute bottom-4 pb-1 right-0 b-pool-block--percent"
-                >
-                  {{ token.symbol }}
-                  {{ _num(token.weight / 100, 'percent') }}
-                </span>
-              </span>
-            </span>
-          </div>
+          <div v-text="poolType" class="mb-3" />
+          <PoolWeights :tokens="pool.tokens" class="mt-8 mb-4" />
           <div>
             <div>
               Swap fee
@@ -103,7 +71,7 @@ export default {
 <style lang="scss">
 @import '../../vars';
 
-.b-pool-block {
+.bpool-card {
   height: 214px;
   background-color: $panel-background;
   overflow: hidden;
@@ -120,39 +88,6 @@ export default {
   &:hover {
     .favorite {
       display: block;
-    }
-  }
-
-  .Progress {
-    background-color: transparent !important;
-    overflow: visible !important;
-
-    .b-pool-block--percent {
-      display: none;
-    }
-
-    &:hover {
-      .Progress-item {
-        opacity: 0.1;
-      }
-
-      .Progress-item:hover {
-        opacity: 1;
-
-        .b-pool-block--percent {
-          display: block;
-        }
-      }
-    }
-
-    .Progress-item {
-      &:first-child {
-        border-radius: 7px 0 0 7px !important;
-      }
-
-      &:last-child {
-        border-radius: 0 7px 7px 0 !important;
-      }
     }
   }
 }

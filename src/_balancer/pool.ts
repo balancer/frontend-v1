@@ -167,7 +167,7 @@ export default class Pool {
     delete pool.address;
     pool.swapFee = formatUnits(pool.swapFee);
     pool.swapCount = '0';
-    pool.tokens = pool.poolTokens.map(token => {
+    pool.tokens = pool.tokens.map(token => {
       token.address = token.address.toLowerCase();
       token.balance = formatUnits(token.balance, token.decimals);
       token.id = `${this.address}-${token.address}`;
@@ -175,7 +175,6 @@ export default class Pool {
       delete token.color;
       return token;
     });
-    delete pool.poolTokens;
     pool.totalSwapFee = '0';
     pool.totalSwapVolume = '0';
     pool.totalSwapVolume = '0';

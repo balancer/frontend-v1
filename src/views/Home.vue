@@ -28,14 +28,20 @@
         class="overflow-hidden mr-n3"
       >
         <div v-if="pools.length > 0" :key="tag">
-          <BlockPool v-for="pool in pools" :key="pool.address" :pool="pool" />
+          <PoolCard
+            v-for="pool in pools"
+            :key="pool.address"
+            :pool="pool"
+            view="list"
+          />
         </div>
         <div v-if="loading">
-          <BlockPool
+          <PoolCard
             v-for="i in 3"
             :key="i"
             :class="i > 1 && 'hide-sm'"
             :loading="true"
+            view="list"
           />
         </div>
       </div>
