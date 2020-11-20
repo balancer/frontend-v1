@@ -25,10 +25,10 @@
       <div
         v-infinite-scroll="loadNextPage"
         infinite-scroll-distance="0"
-        class="overflow-hidden mr-n3"
+        class="overflow-hidden"
       >
         <div v-if="pools.length > 0" :key="tag">
-          <PoolCard
+          <PoolList
             v-for="pool in pools"
             :key="pool.address"
             :pool="pool"
@@ -36,7 +36,7 @@
           />
         </div>
         <div v-if="loading">
-          <PoolCard
+          <PoolList
             v-for="i in 3"
             :key="i"
             :class="i > 1 && 'hide-sm'"

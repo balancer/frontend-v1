@@ -1,5 +1,5 @@
 <template>
-  <div class="bpool-list p-3 border-bottom" :class="loading && 'anim-pulse'">
+  <Block class="bpool-list p-3 mb-3 border-bottom" :class="loading && 'anim-pulse'">
     <div v-if="loading" class="text-center">
       <UiLoading class="big mt-2" />
     </div>
@@ -14,33 +14,35 @@
         :to="{ name: 'pool', params: { id: pool.address } }"
         class="overflow-hidden"
       >
-        <div v-text="poolType" class="mb-3" />
+        <div v-text="poolType" class="col-2 float-left" />
         <div class="col-4 float-left">
-          <PoolWeights :tokens="pool.tokens" class="mt-7 mb-3 mr-4" />
+          <PoolWeights :tokens="pool.tokens" class="mt-6 mr-4" />
         </div>
-        <div class="col-3 float-right">
-          <div>
-            Swap fee
-            <span class="float-right text-white">
-              {{ _num(pool.swapFee / 1e18, 'percent') }}
-            </span>
-          </div>
-          <div>
-            T.V.L.
-            <span class="float-right text-white">
-              {{ _num(poolLiquidity, 'usd') }}
-            </span>
-          </div>
-          <div>
-            Volume (1d)
-            <span class="float-right text-white">
-              {{ _num(poolMetadata.volume, 'usd') }}
-            </span>
+        <div class="col-6 float-right">
+          <div class="d-flex ml-4">
+            <div class="col-4">
+              <div class="mb-1">Swap fee</div>
+              <h4 class="text-white">
+                {{ _num(pool.swapFee / 1e18, 'percent') }}
+              </h4>
+            </div>
+            <div class="col-4">
+              <div class="mb-1">T.V.L.</div>
+              <h4 class="text-white">
+                {{ _num(poolLiquidity, 'usd') }}
+              </h4>
+            </div>
+            <div style="col-4">
+              <div class="mb-1">Volume (1d)</div>
+              <h4 class="text-white">
+                {{ _num(poolMetadata.volume, 'usd') }}
+              </h4>
+            </div>
           </div>
         </div>
       </router-link>
     </div>
-  </div>
+  </Block>
 </template>
 
 <script>
