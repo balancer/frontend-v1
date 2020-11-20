@@ -74,8 +74,8 @@ function bpowApprox(
     idx += 1;
     // Some values cause it to lock up the browser
     // Test case: Remove Liquidity, single asset, poolAmountIn >> max
-    // These seem to be cases where it's going to be invalid anyway
-    // So halt after a max iteration limit
+    // Should be halted before calling this, but...
+    // Retain this halt after a max iteration limit as a backstop/failsafe
     if (LOOP_LIMIT == idx) {
       break;
     }

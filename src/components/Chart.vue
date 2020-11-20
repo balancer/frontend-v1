@@ -25,22 +25,8 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { swapPrice, getLbpData } from '@/helpers/lbpData';
 import * as TV from 'lightweight-charts';
-
-const items = [
-  {
-    name: 'liquidity',
-    id: 'LIQUIDITY'
-  },
-  {
-    name: 'volume',
-    id: 'VOLUME'
-  },
-  {
-    name: 'feeReturns',
-    id: 'FEE_RETURNS'
-  }
-];
 
 const options = {
   timeScale: {
@@ -93,54 +79,98 @@ export default {
     return {
       loading: false,
       activeTab: 'LIQUIDITY',
-      items,
       metrics: {},
+      swaps: [],
       chart: null,
       series: null
     };
   },
   computed: {
+    lbpData() {
+      return getLbpData(this.pool, this.config.chainId);
+    },
+    displayPriceHistory() {
+      return this.pool.crp && this.lbpData.isLbpPool;
+    },
+    items() {
+      const tabList = [
+        {
+          name: 'liquidity',
+          id: 'LIQUIDITY'
+        },
+        {
+          name: 'volume',
+          id: 'VOLUME'
+        },
+        {
+          name: 'feeReturns',
+          id: 'FEE_RETURNS'
+        }
+      ];
+
+      if (this.displayPriceHistory) {
+        tabList.push({
+          name: this.$t('priceHistory', { token: this.lbpData.projectToken }),
+          id: 'PRICE'
+        });
+      }
+
+      return tabList;
+    },
     chartData() {
       const data = [];
-      const rowKeys = Object.keys(this.metrics);
-      for (let i = 1; i < rowKeys.length; i++) {
-        const timestamp = parseFloat(rowKeys[i].split('_')[1]);
-        const date = new Date(timestamp);
-        const values = this.metrics[rowKeys[i]];
-        const previousValues = this.metrics[rowKeys[i - 1]];
-        if (!values || !previousValues) {
+      if (this.activeTab == 'PRICE') {
+        for (let i = 0; i < this.swaps.length; i++) {
+          const swap = this.swaps[i];
+
           data.push({
-            time: date.toISOString()
+            time: swap.timestamp * 1e3,
+            value: swapPrice(this.pool, this.config.chainId, swap)
           });
-          continue;
         }
-        let value;
-        if (this.activeTab === 'LIQUIDITY')
-          value = parseFloat(values.poolLiquidity);
-        if (this.activeTab === 'VOLUME') {
-          const totalVolume = parseFloat(values.poolTotalSwapVolume);
-          const previousTotalVolume = parseFloat(
-            previousValues.poolTotalSwapVolume
-          );
-          value = totalVolume - previousTotalVolume;
+      } else {
+        const rowKeys = Object.keys(this.metrics);
+        for (let i = 1; i < rowKeys.length; i++) {
+          const timestamp = parseFloat(rowKeys[i].split('_')[1]);
+          const date = new Date(timestamp);
+          const values = this.metrics[rowKeys[i]];
+          const previousValues = this.metrics[rowKeys[i - 1]];
+          if (!values || !previousValues) {
+            data.push({
+              time: date.toISOString()
+            });
+            continue;
+          }
+          let value;
+          if (this.activeTab === 'LIQUIDITY') {
+            value = parseFloat(values.poolLiquidity);
+          } else if (this.activeTab === 'VOLUME') {
+            const totalVolume = parseFloat(values.poolTotalSwapVolume);
+            const previousTotalVolume = parseFloat(
+              previousValues.poolTotalSwapVolume
+            );
+            value = totalVolume - previousTotalVolume;
+          } else if (this.activeTab === 'FEE_RETURNS') {
+            const totalFee = parseFloat(values.poolTotalSwapFee);
+            const previousTotalFee = parseFloat(
+              previousValues.poolTotalSwapFee
+            );
+            const dailyFee = totalFee - previousTotalFee;
+            const liquidity = parseFloat(values.poolLiquidity);
+            value = (dailyFee / liquidity) * 365;
+          }
+
+          data.push({
+            time: date.toISOString(),
+            value
+          });
         }
-        if (this.activeTab === 'FEE_RETURNS') {
-          const totalFee = parseFloat(values.poolTotalSwapFee);
-          const previousTotalFee = parseFloat(previousValues.poolTotalSwapFee);
-          const dailyFee = totalFee - previousTotalFee;
-          const liquidity = parseFloat(values.poolLiquidity);
-          value = (dailyFee / liquidity) * 365;
-        }
-        data.push({
-          time: date.toISOString(),
-          value
-        });
       }
       return data;
     }
   },
   methods: {
-    ...mapActions(['getPoolMetrics']),
+    ...mapActions(['getPoolMetrics', 'getLbpSwaps']),
     handleChangeTab(tabId) {
       this.activeTab = tabId;
       this.loadChart();
@@ -173,8 +203,7 @@ export default {
             formatter: value => `${this._num(value, 'usd')}`
           }
         });
-      }
-      if (this.activeTab === 'VOLUME') {
+      } else if (this.activeTab === 'VOLUME') {
         this.series = this.chart.addHistogramSeries({
           color,
           priceFormat: {
@@ -182,8 +211,7 @@ export default {
             formatter: value => `${this._num(value, 'usd')}`
           }
         });
-      }
-      if (this.activeTab === 'FEE_RETURNS') {
+      } else if (this.activeTab === 'FEE_RETURNS') {
         this.series = this.chart.addAreaSeries({
           lineColor: color,
           topColor: `${color}ff`,
@@ -194,6 +222,18 @@ export default {
             formatter: value => `${this._num(value, 'percent')}`
           }
         });
+      } else if (this.activeTab === 'PRICE') {
+        this.series = this.chart.addAreaSeries({
+          color: color,
+          lineColor: color,
+          topColor: `${color}ff`,
+          bottomColor: `${color}00`,
+          priceLineVisible: false,
+          priceFormat: {
+            type: 'custom',
+            formatter: value => `${this._num(value, 'usd')}`
+          }
+        });
       }
       this.series.setData(this.chartData);
     }
@@ -202,6 +242,26 @@ export default {
     this.loading = true;
     const metrics = await this.getPoolMetrics(this.pool.id);
     this.metrics = normalizeMetrics(metrics);
+
+    if (this.displayPriceHistory) {
+      let page = 1;
+      let moreSwaps = true;
+      while (moreSwaps) {
+        let query = {
+          where: {
+            poolAddress: this.pool.id.toLowerCase()
+          }
+        };
+        query = { ...query, page };
+        const swaps = await this.getLbpSwaps(query);
+        this.swaps = this.swaps.concat(swaps);
+        moreSwaps = swaps.length == 100;
+        if (moreSwaps) {
+          page += 1;
+        }
+      }
+    }
+
     this.loading = false;
     await this.loadChart();
   }
