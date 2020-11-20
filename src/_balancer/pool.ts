@@ -1,12 +1,12 @@
 import merge from 'lodash/merge';
 import { getAddress, isAddress } from '@ethersproject/address';
+import pools from '@balancer-labs/assets/data/pools.json';
 import { multicall, subgraphRequest } from './utils';
 import provider from '@/helpers/provider';
 import abi from '@/helpers/abi';
 import { poolRights, formatPool } from '@/helpers/utils';
 import { formatUnits } from '@ethersproject/units';
 import queries from '@/helpers/queries.json';
-import pools from './pools.json';
 import config from '@/config';
 
 export default class Pool {
