@@ -36,6 +36,7 @@ const mutations = {
     Vue.set(_state, 'injectedLoaded', false);
     Vue.set(_state, 'injectedChainId', null);
     Vue.set(_state, 'account', null);
+    Vue.set(_state, 'name', null);
     Vue.set(_state, 'dsProxyAddress', null);
     Vue.set(_state, 'active', false);
     Vue.set(_state, 'balances', {});
@@ -152,13 +153,15 @@ const mutations = {
 };
 
 const actions = {
-  login: async ({ dispatch }, connector = 'injected') => {
+  login: async ({ dispatch, commit }, connector = 'injected') => {
+    commit('SET', { authLoading: true });
     auth = getInstance();
     await auth.login(connector);
     if (auth.provider) {
       auth.web3 = new Web3Provider(auth.provider);
       await dispatch('loadWeb3');
     }
+    commit('SET', { authLoading: false });
   },
   logout: async ({ commit }) => {
     Vue.prototype.$auth.logout();
@@ -274,7 +277,7 @@ const actions = {
     await dispatch('getProxy');
     await Promise.all([
       dispatch('getBalances', tokens),
-      dispatch('getAllowances', { tokens, spender: state.dsProxyAddress }),
+      dispatch('getAllowances', tokens),
       dispatch('getUserPoolShares')
     ]);
   },
@@ -363,8 +366,9 @@ const actions = {
       return Promise.reject();
     }
   },
-  getAllowances: async ({ commit }, { tokens, spender }) => {
+  getAllowances: async ({ commit }, tokens) => {
     commit('GET_ALLOWANCES_REQUEST');
+    const spender: any = state.dsProxyAddress;
     if (!spender) return;
     const address = state.account;
     const promises: any = [];

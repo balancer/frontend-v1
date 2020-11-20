@@ -1,62 +1,58 @@
 <template>
-  <Page>
-    <div v-if="loading" class="text-center">
-      <UiLoading class="big" />
-    </div>
-    <div v-else>
-      <MessageSimilarPools
-        v-if="pool.liquidity < 1e7 && pool.finalized"
-        :pool="pool"
-        class="mb-4"
-      />
-      <div class="d-block text-center text-md-left d-md-flex mb-3 mb-md-0">
-        <PoolHeader :pool="bPool" class="flex-auto pb-3" />
-        <div class="pb-3">
-          <UiButton
-            v-if="enableAddLiquidity && pool.tokens.length > 0"
-            class="button-primary ml-2"
-            @click="openAddLiquidityModal"
-          >
-            {{ $t('addLiquidity') }}
-          </UiButton>
-          <UiButton
-            v-if="enableAddLiquidity && pool.tokens.length > 0"
-            class="ml-2"
-            @click="openRemoveLiquidityModal"
-          >
-            {{ $t('removeLiquidity') }}
-          </UiButton>
-        </div>
+  <Page :loading="loading">
+    <MessageSimilarPools
+      v-if="pool.liquidity < 1e7 && pool.finalized"
+      :pool="pool"
+      class="mb-4"
+    />
+    <div class="d-block text-center text-md-left d-md-flex mb-3 mb-md-0">
+      <PoolHeader :pool="bPool" class="flex-auto pb-3" />
+      <div class="pb-3">
+        <UiButton
+          v-if="enableAddLiquidity && pool.tokens.length > 0"
+          class="button-primary ml-2"
+          @click="openAddLiquidityModal"
+        >
+          {{ $t('addLiquidity') }}
+        </UiButton>
+        <UiButton
+          v-if="enableAddLiquidity && pool.tokens.length > 0"
+          class="ml-2"
+          @click="openRemoveLiquidityModal"
+        >
+          {{ $t('removeLiquidity') }}
+        </UiButton>
       </div>
-      <PoolBoxes :pool="pool" :bPool="bPool" />
-      <Chart :pool="pool" />
-      <Tabs :pool="pool" />
-      <router-view
-        :key="$route.path"
+    </div>
+    <PoolBoxes :pool="pool" :bPool="bPool" />
+    <Chart :pool="pool" />
+    <Tabs :pool="pool" />
+    <router-view
+      :key="$route.path"
+      :pool="pool"
+      :bPool="bPool"
+      @reload="loadPool"
+    />
+    <portal to="modal">
+      <ModalAddLiquidity
         :pool="pool"
         :bPool="bPool"
+        :open="modalAddLiquidityOpen"
+        @close="modalAddLiquidityOpen = false"
         @reload="loadPool"
       />
-    </div>
-    <ModalAddLiquidity
-      :pool="pool"
-      :bPool="bPool"
-      :open="modalAddLiquidityOpen"
-      @close="modalAddLiquidityOpen = false"
-      @reload="loadPool"
-    />
-    <ModalRemoveLiquidity
-      :pool="pool"
-      :bPool="bPool"
-      :open="modalRemoveLiquidityOpen"
-      @close="modalRemoveLiquidityOpen = false"
-      @reload="loadPool"
-    />
-    <ModalCustomToken
-      v-if="hasCustomToken && !bPool.isWhitelisted()"
-      :open="modalCustomTokenOpen"
-      @close="modalCustomTokenOpen = false"
-    />
+      <ModalRemoveLiquidity
+        :pool="pool"
+        :bPool="bPool"
+        :open="modalRemoveLiquidityOpen"
+        @close="modalRemoveLiquidityOpen = false"
+        @reload="loadPool"
+      />
+      <ModalCustomToken
+        :open="modalCustomTokenOpen"
+        @close="modalCustomTokenOpen = false"
+      />
+    </portal>
   </Page>
 </template>
 
@@ -76,7 +72,7 @@ export default {
       loading: false,
       modalAddLiquidityOpen: false,
       modalRemoveLiquidityOpen: false,
-      modalCustomTokenOpen: true
+      modalCustomTokenOpen: false
     };
   },
   watch: {
@@ -101,6 +97,7 @@ export default {
       return false;
     },
     enableAddLiquidity() {
+      if (!this.bPool) return false;
       return this.pool.finalized || this.bPool.isCrp();
     },
     enableRemoveLiquidity() {
@@ -121,9 +118,6 @@ export default {
       'loadPricesByAddress'
     ]),
     openAddLiquidityModal() {
-      if (!this.web3.dsProxyAddress) {
-        return this.$router.push({ name: 'setup' });
-      }
       this.modalAddLiquidityOpen = true;
     },
     openRemoveLiquidityModal() {
@@ -144,16 +138,13 @@ export default {
         await this.loadTokenMetadata(unknownTokens);
         await this.loadPricesByAddress(unknownTokens);
       }
-      if (this.$auth.isAuthenticated) {
+      if (this.$auth.isAuthenticated && !this.ui.authLoading) {
         const data = await Promise.all([
           this.getBalances([
             ...this.pool.tokensList,
             getAddress(this.bPool.getBptAddress())
           ]),
-          this.getAllowances({
-            tokens: this.pool.tokensList,
-            spender: this.web3.dsProxyAddress
-          }),
+          this.getAllowances(this.pool.tokensList),
           this.getPoolBalances({
             poolAddress: this.id,
             tokens: this.pool.tokensList
@@ -181,6 +172,10 @@ export default {
     this.loading = true;
     await this.loadPool();
     this.loading = false;
+    setTimeout(() => {
+      if (this.hasCustomToken && !this.bPool.isWhitelisted())
+        this.modalCustomTokenOpen = true;
+    }, 1e2);
   }
 };
 </script>

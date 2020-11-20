@@ -3,6 +3,7 @@
     <div class="pt-1">
       <Token
         v-if="pool.isWhitelisted()"
+        :custom="true"
         :address="pool.getBptAddress()"
         size="44"
         class="mr-0 mr-md-3"
