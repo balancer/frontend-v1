@@ -138,7 +138,7 @@ export default {
         await this.loadTokenMetadata(unknownTokens);
         await this.loadPricesByAddress(unknownTokens);
       }
-      if (this.$auth.isAuthenticated && !this.ui.authLoading) {
+      if (this.web3.account) {
         const data = await Promise.all([
           this.getBalances([
             ...this.pool.tokensList,
