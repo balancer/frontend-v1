@@ -1,13 +1,6 @@
 const path = require('path');
 
 module.exports = {
-  css: {
-    loaderOptions: {
-      sass: {
-        implementation: require('sass')
-      }
-    }
-  },
   pluginOptions: {
     express: {
       shouldServeApp: true,
