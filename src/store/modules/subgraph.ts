@@ -16,16 +16,6 @@ const mutations = {
     Vue.set(_state, 'myPools', []);
     console.debug('CLEAR_USER');
   },
-  GET_BALANCER_REQUEST() {
-    console.debug('GET_BALANCER_REQUEST');
-  },
-  GET_BALANCER_SUCCESS(_state, payload) {
-    Vue.set(_state, 'balancer', payload);
-    console.debug('GET_BALANCER_SUCCESS');
-  },
-  GET_BALANCER_FAILURE(_state, payload) {
-    console.debug('GET_BALANCER_FAILURE', payload);
-  },
   GET_POOLS_REQUEST() {
     console.debug('GET_POOLS_REQUEST');
   },
@@ -53,6 +43,15 @@ const mutations = {
   },
   GET_POOLS_SWAPS_FAILURE(_state, payload) {
     console.debug('GET_POOLS_SWAPS_FAILURE', payload);
+  },
+  GET_POOLS_LBP_SWAPS_REQUEST() {
+    console.debug('GET_POOLS_LBP_SWAPS_REQUEST');
+  },
+  GET_POOLS_LBP_SWAPS_SUCCESS() {
+    console.debug('GET_POOLS_LBP_SWAPS_SUCCESS');
+  },
+  GET_POOLS_LBP_SWAPS_FAILURE(_state, payload) {
+    console.debug('GET_POOLS_LBP_SWAPS_FAILURE', payload);
   },
   GET_POOLS_SHARES_REQUEST() {
     console.debug('GET_POOLS_SHARES_REQUEST');
@@ -87,17 +86,6 @@ const mutations = {
 const actions = {
   clearUser: async ({ commit }) => {
     commit('CLEAR_USER');
-  },
-  getBalancer: async ({ commit }) => {
-    commit('GET_BALANCER_REQUEST');
-    try {
-      const { balancer } = await request('getBalancer');
-      balancer.privatePoolCount =
-        balancer.poolCount - balancer.finalizedPoolCount;
-      commit('GET_BALANCER_SUCCESS', balancer);
-    } catch (e) {
-      commit('GET_BALANCER_FAILURE', e);
-    }
   },
   getPools: async ({ commit }, payload) => {
     const {
@@ -159,6 +147,35 @@ const actions = {
       return poolShares;
     } catch (e) {
       commit('GET_MY_POOLS_SHARES_FAILURE', e);
+    }
+  },
+  getLbpSwaps: async ({ commit }, payload) => {
+    commit('GET_POOLS_LBP_SWAPS_REQUEST');
+    try {
+      const {
+        first = 100,
+        page = 1,
+        orderBy = 'timestamp',
+        orderDirection = 'asc',
+        where = {}
+      } = payload;
+      const skip = (page - 1) * first;
+      const query = {
+        swaps: {
+          __args: {
+            where,
+            first,
+            skip,
+            orderBy,
+            orderDirection
+          }
+        }
+      };
+      const { swaps } = await request('getPoolSwaps', query);
+      commit('GET_POOLS_LBP_SWAPS_SUCCESS');
+      return swaps;
+    } catch (e) {
+      commit('GET_POOLS_LBP_SWAPS_FAILURE', e);
     }
   },
   getPoolSwaps: async ({ commit }, payload) => {

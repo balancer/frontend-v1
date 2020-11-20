@@ -18,7 +18,7 @@
 import { getTokenLogoUrl } from '@/_balancer/utils';
 
 export default {
-  props: ['address', 'symbol', 'size'],
+  props: ['address', 'symbol', 'size', 'custom'],
   data() {
     return {
       loadingFailed: false
@@ -35,6 +35,8 @@ export default {
       };
     },
     tokenLogoUrl() {
+      if (this.custom)
+        return `https://raw.githubusercontent.com/balancer-labs/assets/master/assets/${this.address.toLowerCase()}.png`;
       return getTokenLogoUrl(this.address);
     }
   },

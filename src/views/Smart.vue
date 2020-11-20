@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import pools from '@/_balancer/pools.json';
+import pools from '@balancer-labs/assets/data/pools.json';
 
 export default {
   computed: {

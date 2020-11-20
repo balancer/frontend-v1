@@ -1,5 +1,5 @@
 <template>
-  <Page>
+  <Page :requireLogin="true">
     <Container class="d-flex mb-3">
       <div class="flex-auto">
         <h3 v-text="$t('myWallet')" />
@@ -54,11 +54,13 @@
         </div>
       </UiTableTr>
     </UiTable>
-    <ModalWrapper
-      :open="modalWrapperOpen"
-      @close="modalWrapperOpen = false"
-      :side="side"
-    />
+    <portal to="modal">
+      <ModalWrapper
+        :open="modalWrapperOpen"
+        @close="modalWrapperOpen = false"
+        :side="side"
+      />
+    </portal>
   </Page>
 </template>
 

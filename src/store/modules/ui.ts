@@ -4,16 +4,13 @@ import config from '@/config';
 const state = {
   init: false,
   loading: false,
+  authLoading: false,
   address: '',
-  name: '',
   balances: {},
   pools: [],
-  totalMarketcap: 0,
-  totalVolume1Day: 0,
-  sharesOwned: [],
-  poolsById: {},
   proxy: '',
-  sidebarIsOpen: false
+  sidebarIsOpen: false,
+  modalOpen: false
 };
 
 const mutations = {
@@ -31,12 +28,11 @@ const actions = {
       .map(tokenAddress => config.tokens[tokenAddress].id)
       .filter(tokenId => !!tokenId);
     await Promise.all([
-      dispatch('getBalancer'),
       dispatch('loadPricesById', tokenIds),
       dispatch('initTokenMetadata')
     ]);
     const connector = await Vue.prototype.$auth.getConnector();
-    if (connector) await dispatch('login', connector);
+    if (connector) dispatch('login', connector);
     commit('SET', { loading: false, init: true });
   },
   loading: ({ commit }, payload) => {
@@ -47,6 +43,9 @@ const actions = {
   },
   hideSidebar: ({ commit }) => {
     commit('SET', { sidebarIsOpen: false });
+  },
+  toggleModal: ({ commit }) => {
+    commit('SET', { modalOpen: !state.modalOpen });
   }
 };
 
