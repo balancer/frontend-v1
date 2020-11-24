@@ -4,6 +4,7 @@
     <div v-else>
       <Topnav :key="$router.currentRoute.name" />
       <div class="pt-9 pb-4">
+        <Sidenav :key="$router.currentRoute.name" />
         <router-view class="flex-auto" />
       </div>
       <Notifications />
@@ -20,6 +21,7 @@ export default {
   watch: {
     $route() {
       pageView();
+      this.hideSidenav();
     },
     'ui.modalOpen': function(val) {
       const el = document.body;
@@ -27,7 +29,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['init'])
+    ...mapActions(['init', 'hideSidenav'])
   },
   mounted() {
     this.init();

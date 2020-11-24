@@ -2,6 +2,9 @@
   <nav id="topnav" class="position-fixed width-full">
     <div class="px-5 d-flex">
       <div class="d-flex flex-auto" style="font-size: 16px;">
+        <a @click="toggleSidenav" class="p-3 ml-n4 my-2 hide-xl text-white">
+          <Icon :name="ui.sidenavOpen ? 'close' : 'menu'" size="24" />
+        </a>
         <router-link
           :to="{ name: 'home' }"
           class="d-inline-block d-flex pt-3 mt-1"
@@ -15,7 +18,7 @@
           />
           <span class="d-inline-block text-white mr-6" v-text="'Balancer'" />
         </router-link>
-        <div class="topnav-menu float-left">
+        <div class="topnav-menu float-left hide-sm hide-md hide-lg">
           <router-link
             v-if="$auth.isAuthenticated"
             :to="{ name: 'dashboard' }"
@@ -26,22 +29,28 @@
           <router-link :to="{ name: 'home' }" class="d-inline-block py-4 px-2">
             Explore pools
           </router-link>
-          <span class="hide-sm">
-            <a
-              @click="modalOpen.about = true"
-              class="d-inline-block py-4 px-2 hide-md"
-            >
-              About
-            </a>
-            <a
-              href="https://balancer.exchange"
-              target="_blank"
-              class="d-inline-block py-4 px-2 hide-md"
-            >
-              Exchange
-              <Icon name="external-link" class="ml-1" />
-            </a>
-          </span>
+          <a
+            href="https://balancer.exchange"
+            target="_blank"
+            class="d-inline-block py-4 px-2 hide-md"
+          >
+            Swap
+            <Icon name="external-link" class="ml-1" />
+          </a>
+          <a
+            href="https://claim.balancer.finance"
+            target="_blank"
+            class="d-inline-block py-4 px-2 hide-md"
+          >
+            Claim BAL
+            <Icon name="external-link" class="ml-1" />
+          </a>
+          <a
+            @click="modalOpen.about = true"
+            class="d-inline-block py-4 px-2 hide-md"
+          >
+            About
+          </a>
         </div>
       </div>
       <div class="pt-2 mt-1" :key="web3.account">
@@ -137,7 +146,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['login']),
+    ...mapActions(['login', 'toggleSidenav']),
     async handleLogin(connector) {
       this.modalOpen.account = false;
       this.loading = true;
@@ -152,6 +161,8 @@ export default {
 @import '../vars';
 
 #topnav {
+  height: 70px;
+  overflow: hidden;
   z-index: 10;
   box-shadow: inset 0 -1px $panel-border;
   background-color: $panel-background;
