@@ -27,23 +27,28 @@
         infinite-scroll-distance="0"
         class="overflow-hidden"
       >
-        <div v-if="pools.length > 0" :key="tag">
+        <Block
+          :slim="true"
+          v-if="pools.length > 0 || loading"
+          :key="tag"
+          class="overflow-hidden"
+        >
           <PoolList
             v-for="pool in pools"
             :key="pool.address"
             :pool="pool"
             view="list"
           />
-        </div>
-        <div v-if="loading">
-          <PoolList
-            v-for="i in 3"
-            :key="i"
-            :class="i > 1 && 'hide-sm'"
-            :loading="true"
-            view="list"
-          />
-        </div>
+          <template v-if="loading">
+            <PoolList
+              v-for="i in 3"
+              :key="i"
+              :class="i < 3 && 'hide-sm'"
+              :loading="true"
+              view="list"
+            />
+          </template>
+        </Block>
       </div>
     </Container>
   </Page>

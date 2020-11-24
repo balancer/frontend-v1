@@ -1,6 +1,7 @@
 import { ipfsGet } from '@snapshot-labs/snapshot.js/src/utils';
 import config from '@/config';
 
+const IPFS_GATEWAY = process.env.VUE_APP_IPFS_GATEWAY || 'ipfs.io';
 const REGISTRY_IPNS_DOMAIN = 'balancer-team-bucket.storage.fleek.co';
 const REGISTRY_IPNS_URLS = {
   '1': `${REGISTRY_IPNS_DOMAIN}/balancer-pool-management/registry`,
@@ -14,7 +15,7 @@ export class Registry {
   async init() {
     // const random = Math.random();
     this.registry = await ipfsGet(
-      'cloudflare-ipfs.com',
+      IPFS_GATEWAY,
       REGISTRY_IPNS_URLS[config.chainId],
       'ipns'
     );

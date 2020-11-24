@@ -1,25 +1,29 @@
 <template>
-  <Block class="bpool-list p-3 mb-3 border-bottom" :class="loading && 'anim-pulse'">
-    <div v-if="loading" class="text-center">
-      <UiLoading class="big mt-2" />
+  <div class="bpool-list border-bottom" :class="loading && 'anim-pulse'">
+    <div v-if="loading" class="text-center py-4">
+      <UiLoading />
     </div>
     <div v-else>
       <div class="position-relative">
         <Favorite
           :id="pool.address"
-          class="favorite position-absolute p-3 top-n3 right-n3"
+          class="favorite position-absolute p-3 top-0 right-0"
         />
       </div>
       <router-link
         :to="{ name: 'pool', params: { id: pool.address } }"
-        class="overflow-hidden"
+        class="d-block d-sm-flex p-3"
       >
-        <div v-text="poolType" class="col-2 float-left" />
-        <div class="col-4 float-left">
-          <PoolWeights :tokens="pool.tokens" class="mt-6 mr-4" />
+        <div v-text="poolType" class="title col-12" />
+        <div class="flex-auto pr-0 pr-sm-6">
+          <PoolWeights
+            :tokens="pool.tokens"
+            class="mt-8 mt-sm-6"
+            style="max-width: 380px;"
+          />
         </div>
-        <div class="col-6 float-right">
-          <div class="d-flex ml-4">
+        <div class="col-12 col-sm-6" style="max-width: 340px;">
+          <div class="d-flex mt-3 mt-sm-0">
             <div class="col-4">
               <div class="mb-1">Swap fee</div>
               <h4 class="text-white">
@@ -32,7 +36,7 @@
                 {{ _num(poolLiquidity, 'usd') }}
               </h4>
             </div>
-            <div style="col-4">
+            <div class="col-4">
               <div class="mb-1">Volume (1d)</div>
               <h4 class="text-white">
                 {{ _num(poolMetadata.volume, 'usd') }}
@@ -42,7 +46,7 @@
         </div>
       </router-link>
     </div>
-  </Block>
+  </div>
 </template>
 
 <script>
@@ -79,6 +83,16 @@ export default {
 .bpool-list {
   background-color: $panel-background;
   overflow: hidden;
+
+  @media (min-width: 544px) {
+    .title {
+      width: 120px !important;
+    }
+  }
+
+  &:last-child {
+    border-bottom: none !important;
+  }
 
   .favorite {
     display: none;
