@@ -15,7 +15,8 @@ export const POOL_TOKENS_DECIMALS = 18;
 export const GAS_LIMIT_BUFFER = 0.1;
 export const MAX =
   '115792089237316195423570985008687907853269984665640564039457.584007913129639935';
-
+export const EDIT_POOL_GOOGLE_FORM =
+  'https://docs.google.com/forms/d/e/1FAIpQLSe_sIVqZCL0rO--8u3PUUNGuxZ68LviAZBtrqV4gVTeTxzHCA/viewform';
 export const unknownColors = [
   '#5d6872',
   '#7e9e99',
