@@ -96,7 +96,10 @@ export default {
             }
             const address = token[0];
             const tokenMetadata = this.web3.tokenMetadata[address];
-            if (hidden.includes(tokenMetadata.symbol)) {
+            if (
+              hidden.includes(tokenMetadata.symbol) &&
+              !this.$router.currentRoute.query.anyToken
+            ) {
               return false;
             }
             const query = this.query.toLowerCase();
