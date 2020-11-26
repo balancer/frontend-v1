@@ -6,13 +6,18 @@
         class="text-white d-flex flex-items-center"
       >
         <Token :address="token.address" :symbol="token.symbol" class="mr-1" />
-        <Icon
-          :style="`color: ${token.color}`"
-          name="bullet"
-          size="16"
-          class="mt-1"
-        />
-        {{ _shorten(token.symbol, 12) }}
+        <span
+          :class="token.symbol.length > 28 && 'tooltipped tooltipped-n'"
+          :aria-label="token.symbol"
+        >
+          <Icon
+            :style="`color: ${token.color}`"
+            name="bullet"
+            size="16"
+            class="mt-1"
+          />
+          {{ _shorten(token.symbol, 28) }}
+        </span>
       </router-link>
     </div>
     <UiNum :value="token.weightPercent / 1e2" format="percent" class="column" />
