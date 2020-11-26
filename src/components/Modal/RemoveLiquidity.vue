@@ -46,8 +46,16 @@
                     }
                   "
                 />
-                <Token :address="token.address" class="mr-3" size="20" />
-                <div v-text="token.symbol" class="text-white" />
+                <div
+                  :class="
+                    token.symbol.length > 14 && 'tooltipped tooltipped-ne'
+                  "
+                  :aria-label="token.symbol"
+                  class="text-white d-flex flex-items-center"
+                >
+                  <Token :address="token.address" class="mr-3" size="20" />
+                  {{ _shorten(token.symbol, 14) }}
+                </div>
               </div>
               <div class="column">
                 {{ _num(token.myBalance) }}

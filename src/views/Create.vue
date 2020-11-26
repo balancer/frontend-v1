@@ -156,7 +156,7 @@
         :open="tokenModalOpen"
         @close="tokenModalOpen = false"
         @input="changeToken"
-        :not="tokens"
+        :not="selectTokenNot"
       />
       <ModalPoolCreation
         :open="confirmModalOpen"
@@ -180,7 +180,9 @@ import {
   normalizeBalance,
   denormalizeBalance,
   getTokenBySymbol,
-  poolTypes
+  poolTypes,
+  amplAddress,
+  clone
 } from '@/helpers/utils';
 import { validateNumberInput, formatError } from '@/helpers/validation';
 
@@ -380,6 +382,11 @@ export default {
         }
       }
       return false;
+    },
+    selectTokenNot() {
+      const not = clone(this.tokens);
+      if (!this.$router.currentRoute.query.anyToken) not.push(amplAddress);
+      return not;
     }
   },
   methods: {

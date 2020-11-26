@@ -2,7 +2,6 @@ import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '@/views/Home.vue';
 import Explore from '@/views/Explore.vue';
-import Smart from '@/views/Smart.vue';
 import Wallet from '@/views/Wallet.vue';
 import Create from '@/views/Create.vue';
 import Pool from '@/views/Pool.vue';
@@ -18,7 +17,6 @@ Vue.use(VueRouter);
 const routes: Array<RouteConfig> = [
   { path: '/', name: 'home', component: Home },
   { path: '/explore', name: 'explore', component: Explore },
-  { path: '/smart', name: 'smart', component: Smart },
   { path: '/wallet', name: 'wallet', component: Wallet },
   { path: '/pool/new', name: 'create', component: Create },
   {
