@@ -18,11 +18,7 @@
         />
         <div v-text="$t('volume24')" class="column hide-sm hide-md hide-lg" />
       </UiTableTh>
-      <div
-        v-infinite-scroll="loadMore"
-        infinite-scroll-distance="10"
-        class="overflow-hidden"
-      >
+      <div v-infinite-scroll="loadMore" infinite-scroll-distance="10">
         <div v-if="pools.length > 0">
           <ListPool v-for="(pool, i) in pools" :key="i" :pool="pool" />
         </div>
@@ -51,7 +47,7 @@ import { mapActions } from 'vuex';
 import { formatFilters, ITEMS_PER_PAGE } from '@/helpers/utils';
 
 export default {
-  props: ['query', 'title', 'withFilters'],
+  props: ['query', 'title'],
   data() {
     return {
       loading: false,
@@ -86,12 +82,6 @@ export default {
       this.page++;
       const page = this.page;
       let query = this.query || {};
-      if (this.withFilters) {
-        const filters = formatFilters(this.filters);
-        if (filters.token && filters.token.length > 0) {
-          query.where.tokensList_contains = filters.token;
-        }
-      }
       query = { ...query, page };
       const pools = await this.getPools(query);
       this.pools = this.pools.concat(pools);
