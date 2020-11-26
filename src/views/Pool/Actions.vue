@@ -14,7 +14,6 @@
       />
       <p v-html="$t('pokeWeightsGeneral')" class="mb-3" v-else />
       <UiButton
-        :disabled="!ongoingUpdate"
         :loading="loading"
         @click="handlePokeWeights()"
       >
