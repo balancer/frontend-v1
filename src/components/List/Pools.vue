@@ -51,7 +51,7 @@ import { mapActions } from 'vuex';
 import { formatFilters, ITEMS_PER_PAGE } from '@/helpers/utils';
 
 export default {
-  props: ['query', 'title', 'withFilters'],
+  props: ['query', 'title'],
   data() {
     return {
       loading: false,
@@ -86,12 +86,6 @@ export default {
       this.page++;
       const page = this.page;
       let query = this.query || {};
-      if (this.withFilters) {
-        const filters = formatFilters(this.filters);
-        if (filters.token && filters.token.length > 0) {
-          query.where.tokensList_contains = filters.token;
-        }
-      }
       query = { ...query, page };
       const pools = await this.getPools(query);
       this.pools = this.pools.concat(pools);
