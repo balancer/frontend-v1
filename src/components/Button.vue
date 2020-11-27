@@ -18,7 +18,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { bnum } from '@/helpers/utils';
+import { bnum, scale } from '@/helpers/utils';
 
 export default {
   props: {
@@ -65,16 +65,15 @@ export default {
       );
       let nextRequiredApproval = false;
       Object.entries(this.requireApprovals).forEach(requiredApproval => {
-        console.log(requiredApproval[1], allowances[requiredApproval[0]]);
         const token = this.web3.tokenMetadata[requiredApproval[0]];
-        const requiredAmount = bnum(requiredApproval[1]).times(token.decimals);
+        const requiredAmount = scale(bnum(requiredApproval[1]), token.decimals);
+        const allowedAmount = bnum(allowances[requiredApproval[0]]);
+        const allowanceIsEnough = allowedAmount.gte(requiredAmount);
         if (
           token &&
           nextRequiredApproval === false &&
-          (!allowances[requiredApproval[0]] ||
-            requiredAmount.gt(bnum(allowances[requiredApproval[0]])))
+          (!allowances[requiredApproval[0]] || !allowanceIsEnough)
         ) {
-          console.log(requiredAmount, allowances[requiredApproval[0]]);
           nextRequiredApproval = {
             address: requiredApproval[0],
             symbol: token

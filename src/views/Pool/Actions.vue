@@ -13,10 +13,7 @@
         v-else-if="ongoingUpdate"
       />
       <p v-html="$t('pokeWeightsGeneral')" class="mb-3" v-else />
-      <UiButton
-        :loading="loading"
-        @click="handlePokeWeights()"
-      >
+      <UiButton :loading="loading" @click="handlePokeWeights()">
         {{ $t('poke') }}
       </UiButton>
     </div>
