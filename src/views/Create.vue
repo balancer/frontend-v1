@@ -459,19 +459,13 @@ export default {
     changeInitialSupply(initialSupply) {
       this.crp.initialSupply = initialSupply;
     },
-    roundDown() {
-      // 98/2 (percentages that equal 100, or lower, should not round down)
-      // 97.999/2 does need to round down - trouble is when you have non-integers right at the limit
-      return this.totalWeight != 100 && Math.ceil(this.totalWeight) >= 100;
-    },
     async create() {
       this.loading = true;
       const weights = this.tokens.map(token =>
         toWei(
           getDenorm(
             this.getPercentage(token),
-            this.isSharedOrLocked(),
-            this.roundDown() // roundDown final weights if necessary to avoid overflow
+            this.isSharedOrLocked()
           ).toString()
         ).toString()
       );
