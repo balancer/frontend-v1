@@ -136,12 +136,15 @@ export default {
         return;
       }
       this.loading = true;
-      await Promise.all([
+      const promises = [
         this.loadTokenMetadata([address]),
-        this.loadPricesByAddress([address]),
-        this.getBalances([address]),
-        this.getAllowances([address])
-      ]);
+        this.loadPricesByAddress([address])
+      ];
+      if (this.web3.account) {
+        promises.push(this.getBalances([address]));
+        promises.push(this.getAllowances([address]));
+      }
+      await Promise.all(promises);
       this.loading = false;
     },
     isDisabled(address) {
