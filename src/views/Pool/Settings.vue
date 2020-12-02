@@ -35,7 +35,7 @@
     >
       <div class="float-right mr-2">
         <UiButton
-          :disabled="!activeUpdate"
+          :disabled="!ongoingUpdate"
           v-text="$t('poke')"
           class="float-right"
           @click="handlePokeWeights()"
@@ -197,12 +197,6 @@ export default {
   computed: {
     ongoingUpdate() {
       return this.pool.startBlock !== '0';
-    },
-    activeUpdate() {
-      return (
-        this.pool.startBlock !== '0' &&
-        this.web3.blockNumber >= this.pool.startBlock
-      );
     }
   },
   methods: {
