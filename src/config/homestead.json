@@ -2,7 +2,7 @@
   "network": "homestead",
   "chainId": 1,
   "defaultPrecision": 2,
-  "rpcUrl": "https://eth-mainnet.alchemyapi.io/v2/Q08AP-nlA-yUiQnIiAVlyWK4tbXjRMmD",
+  "rpcUrl": "https://cloudflare-eth.com",
   "wsUrl": "wss://eth-mainnet.ws.alchemyapi.io/v2/Q08AP-nlA-yUiQnIiAVlyWK4tbXjRMmD",
   "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-beta",
   "explorer": "https://etherscan.io",
