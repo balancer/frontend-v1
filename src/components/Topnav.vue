@@ -45,14 +45,18 @@
           {{ $t('wrongNetwork') }}
         </UiButton>
         <UiButton
-          v-if="!$auth.isAuthenticated && !ui.authLoading"
+          v-if="!$auth.isAuthenticated"
           @click="modalOpen.account = true"
-          :loading="loading"
+          :loading="loading || ui.authLoading"
           class="button-primary"
         >
           {{ $t('connectWallet') }}
         </UiButton>
-        <router-link v-if="!wrongNetwork" :to="{ name: 'wallet' }" class="ml-2">
+        <router-link
+          v-if="$auth.isAuthenticated && !wrongNetwork && !ui.authLoading"
+          :to="{ name: 'wallet' }"
+          class="ml-2"
+        >
           <UiButton class="v-align-bottom p-0">
             <Icon name="wallet" size="20" class="mx-3" />
           </UiButton>
