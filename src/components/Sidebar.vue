@@ -31,7 +31,7 @@
         </ul>
         <ul class="py-3">
           <li>
-            <a href="https://balancer.exchange" target="_blank">
+            <a :href="config.exchangeUrl" target="_blank">
               {{ $t('exchange') }}
               <Icon name="external-link" class="ml-1" />
             </a>

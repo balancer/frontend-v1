@@ -41,7 +41,7 @@
     "canWhitelistLPs": "Can restrict LPs to a whitelist",
     "cap": "Cap",
     "change": "Change",
-    "changeControllerWarning": "Ensure you have the private key.<br> Otherwise you will lose control of the pool!",
+    "changeControllerWarning": "Ensure you have the private key.<br> Otherwise you will lose control of the pool! If you want to control the pool from the Balancer interface you need to use a proxy account as controller, don't use your wallet directly as controller.",
     "changePoolController": "Change pool controller",
     "changePoolSupplyCap": "Change pool supply cap",
     "confirm": "Confirm",

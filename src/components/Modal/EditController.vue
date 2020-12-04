@@ -8,7 +8,7 @@
         <h5 class="px-4 mb-4 mx-auto overflow-hidden" style="max-width: 340px;">
           {{ $t('changePoolController') }}
         </h5>
-        <div class="d-flex flex-items-center p-4 warning-box">
+        <div class="d-flex flex-items-center p-4 warning-box text-left mb-4">
           <Icon name="warning" size="22" class="mr-4" />
           <div v-html="$t('changeControllerWarning')" />
         </div>
