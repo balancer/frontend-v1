@@ -473,7 +473,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['joinPool', 'joinswapExternAmountIn', 'canProvideLiquidity']),
+    ...mapActions([
+      'joinPool',
+      'joinswapExternAmountIn',
+      'canProvideLiquidity'
+    ]),
     handleChange(changedAmount, changedToken) {
       const ratio = bnum(changedAmount).div(changedToken.balance);
       if (this.isMultiAsset) {
@@ -621,10 +625,13 @@ export default {
     async canAddLiquidity() {
       // Can always add liquidity to a shared pool
       // Can add liquidity to a smart pool unless there is a whitelist (and this address isn't on it)
-      if (this.bPool.metadata.crp && this.bPool.metadata.rights.canWhitelistLPs) {
+      if (
+        this.bPool.metadata.crp &&
+        this.bPool.metadata.rights.canWhitelistLPs
+      ) {
         // Need to check if this address is on the LP whitelist
         return false; //await this.canProvideLiquidity({poolAddress: this.bPool.metadata.controller,
-                      //                                provider: this.web3.account});
+        //                                provider: this.web3.account});
       }
 
       return true;
