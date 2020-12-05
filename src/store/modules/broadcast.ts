@@ -193,6 +193,15 @@ const mutations = {
   REMOVE_WHITELISTED_LP_FAILURE(_state, payload) {
     console.debug('REMOVE_WHITELISTED_LP_FAILURE', payload);
   },
+  CAN_PROVIDE_LIQUIDITY_REQUEST() {
+    console.debug('CAN_PROVIDE_LIQUIDITY_REQUEST');
+  },
+  CAN_PROVIDE_LIQUIDITY_SUCCESS() {
+    console.debug('CAN_PROVIDE_LIQUIDITY_SUCCESS');
+  },
+  CAN_PROVIDE_LIQUIDITY_FAILURE(_state, payload) {
+    console.debug('CAN_PROVIDE_LIQUIDITY_FAILURE', payload);
+  },
   APPROVE_REQUEST() {
     console.debug('APPROVE_REQUEST');
   },
@@ -822,6 +831,37 @@ const actions = {
       dispatch('notify', ['red', i18n.tc('failureOops')]);
       commit('REMOVE_WHITELISTED_LP_FAILURE', e);
     }
+  },
+  canProvideLiquidity: async (
+    { commit, dispatch },
+    { poolAddress, provider }
+  ) => {
+    commit('CAN_PROVIDE_LIQUIDITY_REQUEST');
+    console.log(`canProvideLiquidity(${poolAddress}, ${provider}`);
+    let result = false;
+    try {
+      const params = [
+        'ConfigurableRightsPool',
+        poolAddress,
+        'canProvideLiquidity',
+        [provider],
+        {}
+      ];
+      result = await dispatch('processTransaction', {
+        params,
+        title: 'canProvideLiquidity'
+      });
+      console.log(`Result in broadcast: ${result}`);
+
+      dispatch('notify', ['green', i18n.tc('successCanProvideLiquidity')]);
+      commit('CAN_PROVIDE_LIQUIDITY_SUCCESS');
+    } catch (e) {
+      if (!e || isTxReverted(e)) return e;
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
+      commit('CAN_PROVIDE_LIQUIDITY_FAILURE', e);
+    }
+
+    return result;
   },
   approve: async ({ commit, dispatch, rootState }, token) => {
     commit('APPROVE_REQUEST');
