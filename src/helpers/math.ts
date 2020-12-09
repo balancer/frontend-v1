@@ -259,6 +259,16 @@ export function calcSingleInGivenWeightIncrease(
   return tokenBalanceIn;
 }
 
+export function calcSingleOutGivenWeightDecrease(
+  tokenBalance: BigNumber,
+  tokenWeight: BigNumber,
+  tokenWeightNew: BigNumber
+): BigNumber {
+  const deltaWeight = tokenWeight.minus(tokenWeightNew);
+  const tokenBalanceOut = bmul(tokenBalance, bdiv(deltaWeight, tokenWeight));
+  return tokenBalanceOut;
+}
+
 export function calcPoolInGivenWeightDecrease(
   totalWeight: BigNumber,
   tokenWeight: BigNumber,
@@ -268,6 +278,17 @@ export function calcPoolInGivenWeightDecrease(
   const deltaWeight = tokenWeight.minus(tokenWeightNew);
   const poolAmountIn = bmul(poolSupply, bdiv(deltaWeight, totalWeight));
   return poolAmountIn;
+}
+
+export function calcPoolOutGivenWeightIncrease(
+  totalWeight: BigNumber,
+  tokenWeight: BigNumber,
+  tokenWeightNew: BigNumber,
+  poolSupply: BigNumber
+): BigNumber {
+  const deltaWeight = tokenWeightNew.minus(tokenWeight);
+  const poolAmountOut = bmul(poolSupply, bdiv(deltaWeight, totalWeight));
+  return poolAmountOut;
 }
 
 export function calcPoolInGivenTokenRemove(
