@@ -474,10 +474,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'joinPool',
-      'joinswapExternAmountIn'
-    ]),
+    ...mapActions(['joinPool', 'joinswapExternAmountIn']),
     handleChange(changedAmount, changedToken) {
       const ratio = bnum(changedAmount).div(changedToken.balance);
       if (this.isMultiAsset) {
@@ -630,7 +627,10 @@ export default {
         this.bPool.metadata.rights.canWhitelistLPs
       ) {
         // Need to check if this address is on the LP whitelist
-        return await canProvideLiquidity(this.bPool.metadata.controller, this.web3.account);
+        return await canProvideLiquidity(
+          this.bPool.metadata.controller,
+          this.web3.account
+        );
       }
 
       return true;
