@@ -173,6 +173,7 @@ import {
 } from '@/helpers/utils';
 import { calcPoolOutGivenSingleIn } from '@/helpers/math';
 import { validateNumberInput, formatError } from '@/helpers/validation';
+import { canProvideLiquidity } from '@/helpers/whitelist';
 
 const BALANCE_BUFFER = 0.01;
 
@@ -475,8 +476,7 @@ export default {
   methods: {
     ...mapActions([
       'joinPool',
-      'joinswapExternAmountIn',
-      'canProvideLiquidity'
+      'joinswapExternAmountIn'
     ]),
     handleChange(changedAmount, changedToken) {
       const ratio = bnum(changedAmount).div(changedToken.balance);
@@ -630,8 +630,7 @@ export default {
         this.bPool.metadata.rights.canWhitelistLPs
       ) {
         // Need to check if this address is on the LP whitelist
-        return false; //await this.canProvideLiquidity({poolAddress: this.bPool.metadata.controller,
-        //                                provider: this.web3.account});
+        return await canProvideLiquidity(this.bPool.metadata.controller, this.web3.account);
       }
 
       return true;
