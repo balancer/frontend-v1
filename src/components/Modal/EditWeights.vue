@@ -112,7 +112,7 @@ export default {
           toWei(totalWeight),
           toWei(token.denormWeight).times(2),
           toWei(this.weights[this.tokenIndex]),
-          bnum(this.pool.metadata.totalShares)
+          bnum(this.pool.totalShares)
         );
         return poolAmountIn.toString();
       }
