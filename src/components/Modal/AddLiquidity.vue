@@ -629,7 +629,7 @@ export default {
         // Need to check if this address is on the LP whitelist
         return await canProvideLiquidity(
           this.bPool.metadata.controller,
-          this.web3.account
+          this.web3.dsProxyAddress
         );
       }
 
