@@ -26,7 +26,7 @@
       "name": "WalletConnect",
       "options": {
         "rpc": {
-          "1": "https://eth-mainnet.alchemyapi.io/v2/Q08AP-nlA-yUiQnIiAVlyWK4tbXjRMmD"
+          "1": "https://cloudflare-eth.com"
         }
       }
     },
@@ -45,7 +45,7 @@
         "appName": "Pool management - Balancer",
         "darkMode": true,
         "chainId": 1,
-        "ethJsonrpcUrl": "https://eth-mainnet.alchemyapi.io/v2/Q08AP-nlA-yUiQnIiAVlyWK4tbXjRMmD"
+        "ethJsonrpcUrl": "https://cloudflare-eth.com"
       }
     },
     "fortmatic": {

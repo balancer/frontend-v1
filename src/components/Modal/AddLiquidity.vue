@@ -129,6 +129,11 @@
           :isDeposit="true"
           class="mb-4"
         />
+        <MessageWarning
+          v-if="!addLiquidityEnabled"
+          :text="$t('cannotAddLiquidity')"
+          class="mb-4"
+        />
       </div>
       <template slot="footer">
         <Button
@@ -140,7 +145,8 @@
             tokenError ||
               validationError ||
               !checkboxAccept ||
-              transactionReverted
+              transactionReverted ||
+              !addLiquidityEnabled
           "
           :loading="loading"
           class="button-primary"
@@ -167,6 +173,7 @@ import {
 } from '@/helpers/utils';
 import { calcPoolOutGivenSingleIn } from '@/helpers/math';
 import { validateNumberInput, formatError } from '@/helpers/validation';
+import { canProvideLiquidity } from '@/helpers/whitelist';
 
 const BALANCE_BUFFER = 0.01;
 
@@ -190,7 +197,8 @@ export default {
       type: 'MULTI_ASSET',
       activeToken: null,
       checkboxAccept: false,
-      transactionReverted: false
+      transactionReverted: false,
+      addLiquidityEnabled: true
     };
   },
   watch: {
@@ -206,7 +214,15 @@ export default {
       this.activeToken = this.pool.tokens[0].checksum;
       this.checkboxAccept = false;
       this.transactionReverted = false;
+    },
+    'web3.account': async function(val, prev) {
+      if (val && val.toLowerCase() !== prev) {
+        this.addLiquidityEnabled = await this.canAddLiquidity();
+      }
     }
+  },
+  async created() {
+    this.addLiquidityEnabled = await this.canAddLiquidity();
   },
   computed: {
     poolTokenBalance() {
@@ -602,6 +618,22 @@ export default {
     },
     formatBalance(balanceString, tokenDecimals) {
       return normalizeBalance(balanceString, tokenDecimals);
+    },
+    async canAddLiquidity() {
+      // Can always add liquidity to a shared pool
+      // Can add liquidity to a smart pool unless there is a whitelist (and this address isn't on it)
+      if (
+        this.bPool.metadata.crp &&
+        this.bPool.metadata.rights.canWhitelistLPs
+      ) {
+        // Need to check if this address is on the LP whitelist
+        return await canProvideLiquidity(
+          this.bPool.metadata.controller,
+          this.web3.dsProxyAddress
+        );
+      }
+
+      return true;
     }
   }
 };
