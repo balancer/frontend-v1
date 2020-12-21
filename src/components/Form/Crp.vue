@@ -71,6 +71,10 @@
             @change="$emit('change-weight-period', $event.target.value)"
             placeholder="10"
           />
+          <div class="d-flex flex-items-center p-4 warning-box">
+            <Icon name="info" size="22" class="mr-4" />
+            {{ `${$t('percentRange', { min: divisor, max: maxPercentage })}` }}
+          </div>
         </div>
         <UiCheckbox
           :checked="rights.canAddRemoveTokens"
@@ -108,6 +112,15 @@
 </template>
 
 <script>
+import { getMaxTotalWeight, getMaxPercentage } from '@/helpers/weights';
+
+// Testing Guide
+//
+// With all rights unchecked, divisor = 2, maxPercentage = 98 (100 - 2)
+// Check canChangeWeights; then divisor = 4, maxPercentage = 96 (100 - 4)
+// Uncheck canChangeWeights; then divisor/maxPercentage return to 2/98
+//
+
 export default {
   props: [
     'tokenSymbol',
@@ -116,7 +129,35 @@ export default {
     'minimumWeightChangeBlockPeriod',
     'addTokenTimeLockInBlocks',
     'initialSupply'
-  ]
+  ],
+  computed: {
+    // The "resolution" of the pool depends on its type
+    // A shared pool, or a smart pool with fixed weights, can have the full range of denorm weights (1-49)
+    // A smart pool with canChangeWeights enabled can get "stuck" during gradual weight changes if the total
+    //   is too close to the max. So we use the core pool max of 50 for shared pools (2% resolution), but
+    // limit the total denorm to 25 (4% resolution) for smart pools.
+    //
+    // Display this range to the user as a percentage
+    //   e.g.; 4% - 96%, when the max total is 25 (denorm range 1-24)
+    //
+    // The input on the main component will show an error outside this range; the intent here is to explain it to the user
+    // Denorm weights are calculated as <input percentage> / <divisor>
+    //
+    // For instance, for a shared pool with percentages set to 90/10, the divisor would be 100 / 50 = 2, so denorms are 45/5
+    //   For a smart pool with canChangeWeights, the max total is 25, divisor is 100 / 25 = 4, so denorms are 22.5/2.5
+    divisor() {
+      return 100 / getMaxTotalWeight(this.isSharedOrLocked());
+    },
+    maxPercentage() {
+      return getMaxPercentage(this.isSharedOrLocked());
+    }
+  },
+  methods: {
+    // Since this form means we're already editing a smart pool, we only have to check for weight permission
+    isSharedOrLocked() {
+      return !this.rights.canChangeWeights;
+    }
+  }
 };
 </script>
 
