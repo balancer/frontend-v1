@@ -57,11 +57,9 @@ export default {
     stepTip() {
       if (this.step === 'login') {
         return this.$t('connectWalletToAddLiquidity');
-      }
-      else if (this.step === 'proxy') {
+      } else if (this.step === 'proxy') {
         return this.$t('createProxyTip');
-      }
-      else if (this.step === 'approval') {
+      } else if (this.step === 'approval') {
         return this.$t('approveToken');
       }
 
