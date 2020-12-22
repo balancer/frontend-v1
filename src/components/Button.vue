@@ -4,6 +4,8 @@
     :disabled="isDisabled"
     type="button"
     class="button"
+    :class="disabled || !stepTip ? '' : 'tooltipped tooltipped-n'"
+    :aria-label="stepTip"
   >
     <UiLoading v-if="step === 'loading'" />
     <span v-else-if="step === 'login'" v-text="'Connect wallet'" />
@@ -51,6 +53,19 @@ export default {
       if (this.requireApprovals && this.nextRequiredApproval) return 'approval';
       if (this.disabled) return false;
       return false;
+    },
+    stepTip() {
+      if (this.step === 'login') {
+        return this.$t('connectWalletToAddLiquidity');
+      }
+      else if (this.step === 'proxy') {
+        return this.$t('createProxyTip');
+      }
+      else if (this.step === 'approval') {
+        return this.$t('approveToken');
+      }
+
+      return undefined;
     },
     isDisabled() {
       return this.disabled || this.step === 'loading';
