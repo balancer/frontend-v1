@@ -139,7 +139,7 @@
         <Button
           :requireLogin="true"
           :requireProxy="true"
-          :requireApprovals="requiredApprovals"
+          :requireApprovals="validationError ? undefined : requiredApprovals"
           @submit="handleSubmit"
           :disabled="
             tokenError ||
