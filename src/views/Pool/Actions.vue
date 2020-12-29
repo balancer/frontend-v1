@@ -10,10 +10,14 @@
       <p
         v-html="$t('pokeWeightsOngoing')"
         class="mb-3"
-        v-else-if="ongoingUpdate"
+        v-else-if="activeUpdate"
       />
       <p v-html="$t('pokeWeightsGeneral')" class="mb-3" v-else />
-      <UiButton :loading="loading" @click="handlePokeWeights()">
+      <UiButton
+        :loading="loading"
+        :disabled="!ongoingUpdate"
+        @click="handlePokeWeights()"
+      >
         {{ $t('poke') }}
       </UiButton>
     </div>
@@ -43,7 +47,16 @@ export default {
     }
   },
   computed: {
+    // ongoingUpdate is true if a CRP has started a gradualWeightsUpdate
     ongoingUpdate() {
+      return this.bPool.isCrp() && this.bPool.metadata.startBlock !== '0';
+    },
+    // activeUpdate is true if it has started a gradualWeightsUpdate AND it's not too early to call pokeWeights
+    // Note that it's possible for the websocket interface to go down, in which case the blockNumber will be
+    //   incorrect. If this happens, we do not want users to be blocked from calling pokeWeights. So only
+    //   use activeUpdate for non-critical messaging, and only disable the button if it's a shared pool or
+    //   updateGradualWeightsUpdate was never called. (startBlock is obtained through multicall, which should be reliable.)
+    activeUpdate() {
       return (
         this.bPool.isCrp() &&
         this.bPool.metadata.startBlock !== '0' &&
