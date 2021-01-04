@@ -2,7 +2,7 @@
   "network": "kovan",
   "chainId": 42,
   "defaultPrecision": 2,
-  "rpcUrl": "https://kovan.infura.io/v3/03f1a9a53dee4bd5a7d3dde58ce26442",
+  "rpcUrl": "https://mainnet.infura.io/v3/03f1a9a53dee4bd5a7d3dde58ce26442",
   "wsUrl": "wss://kovan.infura.io/ws/v3/03f1a9a53dee4bd5a7d3dde58ce26442",
   "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-kovan",
   "explorer": "https://kovan.etherscan.io",
