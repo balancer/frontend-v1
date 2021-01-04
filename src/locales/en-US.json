@@ -252,8 +252,8 @@
     "withdraw": "Withdraw",
     "withdrawalAmt": "Withdrawal amt.",
     "wrap": "Wrap",
-    "wrapEthToWeth": "Change ETH to wETH",
+    "wrapEthToWeth": "Wrap ETH to wETH",
     "wrapFactor": "Wrap factor",
-    "wrapWethToEth": "Change wETH to ETH",
+    "wrapWethToEth": "Unwrap wETH to ETH",
     "wrongNetwork": "Wrong network"
 }
