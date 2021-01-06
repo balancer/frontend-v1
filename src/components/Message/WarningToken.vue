@@ -1,17 +1,18 @@
 <template>
   <div id="error" class="d-flex flex-items-center px-4 py-2">
-    <UiCheckbox class="error" :checked="accepted" @change="$emit('toggle')" />
-    <div class="ml-4">
+    <div class="mr-2">
       <div v-html="$t('tokenWarning1')" />
-      <div v-if="custom" v-html="$t('tokenWarning2')" />
-      <div v-html="$t('tokenWarning3')" />
+      <div class="mt-2" v-if="custom" v-html="$t('tokenWarning2')" />
     </div>
+    <UiButton class="button-red button-accept" @click="$emit('accept')">
+      I agree
+    </UiButton>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['custom', 'accepted']
+  props: ['custom']
 };
 </script>
 
@@ -22,5 +23,9 @@ export default {
   border: 1px solid $error;
   border-radius: 4px;
   color: $error;
+}
+
+.button-accept {
+  width: 120px;
 }
 </style>
