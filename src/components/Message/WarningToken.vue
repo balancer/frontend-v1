@@ -1,5 +1,5 @@
 <template>
-  <div id="error" class="d-flex flex-items-center px-4 py-2">
+  <div id="error" class="d-flex flex-items-center px-4 py-3">
     <div class="mr-2">
       <div v-html="$t('tokenWarning1')" />
       <div class="mt-2" v-if="custom" v-html="$t('tokenWarning2')" />
