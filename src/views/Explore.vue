@@ -26,8 +26,9 @@ export default {
     filters() {
       const query = formatFilters(this.filters);
       if (query.token && query.token.length === 0) delete query.token;
-      if (query.type && query.type.length === 0) delete query.type;
-      this.$router.push({ query });
+      if (query.type && (query.type.length === 0 || query.type === 'shared'))
+        delete query.type;
+      this.$router.push({ name: 'explore', query: clone(query) });
     }
   },
   computed: {
