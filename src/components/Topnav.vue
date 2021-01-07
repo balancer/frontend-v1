@@ -54,7 +54,7 @@
         </UiButton>
         <router-link
           v-if="$auth.isAuthenticated && !wrongNetwork && !ui.authLoading"
-          :to="{ name: 'wallet' }"
+          :to="{ name: 'home' }"
           class="ml-2"
         >
           <UiButton class="v-align-bottom p-0">
