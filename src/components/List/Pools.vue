@@ -45,6 +45,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { formatFilters, ITEMS_PER_PAGE } from '@/helpers/utils';
+import { getPoolLiquidity } from '@/helpers/price';
 
 export default {
   props: ['query', 'title'],
@@ -83,10 +84,26 @@ export default {
       const page = this.page;
       let query = this.query || {};
       query = { ...query, page };
-      const pools = await this.getPools(query);
+      let pools = await this.getPools(query);
+      pools = this.poolsWithLiquidity(pools);
       this.$emit('hasResults', pools.length > 0);
+      this.$emit(
+        'totalLiquidity',
+        pools.map(pool => pool.myLiquidity || 0).reduce((a, b) => a + b)
+      );
       this.pools = this.pools.concat(pools);
       this.loading = false;
+    },
+    poolsWithLiquidity(pools) {
+      return pools.map(pool => {
+        pool.poolLiquidity = getPoolLiquidity(pool, this.price.values);
+        const poolShares = this.subgraph.poolShares[pool.id];
+        pool.myLiquidity =
+          !pool.finalized || !poolShares
+            ? 0
+            : (pool.poolLiquidity / pool.totalShares) * poolShares;
+        return pool;
+      });
     }
   }
 };

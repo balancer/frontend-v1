@@ -1,9 +1,24 @@
 <template>
   <Page>
-    <Container class="mb-3">
-      <h3 class="flex-auto" v-text="$t('myLiquidity')" />
+    <Container class="d-flex mb-3">
+      <div class="flex-auto">
+        <h3 class="flex-auto" v-text="$t('myLiquidity')" />
+        <a :href="_etherscanLink(web3.account)" target="_blank">
+          <span v-text="_shortenAddress(web3.account)" />
+          <Icon name="external-link" size="16" class="ml-1 mr-2" />
+        </a>
+      </div>
+      <div v-if="totalLiquidity" class="text-right">
+        <h3 v-text="_num(totalLiquidity, 'usd-long')" />
+        {{ $t('totalValue') }}
+      </div>
     </Container>
-    <ListPools :key="key" :query="queryMyLiquidity" class="mb-4" />
+    <ListPools
+      :key="key"
+      :query="queryMyLiquidity"
+      @totalLiquidity="totalLiquidity = $event"
+      class="mb-4"
+    />
     <div class="hide-md" :style="!hasPools && 'display: none;'">
       <Container class="mb-3">
         <h3 class="flex-auto" v-text="$t('myPools')" />
@@ -87,12 +102,13 @@ export default {
     return {
       key: 0,
       hasPools: false,
+      totalLiquidity: false,
       modalWrapperOpen: false,
       side: 0
     };
   },
   watch: {
-    'web3.account': function(val) {
+    'web3.account': function() {
       this.key++;
     }
   },
