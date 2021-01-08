@@ -3,19 +3,18 @@
     <Container class="mb-3">
       <h3 class="flex-auto" v-text="$t('myLiquidity')" />
     </Container>
-    <ListPools
-      :key="JSON.stringify(queryMyLiquidity)"
-      :query="queryMyLiquidity"
-      class="mb-4"
-    />
-    <Container class="mb-3">
-      <h3 class="flex-auto" v-text="$t('myPools')" />
-    </Container>
-    <ListPools
-      :key="JSON.stringify(queryMyPools)"
-      :query="queryMyPools"
-      class="mb-4"
-    />
+    <ListPools :key="key" :query="queryMyLiquidity" class="mb-4" />
+    <div class="hide-md" :style="!hasPools && 'display: none;'">
+      <Container class="mb-3">
+        <h3 class="flex-auto" v-text="$t('myPools')" />
+      </Container>
+      <ListPools
+        :key="key"
+        :query="queryMyPools"
+        @hasResults="hasPools = $event"
+        class="mb-4"
+      />
+    </div>
     <Container class="d-flex mb-3">
       <div class="flex-auto">
         <h3 v-text="$t('myWallet')" />
@@ -86,9 +85,16 @@ import { formatUnits } from '@ethersproject/units';
 export default {
   data() {
     return {
+      key: 0,
+      hasPools: false,
       modalWrapperOpen: false,
       side: 0
     };
+  },
+  watch: {
+    'web3.account': function(val) {
+      this.key++;
+    }
   },
   computed: {
     queryMyLiquidity() {

@@ -84,6 +84,7 @@ export default {
       let query = this.query || {};
       query = { ...query, page };
       const pools = await this.getPools(query);
+      this.$emit('hasResults', pools.length > 0);
       this.pools = this.pools.concat(pools);
       this.loading = false;
     }
