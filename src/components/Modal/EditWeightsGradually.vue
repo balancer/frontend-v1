@@ -42,7 +42,10 @@
         </UiTableTr>
       </UiTable>
       <div class="m-4">
-        <div class="d-flex flex-items-center mb-2">
+        <div
+          v-if="this.web3.blockNumber > 0"
+          class="d-flex flex-items-center mb-2"
+        >
           <div v-text="$t('startBlock')" class="flex-auto" />
           <div class="column-sm">
             <input
@@ -78,7 +81,7 @@
           {{ $t('cancel') }}
         </UiButton>
         <UiButton
-          :disabled="loading || !isValid"
+          :disabled="loading || !isValid || this.web3.blockNumber == 0"
           :loading="loading"
           type="submit"
           class="button-primary mx-1"

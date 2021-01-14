@@ -145,6 +145,7 @@
     "of": "of",
     "ofSlippage": "of slippage",
     "ongoingUpdate": "There is a gradual weights update underway<br> from {startTime} ({startBlock})<br> until {endTime} ({endBlock})",
+    "ongoingUpdateLoading": "There is a gradual weights update underway... waiting for block information",
     "paused": "Paused",
     "pendingTransactions": "Pending transaction(s)",
     "percent": "Percent",
