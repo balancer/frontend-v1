@@ -35,7 +35,10 @@
       <h5 v-else v-text="$t('none')" class="text-white" />
     </div>
     <div v-if="ongoingUpdate" class="mb-3">
-      <div class="d-flex flex-items-center p-4 warning-box">
+      <div
+        v-if="this.web3.blockNumber > 0"
+        class="d-flex flex-items-center p-4 warning-box"
+      >
         <Icon name="warning" size="22" class="mr-4" />
         <div
           v-if="updateFinished"
@@ -52,6 +55,10 @@
             })
           "
         />
+      </div>
+      <div v-else class="d-flex flex-items-center p-4 warning-box">
+        <Icon name="warning" size="22" class="mr-4" />
+        <div v-text="$t('ongoingUpdateLoading')" />
       </div>
     </div>
     <div v-if="bPool.isCrp() && lbpData.isLbpPool">
@@ -257,6 +264,7 @@ export default {
       return new Date(blockTimestamp).toLocaleString('en-US', {
         month: 'long',
         day: 'numeric',
+        year: 'numeric',
         hour: '2-digit',
         minute: '2-digit'
       });
