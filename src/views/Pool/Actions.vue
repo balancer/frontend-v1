@@ -6,7 +6,12 @@
       style="max-width: 440px;"
     >
       <h5 v-text="$t('poke')" class="mb-3" />
-      <p v-html="$t('pokeWeightsEarly')" class="mb-3" v-if="tooEarly" />
+      <p
+        v-text="$t('ongoingUpdateLoading')"
+        class="mb-3"
+        v-if="this.web3.blockNumber == 0"
+      />
+      <p v-html="$t('pokeWeightsEarly')" class="mb-3" v-else-if="tooEarly" />
       <p
         v-html="$t('pokeWeightsOngoing')"
         class="mb-3"
