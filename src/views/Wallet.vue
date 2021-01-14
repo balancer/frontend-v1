@@ -15,8 +15,8 @@
     </Container>
     <UiTable>
       <UiTableTh>
-        <div v-text="'Asset'" class="flex-auto text-left" />
-        <div v-text="'Holdings'" class="column" />
+        <div v-text="$t('asset')" class="flex-auto text-left" />
+        <div v-text="$t('holdings')" class="column" />
       </UiTableTh>
       <UiTableTr v-for="(balance, i) in balances" :key="i">
         <Token :address="balance.address" class="mr-3" size="32" />
@@ -54,6 +54,17 @@
         </div>
       </UiTableTr>
     </UiTable>
+    <hr />
+    <Container class="d-flex mb-3">
+      <div v-if="web3.dsProxyAddress" class="flex-auto">
+        <h3 v-text="$t('myProxy')" />
+        <a :href="_etherscanLink(web3.dsProxyAddress)" target="_blank">
+          <span v-text="web3.dsProxyAddress" />
+          <Icon name="external-link" size="16" class="ml-1 mr-2" />
+        </a>
+      </div>
+      <h4 v-else v-text="$t('noProxy')" />
+    </Container>
     <portal to="modal">
       <ModalWrapper
         :open="modalWrapperOpen"

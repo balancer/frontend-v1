@@ -14,6 +14,11 @@
           v-model="input"
         />
       </div>
+      <div class="d-flex flex-items-center p-4 warning-box">
+        <Icon name="warning" size="22" class="mr-4" />
+        <div v-text="$t('whitelistProxy')" />
+      </div>
+
       <template slot="footer">
         <UiButton @click="$emit('close')" type="button" class="mx-1">
           {{ $t('cancel') }}
