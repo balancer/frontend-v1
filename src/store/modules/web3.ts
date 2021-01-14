@@ -429,6 +429,15 @@ const actions = {
       commit('GET_PROXY_FAILURE', e);
       return Promise.reject();
     }
+  },
+  getBlockNumber: async ({ commit }) => {
+    try {
+      const blockNumber = await provider.getBlockNumber();
+      commit('GET_BLOCK_SUCCESS', blockNumber);
+      return blockNumber;
+    } catch (e) {
+      return Promise.reject();
+    }
   }
 };
 

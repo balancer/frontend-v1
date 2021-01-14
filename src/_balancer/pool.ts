@@ -40,6 +40,7 @@ export default class Pool {
     if (
       !this.metadata.liquidity ||
       !this.metadata.totalShares ||
+      this.metadata.totalShares == 0 ||
       (!this.metadata.finalized && !this.isCrp())
     )
       return 0;
