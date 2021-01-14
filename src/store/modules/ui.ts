@@ -29,7 +29,8 @@ const actions = {
       .filter(tokenId => !!tokenId);
     await Promise.all([
       dispatch('loadPricesById', tokenIds),
-      dispatch('initTokenMetadata')
+      dispatch('initTokenMetadata'),
+      dispatch('getBlockNumber')
     ]);
     const connector = await Vue.prototype.$auth.getConnector();
     if (connector) dispatch('login', connector);
