@@ -14,7 +14,7 @@
           v-model="input"
         />
       </div>
-      <div class="d-flex flex-items-center p-4 warning-box">
+      <div class="d-flex flex-items-center mx-4 mb-4 warning-box">
         <Icon name="warning" size="22" class="mr-4" />
         <div v-text="$t('whitelistProxy')" />
       </div>

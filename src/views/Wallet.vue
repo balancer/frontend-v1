@@ -13,7 +13,7 @@
         {{ $t('totalValue') }}
       </div>
     </Container>
-    <UiTable>
+    <UiTable class="mb-4">
       <UiTableTh>
         <div v-text="$t('asset')" class="flex-auto text-left" />
         <div v-text="$t('holdings')" class="column" />
@@ -54,7 +54,6 @@
         </div>
       </UiTableTr>
     </UiTable>
-    <hr />
     <Container class="d-flex mb-3">
       <div v-if="web3.dsProxyAddress" class="flex-auto">
         <h3 v-text="$t('myProxy')" />
