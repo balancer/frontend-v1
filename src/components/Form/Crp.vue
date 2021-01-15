@@ -98,13 +98,21 @@
           :checked="rights.canWhitelistLPs"
           @change="$emit('toggle-right', 'canWhitelistLPs')"
         >
-          <span v-text="$t('canWhitelistLPs')" class="ml-2 text-white" />
+          <span
+            v-text="$t('canWhitelistLPs')"
+            class="ml-2 text-white tooltipped tooltipped-n"
+            :aria-label="$t('whitelistExplanation')"
+          />
         </UiCheckbox>
         <UiCheckbox
           :checked="rights.canChangeCap"
           @change="$emit('toggle-right', 'canChangeCap')"
         >
-          <span v-text="$t('canChangeCap')" class="ml-2 text-white" />
+          <span
+            v-text="$t('canChangeCap')"
+            class="ml-2 text-white tooltipped tooltipped-n"
+            :aria-label="$t('capRightExplanation')"
+          />
         </UiCheckbox>
       </div>
     </div>
