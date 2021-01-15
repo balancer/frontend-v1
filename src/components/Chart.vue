@@ -119,14 +119,14 @@ export default {
     },
     chartData() {
       const data = [];
-      if (this.activeTab == 'PRICE') {
+      if (this.activeTab === 'PRICE') {
         for (let i = 0; i < this.swaps.length; i++) {
           const swap = this.swaps[i];
-
-          if (i > 0 && swap.timestamp != this.swaps[i - 1].timestamp) {
+          if (i > 0 && swap.timestamp !== this.swaps[i - 1].timestamp) {
+            const value = swapPrice(this.pool, this.config.chainId, swap);
             data.push({
               time: swap.timestamp,
-              value: swapPrice(this.pool, this.config.chainId, swap)
+              value
             });
           }
         }
@@ -257,7 +257,7 @@ export default {
         query = { ...query, page };
         const swaps = await this.getLbpSwaps(query);
         this.swaps = this.swaps.concat(swaps);
-        moreSwaps = swaps.length == 100;
+        moreSwaps = swaps.length === 100;
         if (moreSwaps) {
           page += 1;
         }
