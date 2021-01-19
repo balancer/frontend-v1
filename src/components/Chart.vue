@@ -125,7 +125,7 @@ export default {
 
           if (i > 0 && swap.timestamp != this.swaps[i - 1].timestamp) {
             data.push({
-              time: swap.timestamp * 1e3,
+              time: swap.timestamp,
               value: swapPrice(this.pool, this.config.chainId, swap)
             });
           }
