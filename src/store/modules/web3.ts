@@ -98,6 +98,7 @@ const mutations = {
   },
   HANDLE_ACCOUNTS_CHANGED(_state, payload) {
     Vue.set(_state, 'account', payload);
+    Vue.set(_state, 'name', null);
     console.debug('HANDLE_ACCOUNTS_CHANGED', payload);
   },
   HANDLE_NETWORK_CHANGED() {
@@ -427,6 +428,15 @@ const actions = {
       return proxy;
     } catch (e) {
       commit('GET_PROXY_FAILURE', e);
+      return Promise.reject();
+    }
+  },
+  getBlockNumber: async ({ commit }) => {
+    try {
+      const blockNumber = await provider.getBlockNumber();
+      commit('GET_BLOCK_SUCCESS', blockNumber);
+      return blockNumber;
+    } catch (e) {
       return Promise.reject();
     }
   }
