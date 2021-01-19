@@ -98,6 +98,7 @@ const mutations = {
   },
   HANDLE_ACCOUNTS_CHANGED(_state, payload) {
     Vue.set(_state, 'account', payload);
+    Vue.set(_state, 'name', null);
     console.debug('HANDLE_ACCOUNTS_CHANGED', payload);
   },
   HANDLE_NETWORK_CHANGED() {
