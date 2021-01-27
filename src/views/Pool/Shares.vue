@@ -58,6 +58,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { ITEMS_PER_PAGE } from '@/helpers/utils';
+import { getPoolLiquidity } from '@/helpers/price';
 
 export default {
   props: ['pool'],
@@ -69,8 +70,11 @@ export default {
     };
   },
   computed: {
+    poolLiquidity() {
+      return getPoolLiquidity(this.pool, this.price.values);
+    },
     bptValue() {
-      return this.pool.liquidity / this.pool.totalShares;
+      return parseInt(this.poolLiquidity) / this.pool.totalShares;
     }
   },
   methods: {
