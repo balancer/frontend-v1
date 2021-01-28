@@ -38,8 +38,10 @@ export default {
   watch: {
     requireApprovals(value, oldValue) {
       if (
+        value &&
+        oldValue &&
         JSON.stringify(Object.keys(value)) !==
-        JSON.stringify(Object.keys(oldValue))
+          JSON.stringify(Object.keys(oldValue))
       ) {
         this.getAllowances(Object.keys(value));
       }
