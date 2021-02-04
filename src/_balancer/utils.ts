@@ -22,7 +22,7 @@ export async function multicall(provider, abi, calls, options?) {
       itf.decodeFunctionResult(calls[i][1], call)
     );
   } catch (e) {
-    return Promise.reject();
+    return Promise.reject(e);
   }
 }
 
