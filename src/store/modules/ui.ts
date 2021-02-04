@@ -39,16 +39,15 @@ const actions = {
     if (connector) dispatch('login', connector);
     commit('SET', { loading: false, init: true });
 
-    console.log('Testing getPoolTokens');
     try {
-      const tokenData = await multicall(provider, abi['Vault'], [
+      const result = await multicall(provider, abi['Vault'], [
         [
           '0xBFa16D136bAFEa5a54f581C491be040BA44AF98F',
           'getPoolTokens',
           ['0x369f6f4116813e3e3f79fabe3444a7c41e716f8f000200000000000000000000']
         ]
       ]);
-      console.log('getPoolTokens', tokenData);
+      console.log('Pool tokens', result);
     } catch (e) {
       console.log(e);
     }
