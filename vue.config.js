@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  publicPath: process.env.DEPLOY ? '././' : '/',
+  publicPath: process.env.PINATA ? './' : (process.env.DEPLOY ? '././' : '/'),
   pluginOptions: {
     express: {
       shouldServeApp: true,
