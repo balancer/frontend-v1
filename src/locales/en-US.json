@@ -123,6 +123,7 @@
     "marketAmounts": "Calculate token amounts using market prices",
     "marketCap": "Market cap",
     "max": "Max",
+    "migrate": "Migrate",
     "minimumSwapFee": "There is a minimum swap fee of",
     "minimumUpdateErr": "Gradual update period",
     "minimumUpdatePeriod": "Minimum gradual update duration (in blocks)",
