@@ -40,7 +40,8 @@
           </ButtonMigrate>
         </div>
         <div class="mt-5 d-flex impact-label" @click="toggleAdvancedOptions">
-          Price impact: {{ _num(priceImpact, 'percent') }}
+          Price impact:
+          {{ isFullMigration ? _num(priceImpact, 'percent') : '0%' }}
           <div class="ml-1">
             <Icon v-if="advancedOptions" name="arrow-up" />
             <Icon v-else name="arrow-down" />
@@ -48,7 +49,10 @@
         </div>
         <div v-if="advancedOptions">
           <div class="options mt-3">
-            <div class="option d-flex p-3" @click="isFullMigration = true">
+            <div
+              class="option d-flex flex-items-center p-3"
+              @click="isFullMigration = true"
+            >
               <div class="option-input" :class="{ active: isFullMigration }">
                 <div class="option-input-circle" v-if="isFullMigration"></div>
               </div>
@@ -61,7 +65,10 @@
                 </div>
               </div>
             </div>
-            <div class="option d-flex p-3" @click="isFullMigration = false">
+            <div
+              class="option d-flex flex-items-center p-3"
+              @click="isFullMigration = false"
+            >
               <div class="option-input" :class="{ active: !isFullMigration }">
                 <div class="option-input-circle" v-if="!isFullMigration"></div>
               </div>
@@ -70,7 +77,7 @@
                   Migrate with minimal price impact
                 </div>
                 <div class="option-impact">
-                  {{ _num(priceImpact, 'percent') }} price impact
+                  0% price impact
                 </div>
               </div>
             </div>
@@ -117,6 +124,8 @@ import { bnum, scale } from '@/helpers/utils';
 import { getPoolLiquidity } from '@/helpers/price';
 import { getNewPool, calculatePriceImpact } from '@/helpers/migration';
 import config from '@/config';
+
+const MAX_PRICE_IMPACT = 0.01;
 
 export default {
   data() {
@@ -173,6 +182,9 @@ export default {
       this.poolV1,
       this.poolV2
     );
+    if (this.priceImpact > MAX_PRICE_IMPACT) {
+      this.isFullMigration = false;
+    }
   },
   methods: {
     ...mapActions([
