@@ -161,6 +161,17 @@ export async function getMarketChartFromCoinGecko(address) {
   }
 }
 
+export function getPoolLink(pool: string): string {
+  const chainId = config.chainId;
+  const prefixMap = {
+    1: '',
+    42: 'kovan.'
+  };
+  const prefix = prefixMap[chainId];
+  const link = `https://${prefix}pools.balancer.exchange/#/pool/${pool}`;
+  return link;
+}
+
 export function isValidAddress(str) {
   try {
     getAddress(str);
