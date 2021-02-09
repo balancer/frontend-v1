@@ -1,8 +1,7 @@
 import { multicall } from './utils';
 import provider from '@/helpers/provider';
 import abi from '@/helpers/abi';
-
-const VAULT = '0xBFa16D136bAFEa5a54f581C491be040BA44AF98F';
+import config from '@/config';
 
 export default class PoolV2 {
   public readonly address: string;
@@ -18,12 +17,12 @@ export default class PoolV2 {
     const id = idData[0];
 
     const [tokenData] = await multicall(provider, abi['Vault'], [
-      [VAULT, 'getPoolTokens', [id]]
+      [config.addresses.vault, 'getPoolTokens', [id]]
     ]);
     const addresses = tokenData[0];
 
     const [balanceData] = await multicall(provider, abi['Vault'], [
-      [VAULT, 'getPoolTokenBalances', [id, addresses]]
+      [config.addresses.vault, 'getPoolTokenBalances', [id, addresses]]
     ]);
     const balances = balanceData[0].map(balance => balance.toString());
 

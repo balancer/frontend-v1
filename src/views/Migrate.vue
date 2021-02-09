@@ -116,8 +116,7 @@ import PoolV2 from '@/_balancer/pool2';
 import { bnum, scale } from '@/helpers/utils';
 import { getPoolLiquidity } from '@/helpers/price';
 import { getNewPool, calculatePriceImpact } from '@/helpers/migration';
-
-const VAULT = '0xBFa16D136bAFEa5a54f581C491be040BA44AF98F';
+import config from '@/config';
 
 export default {
   data() {
@@ -236,7 +235,7 @@ export default {
       const poolV1Amount = bnum(this.balance)
         .times(0.1)
         .toFixed(0);
-      const vault = VAULT;
+      const vault = config.addresses.vault;
       const poolIn = this.poolV1.address;
       const poolInAmount = poolV1Amount;
       const tokenOutAmountsMin = ['0', '0'];
