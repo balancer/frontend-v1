@@ -249,12 +249,12 @@ export default {
     },
     async migratePool() {
       const poolV1Amount = bnum(this.balance)
-        .times(0.1)
+        .times(0.01)
         .toFixed(0);
       const vault = config.addresses.vault;
       const poolIn = this.poolV1.address;
       const poolInAmount = poolV1Amount;
-      const tokenOutAmountsMin = ['0', '0'];
+      const tokenOutAmountsMin = this.poolV1.tokens.map(() => '0');
       const poolOut = this.poolV2.address;
       // TODO calculate slippage based amounts (min)
       const poolOutAmountMin = '0';
