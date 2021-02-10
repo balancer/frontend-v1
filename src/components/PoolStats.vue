@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import BigNumber from 'bignumber.js';
 import { bnum, getPoolLink } from '@/helpers/utils';
 
 export default {
@@ -74,7 +75,10 @@ export default {
         bnum(0)
       );
       const weight = bnum(token.denormWeight);
-      return weight.div(totalWeight).times(100);
+      return weight
+        .div(totalWeight)
+        .times(100)
+        .toFixed(0, BigNumber.ROUND_HALF_UP);
     }
   }
 };
