@@ -3,7 +3,11 @@
     <div class="migrate">
       <h3>Upgrade to V2</h3>
       <div class="mt-6">
-        <PoolStripe :pool="poolV1" :liquidity="liquidity" />
+        <PoolStripe
+          :pool-v1="poolV1"
+          :pool-v2="poolV2"
+          :liquidity="liquidity"
+        />
         <div class="stats d-flex flex-justify-between mt-4">
           <PoolStats
             :pool="poolV1"
@@ -279,6 +283,8 @@ export default {
     async unlockPool() {
       this.loading = true;
       await this.approve(this.pool);
+      const data = await this.getAllowances([this.pool]);
+      this.allowance = data[this.pool][this.web3.dsProxyAddress];
       this.loading = false;
     },
     toggleAdvancedOptions() {
