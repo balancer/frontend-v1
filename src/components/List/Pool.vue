@@ -43,8 +43,10 @@
       <button
         class="button-migrate"
         :class="{ primary: canMigrate }"
-        v-text="canMigrate ? 'V2 Migrate' : 'V2 Options'"
-      />
+        v-if="canMigrate"
+      >
+        V2 Migrate
+      </button>
     </div>
   </UiTableTr>
 </template>
@@ -75,15 +77,9 @@ export default {
 
 <style scoped>
 .button-migrate {
-  background: none;
+  padding: 2px 4px;
   color: white;
   font-weight: bold;
-  border: 1px solid white;
-  border-radius: 5px;
-  padding: 2px 4px;
-}
-
-.button-migrate.primary {
   background: linear-gradient(270deg, #f0f 0%, #00f 100%);
   border: none;
   border-radius: 5px;
