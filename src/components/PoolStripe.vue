@@ -23,7 +23,7 @@ export default {
           bnum(token.denormWeight)
             .div(totalWeight)
             .times(100)
-            .toString()
+            .toFixed(2)
         )
         .join('/');
       const symbolString = this.pool.tokens
