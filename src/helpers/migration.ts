@@ -80,5 +80,5 @@ export function calculatePriceImpact(
   const one = new BigNumber(1);
   const priceImpact = one.minus(poolV2Amount.div(poolV2AmountSpot));
 
-  return priceImpact.toString();
+  return priceImpact.toNumber();
 }
