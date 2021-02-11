@@ -1,6 +1,6 @@
 <template>
-  <button @click="$emit('click')" class="flex-1 button" :disabled="loading">
-    <UiLoading v-if="loading" />
+  <button @click="$emit('click')" class="flex-1 button" :disabled="pending">
+    <UiLoading v-if="pending" />
     <slot v-else />
   </button>
 </template>
@@ -8,7 +8,7 @@
 <script>
 export default {
   props: {
-    loading: Boolean
+    pending: Boolean
   }
 };
 </script>

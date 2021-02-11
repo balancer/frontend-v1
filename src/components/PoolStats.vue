@@ -3,6 +3,7 @@
     <div class="stats-header d-flex flex-justify-between p-2">
       <div class="stats-title">{{ header }}</div>
       <div
+        v-if="!loading"
         class="stats-expand d-flex flex-align-center flex-justify-center"
         :class="{ active: details }"
         @click="$emit('toggle-details')"
@@ -10,7 +11,10 @@
         i
       </div>
     </div>
-    <div class="assets p-2">
+    <div v-if="loading" class="p-2 assets-loading">
+      <div class="bg-gray rounded-1 anim-pulse" />
+    </div>
+    <div v-else class="assets p-2">
       <div class="d-flex">
         <div
           v-for="token in pool.tokens"
@@ -59,7 +63,7 @@ import BigNumber from 'bignumber.js';
 import { bnum, getPoolLink } from '@/helpers/utils';
 
 export default {
-  props: ['pool', 'details', 'isV1'],
+  props: ['pool', 'details', 'isV1', 'loading'],
   computed: {
     header() {
       return this.isV1 ? 'V1 Pool' : 'V2 Pool';
@@ -95,6 +99,7 @@ export default {
 .stats-header {
   border-bottom: 1px solid #2e2e2e;
   color: white;
+  height: 41px;
 }
 
 .stats-title {
@@ -115,6 +120,16 @@ export default {
 
 .stats-expand.active {
   background: #fff;
+}
+
+.assets-loading {
+  height: 64.9px;
+  border-bottom: 1px solid #2e2e2e;
+}
+
+.assets-loading > div {
+  width: 50%;
+  height: 100%;
 }
 
 .assets {

@@ -7,12 +7,14 @@
           :pool-v1="poolV1"
           :pool-v2="poolV2"
           :liquidity="liquidity"
+          :loading="loading"
         />
         <div class="stats d-flex flex-justify-between mt-4">
           <PoolStats
             :pool="poolV1"
             :is-v1="true"
             :details="poolStatDetails"
+            :loading="loading"
             @toggle-details="handleToggleStats"
           />
           <div class="arrow">→</div>
@@ -20,6 +22,7 @@
             :pool="poolV2"
             :is-v1="false"
             :details="poolStatDetails"
+            :loading="loading"
             @toggle-details="handleToggleStats"
           />
         </div>
@@ -27,7 +30,7 @@
           <ButtonMigrate
             v-if="isUnlocked"
             :disabled="isDisabled"
-            :loading="loading"
+            :pending="pendingTx"
             @click="migratePool"
             class="button-primary"
           >
@@ -36,14 +39,21 @@
           <ButtonMigrate
             v-else
             :disabled="isDisabled"
-            :loading="loading"
+            :pending="pendingTx"
             @click="unlockPool"
             class="button-primary"
           >
             Unlock
           </ButtonMigrate>
         </div>
-        <div class="mt-5 d-flex impact-label" @click="toggleAdvancedOptions">
+        <div v-if="loading" class="mt-5 impact-label-loading">
+          <div class="bg-gray rounded-1 anim-pulse" />
+        </div>
+        <div
+          v-else
+          class="mt-5 d-flex impact-label"
+          @click="toggleAdvancedOptions"
+        >
           Price impact:
           {{ isFullMigration ? _num(priceImpact, 'percent') : '0%' }}
           <div class="ml-1">
@@ -135,7 +145,8 @@ export default {
   data() {
     return {
       pool: this.$route.params.id,
-      loading: false,
+      loading: true,
+      pendingTx: false,
       advancedOptions: false,
       poolStatDetails: false,
       isFullMigration: true,
@@ -181,6 +192,7 @@ export default {
   async mounted() {
     await this.fetchPool();
     await this.fetchPoolV2();
+    this.loading = false;
     this.priceImpact = calculatePriceImpact(
       this.balance,
       this.poolV1,
@@ -258,7 +270,7 @@ export default {
       const poolOut = this.poolV2.address;
       // TODO calculate slippage based amounts (min)
       const poolOutAmountMin = '0';
-      this.loading = true;
+      this.pendingTx = true;
       if (this.isFullMigration) {
         await this.migrateAll({
           vault,
@@ -278,14 +290,14 @@ export default {
           poolOutAmountMin
         });
       }
-      this.loading = false;
+      this.pendingTx = false;
     },
     async unlockPool() {
-      this.loading = true;
+      this.pendingTx = true;
       await this.approve(this.pool);
       const data = await this.getAllowances([this.pool]);
       this.allowance = data[this.pool][this.web3.dsProxyAddress];
-      this.loading = false;
+      this.pendingTx = false;
     },
     toggleAdvancedOptions() {
       this.advancedOptions = !this.advancedOptions;
@@ -326,6 +338,15 @@ export default {
   justify-content: center;
   font-size: 18px;
   color: #90a4ae;
+}
+
+.impact-label-loading {
+  height: 19.6px;
+}
+
+.impact-label-loading > div {
+  height: 90%;
+  width: 30%;
 }
 
 .impact-label {
