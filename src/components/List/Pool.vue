@@ -68,7 +68,6 @@ export default {
     },
     canMigrate() {
       const newPool = getNewPool(this.pool.id);
-      console.log(newPool);
       return !!newPool;
     }
   }
