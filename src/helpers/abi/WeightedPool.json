@@ -9,9 +9,14 @@
           "type": "address"
         },
         {
-          "internalType": "uint256",
-          "name": "initialBPT",
-          "type": "uint256"
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "symbol",
+          "type": "string"
         },
         {
           "internalType": "contract IERC20[]",
@@ -19,24 +24,14 @@
           "type": "address[]"
         },
         {
-          "internalType": "uint128[]",
-          "name": "amounts",
-          "type": "uint128[]"
-        },
-        {
-          "internalType": "address",
-          "name": "from",
-          "type": "address"
-        },
-        {
-          "internalType": "uint128[]",
+          "internalType": "uint256[]",
           "name": "weights",
-          "type": "uint128[]"
+          "type": "uint256[]"
         },
         {
-          "internalType": "uint128",
+          "internalType": "uint256",
           "name": "swapFee",
-          "type": "uint128"
+          "type": "uint256"
         }
       ],
       "stateMutability": "nonpayable",
@@ -96,12 +91,12 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "src",
+          "name": "owner",
           "type": "address"
         },
         {
           "internalType": "address",
-          "name": "dst",
+          "name": "spender",
           "type": "address"
         }
       ],
@@ -120,12 +115,12 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "dst",
+          "name": "spender",
           "type": "address"
         },
         {
           "internalType": "uint256",
-          "name": "amt",
+          "name": "amount",
           "type": "uint256"
         }
       ],
@@ -144,7 +139,7 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "whom",
+          "name": "account",
           "type": "address"
         }
       ],
@@ -169,19 +164,19 @@
           "type": "uint8"
         }
       ],
-      "stateMutability": "view",
+      "stateMutability": "pure",
       "type": "function"
     },
     {
       "inputs": [
         {
           "internalType": "address",
-          "name": "dst",
+          "name": "spender",
           "type": "address"
         },
         {
           "internalType": "uint256",
-          "name": "amt",
+          "name": "amount",
           "type": "uint256"
         }
       ],
@@ -197,31 +192,48 @@
       "type": "function"
     },
     {
-      "inputs": [
+      "inputs": [],
+      "name": "getInvariant",
+      "outputs": [
         {
           "internalType": "uint256",
-          "name": "poolAmountIn",
+          "name": "",
           "type": "uint256"
-        },
-        {
-          "internalType": "uint256[]",
-          "name": "minAmountsOut",
-          "type": "uint256[]"
-        },
-        {
-          "internalType": "bool",
-          "name": "withdrawTokens",
-          "type": "bool"
-        },
-        {
-          "internalType": "address",
-          "name": "beneficiary",
-          "type": "address"
         }
       ],
-      "name": "exitPool",
-      "outputs": [],
-      "stateMutability": "nonpayable",
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getLastInvariant",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract IERC20[]",
+          "name": "tokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "getNormalizedWeights",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "normalizedWeights",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -242,9 +254,9 @@
       "name": "getSwapFee",
       "outputs": [
         {
-          "internalType": "uint128",
+          "internalType": "uint256",
           "name": "",
-          "type": "uint128"
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -266,32 +278,13 @@
     {
       "inputs": [
         {
-          "internalType": "contract IERC20[]",
-          "name": "tokens",
-          "type": "address[]"
-        }
-      ],
-      "name": "getWeights",
-      "outputs": [
-        {
-          "internalType": "uint128[]",
-          "name": "",
-          "type": "uint128[]"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "address",
-          "name": "dst",
+          "name": "spender",
           "type": "address"
         },
         {
           "internalType": "uint256",
-          "name": "amt",
+          "name": "amount",
           "type": "uint256"
         }
       ],
@@ -303,34 +296,6 @@
           "type": "bool"
         }
       ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "poolAmountOut",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint128[]",
-          "name": "maxAmountsIn",
-          "type": "uint128[]"
-        },
-        {
-          "internalType": "bool",
-          "name": "transferTokens",
-          "type": "bool"
-        },
-        {
-          "internalType": "address",
-          "name": "beneficiary",
-          "type": "address"
-        }
-      ],
-      "name": "joinPool",
-      "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -348,9 +313,110 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "payProtocolFees",
-      "outputs": [],
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "poolId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "currentBalances",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "protocolFeePercentage",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "userData",
+          "type": "bytes"
+        }
+      ],
+      "name": "onExitPool",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "poolId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "currentBalances",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "protocolFeePercentage",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "userData",
+          "type": "bytes"
+        }
+      ],
+      "name": "onJoinPool",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -369,14 +435,19 @@
               "type": "address"
             },
             {
-              "internalType": "uint128",
+              "internalType": "uint256",
               "name": "amountOut",
-              "type": "uint128"
+              "type": "uint256"
             },
             {
               "internalType": "bytes32",
               "name": "poolId",
               "type": "bytes32"
+            },
+            {
+              "internalType": "uint256",
+              "name": "latestBlockNumberUsed",
+              "type": "uint256"
             },
             {
               "internalType": "address",
@@ -394,27 +465,27 @@
               "type": "bytes"
             }
           ],
-          "internalType": "struct ITradingStrategy.QuoteRequestGivenOut",
+          "internalType": "struct IPoolQuoteStructs.QuoteRequestGivenOut",
           "name": "request",
           "type": "tuple"
         },
         {
-          "internalType": "uint128",
+          "internalType": "uint256",
           "name": "currentBalanceTokenIn",
-          "type": "uint128"
+          "type": "uint256"
         },
         {
-          "internalType": "uint128",
+          "internalType": "uint256",
           "name": "currentBalanceTokenOut",
-          "type": "uint128"
+          "type": "uint256"
         }
       ],
       "name": "quoteInGivenOut",
       "outputs": [
         {
-          "internalType": "uint128",
+          "internalType": "uint256",
           "name": "",
-          "type": "uint128"
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -435,14 +506,19 @@
               "type": "address"
             },
             {
-              "internalType": "uint128",
+              "internalType": "uint256",
               "name": "amountIn",
-              "type": "uint128"
+              "type": "uint256"
             },
             {
               "internalType": "bytes32",
               "name": "poolId",
               "type": "bytes32"
+            },
+            {
+              "internalType": "uint256",
+              "name": "latestBlockNumberUsed",
+              "type": "uint256"
             },
             {
               "internalType": "address",
@@ -460,27 +536,27 @@
               "type": "bytes"
             }
           ],
-          "internalType": "struct ITradingStrategy.QuoteRequestGivenIn",
+          "internalType": "struct IPoolQuoteStructs.QuoteRequestGivenIn",
           "name": "request",
           "type": "tuple"
         },
         {
-          "internalType": "uint128",
+          "internalType": "uint256",
           "name": "currentBalanceTokenIn",
-          "type": "uint128"
+          "type": "uint256"
         },
         {
-          "internalType": "uint128",
+          "internalType": "uint256",
           "name": "currentBalanceTokenOut",
-          "type": "uint128"
+          "type": "uint256"
         }
       ],
       "name": "quoteOutGivenIn",
       "outputs": [
         {
-          "internalType": "uint128",
+          "internalType": "uint256",
           "name": "",
-          "type": "uint128"
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -516,12 +592,12 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "dst",
+          "name": "recipient",
           "type": "address"
         },
         {
           "internalType": "uint256",
-          "name": "amt",
+          "name": "amount",
           "type": "uint256"
         }
       ],
@@ -540,17 +616,17 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "src",
+          "name": "sender",
           "type": "address"
         },
         {
           "internalType": "address",
-          "name": "dst",
+          "name": "recipient",
           "type": "address"
         },
         {
           "internalType": "uint256",
-          "name": "amt",
+          "name": "amount",
           "type": "uint256"
         }
       ],
@@ -565,5 +641,7 @@
       "stateMutability": "nonpayable",
       "type": "function"
     }
-  ]
+  ],
+  "linkReferences": {},
+  "deployedLinkReferences": {}
 }

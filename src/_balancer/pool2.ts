@@ -20,18 +20,14 @@ export default class PoolV2 {
       [config.addresses.vault, 'getPoolTokens', [id]]
     ]);
     const addresses = tokenData[0];
-
-    const [balanceData] = await multicall(provider, abi['Vault'], [
-      [config.addresses.vault, 'getPoolTokenBalances', [id, addresses]]
-    ]);
-    const balances = balanceData[0].map(balance => balance.toString());
+    const balances = tokenData[1].map(balance => balance.toString());
 
     const [swapFeeData, weightData, totalSupplyData] = await multicall(
       provider,
       abi['WeightedPool'],
       [
         [this.address, 'getSwapFee', []],
-        [this.address, 'getWeights', [addresses]],
+        [this.address, 'getNormalizedWeights', [addresses]],
         [this.address, 'totalSupply', []]
       ]
     );
