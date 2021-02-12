@@ -30,14 +30,6 @@
         }
       }
     },
-    "portis": {
-      "id": "portis",
-      "name": "Portis",
-      "options": {
-        "network": "mainnet",
-        "dappId": "3f1c3cfc-7dd5-4e8a-aa03-71ff7396d9fe"
-      }
-    },
     "walletlink": {
       "id": "walletlink",
       "name": "Coinbase",
