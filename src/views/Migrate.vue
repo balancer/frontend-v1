@@ -3,14 +3,14 @@
     <div class="migrate">
       <h3>Upgrade to V2</h3>
       <div class="mt-6">
-        <PoolStripe
+        <MigrationStripe
           :pool-v1="poolV1"
           :pool-v2="poolV2"
           :liquidity="liquidity"
           :loading="loading"
         />
         <div class="stats d-flex flex-justify-between mt-4">
-          <PoolStats
+          <MigrationStats
             :pool="poolV1"
             :is-v1="true"
             :details="poolStatDetails"
@@ -18,7 +18,7 @@
             @toggle-details="handleToggleStats"
           />
           <div class="arrow">→</div>
-          <PoolStats
+          <MigrationStats
             :pool="poolV2"
             :is-v1="false"
             :details="poolStatDetails"
