@@ -403,7 +403,7 @@ export default {
 }
 
 .slippage-header {
-  font-weight: bold;
+  color: #90a4ae;
   margin-bottom: 8px;
 }
 
