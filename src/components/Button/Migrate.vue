@@ -39,5 +39,10 @@ export default {
     opacity: 0.35;
     cursor: not-allowed;
   }
+
+  &:disabled:hover {
+    box-shadow: none;
+    transform: none;
+  }
 }
 </style>
