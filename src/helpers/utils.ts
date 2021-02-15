@@ -172,6 +172,11 @@ export function getPoolLink(pool: string): string {
   return link;
 }
 
+export function getPoolV2Link(poolId: string): string {
+  const link = `https://pm2.on.fleek.co/#/pool/${poolId}`;
+  return link;
+}
+
 export function isValidAddress(str) {
   try {
     getAddress(str);

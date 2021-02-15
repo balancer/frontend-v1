@@ -50,8 +50,8 @@
       </div>
     </div>
     <div class="link">
-      More
-      <a :href="getPoolLink(pool.address)" target="_blank">
+      <a :href="getPoolLink(pool)" target="_blank">
+        More
         <Icon name="external-link" size="14" />
       </a>
     </div>
@@ -60,7 +60,7 @@
 
 <script>
 import BigNumber from 'bignumber.js';
-import { bnum, getPoolLink } from '@/helpers/utils';
+import { bnum, getPoolLink, getPoolV2Link } from '@/helpers/utils';
 
 export default {
   props: ['pool', 'details', 'isV1', 'loading'],
@@ -70,8 +70,12 @@ export default {
     }
   },
   methods: {
-    getPoolLink(address) {
-      return getPoolLink(address);
+    getPoolLink(pool) {
+      if (this.isV1) {
+        return getPoolLink(pool.address);
+      } else {
+        return getPoolV2Link(pool.id);
+      }
     },
     getWeightShare(tokens, token) {
       const totalWeight = tokens.reduce(

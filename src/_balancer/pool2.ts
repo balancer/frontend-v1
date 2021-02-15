@@ -44,6 +44,7 @@ export default class PoolV2 {
     });
 
     return {
+      id,
       tokens,
       swapFee,
       totalSupply
