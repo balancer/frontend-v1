@@ -1,6 +1,9 @@
 <template>
   <UiTableTr
-    :to="{ name: migratable ? 'migrate' : 'pool', params: { id: pool.id } }"
+    :to="{
+      name: migratable && canMigrate ? 'migrate' : 'pool',
+      params: { id: pool.id }
+    }"
   >
     <div class="column-sm text-left hide-sm hide-md hide-lg">
       {{ _shortenAddress(pool.id) }}
