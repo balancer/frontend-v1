@@ -40,15 +40,14 @@ export default {
 
       const v1Tokens = this.poolV1.tokens;
       const v2Tokens = this.poolV2.tokens;
-      v1Tokens.sort((a, b) => a.address.localeCompare(b.address));
-      v2Tokens.sort((a, b) => a.address.localeCompare(b.address));
 
-      let differentAssets = v1Tokens.length != v2Tokens.length;
-      if (!differentAssets) {
-        for (let i = 0; i < v1Tokens.lengthl; i++) {
-          if (v1Tokens[i].address != v2Tokens[i].address) {
-            differentAssets = true;
-          }
+      let differentAssets = false;
+      for (const v1Token of v1Tokens) {
+        const v2Token = v2Tokens.find(
+          v2Token => v1Token.address === v2Token.address
+        );
+        if (!v2Token) {
+          differentAssets = true;
         }
       }
       if (differentAssets) {

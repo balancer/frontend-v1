@@ -1,6 +1,5 @@
 import config from '@/config';
-import BigNumber from './bignumber';
-import { scale } from './utils';
+import { bnum, scale } from './utils';
 import { calcPoolOutGivenSingleIn } from './math';
 
 const pools = {
@@ -16,15 +15,15 @@ const pools = {
 };
 
 function calculateJoinPoolAmount(amountsIn: string[], poolData) {
-  const poolSupply = new BigNumber(poolData.totalSupply);
+  const poolSupply = bnum(poolData.totalSupply);
   const totalWeight = poolData.tokens.reduce((totalWeight, token) => {
     return totalWeight.plus(token.denormWeight);
-  }, new BigNumber(0));
-  const swapFee = new BigNumber(poolData.swapFee);
+  }, bnum(0));
+  const swapFee = bnum(poolData.swapFee);
   const totalAmount = amountsIn.reduce((acc, amount, index) => {
-    const tokenBalanceIn = new BigNumber(poolData.tokens[index].balance);
-    const tokenWeightIn = new BigNumber(poolData.tokens[index].denormWeight);
-    const tokenAmountIn = new BigNumber(amount);
+    const tokenBalanceIn = bnum(poolData.tokens[index].balance);
+    const tokenWeightIn = bnum(poolData.tokens[index].denormWeight);
+    const tokenAmountIn = bnum(amount);
     const singleInAmount = calcPoolOutGivenSingleIn(
       tokenBalanceIn,
       tokenWeightIn,
@@ -34,7 +33,7 @@ function calculateJoinPoolAmount(amountsIn: string[], poolData) {
       swapFee
     );
     return acc.plus(singleInAmount);
-  }, new BigNumber(0));
+  }, bnum(0));
   return totalAmount;
 }
 
@@ -51,10 +50,10 @@ export function calculatePriceImpact(
     const tokenIn = poolV1Data.tokens.find(
       t => t.address === token.address.toLowerCase()
     );
-    const shortBalanceNumber = new BigNumber(tokenIn.balance);
+    const shortBalanceNumber = bnum(tokenIn.balance);
     const decimals = tokenIn.decimals;
     const balanceNumber = scale(shortBalanceNumber, decimals);
-    const totalSharesNumber = new BigNumber(poolV1Data.totalShares);
+    const totalSharesNumber = bnum(poolV1Data.totalShares);
     const totalSupplyNumber = scale(totalSharesNumber, 18);
     const amountNumber = balanceNumber
       .times(poolV1Amount)
@@ -64,25 +63,111 @@ export function calculatePriceImpact(
 
   const totalWeight = poolV2Data.tokens.reduce((totalWeight, token) => {
     return totalWeight.plus(token.denormWeight);
-  }, new BigNumber(0));
+  }, bnum(0));
   const prices = poolV2Data.tokens.map(token => {
-    const denormWeight = new BigNumber(token.denormWeight);
+    const denormWeight = bnum(token.denormWeight);
     const weight = denormWeight.div(totalWeight);
-    const balance = new BigNumber(token.balance);
+    const balance = bnum(token.balance);
     const priceNumber = balance.div(weight).div(poolV2Data.totalSupply);
     return priceNumber.toString();
   });
 
   const poolV2Amount = calculateJoinPoolAmount(amountsIn, poolV2Data);
 
-  let poolV2AmountSpot = new BigNumber(0);
+  let poolV2AmountSpot = bnum(0);
   for (let i = 0; i < poolV2Data.tokens.length; i++) {
-    const amountNumber = new BigNumber(amountsIn[i]);
+    const amountNumber = bnum(amountsIn[i]);
     poolV2AmountSpot = poolV2AmountSpot.plus(amountNumber.div(prices[i]));
   }
 
-  const one = new BigNumber(1);
+  const one = bnum(1);
   const priceImpact = one.minus(poolV2Amount.div(poolV2AmountSpot));
 
   return priceImpact.toNumber();
+}
+
+export function getLeftoverAssets(
+  poolV1Amount: string,
+  poolV1Data,
+  poolV2Data,
+  isFullMigration: boolean
+) {
+  const v1Tokens = poolV1Data.tokens;
+  const v2Tokens = poolV2Data.tokens;
+
+  const missingAssets: string[] = [];
+  for (const v1Token of v1Tokens) {
+    const v2Token = v2Tokens.find(
+      v2Token => v1Token.address === v2Token.address.toLowerCase()
+    );
+    if (!v2Token) {
+      missingAssets.push(v1Token.address);
+    }
+  }
+
+  const amountNumber = bnum(poolV1Amount);
+  const totalSharesShort = bnum(poolV1Data.totalShares);
+  const totalShares = scale(totalSharesShort, 18);
+  const share = amountNumber.div(totalShares);
+  const tokenAmounts = v1Tokens.map(token => {
+    const amount = share.times(token.balance);
+    return {
+      address: token.address,
+      amount: amount.toFixed(6)
+    };
+  });
+
+  if (isFullMigration) {
+    if (missingAssets.length === 0) {
+      return [];
+    } else {
+      // Return missing asset
+      return tokenAmounts.filter(tokenAmount =>
+        missingAssets.includes(tokenAmount.address)
+      );
+    }
+  } else {
+    let lowestRatio = bnum(1);
+    for (const token of v2Tokens) {
+      const tokenAmount = tokenAmounts.find(
+        amount => token.address.toLowerCase() === amount.address
+      ).amount;
+      const tokenDecimal = v1Tokens.find(
+        v1Token => v1Token.address === token.address.toLowerCase()
+      ).decimals;
+      const tokenBalance = scale(bnum(token.balance), -tokenDecimal);
+      const ratio = bnum(tokenAmount).div(tokenBalance);
+      if (ratio.lt(lowestRatio)) {
+        lowestRatio = ratio;
+      }
+    }
+    const tokenInAmounts = v2Tokens.map(token => {
+      const tokenDecimal = v1Tokens.find(
+        v1Token => v1Token.address === token.address.toLowerCase()
+      ).decimals;
+      const tokenBalance = scale(bnum(token.balance), -tokenDecimal);
+      const amount = lowestRatio.times(tokenBalance);
+      return {
+        address: token.address.toLowerCase(),
+        amount
+      };
+    });
+
+    return tokenAmounts
+      .map(tokenAmount => {
+        const tokenIn = tokenInAmounts.find(
+          tokenInAmount => tokenInAmount.address === tokenAmount.address
+        );
+        const tokenInAmount = tokenIn ? tokenIn.amount : 0;
+        const tokenAmountNumber = bnum(tokenAmount.amount);
+        const leftoverAmount = tokenAmountNumber.minus(tokenInAmount);
+        return {
+          address: tokenAmount.address,
+          amount: leftoverAmount.toFixed(6)
+        };
+      })
+      .filter(
+        tokenAmount => parseFloat(tokenAmount.amount) > 0.000000000000000001
+      );
+  }
 }

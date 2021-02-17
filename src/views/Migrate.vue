@@ -10,21 +10,31 @@
           :loading="loading"
         />
         <div class="stats d-flex flex-justify-between mt-4">
-          <MigrationStats
-            :pool="poolV1"
-            :is-v1="true"
-            :details="poolStatDetails"
-            :loading="loading"
-            @toggle-details="handleToggleStats"
-          />
+          <div>
+            <MigrationStats
+              :pool="poolV1"
+              :is-v1="true"
+              :details="poolStatDetails"
+              :loading="loading"
+              @toggle-details="handleToggleStats"
+            />
+          </div>
           <div class="arrow">→</div>
-          <MigrationStats
-            :pool="poolV2"
-            :is-v1="false"
-            :details="poolStatDetails"
-            :loading="loading"
-            @toggle-details="handleToggleStats"
-          />
+          <div>
+            <MigrationStats
+              :pool="poolV2"
+              :is-v1="false"
+              :details="poolStatDetails"
+              :loading="loading"
+              @toggle-details="handleToggleStats"
+            />
+            <MigrationWallet
+              class="mt-2"
+              v-if="leftoverAssets.length > 0"
+              :assets="leftoverAssets"
+              :loading="loading"
+            />
+          </div>
         </div>
         <div class="mt-4 d-flex flex-justify-center">
           <ButtonMigrate
@@ -65,7 +75,7 @@
           <div class="options mt-3">
             <div
               class="option d-flex flex-items-center p-3"
-              @click="isFullMigration = true"
+              @click="setMigrationType(true)"
             >
               <div class="option-input" :class="{ active: isFullMigration }">
                 <div class="option-input-circle" v-if="isFullMigration"></div>
@@ -81,7 +91,7 @@
             </div>
             <div
               class="option d-flex flex-items-center p-3"
-              @click="isFullMigration = false"
+              @click="setMigrationType(false)"
             >
               <div class="option-input" :class="{ active: !isFullMigration }">
                 <div class="option-input-circle" v-if="!isFullMigration"></div>
@@ -136,7 +146,11 @@ import Pool from '@/_balancer/pool';
 import PoolV2 from '@/_balancer/pool2';
 import { bnum, scale } from '@/helpers/utils';
 import { getPoolLiquidity } from '@/helpers/price';
-import { getNewPool, calculatePriceImpact } from '@/helpers/migration';
+import {
+  getNewPool,
+  calculatePriceImpact,
+  getLeftoverAssets
+} from '@/helpers/migration';
 import config from '@/config';
 
 const MAX_PRICE_IMPACT = 0.01;
@@ -168,7 +182,8 @@ export default {
       priceImpact: '0',
       slippage: 0.005,
       slippageInput: '',
-      slippageOptions: [0.001, 0.002, 0.005, 0.01]
+      slippageOptions: [0.001, 0.002, 0.005, 0.01],
+      leftoverAssets: []
     };
   },
   computed: {
@@ -201,6 +216,12 @@ export default {
     if (this.priceImpact > MAX_PRICE_IMPACT) {
       this.isFullMigration = false;
     }
+    this.leftoverAssets = getLeftoverAssets(
+      this.balance,
+      this.poolV1,
+      this.poolV2,
+      this.isFullMigration
+    );
   },
   methods: {
     ...mapActions([
@@ -298,6 +319,15 @@ export default {
       const data = await this.getAllowances([this.pool]);
       this.allowance = data[this.pool][this.web3.dsProxyAddress];
       this.pendingTx = false;
+    },
+    setMigrationType(isFullMigration) {
+      this.isFullMigration = isFullMigration;
+      this.leftoverAssets = getLeftoverAssets(
+        this.balance,
+        this.poolV1,
+        this.poolV2,
+        isFullMigration
+      );
     },
     toggleAdvancedOptions() {
       this.advancedOptions = !this.advancedOptions;
