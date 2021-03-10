@@ -106,33 +106,6 @@
               </div>
             </div>
           </div>
-          <div class="slippage">
-            <div class="slippage-header">
-              Slippage tolerance
-            </div>
-            <div class="d-flex">
-              <div class="d-flex">
-                <div
-                  v-for="option in slippageOptions"
-                  :key="option"
-                  class="slippage-option"
-                  :class="{
-                    selected: (slippage === option) & !isCustomSlippage
-                  }"
-                  @click="setSlippage(option)"
-                >
-                  {{ formatSlippage(option) }}
-                </div>
-                <input
-                  v-model="slippageInput"
-                  class="slippage-option"
-                  :class="{ selected: isCustomSlippage }"
-                  placeholder="2.0"
-                  type="number"
-                />
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
