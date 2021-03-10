@@ -401,7 +401,7 @@ const actions = {
         params,
         title: 'Migrate'
       });
-      dispatch('notify', ['green', "You've successfully migrated the pool"]);
+      dispatch('notify', ['green', "You've successfully migrated liquidity"]);
     } catch (e) {
       console.log(e);
       if (!e || isTxReverted(e)) return e;
@@ -440,7 +440,7 @@ const actions = {
         params,
         title: 'Migrate'
       });
-      dispatch('notify', ['green', "You've successfully migrated the pool"]);
+      dispatch('notify', ['green', "You've successfully migrated liquidity"]);
     } catch (e) {
       console.log(e);
       if (!e || isTxReverted(e)) return e;
