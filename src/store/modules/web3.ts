@@ -428,7 +428,7 @@ const actions = {
       return proxy;
     } catch (e) {
       commit('GET_PROXY_FAILURE', e);
-      return Promise.reject();
+      return Promise.reject(e);
     }
   },
   getBlockNumber: async ({ commit }) => {
