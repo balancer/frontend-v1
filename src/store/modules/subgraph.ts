@@ -95,9 +95,13 @@ const actions = {
       orderDirection = 'desc',
       where = {}
     } = payload;
+
     const skip = (page - 1) * first;
+
     const ts = Math.round(new Date().getTime() / 1000);
     const tsYesterday = ts - 24 * 3600;
+    const tsYesterdayRounded = Math.round(tsYesterday / 3600) * 3600; // Round timestamp by hour to leverage subgraph cache
+
     where.tokensList_not = [];
     const query = {
       pools: {
@@ -111,7 +115,7 @@ const actions = {
         swaps: {
           __args: {
             where: {
-              timestamp_lt: tsYesterday
+              timestamp_lt: tsYesterdayRounded
             }
           }
         }
