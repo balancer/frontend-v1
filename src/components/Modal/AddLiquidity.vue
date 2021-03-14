@@ -162,7 +162,8 @@ import { mapActions } from 'vuex';
 import { getAddress } from '@ethersproject/address';
 import BigNumber from '@/helpers/bignumber';
 import {
-  calcPoolTokensFromAmount,
+  calcPoolTokensByRatio,
+  // calcPoolTokensFromAmount
   bnum,
   normalizeBalance,
   denormalizeBalance,
@@ -475,7 +476,10 @@ export default {
   methods: {
     ...mapActions(['joinPool', 'joinswapExternAmountIn']),
     handleChange(changedAmount, changedToken) {
+      const ratio = bnum(changedAmount).div(changedToken.balance);
       if (this.isMultiAsset) {
+        this.poolTokens = calcPoolTokensByRatio(ratio, this.totalShares);
+        /*
         const tokenBalanceIn = denormalizeBalance(
           changedToken.balance,
           changedToken.decimals
@@ -485,6 +489,7 @@ export default {
           tokenBalanceIn,
           this.totalShares
         );
+        */
       } else {
         const tokenIn = this.pool.tokens.find(
           token => token.checksum === this.activeToken
@@ -523,12 +528,11 @@ export default {
         if (!this.isMultiAsset) {
           return;
         }
-
         if (token.checksum === changedToken.checksum) {
           return;
         }
 
-        const ratio = bnum(changedAmount).div(changedToken.balance);
+        // const ratio = bnum(changedAmount).div(changedToken.balance);
         this.amounts[token.checksum] = ratio.isNaN()
           ? ''
           : ratio.times(token.balance).toString();
