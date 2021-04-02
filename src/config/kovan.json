@@ -9,7 +9,7 @@
   "exchangeUrl": "https://kovan.balancer.exchange",
   "addresses": {
     "bFactory": "0x8f7F78080219d4066A8036ccD30D588B416a40DB",
-    "bActions": "0x0BB7F1893CB845D15D8F6C8e66CD927b7435BB3c",
+    "bActions": "0x62Ef0EE948C39E0cc0F93781DB26DC3435a80373",
     "vault": "0xba1c01474A7598c2B49015FdaFc67DdF06ce15f7",
     "dsProxyRegistry": "0x130767E0cf05469CF11Fa3fcf270dfC1f52b9072",
     "proxy": "0x2641f150669739986CDa3ED6860DeD44BC3Cda5d",
