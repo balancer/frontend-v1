@@ -1,0 +1,81 @@
+name: Pinata Deploy
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+
+jobs:
+  deploy-main:
+    name: Deploy-Master
+
+    runs-on: ubuntu-latest
+
+    if: github.ref == 'refs/heads/master'
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+
+      - name: Install ipfs-deploy
+        run: npm install -g ipfs-deploy
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Kovan
+        run: npm run build
+        env:
+          PINATA: true
+          VUE_APP_ENV: production
+          VUE_APP_NETWORK: kovan
+
+      - name: Deploy Kovan
+        run: ipfs-deploy ./dist -p pinata
+        env:
+          IPFS_DEPLOY_PINATA__API_KEY: ${{ secrets.IPFS_DEPLOY_PINATA__API_KEY }}
+          IPFS_DEPLOY_PINATA__SECRET_API_KEY: ${{ secrets.IPFS_DEPLOY_PINATA__SECRET_API_KEY }}
+
+      - name: Build Mainnet
+        run: npm run build
+        env:
+          PINATA: true
+          VUE_APP_ENV: production
+          VUE_APP_NETWORK: homestead
+
+      - name: Deploy Mainnet
+        run: ipfs-deploy ./dist -p pinata
+        env:
+          IPFS_DEPLOY_PINATA__API_KEY: ${{ secrets.IPFS_DEPLOY_PINATA__API_KEY }}
+          IPFS_DEPLOY_PINATA__SECRET_API_KEY: ${{ secrets.IPFS_DEPLOY_PINATA__SECRET_API_KEY }}
+
+  deploy-develop:
+    name: Deploy-Develop
+
+    runs-on: ubuntu-latest
+
+    if: github.ref == 'refs/heads/develop'
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+
+      - name: Install ipfs-deploy
+        run: npm install -g ipfs-deploy
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Beta
+        run: npm run build
+        env:
+          PINATA: true
+          VUE_APP_ENV: production
+          VUE_APP_NETWORK: homestead
+
+      - name: Deploy Beta
+        run: ipfs-deploy ./dist -p pinata
+        env:
+          IPFS_DEPLOY_PINATA__API_KEY: ${{ secrets.IPFS_DEPLOY_PINATA__API_KEY }}
+          IPFS_DEPLOY_PINATA__SECRET_API_KEY: ${{ secrets.IPFS_DEPLOY_PINATA__SECRET_API_KEY }}

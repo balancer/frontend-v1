@@ -199,6 +199,34 @@ export function trunc(value: number, decimals = 0) {
   return Math.trunc(value * mutiplier) / mutiplier;
 }
 
+/*
+  Contract does this (wei added/subtracted to ensure rounding errors favor the pool):
+
+    ratio = poolAmountOut / (totalSupply - 1)
+    tokenAmountIn = ratio * (tokenInBalance + 1)
+
+  and then:
+    require(tokenAmountIn <= maxAmountsIn[i], "ERR_LIMIT_IN");
+
+  So, solving for poolAmountOut:
+    poolAmountOut = tokenAmountIn * (totalSupply - 1) / (tokenInBalance + 1)
+*/
+export function calcPoolTokensFromAmount(
+  amountIn: BigNumber,
+  balanceIn: BigNumber,
+  totalShares: string
+) {
+  if (amountIn.isNaN() || balanceIn.isNaN()) {
+    return '0';
+  }
+
+  return toWei(amountIn)
+    .times(toWei(totalShares).minus(1))
+    .div(balanceIn.plus(1))
+    .integerValue(BigNumber.ROUND_DOWN)
+    .toString();
+}
+
 export function calcPoolTokensByRatio(ratio, totalShares) {
   if (ratio.isNaN()) {
     return '0';

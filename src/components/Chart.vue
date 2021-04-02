@@ -123,10 +123,12 @@ export default {
         for (let i = 0; i < this.swaps.length; i++) {
           const swap = this.swaps[i];
 
-          data.push({
-            time: swap.timestamp * 1e3,
-            value: swapPrice(this.pool, this.config.chainId, swap)
-          });
+          if (i > 0 && swap.timestamp != this.swaps[i - 1].timestamp) {
+            data.push({
+              time: swap.timestamp,
+              value: swapPrice(this.pool, this.config.chainId, swap)
+            });
+          }
         }
       } else {
         const rowKeys = Object.keys(this.metrics);

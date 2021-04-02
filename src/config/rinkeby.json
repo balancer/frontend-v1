@@ -1,0 +1,59 @@
+{
+  "network": "rinkeby",
+  "chainId": 4,
+  "defaultPrecision": 2,
+  "rpcUrl": "https://rinkeby.infura.io/v3/03f1a9a53dee4bd5a7d3dde58ce26442",
+  "wsUrl": "wss://rinkeby.infura.io/ws/v3/03f1a9a53dee4bd5a7d3dde58ce26442",
+  "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-rinkeby",
+  "explorer": "https://rinkeby.etherscan.io",
+  "exchangeUrl": "https://rinkeby.balancer.exchange",
+  "addresses": {
+    "bFactory": "0x9C84391B443ea3a48788079a5f98e2EaD55c9309",
+    "bActions": "0xA492414f528175f7F5D7881eC01434eF62779502",
+    "dsProxyRegistry": "0xa41dcaF457d84C5077b1569aDBd8a2F8D0Ee0059",
+    "proxy": "0x8b6081975B146B599A71CD7D28f877B811183bcb",
+    "crpFactory": "0xA3F9145CB0B50D907930840BB2dcfF4146df8Ab4",
+    "weth": "0xc778417E063141139Fce010982780140Aa0cD5Ab",
+    "multicall": "0x42ad527de7d4e9d9d011ac45b31d8551f8fe9821"
+  },
+  "connectors": {
+    "injected": {
+      "id": "injected",
+      "name": "MetaMask"
+    },
+    "walletconnect": {
+      "id": "walletconnect",
+      "name": "WalletConnect",
+      "options": {
+        "rpc": {
+          "4": "https://eth-rinkeby.alchemyapi.io/v2/C467LJc7Aa761LLxlcxXvhIG9HzDTtKw"
+        }
+      }
+    },
+    "portis": {
+      "id": "portis",
+      "name": "Portis",
+      "options": {
+        "network": "rinkeby",
+        "dappId": "3f1c3cfc-7dd5-4e8a-aa03-71ff7396d9fe"
+      }
+    },
+    "walletlink": {
+      "id": "walletlink",
+      "name": "Coinbase",
+      "options": {
+        "appName": "Pool management - Balancer",
+        "darkMode": true,
+        "chainId": 4,
+        "ethJsonrpcUrl": "https://eth-rinkeby.alchemyapi.io/v2/C467LJc7Aa761LLxlcxXvhIG9HzDTtKw"
+      }
+    },
+    "fortmatic": {
+      "id": "fortmatic",
+      "name": "Fortmatic",
+      "options": {
+        "apiKey": "pk_live_9CE8FD92E54684ED"
+      }
+    }
+  }
+}

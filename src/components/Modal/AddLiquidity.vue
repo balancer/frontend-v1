@@ -163,6 +163,7 @@ import { getAddress } from '@ethersproject/address';
 import BigNumber from '@/helpers/bignumber';
 import {
   calcPoolTokensByRatio,
+  // calcPoolTokensFromAmount
   bnum,
   normalizeBalance,
   denormalizeBalance,
@@ -478,6 +479,17 @@ export default {
       const ratio = bnum(changedAmount).div(changedToken.balance);
       if (this.isMultiAsset) {
         this.poolTokens = calcPoolTokensByRatio(ratio, this.totalShares);
+        /*
+        const tokenBalanceIn = denormalizeBalance(
+          changedToken.balance,
+          changedToken.decimals
+        );
+        this.poolTokens = calcPoolTokensFromAmount(
+          bnum(changedAmount),
+          tokenBalanceIn,
+          this.totalShares
+        );
+        */
       } else {
         const tokenIn = this.pool.tokens.find(
           token => token.checksum === this.activeToken
@@ -519,6 +531,8 @@ export default {
         if (token.checksum === changedToken.checksum) {
           return;
         }
+
+        // const ratio = bnum(changedAmount).div(changedToken.balance);
         this.amounts[token.checksum] = ratio.isNaN()
           ? ''
           : ratio.times(token.balance).toString();
@@ -574,6 +588,7 @@ export default {
           }),
           isCrp: this.bPool.isCrp()
         };
+        console.log(`Adding multi-asset liquidity: ${params}`);
         const txResult = await this.joinPool(params);
         if (isTxReverted(txResult)) this.transactionReverted = true;
       } else {
