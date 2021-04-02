@@ -27,7 +27,7 @@ export default class PoolV2 {
       abi['WeightedPool'],
       [
         [this.address, 'getSwapFee', []],
-        [this.address, 'getNormalizedWeights', [addresses]],
+        [this.address, 'getNormalizedWeights', []],
         [this.address, 'totalSupply', []]
       ]
     );

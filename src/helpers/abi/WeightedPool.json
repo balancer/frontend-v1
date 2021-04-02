@@ -218,13 +218,7 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "contract IERC20[]",
-          "name": "tokens",
-          "type": "address[]"
-        }
-      ],
+      "inputs": [],
       "name": "getNormalizedWeights",
       "outputs": [
         {
