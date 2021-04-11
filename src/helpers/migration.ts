@@ -46,6 +46,11 @@ export function calculatePriceImpact(
   poolV1Data,
   poolV2Data
 ) {
+  if (poolV2Data.tokens.length > 2) {
+    return 1;
+  }
+  // TODO return 1 if v1 tokens in not superset of v2
+
   const amountsIn = poolV2Data.tokens.map(token => {
     const tokenIn = poolV1Data.tokens.find(
       t => t.address === token.address.toLowerCase()
@@ -58,27 +63,95 @@ export function calculatePriceImpact(
     const amountNumber = balanceNumber
       .times(poolV1Amount)
       .div(totalSupplyNumber);
-    return amountNumber.toString();
+    return amountNumber.times(0.01).toString();
   });
 
-  const totalWeight = poolV2Data.tokens.reduce((totalWeight, token) => {
-    return totalWeight.plus(token.denormWeight);
-  }, bnum(0));
-  const prices = poolV2Data.tokens.map(token => {
-    const denormWeight = bnum(token.denormWeight);
-    const weight = denormWeight.div(totalWeight);
-    const balance = bnum(token.balance);
-    const priceNumber = balance.div(weight).div(poolV2Data.totalSupply);
-    return priceNumber.toString();
-  });
+  const v1Tokens = poolV1Data.tokens;
+  const v2Tokens = poolV2Data.tokens;
+
+  const v1TotalWeight = poolV1Data.tokens.reduce(
+    (totalWeight, token) => totalWeight.plus(token.denormWeight),
+    bnum(0)
+  );
+  const v2TotalWeight = poolV2Data.tokens.reduce(
+    (totalWeight, token) => totalWeight.plus(token.denormWeight),
+    bnum(0)
+  );
+
+  const baseTokenAddress = v2Tokens[0].address;
+  const v1BaseToken = v1Tokens.find(
+    token => token.address === baseTokenAddress.toLowerCase()
+  );
+  const v1BaseTokenBalanceRaw = bnum(v1BaseToken.balance);
+  const v1BaseTokenBalance = scale(v1BaseTokenBalanceRaw, v1BaseToken.decimals);
+  const v1Liquidity = v1BaseTokenBalance
+    .div(v1BaseToken.denormWeight)
+    .times(v1TotalWeight);
+  const v2BaseToken = v2Tokens.find(
+    token => token.address === baseTokenAddress
+  );
+  const v2BaseTokenBalance = bnum(v2BaseToken.balance);
+  const v2Liquidity = v2BaseTokenBalance
+    .div(v2BaseToken.denormWeight)
+    .times(v2TotalWeight);
+
+  const quoteTokenAddress = v2Tokens[1].address;
+  const v1QuoteToken = v1Tokens.find(
+    token => token.address === quoteTokenAddress.toLowerCase()
+  );
+  const v2QuoteToken = v2Tokens.find(
+    token => token.address === quoteTokenAddress
+  );
+
+  const v1Price = bnum(v1BaseToken.balance)
+    .times(v1QuoteToken.denormWeight)
+    .div(v1QuoteToken.balance)
+    .div(v1BaseToken.denormWeight);
+  const v2Price = bnum(v2BaseToken.balance)
+    .times(v2QuoteToken.denormWeight)
+    .div(v2QuoteToken.balance)
+    .div(v2BaseToken.denormWeight);
+
+  const marketPrice = v1Liquidity.gt(v2Liquidity.times(0.1))
+    ? v1Price
+    : v2Price;
+
+  const priceRatio = marketPrice.div(v2Price);
+  const baseBalanceAdjusted = bnum(v2BaseToken.balance).times(
+    priceRatio.pow(
+      bnum(v2QuoteToken.denormWeight)
+        .div(v2TotalWeight)
+        .times(10)
+        .toFixed(0)
+    )
+  );
+  const quoteBalanceAdjusted = bnum(v2QuoteToken.balance).times(
+    priceRatio.pow(
+      bnum(v2BaseToken.denormWeight)
+        .negated()
+        .div(v2TotalWeight)
+        .times(10)
+        .toFixed(0)
+    )
+  );
+
+  const baseAssetPrice = baseBalanceAdjusted
+    .times(v2TotalWeight)
+    .div(v2BaseToken.denormWeight)
+    .div(poolV2Data.totalSupply);
+  const quoteAssetPrice = quoteBalanceAdjusted
+    .times(v2TotalWeight)
+    .div(v2QuoteToken.denormWeight)
+    .div(poolV2Data.totalSupply);
+
+  const baseAmounIn = bnum(amountsIn[0]);
+  const quoteAmounIn = bnum(amountsIn[1]);
+
+  const poolV2AmountSpot = baseAmounIn
+    .div(baseAssetPrice)
+    .plus(quoteAmounIn.div(quoteAssetPrice));
 
   const poolV2Amount = calculateJoinPoolAmount(amountsIn, poolV2Data);
-
-  let poolV2AmountSpot = bnum(0);
-  for (let i = 0; i < poolV2Data.tokens.length; i++) {
-    const amountNumber = bnum(amountsIn[i]);
-    poolV2AmountSpot = poolV2AmountSpot.plus(amountNumber.div(prices[i]));
-  }
 
   const one = bnum(1);
   const priceImpact = one.minus(poolV2Amount.div(poolV2AmountSpot));
