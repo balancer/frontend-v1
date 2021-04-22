@@ -173,7 +173,7 @@ export function getPoolLink(pool: string): string {
 }
 
 export function getPoolV2Link(poolId: string): string {
-  const link = `https://pm2.on.fleek.co/#/pool/${poolId}`;
+  const link = `https://kovan.app.balancer.fi/#/pool/${poolId}`;
   return link;
 }
 
