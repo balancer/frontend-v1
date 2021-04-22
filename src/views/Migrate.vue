@@ -154,9 +154,6 @@ export default {
         swapFee: 0
       },
       priceImpact: '0',
-      slippage: 0.005,
-      slippageInput: '',
-      slippageOptions: [0.001, 0.002, 0.005, 0.01],
       leftoverAssets: []
     };
   },
@@ -173,9 +170,6 @@ export default {
       } else {
         return false;
       }
-    },
-    isCustomSlippage() {
-      return !this.slippageOptions.includes(this.slippage);
     }
   },
   async mounted() {
@@ -310,12 +304,6 @@ export default {
     },
     handleToggleStats() {
       this.poolStatDetails = !this.poolStatDetails;
-    },
-    formatSlippage(slippageNumber) {
-      return `${(slippageNumber * 100).toFixed(1)}%`;
-    },
-    setSlippage(slippageNumber) {
-      this.slippage = slippageNumber;
     }
   }
 };
@@ -402,42 +390,5 @@ export default {
 
 .option-impact {
   color: #90a4ae;
-}
-
-.slippage {
-  margin-top: 16px;
-}
-
-.slippage-header {
-  color: #90a4ae;
-  margin-bottom: 8px;
-}
-
-.slippage-option {
-  height: 44px;
-  width: 56px;
-  margin-right: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #333;
-  border-radius: 5px;
-  background: #1f2029;
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-}
-
-input.slippage-option {
-  padding: 0;
-  outline: none;
-  color: #fff;
-  font-size: 16px;
-  text-align: center;
-  cursor: text;
-  box-shadow: none;
-}
-
-.slippage-option.selected {
-  border-color: #fff;
 }
 </style>
