@@ -238,7 +238,7 @@ export function getLeftoverAssets(
         const leftoverAmount = tokenAmountNumber.minus(tokenInAmount);
         return {
           address: tokenAmount.address,
-          amount: leftoverAmount.toFixed(6)
+          amount: leftoverAmount.toFixed(4)
         };
       })
       .filter(
