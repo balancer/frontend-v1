@@ -16,6 +16,8 @@ const pools = {
   }
 };
 
+const SLIPPAGE_BUFFER = 0.02; // 2%
+
 function calculateJoinPoolAmount(amounts: string[], poolData) {
   const balances = poolData.tokens.map(token => bnum(token.balance));
   const totalWeight = poolData.tokens.reduce((totalWeight, token) => {
@@ -40,6 +42,49 @@ function calculateJoinPoolAmount(amounts: string[], poolData) {
 
 export function getNewPool(address: string) {
   return pools[config.chainId][address.toLowerCase()];
+}
+
+export function calculateMinAmount(
+  isFullMigration,
+  poolV1Amount: string,
+  poolV1Data,
+  poolV2Data
+) {
+  if (poolV2Data.tokens.length > 2) {
+    return '0';
+  }
+  // TODO return 0 if v1 tokens in not superset of v2
+
+  const fullAmountsIn = poolV2Data.tokens.map(token => {
+    const tokenIn = poolV1Data.tokens.find(
+      t => t.address === token.address.toLowerCase()
+    );
+    const shortBalanceNumber = bnum(tokenIn.balance);
+    const decimals = tokenIn.decimals;
+    const balanceNumber = scale(shortBalanceNumber, decimals);
+    const totalSharesNumber = bnum(poolV1Data.totalShares);
+    const totalSupplyNumber = scale(totalSharesNumber, 18);
+    const amountNumber = balanceNumber
+      .times(poolV1Amount)
+      .div(totalSupplyNumber);
+    return amountNumber.times(0.01).toString();
+  });
+  const amountRatios = poolV2Data.tokens.map((token, index) => {
+    const fullAmountIn = fullAmountsIn[index];
+    const amountRatio = bnum(fullAmountIn).div(token.balance);
+    return amountRatio;
+  });
+  const minAmountRatio = amountRatios.reduce((minRatio, ratio) =>
+    minRatio.lt(ratio) ? minRatio : ratio
+  );
+  const propAmountsIn = fullAmountsIn.map((amount, index) => {
+    const token = poolV2Data.tokens[index];
+    return minAmountRatio.times(token.balance);
+  });
+  const amountsIn = isFullMigration ? fullAmountsIn : propAmountsIn;
+  const poolV2Amount = calculateJoinPoolAmount(amountsIn, poolV2Data);
+  const minAmount = poolV2Amount.times(1 - SLIPPAGE_BUFFER);
+  return minAmount.toFixed(0);
 }
 
 export function calculatePriceImpact(

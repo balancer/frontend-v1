@@ -121,6 +121,7 @@ import { bnum, scale } from '@/helpers/utils';
 import { getPoolLiquidity } from '@/helpers/price';
 import {
   getNewPool,
+  calculateMinAmount,
   calculatePriceImpact,
   getLeftoverAssets
 } from '@/helpers/migration';
@@ -262,8 +263,12 @@ export default {
       const poolInAmount = poolV1Amount;
       const tokenOutAmountsMin = this.poolV1.tokens.map(() => '0');
       const poolOut = this.poolV2.address;
-      // TODO calculate slippage based amounts (min)
-      const poolOutAmountMin = '0';
+      const poolOutAmountMin = calculateMinAmount(
+        this.isFullMigration,
+        this.balance,
+        this.poolV1,
+        this.poolV2
+      );
       this.pendingTx = true;
       if (this.isFullMigration) {
         await this.migrateAll({
