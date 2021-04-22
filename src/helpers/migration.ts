@@ -1,6 +1,6 @@
 import config from '@/config';
 import { bnum, scale } from './utils';
-import { calcPoolOutGivenSingleIn } from './math';
+import { calcExactTokensInForBPTOut } from './math';
 
 const pools = {
   1: {},
@@ -16,27 +16,26 @@ const pools = {
   }
 };
 
-function calculateJoinPoolAmount(amountsIn: string[], poolData) {
-  const poolSupply = bnum(poolData.totalSupply);
+function calculateJoinPoolAmount(amounts: string[], poolData) {
+  const balances = poolData.tokens.map(token => bnum(token.balance));
   const totalWeight = poolData.tokens.reduce((totalWeight, token) => {
     return totalWeight.plus(token.denormWeight);
   }, bnum(0));
-  const swapFee = bnum(poolData.swapFee);
-  const totalAmount = amountsIn.reduce((acc, amount, index) => {
-    const tokenBalanceIn = bnum(poolData.tokens[index].balance);
-    const tokenWeightIn = bnum(poolData.tokens[index].denormWeight);
-    const tokenAmountIn = bnum(amount);
-    const singleInAmount = calcPoolOutGivenSingleIn(
-      tokenBalanceIn,
-      tokenWeightIn,
-      poolSupply,
-      totalWeight,
-      tokenAmountIn,
-      swapFee
-    );
-    return acc.plus(singleInAmount);
-  }, bnum(0));
-  return totalAmount;
+  const normalizedWeights = poolData.tokens.map(token => {
+    const weight = bnum(token.denormWeight);
+    const normalizedWeight = weight.div(totalWeight);
+    return normalizedWeight;
+  });
+  const amountsIn = amounts.map(amount => bnum(amount));
+  const totalSupply = bnum(poolData.totalSupply);
+  const swapFee = scale(bnum(poolData.swapFee), 18);
+  return calcExactTokensInForBPTOut(
+    balances,
+    normalizedWeights,
+    amountsIn,
+    totalSupply,
+    swapFee
+  );
 }
 
 export function getNewPool(address: string) {
