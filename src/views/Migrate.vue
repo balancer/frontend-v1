@@ -255,9 +255,7 @@ export default {
       this.poolV2.volume = 0;
     },
     async migratePool() {
-      const poolV1Amount = bnum(this.balance)
-        .times(0.01)
-        .toFixed(0);
+      const poolV1Amount = bnum(this.balance);
       const vault = config.addresses.vault;
       const poolIn = this.poolV1.address;
       const poolInAmount = poolV1Amount;

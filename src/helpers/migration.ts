@@ -67,7 +67,7 @@ export function calculateMinAmount(
     const amountNumber = balanceNumber
       .times(poolV1Amount)
       .div(totalSupplyNumber);
-    return amountNumber.times(0.01).toString();
+    return amountNumber.toString();
   });
   const amountRatios = poolV2Data.tokens.map((token, index) => {
     const fullAmountIn = fullAmountsIn[index];
@@ -109,7 +109,7 @@ export function calculatePriceImpact(
     const amountNumber = balanceNumber
       .times(poolV1Amount)
       .div(totalSupplyNumber);
-    return amountNumber.times(0.01).toString();
+    return amountNumber.toString();
   });
 
   const v1Tokens = poolV1Data.tokens;
@@ -285,8 +285,6 @@ export function getLeftoverAssets(
           amount: leftoverAmount.toFixed(4)
         };
       })
-      .filter(
-        tokenAmount => parseFloat(tokenAmount.amount) > 0.000000000000000001
-      );
+      .filter(tokenAmount => parseFloat(tokenAmount.amount) > 0.0000001);
   }
 }
