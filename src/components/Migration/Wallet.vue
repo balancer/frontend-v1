@@ -14,7 +14,7 @@
           class="asset d-flex flex-items-center mb-2"
         >
           <Token :address="asset.address" :symbol="asset.symbol" :size="24" />
-          <div class="ml-2">+{{ asset.amount }}</div>
+          <div class="ml-2">{{ asset.amount }}</div>
         </div>
       </div>
     </div>
