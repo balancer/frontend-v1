@@ -188,7 +188,7 @@ export function getLeftoverAssets(
     const amount = share.times(token.balance);
     return {
       address: token.address,
-      amount: amount.toFixed(6)
+      amount: amount.toFixed(4)
     };
   });
 
