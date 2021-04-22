@@ -249,10 +249,9 @@ export default {
       this.poolV2.volume = 0;
     },
     async migratePool() {
-      const poolV1Amount = bnum(this.balance);
       const vault = config.addresses.vault;
       const poolIn = this.poolV1.address;
-      const poolInAmount = poolV1Amount;
+      const poolInAmount = this.balance;
       const tokenOutAmountsMin = this.poolV1.tokens.map(() => '0');
       const poolOut = this.poolV2.address;
       const poolOutAmountMin = calculateMinAmount(
