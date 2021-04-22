@@ -5,12 +5,14 @@ import { calcPoolOutGivenSingleIn } from './math';
 const pools = {
   1: {},
   42: {
-    '0x067e961b5278606093746e55bb389bbac2327297':
-      '0x09253c3554fb7242608ff67ce048918ccf7f9a96',
-    '0x4c05f9535fb4daf21e4a05f5c7b6ee8a363b3ba7':
-      '0x947a2a9a044d5135efbe0b04c9e3d7ede767f3a9',
-    '0x2352eb4281efee804450a0a9fddf7b6e8d11021d':
-      '0x64e1a38a3d49db72df9017a8b9385838453eeab5'
+    '0xf422508eed1ab40923dd45ff8027a9dda6655d10':
+      '0x61d5dc44849c9c87b0856a2a311536205c96c7fd',
+    '0xf3ffac7b8e3adf1961edb694e057029749a2e847':
+      '0x61d5dc44849c9c87b0856a2a311536205c96c7fd',
+    '0xf72bb38b0fd36286b813db509bf6adacb75b8bfc':
+      '0x647c1fd457b95b75d0972ff08fe01d7d7bda05df',
+    '0x1d50bdffbcb2bf8af6411c691f953eef63a38ecc':
+      '0x647c1fd457b95b75d0972ff08fe01d7d7bda05df'
   }
 };
 
