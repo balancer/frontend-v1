@@ -7,6 +7,21 @@
           "internalType": "contract IAuthorizer",
           "name": "authorizer",
           "type": "address"
+        },
+        {
+          "internalType": "contract IWETH",
+          "name": "weth",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "pauseWindowDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "bufferPeriodDuration",
+          "type": "uint256"
         }
       ],
       "stateMutability": "nonpayable",
@@ -17,20 +32,33 @@
       "inputs": [
         {
           "indexed": true,
-          "internalType": "address",
-          "name": "depositor",
+          "internalType": "contract IAuthorizer",
+          "name": "newAuthorizer",
           "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "user",
-          "type": "address"
-        },
+        }
+      ],
+      "name": "AuthorizerChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
         {
           "indexed": true,
           "internalType": "contract IERC20",
           "name": "token",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "recipient",
           "type": "address"
         },
         {
@@ -40,7 +68,7 @@
           "type": "uint256"
         }
       ],
-      "name": "InternalBalanceDeposited",
+      "name": "ExternalBalanceTransfer",
       "type": "event"
     },
     {
@@ -48,44 +76,7 @@
       "inputs": [
         {
           "indexed": true,
-          "internalType": "address",
-          "name": "from",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "contract IERC20",
-          "name": "token",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        }
-      ],
-      "name": "InternalBalanceTransferred",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "user",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
+          "internalType": "contract IFlashLoanRecipient",
           "name": "recipient",
           "type": "address"
         },
@@ -100,9 +91,53 @@
           "internalType": "uint256",
           "name": "amount",
           "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "feeAmount",
+          "type": "uint256"
         }
       ],
-      "name": "InternalBalanceWithdrawn",
+      "name": "FlashLoan",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "contract IERC20",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "int256",
+          "name": "delta",
+          "type": "int256"
+        }
+      ],
+      "name": "InternalBalanceChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "paused",
+          "type": "bool"
+        }
+      ],
+      "name": "PausedStateChanged",
       "type": "event"
     },
     {
@@ -116,18 +151,30 @@
         },
         {
           "indexed": true,
-          "internalType": "contract IERC20",
-          "name": "token",
+          "internalType": "address",
+          "name": "liquidityProvider",
           "type": "address"
         },
         {
-          "indexed": true,
-          "internalType": "address",
-          "name": "manager",
-          "type": "address"
+          "indexed": false,
+          "internalType": "contract IERC20[]",
+          "name": "tokens",
+          "type": "address[]"
+        },
+        {
+          "indexed": false,
+          "internalType": "int256[]",
+          "name": "deltas",
+          "type": "int256[]"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256[]",
+          "name": "protocolFeeAmounts",
+          "type": "uint256[]"
         }
       ],
-      "name": "PoolAssetManagerSet",
+      "name": "PoolBalanceChanged",
       "type": "event"
     },
     {
@@ -154,24 +201,17 @@
         {
           "indexed": false,
           "internalType": "int256",
-          "name": "amount",
+          "name": "cashDelta",
+          "type": "int256"
+        },
+        {
+          "indexed": false,
+          "internalType": "int256",
+          "name": "managedDelta",
           "type": "int256"
         }
       ],
-      "name": "PoolBalanceChanged",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "bytes32",
-          "name": "poolId",
-          "type": "bytes32"
-        }
-      ],
-      "name": "PoolCreated",
+      "name": "PoolBalanceManaged",
       "type": "event"
     },
     {
@@ -186,23 +226,17 @@
         {
           "indexed": true,
           "internalType": "address",
-          "name": "liquidityProvider",
+          "name": "poolAddress",
           "type": "address"
         },
         {
           "indexed": false,
-          "internalType": "uint256[]",
-          "name": "amountsOut",
-          "type": "uint256[]"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256[]",
-          "name": "protocolFees",
-          "type": "uint256[]"
+          "internalType": "enum IVault.PoolSpecialization",
+          "name": "specialization",
+          "type": "uint8"
         }
       ],
-      "name": "PoolExited",
+      "name": "PoolRegistered",
       "type": "event"
     },
     {
@@ -210,30 +244,24 @@
       "inputs": [
         {
           "indexed": true,
-          "internalType": "bytes32",
-          "name": "poolId",
-          "type": "bytes32"
+          "internalType": "address",
+          "name": "relayer",
+          "type": "address"
         },
         {
           "indexed": true,
           "internalType": "address",
-          "name": "liquidityProvider",
+          "name": "sender",
           "type": "address"
         },
         {
           "indexed": false,
-          "internalType": "uint256[]",
-          "name": "amountsIn",
-          "type": "uint256[]"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256[]",
-          "name": "protocolFees",
-          "type": "uint256[]"
+          "internalType": "bool",
+          "name": "approved",
+          "type": "bool"
         }
       ],
-      "name": "PoolJoined",
+      "name": "RelayerApprovalChanged",
       "type": "event"
     },
     {
@@ -260,13 +288,13 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "tokensIn",
+          "name": "amountIn",
           "type": "uint256"
         },
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "tokensOut",
+          "name": "amountOut",
           "type": "uint256"
         }
       ],
@@ -277,7 +305,7 @@
       "anonymous": false,
       "inputs": [
         {
-          "indexed": false,
+          "indexed": true,
           "internalType": "bytes32",
           "name": "poolId",
           "type": "bytes32"
@@ -286,6 +314,31 @@
           "indexed": false,
           "internalType": "contract IERC20[]",
           "name": "tokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "TokensDeregistered",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "poolId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "contract IERC20[]",
+          "name": "tokens",
+          "type": "address[]"
+        },
+        {
+          "indexed": false,
+          "internalType": "address[]",
+          "name": "assetManagers",
           "type": "address[]"
         }
       ],
@@ -293,35 +346,24 @@
       "type": "event"
     },
     {
-      "anonymous": false,
-      "inputs": [
+      "inputs": [],
+      "name": "WETH",
+      "outputs": [
         {
-          "indexed": false,
-          "internalType": "bytes32",
-          "name": "poolId",
-          "type": "bytes32"
-        },
-        {
-          "indexed": false,
-          "internalType": "contract IERC20[]",
-          "name": "tokens",
-          "type": "address[]"
+          "internalType": "contract IWETH",
+          "name": "",
+          "type": "address"
         }
       ],
-      "name": "TokensUnregistered",
-      "type": "event"
+      "stateMutability": "view",
+      "type": "function"
     },
     {
       "inputs": [
         {
-          "internalType": "contract ISwapValidator",
-          "name": "validator",
-          "type": "address"
-        },
-        {
-          "internalType": "bytes",
-          "name": "validatorData",
-          "type": "bytes"
+          "internalType": "enum IVault.SwapKind",
+          "name": "kind",
+          "type": "uint8"
         },
         {
           "components": [
@@ -332,17 +374,17 @@
             },
             {
               "internalType": "uint256",
-              "name": "tokenInIndex",
+              "name": "assetInIndex",
               "type": "uint256"
             },
             {
               "internalType": "uint256",
-              "name": "tokenOutIndex",
+              "name": "assetOutIndex",
               "type": "uint256"
             },
             {
               "internalType": "uint256",
-              "name": "amountIn",
+              "name": "amount",
               "type": "uint256"
             },
             {
@@ -351,26 +393,31 @@
               "type": "bytes"
             }
           ],
-          "internalType": "struct IVault.SwapIn[]",
+          "internalType": "struct IVault.BatchSwapStep[]",
           "name": "swaps",
           "type": "tuple[]"
         },
         {
-          "internalType": "contract IERC20[]",
-          "name": "tokens",
+          "internalType": "contract IAsset[]",
+          "name": "assets",
           "type": "address[]"
         },
         {
           "components": [
             {
               "internalType": "address",
-              "name": "recipient",
+              "name": "sender",
               "type": "address"
             },
             {
               "internalType": "bool",
               "name": "fromInternalBalance",
               "type": "bool"
+            },
+            {
+              "internalType": "address payable",
+              "name": "recipient",
+              "type": "address"
             },
             {
               "internalType": "bool",
@@ -381,157 +428,43 @@
           "internalType": "struct IVault.FundManagement",
           "name": "funds",
           "type": "tuple"
-        }
-      ],
-      "name": "batchSwapGivenIn",
-      "outputs": [
+        },
         {
           "internalType": "int256[]",
-          "name": "",
+          "name": "limits",
           "type": "int256[]"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "contract ISwapValidator",
-          "name": "validator",
-          "type": "address"
-        },
-        {
-          "internalType": "bytes",
-          "name": "validatorData",
-          "type": "bytes"
-        },
-        {
-          "components": [
-            {
-              "internalType": "bytes32",
-              "name": "poolId",
-              "type": "bytes32"
-            },
-            {
-              "internalType": "uint256",
-              "name": "tokenInIndex",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "tokenOutIndex",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "amountOut",
-              "type": "uint256"
-            },
-            {
-              "internalType": "bytes",
-              "name": "userData",
-              "type": "bytes"
-            }
-          ],
-          "internalType": "struct IVault.SwapOut[]",
-          "name": "swaps",
-          "type": "tuple[]"
-        },
-        {
-          "internalType": "contract IERC20[]",
-          "name": "tokens",
-          "type": "address[]"
-        },
-        {
-          "components": [
-            {
-              "internalType": "address",
-              "name": "recipient",
-              "type": "address"
-            },
-            {
-              "internalType": "bool",
-              "name": "fromInternalBalance",
-              "type": "bool"
-            },
-            {
-              "internalType": "bool",
-              "name": "toInternalBalance",
-              "type": "bool"
-            }
-          ],
-          "internalType": "struct IVault.FundManagement",
-          "name": "funds",
-          "type": "tuple"
-        }
-      ],
-      "name": "batchSwapGivenOut",
-      "outputs": [
-        {
-          "internalType": "int256[]",
-          "name": "",
-          "type": "int256[]"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "contract IAuthorizer",
-          "name": "newAuthorizer",
-          "type": "address"
-        }
-      ],
-      "name": "changeAuthorizer",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "contract IERC20[]",
-          "name": "tokens",
-          "type": "address[]"
-        },
-        {
-          "internalType": "uint256[]",
-          "name": "amounts",
-          "type": "uint256[]"
-        },
-        {
-          "internalType": "address",
-          "name": "user",
-          "type": "address"
-        }
-      ],
-      "name": "depositToInternalBalance",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "poolId",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "contract IERC20",
-          "name": "token",
-          "type": "address"
         },
         {
           "internalType": "uint256",
-          "name": "amount",
+          "name": "deadline",
           "type": "uint256"
         }
       ],
-      "name": "depositToPoolBalance",
+      "name": "batchSwap",
+      "outputs": [
+        {
+          "internalType": "int256[]",
+          "name": "assetDeltas",
+          "type": "int256[]"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "poolId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "contract IERC20[]",
+          "name": "tokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "deregisterTokens",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -545,28 +478,40 @@
         },
         {
           "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "internalType": "address payable",
           "name": "recipient",
           "type": "address"
         },
         {
-          "internalType": "contract IERC20[]",
-          "name": "tokens",
-          "type": "address[]"
-        },
-        {
-          "internalType": "uint256[]",
-          "name": "minAmountsOut",
-          "type": "uint256[]"
-        },
-        {
-          "internalType": "bool",
-          "name": "toInternalBalance",
-          "type": "bool"
-        },
-        {
-          "internalType": "bytes",
-          "name": "userData",
-          "type": "bytes"
+          "components": [
+            {
+              "internalType": "contract IAsset[]",
+              "name": "assets",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "minAmountsOut",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "bytes",
+              "name": "userData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bool",
+              "name": "toInternalBalance",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct IVault.ExitPoolRequest",
+          "name": "request",
+          "type": "tuple"
         }
       ],
       "name": "exitPool",
@@ -577,8 +522,8 @@
     {
       "inputs": [
         {
-          "internalType": "contract IFlashLoanReceiver",
-          "name": "receiver",
+          "internalType": "contract IFlashLoanRecipient",
+          "name": "recipient",
           "type": "address"
         },
         {
@@ -593,13 +538,32 @@
         },
         {
           "internalType": "bytes",
-          "name": "receiverData",
+          "name": "userData",
           "type": "bytes"
         }
       ],
       "name": "flashLoan",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes4",
+          "name": "selector",
+          "type": "bytes4"
+        }
+      ],
+      "name": "getActionId",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -616,19 +580,13 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "contract IERC20",
-          "name": "token",
-          "type": "address"
-        }
-      ],
-      "name": "getCollectedFeesByToken",
+      "inputs": [],
+      "name": "getDomainSeparator",
       "outputs": [
         {
-          "internalType": "uint256",
+          "internalType": "bytes32",
           "name": "",
-          "type": "uint256"
+          "type": "bytes32"
         }
       ],
       "stateMutability": "view",
@@ -651,7 +609,7 @@
       "outputs": [
         {
           "internalType": "uint256[]",
-          "name": "",
+          "name": "balances",
           "type": "uint256[]"
         }
       ],
@@ -659,12 +617,41 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "getNumberOfPools",
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "getNextNonce",
       "outputs": [
         {
           "internalType": "uint256",
           "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getPausedState",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "paused",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "pauseWindowEndTime",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "bufferPeriodEndTime",
           "type": "uint256"
         }
       ],
@@ -708,31 +695,7 @@
           "type": "address"
         }
       ],
-      "name": "getPoolAssetManager",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "poolId",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "contract IERC20",
-          "name": "token",
-          "type": "address"
-        }
-      ],
-      "name": "getPoolTokenBalanceInfo",
+      "name": "getPoolTokenInfo",
       "outputs": [
         {
           "internalType": "uint256",
@@ -746,8 +709,13 @@
         },
         {
           "internalType": "uint256",
-          "name": "blockNumber",
+          "name": "lastChangeBlock",
           "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "assetManager",
+          "type": "address"
         }
       ],
       "stateMutability": "view",
@@ -772,18 +740,10 @@
           "internalType": "uint256[]",
           "name": "balances",
           "type": "uint256[]"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "getProtocolFlashLoanFee",
-      "outputs": [
+        },
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "lastChangeBlock",
           "type": "uint256"
         }
       ],
@@ -792,25 +752,36 @@
     },
     {
       "inputs": [],
-      "name": "getProtocolSwapFee",
+      "name": "getProtocolFeesCollector",
       "outputs": [
         {
-          "internalType": "uint256",
+          "internalType": "contract ProtocolFeesCollector",
           "name": "",
-          "type": "uint256"
+          "type": "address"
         }
       ],
       "stateMutability": "view",
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "getProtocolWithdrawFee",
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "relayer",
+          "type": "address"
+        }
+      ],
+      "name": "hasApprovedRelayer",
       "outputs": [
         {
-          "internalType": "uint256",
+          "internalType": "bool",
           "name": "",
-          "type": "uint256"
+          "type": "bool"
         }
       ],
       "stateMutability": "view",
@@ -825,31 +796,78 @@
         },
         {
           "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
           "name": "recipient",
           "type": "address"
         },
         {
-          "internalType": "contract IERC20[]",
-          "name": "tokens",
-          "type": "address[]"
-        },
-        {
-          "internalType": "uint256[]",
-          "name": "maxAmountsIn",
-          "type": "uint256[]"
-        },
-        {
-          "internalType": "bool",
-          "name": "fromInternalBalance",
-          "type": "bool"
-        },
-        {
-          "internalType": "bytes",
-          "name": "userData",
-          "type": "bytes"
+          "components": [
+            {
+              "internalType": "contract IAsset[]",
+              "name": "assets",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "maxAmountsIn",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "bytes",
+              "name": "userData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bool",
+              "name": "fromInternalBalance",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct IVault.JoinPoolRequest",
+          "name": "request",
+          "type": "tuple"
         }
       ],
       "name": "joinPool",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "enum IVault.PoolBalanceOpKind",
+              "name": "kind",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "poolId",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "contract IERC20",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IVault.PoolBalanceOp[]",
+          "name": "ops",
+          "type": "tuple[]"
+        }
+      ],
+      "name": "managePoolBalance",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -859,149 +877,48 @@
         {
           "components": [
             {
-              "internalType": "bytes32",
-              "name": "poolId",
-              "type": "bytes32"
+              "internalType": "enum IVault.UserBalanceOpKind",
+              "name": "kind",
+              "type": "uint8"
             },
             {
-              "internalType": "uint256",
-              "name": "tokenInIndex",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "tokenOutIndex",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "amountIn",
-              "type": "uint256"
-            },
-            {
-              "internalType": "bytes",
-              "name": "userData",
-              "type": "bytes"
-            }
-          ],
-          "internalType": "struct IVault.SwapIn[]",
-          "name": "swaps",
-          "type": "tuple[]"
-        },
-        {
-          "internalType": "contract IERC20[]",
-          "name": "tokens",
-          "type": "address[]"
-        },
-        {
-          "components": [
-            {
-              "internalType": "address",
-              "name": "recipient",
+              "internalType": "contract IAsset",
+              "name": "asset",
               "type": "address"
             },
             {
-              "internalType": "bool",
-              "name": "fromInternalBalance",
-              "type": "bool"
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
             },
             {
-              "internalType": "bool",
-              "name": "toInternalBalance",
-              "type": "bool"
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "address payable",
+              "name": "recipient",
+              "type": "address"
             }
           ],
-          "internalType": "struct IVault.FundManagement",
-          "name": "funds",
-          "type": "tuple"
+          "internalType": "struct IVault.UserBalanceOp[]",
+          "name": "ops",
+          "type": "tuple[]"
         }
       ],
-      "name": "queryBatchSwapGivenIn",
-      "outputs": [
-        {
-          "internalType": "int256[]",
-          "name": "",
-          "type": "int256[]"
-        }
-      ],
-      "stateMutability": "nonpayable",
+      "name": "manageUserBalance",
+      "outputs": [],
+      "stateMutability": "payable",
       "type": "function"
     },
     {
       "inputs": [
         {
-          "components": [
-            {
-              "internalType": "bytes32",
-              "name": "poolId",
-              "type": "bytes32"
-            },
-            {
-              "internalType": "uint256",
-              "name": "tokenInIndex",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "tokenOutIndex",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "amountOut",
-              "type": "uint256"
-            },
-            {
-              "internalType": "bytes",
-              "name": "userData",
-              "type": "bytes"
-            }
-          ],
-          "internalType": "struct IVault.SwapOut[]",
-          "name": "swaps",
-          "type": "tuple[]"
+          "internalType": "enum IVault.SwapKind",
+          "name": "kind",
+          "type": "uint8"
         },
-        {
-          "internalType": "contract IERC20[]",
-          "name": "tokens",
-          "type": "address[]"
-        },
-        {
-          "components": [
-            {
-              "internalType": "address",
-              "name": "recipient",
-              "type": "address"
-            },
-            {
-              "internalType": "bool",
-              "name": "fromInternalBalance",
-              "type": "bool"
-            },
-            {
-              "internalType": "bool",
-              "name": "toInternalBalance",
-              "type": "bool"
-            }
-          ],
-          "internalType": "struct IVault.FundManagement",
-          "name": "funds",
-          "type": "tuple"
-        }
-      ],
-      "name": "queryBatchSwapGivenOut",
-      "outputs": [
-        {
-          "internalType": "int256[]",
-          "name": "",
-          "type": "int256[]"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
         {
           "components": [
             {
@@ -1011,12 +928,12 @@
             },
             {
               "internalType": "uint256",
-              "name": "tokenInIndex",
+              "name": "assetInIndex",
               "type": "uint256"
             },
             {
               "internalType": "uint256",
-              "name": "tokenOutIndex",
+              "name": "assetOutIndex",
               "type": "uint256"
             },
             {
@@ -1030,26 +947,31 @@
               "type": "bytes"
             }
           ],
-          "internalType": "struct Swaps.SwapInternal[]",
+          "internalType": "struct IVault.BatchSwapStep[]",
           "name": "swaps",
           "type": "tuple[]"
         },
         {
-          "internalType": "contract IERC20[]",
-          "name": "tokens",
+          "internalType": "contract IAsset[]",
+          "name": "assets",
           "type": "address[]"
         },
         {
           "components": [
             {
               "internalType": "address",
-              "name": "recipient",
+              "name": "sender",
               "type": "address"
             },
             {
               "internalType": "bool",
               "name": "fromInternalBalance",
               "type": "bool"
+            },
+            {
+              "internalType": "address payable",
+              "name": "recipient",
+              "type": "address"
             },
             {
               "internalType": "bool",
@@ -1060,16 +982,17 @@
           "internalType": "struct IVault.FundManagement",
           "name": "funds",
           "type": "tuple"
-        },
-        {
-          "internalType": "enum Swaps.SwapKind",
-          "name": "kind",
-          "type": "uint8"
         }
       ],
-      "name": "queryBatchSwapHelper",
-      "outputs": [],
-      "stateMutability": "nonpayable",
+      "name": "queryBatchSwap",
+      "outputs": [
+        {
+          "internalType": "int256[]",
+          "name": "",
+          "type": "int256[]"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -1117,12 +1040,12 @@
     {
       "inputs": [
         {
-          "internalType": "uint256",
-          "name": "newFee",
-          "type": "uint256"
+          "internalType": "contract IAuthorizer",
+          "name": "newAuthorizer",
+          "type": "address"
         }
       ],
-      "name": "setProtocolFlashLoanFee",
+      "name": "setAuthorizer",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -1130,12 +1053,12 @@
     {
       "inputs": [
         {
-          "internalType": "uint256",
-          "name": "newFee",
-          "type": "uint256"
+          "internalType": "bool",
+          "name": "paused",
+          "type": "bool"
         }
       ],
-      "name": "setProtocolSwapFee",
+      "name": "setPaused",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -1143,35 +1066,22 @@
     {
       "inputs": [
         {
-          "internalType": "uint256",
-          "name": "newFee",
-          "type": "uint256"
-        }
-      ],
-      "name": "setProtocolWithdrawFee",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "contract IERC20[]",
-          "name": "tokens",
-          "type": "address[]"
-        },
-        {
-          "internalType": "uint256[]",
-          "name": "amounts",
-          "type": "uint256[]"
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
         },
         {
           "internalType": "address",
-          "name": "recipient",
+          "name": "relayer",
           "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "approved",
+          "type": "bool"
         }
       ],
-      "name": "transferInternalBalance",
+      "name": "setRelayerApproval",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -1179,112 +1089,94 @@
     {
       "inputs": [
         {
-          "internalType": "bytes32",
-          "name": "poolId",
-          "type": "bytes32"
+          "components": [
+            {
+              "internalType": "bytes32",
+              "name": "poolId",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "enum IVault.SwapKind",
+              "name": "kind",
+              "type": "uint8"
+            },
+            {
+              "internalType": "contract IAsset",
+              "name": "assetIn",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IAsset",
+              "name": "assetOut",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "userData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct IVault.SingleSwap",
+          "name": "singleSwap",
+          "type": "tuple"
         },
         {
-          "internalType": "contract IERC20[]",
-          "name": "tokens",
-          "type": "address[]"
-        }
-      ],
-      "name": "unregisterTokens",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "poolId",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "contract IERC20",
-          "name": "token",
-          "type": "address"
+          "components": [
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "fromInternalBalance",
+              "type": "bool"
+            },
+            {
+              "internalType": "address payable",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "toInternalBalance",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct IVault.FundManagement",
+          "name": "funds",
+          "type": "tuple"
         },
         {
           "internalType": "uint256",
-          "name": "amount",
+          "name": "limit",
           "type": "uint256"
-        }
-      ],
-      "name": "updateManagedBalance",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "contract IERC20[]",
-          "name": "tokens",
-          "type": "address[]"
-        },
-        {
-          "internalType": "uint256[]",
-          "name": "amounts",
-          "type": "uint256[]"
-        },
-        {
-          "internalType": "address",
-          "name": "recipient",
-          "type": "address"
-        }
-      ],
-      "name": "withdrawFromInternalBalance",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "poolId",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "contract IERC20",
-          "name": "token",
-          "type": "address"
         },
         {
           "internalType": "uint256",
-          "name": "amount",
+          "name": "deadline",
           "type": "uint256"
         }
       ],
-      "name": "withdrawFromPoolBalance",
-      "outputs": [],
-      "stateMutability": "nonpayable",
+      "name": "swap",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "amountCalculated",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "payable",
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "contract IERC20[]",
-          "name": "tokens",
-          "type": "address[]"
-        },
-        {
-          "internalType": "uint256[]",
-          "name": "amounts",
-          "type": "uint256[]"
-        },
-        {
-          "internalType": "address",
-          "name": "recipient",
-          "type": "address"
-        }
-      ],
-      "name": "withdrawProtocolFees",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
+      "stateMutability": "payable",
+      "type": "receive"
     }
   ]
 }
