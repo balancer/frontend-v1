@@ -154,9 +154,15 @@ export function calculatePriceImpact(
     token => token.address === quoteTokenAddress
   );
 
-  const v1Price = bnum(v1BaseToken.balance)
+  const v1QuoteTokenBalanceRaw = bnum(v1QuoteToken.balance);
+  const v1QuoteTokenBalance = scale(
+    v1QuoteTokenBalanceRaw,
+    v1QuoteToken.decimals
+  );
+
+  const v1Price = bnum(v1BaseTokenBalance)
     .times(v1QuoteToken.denormWeight)
-    .div(v1QuoteToken.balance)
+    .div(v1QuoteTokenBalance)
     .div(v1BaseToken.denormWeight);
   const v2Price = bnum(v2BaseToken.balance)
     .times(v2QuoteToken.denormWeight)
