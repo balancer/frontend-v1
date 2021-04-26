@@ -1,6 +1,7 @@
 import config from '@/config';
 import { bnum, scale } from './utils';
-import { calcExactTokensInForBPTOut } from './math';
+import { _exactTokensInForBPTOut } from '@balancer-labs/sor2/dist/pools/weightedPool/weightedMathEvm';
+import { fnum } from '@balancer-labs/sor2/dist/math/lib/fixedPoint';
 
 const pools = {
   1: {
@@ -26,21 +27,14 @@ const pools = {
 const SLIPPAGE_BUFFER = 0.02; // 2%
 
 function calculateJoinPoolAmount(amounts: string[], poolData) {
-  const balances = poolData.tokens.map(token => bnum(token.balance));
-  const totalWeight = poolData.tokens.reduce((totalWeight, token) => {
-    return totalWeight.plus(token.denormWeight);
-  }, bnum(0));
-  const normalizedWeights = poolData.tokens.map(token => {
-    const weight = bnum(token.denormWeight);
-    const normalizedWeight = weight.div(totalWeight);
-    return normalizedWeight;
-  });
-  const amountsIn = amounts.map(amount => bnum(amount));
-  const totalSupply = bnum(poolData.totalSupply);
-  const swapFee = scale(bnum(poolData.swapFee), 18);
-  return calcExactTokensInForBPTOut(
+  const balances = poolData.tokens.map(token => fnum(token.balance));
+  const weights = poolData.tokens.map(token => fnum(token.denormWeight));
+  const amountsIn = amounts.map(amount => fnum(amount));
+  const totalSupply = fnum(poolData.totalSupply);
+  const swapFee = fnum(scale(bnum(poolData.swapFee), 18));
+  return _exactTokensInForBPTOut(
     balances,
-    normalizedWeights,
+    weights,
     amountsIn,
     totalSupply,
     swapFee
