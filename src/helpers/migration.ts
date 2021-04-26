@@ -10,7 +10,11 @@ const pools = {
     '0x1eff8af5d577060ba4ac8a29a13525bb0ee2a3d5':
       '0x0297e37f1873d2dab4487aa67cd56b58e2f27875',
     '0x221bf20c2ad9e5d7ec8a9d1991d8e2edcfcb9d6c':
-      '0x0297e37f1873d2dab4487aa67cd56b58e2f27875'
+      '0x0297e37f1873d2dab4487aa67cd56b58e2f27875',
+    '0x9dde0b1d39d0d2c6589cde1bfed3542d2a3c5b11':
+      '0x647c1fd457b95b75d0972ff08fe01d7d7bda05df',
+    '0xe93e8aa4e88359dacf33c491cf5bd56eb6c110c1':
+      '0x647c1fd457b95b75d0972ff08fe01d7d7bda05df'
   },
   42: {
     '0xf422508eed1ab40923dd45ff8027a9dda6655d10':
