@@ -48,12 +48,15 @@
         <div class="stat-key">Swap fee</div>
         <div class="stat-value">{{ _num(pool.swapFee, 'percent') }}</div>
       </div>
-    </div>
-    <div class="link">
-      <a :href="getPoolLink(pool)" target="_blank">
-        More
-        <Icon name="external-link" size="14" />
-      </a>
+      <div class="stat">
+        <div class="stat-key">Address</div>
+        <div class="stat-value">
+          <a :href="getPoolLink(pool)" target="_blank">
+            {{ _shortenAddress(pool.address) }}
+            <Icon name="external-link" size="14" />
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -165,13 +168,9 @@ export default {
   color: #90a4ae;
 }
 
-.stat-value {
+.stat-value,
+.stat-value > a {
   color: white;
   font-size: 18px;
-}
-
-.link {
-  color: #90a4ae;
-  padding: 8px;
 }
 </style>
