@@ -173,7 +173,13 @@ export function getPoolLink(pool: string): string {
 }
 
 export function getPoolV2Link(poolId: string): string {
-  const link = `https://kovan.app.balancer.fi/#/pool/${poolId}`;
+  const chainId = config.chainId;
+  const prefixMap = {
+    1: '',
+    42: 'kovan.'
+  };
+  const prefix = prefixMap[chainId];
+  const link = `https://${prefix}app.balancer.fi/#/pool/${poolId}`;
   return link;
 }
 
