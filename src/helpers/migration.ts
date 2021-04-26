@@ -3,7 +3,14 @@ import { bnum, scale } from './utils';
 import { calcExactTokensInForBPTOut } from './math';
 
 const pools = {
-  1: {},
+  1: {
+    '0x59a19d8c652fa0284f44113d0ff9aba70bd46fb4':
+      '0x647c1fd457b95b75d0972ff08fe01d7d7bda05df',
+    '0x1eff8af5d577060ba4ac8a29a13525bb0ee2a3d5':
+      '0x0297e37f1873d2dab4487aa67cd56b58e2f27875',
+    '0x221bf20c2ad9e5d7ec8a9d1991d8e2edcfcb9d6c':
+      '0x0297e37f1873d2dab4487aa67cd56b58e2f27875'
+  },
   42: {
     '0xf422508eed1ab40923dd45ff8027a9dda6655d10':
       '0x61d5dc44849c9c87b0856a2a311536205c96c7fd',
