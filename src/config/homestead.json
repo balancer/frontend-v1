@@ -9,7 +9,7 @@
   "exchangeUrl": "https://balancer.exchange",
   "addresses": {
     "bFactory": "0x9424B1412450D0f8Fc2255FAf6046b98213B76Bd",
-    "bActions": "0x94905e703fEAd7f0fD0eEe355D267eE909784e6d",
+    "bActions": "0xE43f4606F55EdFED0764A54401CD554c86af73c1",
     "vault": "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
     "dsProxyRegistry": "0x4678f0a6958e4D2Bc4F1BAF7Bc52E8F3564f3fE4",
     "proxy": "0x2633Dc6F65f293FdC47206beEf1FC9BD6C63edFF",
