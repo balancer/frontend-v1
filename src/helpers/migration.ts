@@ -171,23 +171,14 @@ export function calculatePriceImpact(
     ? v1Price
     : v2Price;
 
-  const priceRatio = marketPrice.div(v2Price);
+  const priceRatio = marketPrice.div(v2Price).toNumber();
   const baseBalanceAdjusted = bnum(v2BaseToken.balance).times(
-    priceRatio.pow(
-      bnum(v2QuoteToken.denormWeight)
-        .div(v2TotalWeight)
-        .times(10)
-        .toFixed(0)
-    )
+    priceRatio **
+      (parseFloat(v2QuoteToken.denormWeight) / v2TotalWeight.toNumber())
   );
   const quoteBalanceAdjusted = bnum(v2QuoteToken.balance).times(
-    priceRatio.pow(
-      bnum(v2BaseToken.denormWeight)
-        .negated()
-        .div(v2TotalWeight)
-        .times(10)
-        .toFixed(0)
-    )
+    priceRatio **
+      (-parseFloat(v2BaseToken.denormWeight) / v2TotalWeight.toNumber())
   );
 
   const baseAssetPrice = baseBalanceAdjusted
