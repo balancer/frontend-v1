@@ -202,7 +202,7 @@ export function calculatePriceImpact(
   const one = bnum(1);
   const priceImpact = one.minus(poolV2Amount.div(poolV2AmountSpot));
 
-  return priceImpact.toNumber();
+  return priceImpact.isNegative() ? 0.00001 : priceImpact.toNumber();
 }
 
 export function getLeftoverAssets(

@@ -153,7 +153,7 @@ export default {
         volume: 0,
         swapFee: 0
       },
-      priceImpact: '0',
+      priceImpact: 0,
       leftoverAssets: []
     };
   },
