@@ -291,9 +291,11 @@ export default {
         ? this.migrateAll(txParams)
         : this.migrateProportionally(txParams);
       const tx = await txPromise;
-      const txReceipt = await tx.wait();
-      const txHash = txReceipt.transactionHash.toString();
-      this.tx = txHash;
+      if (tx) {
+        const txReceipt = await tx.wait();
+        const txHash = txReceipt.transactionHash.toString();
+        this.tx = txHash;
+      }
       this.pendingTx = false;
     },
     async unlockPool() {
