@@ -386,4 +386,11 @@ export default {
 .option-impact {
   color: #90a4ae;
 }
+
+@media (max-width: 768px) {
+  .migrate {
+    width: 100%;
+    padding: 18px;
+  }
+}
 </style>
