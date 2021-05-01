@@ -60,7 +60,7 @@
           <div class="bg-gray rounded-1 anim-pulse" />
         </div>
         <div
-          v-else
+          v-else-if="priceImpact > MIN_PRICE_IMPACT"
           class="mt-5 d-flex impact-label"
           @click="toggleAdvancedOptions"
         >
@@ -128,10 +128,12 @@ import {
 import config from '@/config';
 
 const MAX_PRICE_IMPACT = 0.01;
+const MIN_PRICE_IMPACT = 0.001;
 
 export default {
   data() {
     return {
+      MIN_PRICE_IMPACT,
       pool: this.$route.params.id,
       loading: true,
       pendingTx: false,
