@@ -1,14 +1,12 @@
 <template>
   <div v-if="loading" class="stripe-loading">
     <div class="bg-gray rounded-1 anim-pulse assets-loading" />
-    <div class="bg-gray rounded-1 anim-pulse mt-1 liquidity-loading" />
   </div>
   <div v-else class="stripe">
     <div class="assets">
       <span class="asset-diff" v-if="assets.v1">{{ assets.v1 }} →</span>
       <span>{{ assets.v2 }}</span>
     </div>
-    <div class="liquidity">My liquidity: {{ _num(liquidity, 'usd') }}</div>
   </div>
 </template>
 
@@ -17,7 +15,7 @@ import BigNumber from 'bignumber.js';
 import { bnum } from '@/helpers/utils';
 
 export default {
-  props: ['poolV1', 'poolV2', 'liquidity', 'loading'],
+  props: ['poolV1', 'poolV2', 'loading'],
   computed: {
     assets() {
       if (!this.poolV1.tokens || !this.poolV2.tokens) {
@@ -104,7 +102,7 @@ export default {
 
 <style scoped>
 .stripe-loading {
-  height: 62.8px;
+  height: 42.8px;
   background: #1f2029;
   color: white;
   border: 1px solid #333333;
@@ -113,13 +111,8 @@ export default {
 }
 
 .assets-loading {
-  height: 50%;
+  height: 80%;
   width: 80%;
-}
-
-.liquidity-loading {
-  height: 40%;
-  width: 50%;
 }
 
 .stripe {

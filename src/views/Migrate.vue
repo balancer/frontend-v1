@@ -6,7 +6,6 @@
         <MigrationStripe
           :pool-v1="poolV1"
           :pool-v2="poolV2"
-          :liquidity="liquidity"
           :loading="loading"
         />
         <div class="stats d-flex flex-justify-between mt-4">
@@ -44,7 +43,7 @@
             @click="migratePool"
             class="button-primary"
           >
-            Migrate
+            Migrate {{ _num(liquidity, 'usd') }}
           </ButtonMigrate>
           <ButtonMigrate
             v-else
