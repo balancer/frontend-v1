@@ -36,7 +36,9 @@ export default {
     }
   },
   beforeMount() {
-    if (!this.web3.account) this.$router.push({ name: 'explore' });
+    if (!this.web3.account && !location.href.includes('dashboard')) {
+      this.$router.push({ name: 'explore' });
+    }
   }
 };
 </script>
