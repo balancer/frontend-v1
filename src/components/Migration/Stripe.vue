@@ -40,9 +40,10 @@ export default {
       const v2Tokens = this.poolV2.tokens;
 
       let differentAssets = false;
+
       for (const v1Token of v1Tokens) {
         const v2Token = v2Tokens.find(
-          v2Token => v1Token.address === v2Token.address
+          v2Token => v1Token.address === v2Token.address.toLowerCase()
         );
         if (!v2Token) {
           differentAssets = true;
@@ -111,7 +112,7 @@ export default {
 }
 
 .assets-loading {
-  height: 80%;
+  height: 90%;
   width: 80%;
 }
 
