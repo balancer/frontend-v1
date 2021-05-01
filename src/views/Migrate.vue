@@ -2,12 +2,7 @@
   <div class="page d-flex">
     <div class="migrate">
       <h3>Upgrade to V2</h3>
-      <div class="mt-6">
-        <MigrationStripe
-          :pool-v1="poolV1"
-          :pool-v2="poolV2"
-          :loading="loading"
-        />
+      <div>
         <div class="stats d-flex flex-justify-between mt-4">
           <div>
             <MigrationStats
@@ -317,7 +312,7 @@ export default {
 
 .migrate {
   width: 440px;
-  margin: 30px auto;
+  margin: 120px auto;
   padding: 28px 26px;
   display: flex;
   flex-direction: column;
