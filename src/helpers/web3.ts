@@ -7,6 +7,7 @@ import config from '@/config';
 
 export async function sendTransaction(
   web3,
+  log,
   [contractType, contractAddress, action, params, overrides]: any
 ) {
   const signer = web3.getSigner();
@@ -27,15 +28,16 @@ export async function sendTransaction(
     return await contractWithSigner[action](...params, overrides);
   } catch (e) {
     if (isTxRejected(e)) return Promise.reject();
-    // Use gas price field to store tx sender since "from" will be overwritten
-    logFailedTx(
-      config.network,
-      signer.getAddress(),
-      contract,
-      action,
-      params,
-      overrides
-    );
+    if (log) {
+      logFailedTx(
+        config.network,
+        signer.getAddress(),
+        contract,
+        action,
+        params,
+        overrides
+      );
+    }
     return Promise.reject(e);
   }
 }

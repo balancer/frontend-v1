@@ -399,6 +399,7 @@ const actions = {
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
       const tx = await dispatch('processTransaction', {
         params,
+        log: true,
         title: 'Migrate'
       });
       dispatch('notify', ['green', "You've successfully migrated liquidity"]);
@@ -439,6 +440,7 @@ const actions = {
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
       const tx = await dispatch('processTransaction', {
         params,
+        log: true,
         title: 'Migrate'
       });
       dispatch('notify', ['green', "You've successfully migrated liquidity"]);
