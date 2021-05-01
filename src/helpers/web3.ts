@@ -1,9 +1,9 @@
 import { Contract } from '@ethersproject/contracts';
 import { getAddress } from '@ethersproject/address';
 import abi from '@/helpers/abi';
-import { GAS_LIMIT_BUFFER, isTxRejected, logRevertedTx } from '@/helpers/utils';
-import provider from '@/helpers/provider';
+import { GAS_LIMIT_BUFFER, isTxRejected, logFailedTx } from '@/helpers/utils';
 import { Interface } from '@ethersproject/abi';
+import config from '@/config';
 
 export async function sendTransaction(
   web3,
@@ -28,8 +28,14 @@ export async function sendTransaction(
   } catch (e) {
     if (isTxRejected(e)) return Promise.reject();
     // Use gas price field to store tx sender since "from" will be overwritten
-    overrides.gasPrice = signer.getAddress();
-    logRevertedTx(provider, contract, action, params, overrides);
+    logFailedTx(
+      config.network,
+      signer.getAddress(),
+      contract,
+      action,
+      params,
+      overrides
+    );
     return Promise.reject(e);
   }
 }
