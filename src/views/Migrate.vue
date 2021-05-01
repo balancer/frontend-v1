@@ -66,9 +66,9 @@
         >
           Price impact:
           {{ isFullMigration ? _num(priceImpact, 'percent') : '0%' }}
-          <div class="ml-1">
-            <Icon v-if="advancedOptions" name="arrow-up" />
-            <Icon v-else name="arrow-down" />
+          <div class="ml-2">
+            <IconChevronUp v-if="advancedOptions" />
+            <IconChevronDown v-else />
           </div>
         </div>
         <div v-if="advancedOptions">
