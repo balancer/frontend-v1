@@ -397,11 +397,12 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-      await dispatch('processTransaction', {
+      const tx = await dispatch('processTransaction', {
         params,
         title: 'Migrate'
       });
       dispatch('notify', ['green', "You've successfully migrated liquidity"]);
+      return tx;
     } catch (e) {
       console.log(e);
       if (!e || isTxReverted(e)) return e;
@@ -436,11 +437,12 @@ const actions = {
         {}
       ];
       const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
-      await dispatch('processTransaction', {
+      const tx = await dispatch('processTransaction', {
         params,
         title: 'Migrate'
       });
       dispatch('notify', ['green', "You've successfully migrated liquidity"]);
+      return tx;
     } catch (e) {
       console.log(e);
       if (!e || isTxReverted(e)) return e;

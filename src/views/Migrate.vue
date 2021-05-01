@@ -102,6 +102,27 @@
           </div>
         </div>
       </div>
+      <div class="overlay" v-if="tx">
+        <h3>Successful migration</h3>
+        <div>
+          <div class="icon-wrapper">
+            <IconCheckCircle class="icon" />
+          </div>
+          <div>Your liquidity has been migrated to V2</div>
+          <div class="overlay-buttons">
+            <div class="overlay-button">
+              <a :href="_etherscanLink(tx, 'tx')" target="_blank">
+                Receipt
+              </a>
+            </div>
+            <div class="overlay-button">
+              <router-link :to="{ name: 'home' }">
+                My Portfolio
+              </router-link>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -150,7 +171,8 @@ export default {
         swapFee: 0
       },
       priceImpact: 0,
-      leftoverAssets: []
+      leftoverAssets: [],
+      tx: null
     };
   },
   computed: {
@@ -257,25 +279,21 @@ export default {
         this.poolV2
       );
       this.pendingTx = true;
-      if (this.isFullMigration) {
-        await this.migrateAll({
-          vault,
-          poolIn,
-          poolInAmount,
-          tokenOutAmountsMin,
-          poolOut,
-          poolOutAmountMin
-        });
-      } else {
-        await this.migrateProportionally({
-          vault,
-          poolIn,
-          poolInAmount,
-          tokenOutAmountsMin,
-          poolOut,
-          poolOutAmountMin
-        });
-      }
+      const txParams = {
+        vault,
+        poolIn,
+        poolInAmount,
+        tokenOutAmountsMin,
+        poolOut,
+        poolOutAmountMin
+      };
+      const txPromise = this.isFullMigration
+        ? this.migrateAll(txParams)
+        : this.migrateProportionally(txParams);
+      const tx = await txPromise;
+      const txReceipt = await tx.wait();
+      const txHash = txReceipt.transactionHash.toString();
+      this.tx = txHash;
       this.pendingTx = false;
     },
     async unlockPool() {
@@ -311,6 +329,7 @@ export default {
 }
 
 .migrate {
+  position: relative;
   width: 440px;
   margin: 120px auto;
   padding: 28px 26px;
@@ -319,6 +338,59 @@ export default {
   border: 1px solid #333333;
   border-radius: 25px;
   background: #21222c;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  padding: 28px 26px;
+  border-radius: 25px;
+  background: #21222c;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.icon {
+  width: 80px;
+  height: 80px;
+  color: #10b981;
+  background: #064e3b;
+  border-radius: 50%;
+  padding: 16px;
+}
+
+.overlay-buttons {
+  display: flex;
+  margin-top: 16px;
+  justify-content: space-between;
+}
+
+.overlay-button {
+  background: #282932;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0 10px;
+  outline: none;
+  height: 44px;
+  width: 46%;
+  cursor: pointer;
+  line-height: 40px;
+  font-size: 16px;
+  margin: 0;
 }
 
 .arrow {
