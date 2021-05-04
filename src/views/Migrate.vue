@@ -116,9 +116,9 @@
               </a>
             </div>
             <div class="overlay-button">
-              <router-link :to="{ name: 'home' }">
-                My Portfolio
-              </router-link>
+              <a href="https://app.balancer.fi/" target="_blank">
+                My V2 liquidity
+              </a>
             </div>
           </div>
         </div>
