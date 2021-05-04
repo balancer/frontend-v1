@@ -157,6 +157,7 @@ export default {
 }
 
 .stat {
+  margin-top: 8px;
   min-width: 80px;
 }
 
