@@ -43,7 +43,8 @@
             'column hide-sm hide-md',
             'column',
             'column hide-sm hide-md hide-lg',
-            'column hide-sm hide-md hide-lg'
+            'column hide-sm hide-md hide-lg',
+            migratable ? 'column hide-sm hide-md hide-lg' : null
           ]"
           :height="29"
         />
