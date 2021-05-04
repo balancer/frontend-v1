@@ -41,10 +41,6 @@
         <div class="stat-value">{{ _num(pool.liquidity, 'usd') }}</div>
       </div>
       <div class="stat">
-        <div class="stat-key">Volume (24h)</div>
-        <div class="stat-value">{{ _num(pool.volume, 'usd') }}</div>
-      </div>
-      <div class="stat">
         <div class="stat-key">Swap fee</div>
         <div class="stat-value">{{ _num(pool.swapFee, 'percent') }}</div>
       </div>

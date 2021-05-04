@@ -161,13 +161,11 @@ export default {
       poolV1: {
         address: '',
         liquidity: 0,
-        volume: 0,
         swapFee: 0
       },
       poolV2: {
         address: '',
         liquidity: 0,
-        volume: 0,
         swapFee: 0
       },
       priceImpact: 0,
@@ -222,7 +220,6 @@ export default {
       this.poolV1 = await pool.getMetadata();
       this.poolV1.address = this.pool;
       this.poolV1.liquidity = getPoolLiquidity(this.poolV1, this.price.values);
-      this.poolV1.volume = 0;
       if (this.web3.account) {
         const data = await Promise.all([
           this.getAllowances([this.pool]),
@@ -264,7 +261,6 @@ export default {
       this.poolV2.liquidity = getPoolLiquidity(poolData, this.price.values);
       const swapFeeNumber = scale(bnum(this.poolV2.swapFee), -18);
       this.poolV2.swapFee = swapFeeNumber.toString();
-      this.poolV2.volume = 0;
     },
     async migratePool() {
       const vault = config.addresses.vault;
