@@ -402,6 +402,10 @@ const actions = {
         log: true,
         title: 'Migrate'
       });
+      await Promise.all([
+        dispatch('getBalances'),
+        dispatch('getUserPoolShares')
+      ]);
       dispatch('notify', ['green', "You've successfully migrated liquidity"]);
       return tx;
     } catch (e) {
@@ -443,6 +447,7 @@ const actions = {
         log: true,
         title: 'Migrate'
       });
+      await Promise.all([dispatch('getUserPoolShares')]);
       dispatch('notify', ['green', "You've successfully migrated liquidity"]);
       return tx;
     } catch (e) {
