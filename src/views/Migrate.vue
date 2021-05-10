@@ -164,6 +164,17 @@ export default {
     };
   },
   watch: {
+    $route() {
+      const pool = this.$route.params.id;
+      if (pool !== this.pool) {
+        this.pool = pool;
+        this.poolV1 = {};
+        this.poolV2 = {};
+        this.allowance = '';
+        this.balance = '';
+        this.init();
+      }
+    },
     'web3.dsProxyAddress': async function(val, prev) {
       if (val !== prev) await this.fetchUserState();
     }
@@ -200,22 +211,7 @@ export default {
     }
   },
   async mounted() {
-    await this.fetchPool();
-    await this.fetchPoolV2();
-    this.priceImpact = calculatePriceImpact(
-      this.balance,
-      this.poolV1,
-      this.poolV2
-    );
-    if (this.priceImpact > MAX_PRICE_IMPACT) {
-      this.isFullMigration = false;
-    }
-    this.leftoverAssets = getLeftoverAssets(
-      this.balance,
-      this.poolV1,
-      this.poolV2,
-      this.isFullMigration
-    );
+    this.init();
   },
   methods: {
     ...mapActions([
@@ -225,6 +221,24 @@ export default {
       'getBalances',
       'getAllowances'
     ]),
+    async init() {
+      await this.fetchPool();
+      await this.fetchPoolV2();
+      this.priceImpact = calculatePriceImpact(
+        this.balance,
+        this.poolV1,
+        this.poolV2
+      );
+      if (this.priceImpact > MAX_PRICE_IMPACT) {
+        this.isFullMigration = false;
+      }
+      this.leftoverAssets = getLeftoverAssets(
+        this.balance,
+        this.poolV1,
+        this.poolV2,
+        this.isFullMigration
+      );
+    },
     async fetchUserState() {
       if (!this.web3.account) {
         return;
