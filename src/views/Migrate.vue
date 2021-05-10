@@ -150,28 +150,23 @@ export default {
     return {
       MIN_PRICE_IMPACT,
       pool: this.$route.params.id,
-      loading: true,
       pendingTx: false,
       advancedOptions: false,
       poolStatDetails: false,
       isFullMigration: true,
-      allowance: '0',
-      balance: '0',
-      liquidity: 0,
-      poolV1: {
-        address: '',
-        liquidity: 0,
-        swapFee: 0
-      },
-      poolV2: {
-        address: '',
-        liquidity: 0,
-        swapFee: 0
-      },
+      allowance: '',
+      balance: '',
+      poolV1: {},
+      poolV2: {},
       priceImpact: 0,
       leftoverAssets: [],
       tx: null
     };
+  },
+  watch: {
+    'web3.dsProxyAddress': async function(val, prev) {
+      if (val !== prev) await this.fetchUserState();
+    }
   },
   computed: {
     isUnlocked() {
@@ -186,12 +181,24 @@ export default {
       } else {
         return false;
       }
+    },
+    liquidity() {
+      const balanceNumber = scale(bnum(this.balance), -18);
+      const liquidity = balanceNumber
+        .div(this.poolV1.totalShares)
+        .times(this.poolV1.liquidity);
+      return liquidity;
+    },
+    loading() {
+      const poolV1Loading = Object.keys(this.poolV1).length === 0;
+      const poolV2Loading = Object.keys(this.poolV2).length === 0;
+      const userStateLoading = this.allowance === '' || this.balance === '';
+      return poolV1Loading || poolV2Loading || userStateLoading;
     }
   },
   async mounted() {
     await this.fetchPool();
     await this.fetchPoolV2();
-    this.loading = false;
     this.priceImpact = calculatePriceImpact(
       this.balance,
       this.poolV1,
@@ -215,23 +222,26 @@ export default {
       'getBalances',
       'getAllowances'
     ]),
+    async fetchUserState() {
+      if (!this.web3.account) {
+        return;
+      }
+      if (!this.web3.dsProxyAddress) {
+        return;
+      }
+      const data = await Promise.all([
+        this.getAllowances([this.pool]),
+        this.getBalances([this.pool])
+      ]);
+      this.allowance = data[0][this.pool][this.web3.dsProxyAddress];
+      this.balance = data[1][this.pool];
+    },
     async fetchPool() {
       const pool = new Pool(this.pool);
       this.poolV1 = await pool.getMetadata();
       this.poolV1.address = this.pool;
       this.poolV1.liquidity = getPoolLiquidity(this.poolV1, this.price.values);
-      if (this.web3.account) {
-        const data = await Promise.all([
-          this.getAllowances([this.pool]),
-          this.getBalances([this.pool])
-        ]);
-        this.allowance = data[0][this.pool][this.web3.dsProxyAddress];
-        this.balance = data[1][this.pool];
-      }
-      const balanceNumber = scale(bnum(this.balance), -18);
-      this.liquidity = balanceNumber
-        .div(this.poolV1.totalShares)
-        .times(this.poolV1.liquidity);
+      await this.fetchUserState();
     },
     async fetchPoolV2() {
       const address = getNewPool(this.pool);
