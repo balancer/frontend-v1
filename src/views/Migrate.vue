@@ -176,6 +176,7 @@ export default {
       }
     },
     'web3.dsProxyAddress': async function(val, prev) {
+      console.log('[Migration] ds proxy instance', val);
       if (val !== prev) await this.fetchUserState();
     }
   },
@@ -240,13 +241,15 @@ export default {
       );
     },
     async fetchUserState() {
+      console.log('[Migration] fetching user state');
       if (!this.web3.account) {
+        console.log('[Migration] can not fetch user state: no account');
         return;
       }
       if (!this.web3.dsProxyAddress) {
+        console.log('[Migration] can not fetch user state: no ds proxy');
         return;
       }
-      console.log('[Migration] fetching user state');
       const data = await Promise.all([
         this.getAllowances([this.pool]),
         this.getBalances([this.pool])
