@@ -246,24 +246,30 @@ export default {
       if (!this.web3.dsProxyAddress) {
         return;
       }
+      console.log('[Migration] fetching user state');
       const data = await Promise.all([
         this.getAllowances([this.pool]),
         this.getBalances([this.pool])
       ]);
       this.allowance = data[0][this.pool][this.web3.dsProxyAddress];
       this.balance = data[1][this.pool];
+      console.log('[Migration] fetched user state');
     },
     async fetchPool() {
+      console.log('[Migration] fetching v1 pool');
       const pool = new Pool(this.pool);
       this.poolV1 = await pool.getMetadata();
+      console.log('[Migration] fetched v1 pool');
       this.poolV1.address = this.pool;
       this.poolV1.liquidity = getPoolLiquidity(this.poolV1, this.price.values);
       await this.fetchUserState();
     },
     async fetchPoolV2() {
+      console.log('[Migration] fetching v2 pool');
       const address = getNewPool(this.pool);
       const poolV2 = new PoolV2(address);
       this.poolV2 = await poolV2.getMetadata();
+      console.log('[Migration] fetched v2 pool');
       const totalWeight = this.poolV2.tokens.reduce(
         (total, token) => total.plus(token.denormWeight),
         bnum(0)
@@ -313,17 +319,22 @@ export default {
       const txPromise = this.isFullMigration
         ? this.migrateAll(txParams)
         : this.migrateProportionally(txParams);
+      console.log('[Migration] sending migration tx');
       const tx = await txPromise;
+      console.log('[Migration] sent migration tx');
       if (tx) {
         const txReceipt = await tx.wait();
+        console.log('[Migration] confirmed migration tx');
         const txHash = txReceipt.transactionHash.toString();
         this.tx = txHash;
       }
       this.pendingTx = false;
     },
     async unlockPool() {
+      console.log('[Migration] sending unlock tx');
       this.pendingTx = true;
       await this.approve(this.pool);
+      console.log('[Migration] sent unlock tx');
       const data = await this.getAllowances([this.pool]);
       this.allowance = data[this.pool][this.web3.dsProxyAddress];
       this.pendingTx = false;
