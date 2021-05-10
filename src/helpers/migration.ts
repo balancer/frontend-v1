@@ -302,8 +302,6 @@ const pools = {
     '0xf3ffac7b8e3adf1961edb694e057029749a2e847':
       '0x61d5dc44849c9c87b0856a2a311536205c96c7fd',
     '0xf72bb38b0fd36286b813db509bf6adacb75b8bfc':
-      '0x647c1fd457b95b75d0972ff08fe01d7d7bda05df',
-    '0x1d50bdffbcb2bf8af6411c691f953eef63a38ecc':
       '0x647c1fd457b95b75d0972ff08fe01d7d7bda05df'
   }
 };
