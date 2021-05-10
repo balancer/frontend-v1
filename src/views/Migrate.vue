@@ -246,8 +246,16 @@ export default {
         console.log('[Migration] can not fetch user state: no account');
         return;
       }
-      if (!this.web3.dsProxyAddress) {
+      if (this.web3.dsProxyAddress === null) {
         console.log('[Migration] can not fetch user state: no ds proxy');
+        return;
+      }
+      if (this.web3.dsProxyAddress === '') {
+        console.log(
+          '[Migration] can not fetch user state: no ds proxy instance'
+        );
+        this.allowance = '0';
+        this.balance = '0';
         return;
       }
       const data = await Promise.all([
