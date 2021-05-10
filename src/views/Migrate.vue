@@ -177,7 +177,7 @@ export default {
     },
     'web3.dsProxyAddress': async function(val, prev) {
       console.log('[Migration] ds proxy instance', val);
-      if (val !== prev) await this.fetchUserState();
+      if (val !== prev) await this.fetchUserState(true);
     }
   },
   computed: {
@@ -240,10 +240,14 @@ export default {
         this.isFullMigration
       );
     },
-    async fetchUserState() {
+    async fetchUserState(isStateUpdated) {
       console.log('[Migration] fetching user state');
       if (!this.web3.account) {
         console.log('[Migration] can not fetch user state: no account');
+        if (isStateUpdated) {
+          this.allowance = '0';
+          this.balance = '0';
+        }
         return;
       }
       if (this.web3.dsProxyAddress === null) {
@@ -273,7 +277,7 @@ export default {
       console.log('[Migration] fetched v1 pool');
       this.poolV1.address = this.pool;
       this.poolV1.liquidity = getPoolLiquidity(this.poolV1, this.price.values);
-      await this.fetchUserState();
+      await this.fetchUserState(false);
     },
     async fetchPoolV2() {
       console.log('[Migration] fetching v2 pool');
