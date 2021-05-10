@@ -175,6 +175,9 @@ export default {
       return balanceNumber.isZero() || allowanceNumber.gte(balanceNumber);
     },
     isDisabled() {
+      if (this.loading) {
+        return true;
+      }
       if (this.isUnlocked) {
         const balanceNumber = bnum(this.balance);
         return balanceNumber.isZero();
