@@ -362,6 +362,82 @@
     {
       "inputs": [
         {
+          "internalType": "contract Vault",
+          "name": "vault",
+          "type": "address"
+        },
+        {
+          "internalType": "contract BPool",
+          "name": "poolIn",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "poolInAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "tokenOutAmountsMin",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "contract BalancerPool",
+          "name": "poolOut",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "poolOutAmountMin",
+          "type": "uint256"
+        }
+      ],
+      "name": "migrateAll",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract Vault",
+          "name": "vault",
+          "type": "address"
+        },
+        {
+          "internalType": "contract BPool",
+          "name": "poolIn",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "poolInAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "tokenOutAmountsMin",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "contract BalancerPool",
+          "name": "poolOut",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "poolOutAmountMin",
+          "type": "uint256"
+        }
+      ],
+      "name": "migrateProportionally",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "contract ConfigurableRightsPool",
           "name": "crp",
           "type": "address"

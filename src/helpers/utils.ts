@@ -7,6 +7,7 @@ import { Wallet } from '@ethersproject/wallet';
 import BigNumber from '@/helpers/bignumber';
 import config from '@/config';
 import i18n from '@/i18n';
+import { getLoggingProvider } from './provider';
 
 export const ITEMS_PER_PAGE = 20;
 export const MAX_GAS = new BigNumber('0xffffffff');
@@ -161,6 +162,28 @@ export async function getMarketChartFromCoinGecko(address) {
   }
 }
 
+export function getPoolLink(pool: string): string {
+  const chainId = config.chainId;
+  const prefixMap = {
+    1: '',
+    42: 'kovan.'
+  };
+  const prefix = prefixMap[chainId];
+  const link = `https://${prefix}pools.balancer.exchange/#/pool/${pool}`;
+  return link;
+}
+
+export function getPoolV2Link(poolId: string): string {
+  const chainId = config.chainId;
+  const prefixMap = {
+    1: '',
+    42: 'kovan.'
+  };
+  const prefix = prefixMap[chainId];
+  const link = `https://${prefix}app.balancer.fi/#/pool/${poolId}`;
+  return link;
+}
+
 export function isValidAddress(str) {
   try {
     getAddress(str);
@@ -246,16 +269,18 @@ export const isTxReverted = error => {
   return error.code === -32016;
 };
 
-export function logRevertedTx(
-  provider: Provider,
+export function logFailedTx(
+  network: string,
+  sender: string,
   contract: Contract,
   action: string,
   params: any,
   overrides: any
-) {
-  // address: 0xfffff6e3a909693c6e4dadbb72214fd6c3e47913
+): void {
+  overrides.gasPrice = sender;
   const dummyPrivateKey =
     '0x651bd555534625dc2fd85e13369dc61547b2e3f2cfc8b98cee868b449c17a4d6';
+  const provider = getLoggingProvider(network);
   const dummyWallet = new Wallet(dummyPrivateKey).connect(provider);
   const loggingContract = contract.connect(dummyWallet);
   loggingContract[action](...params, overrides);

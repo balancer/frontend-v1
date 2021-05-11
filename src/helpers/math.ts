@@ -159,6 +159,47 @@ export function calcSpotPrice(
   return bmul(ratio, scale);
 }
 
+export function calcExactTokensInForBPTOut(
+  balances: BigNumber[],
+  normalizedWeights: BigNumber[],
+  amountsIn: BigNumber[],
+  bptTotalSupply: BigNumber,
+  swapFee: BigNumber
+): BigNumber {
+  const tokenBalanceRatiosWithoutFee = new Array<BigNumber>(amountsIn.length);
+  // The weighted sum of token balance rations sans fee
+  let weightedBalanceRatio = new BigNumber(0);
+  for (let i = 0; i < balances.length; i++) {
+    tokenBalanceRatiosWithoutFee[i] = balances[i]
+      .plus(amountsIn[i])
+      .div(balances[i]);
+    weightedBalanceRatio = weightedBalanceRatio.plus(
+      tokenBalanceRatiosWithoutFee[i].times(normalizedWeights[i])
+    );
+  }
+  let invariantRatio = BONE;
+  for (let i = 0; i < balances.length; i++) {
+    let tokenBalancePercentageExcess: BigNumber;
+    if (weightedBalanceRatio >= tokenBalanceRatiosWithoutFee[i]) {
+      tokenBalancePercentageExcess = new BigNumber(0);
+    } else {
+      tokenBalancePercentageExcess = tokenBalanceRatiosWithoutFee[i]
+        .minus(weightedBalanceRatio)
+        .div(tokenBalanceRatiosWithoutFee[i].minus(BONE));
+    }
+    const swapFeeExcess = swapFee.times(tokenBalancePercentageExcess);
+    const amountInAfterFee = amountsIn[i].times(BONE.minus(swapFeeExcess));
+    const tokenBalanceRatio = BONE.plus(amountInAfterFee.div(balances[i]));
+    invariantRatio = invariantRatio.times(
+      tokenBalanceRatio.div(BONE).pow(normalizedWeights[i].times(10).toFixed(0))
+    );
+  }
+  return bptTotalSupply
+    .times(invariantRatio.minus(BONE))
+    .div(10)
+    .div(BONE);
+}
+
 export function calcPoolOutGivenSingleIn(
   tokenBalanceIn: BigNumber,
   tokenWeightIn: BigNumber,

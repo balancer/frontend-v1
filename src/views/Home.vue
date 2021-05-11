@@ -6,6 +6,7 @@
     <ListPools
       :key="JSON.stringify(queryMyLiquidity)"
       :query="queryMyLiquidity"
+      :migratable="true"
       class="mb-4"
     />
     <Container class="mb-3">

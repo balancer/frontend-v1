@@ -55,9 +55,9 @@ const getters = {
 };
 
 const actions = {
-  async processTransaction({ commit }, { params, title }) {
+  async processTransaction({ commit }, { params, log, title }) {
     console.log('Send transaction', title, params);
-    const tx = await sendTransaction(getInstance().web3, params);
+    const tx = await sendTransaction(getInstance().web3, log, params);
 
     console.log('Watch transaction', tx);
     commit('watchTransaction', { ...tx, title });
