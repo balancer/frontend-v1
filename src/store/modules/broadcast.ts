@@ -369,6 +369,93 @@ const actions = {
       commit('CREATE_SMART_POOL_FAILURE', e);
     }
   },
+  migrateProportionally: async (
+    { dispatch, rootState },
+    {
+      vault,
+      poolIn,
+      poolInAmount,
+      tokenOutAmountsMin,
+      poolOut,
+      poolOutAmountMin
+    }
+  ) => {
+    try {
+      const dsProxyAddress = rootState.web3.dsProxyAddress;
+      const underlyingParams = [
+        'BActions',
+        config.addresses.bActions,
+        'migrateProportionally',
+        [
+          vault,
+          poolIn,
+          poolInAmount,
+          tokenOutAmountsMin,
+          poolOut,
+          poolOutAmountMin
+        ],
+        {}
+      ];
+      const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
+      const tx = await dispatch('processTransaction', {
+        params,
+        log: true,
+        title: 'Migrate'
+      });
+      await Promise.all([
+        dispatch('getBalances'),
+        dispatch('getUserPoolShares')
+      ]);
+      dispatch('notify', ['green', "You've successfully migrated liquidity"]);
+      return tx;
+    } catch (e) {
+      console.log(e);
+      if (!e || isTxReverted(e)) return e;
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
+    }
+  },
+  migrateAll: async (
+    { dispatch, rootState },
+    {
+      vault,
+      poolIn,
+      poolInAmount,
+      tokenOutAmountsMin,
+      poolOut,
+      poolOutAmountMin
+    }
+  ) => {
+    try {
+      const dsProxyAddress = rootState.web3.dsProxyAddress;
+      const underlyingParams = [
+        'BActions',
+        config.addresses.bActions,
+        'migrateAll',
+        [
+          vault,
+          poolIn,
+          poolInAmount,
+          tokenOutAmountsMin,
+          poolOut,
+          poolOutAmountMin
+        ],
+        {}
+      ];
+      const params = makeProxyTransaction(dsProxyAddress, underlyingParams);
+      const tx = await dispatch('processTransaction', {
+        params,
+        log: true,
+        title: 'Migrate'
+      });
+      await Promise.all([dispatch('getUserPoolShares')]);
+      dispatch('notify', ['green', "You've successfully migrated liquidity"]);
+      return tx;
+    } catch (e) {
+      console.log(e);
+      if (!e || isTxReverted(e)) return e;
+      dispatch('notify', ['red', i18n.tc('failureOops')]);
+    }
+  },
   joinPool: async (
     { commit, dispatch, rootState },
     { poolAddress, poolAmountOut, maxAmountsIn, isCrp = false }

@@ -1,5 +1,10 @@
 <template>
-  <UiTableTr :to="{ name: 'pool', params: { id: pool.id } }">
+  <UiTableTr
+    :to="{
+      name: 'pool',
+      params: { id: pool.id }
+    }"
+  >
     <div class="column-sm text-left hide-sm hide-md hide-lg">
       {{ _shortenAddress(pool.id) }}
     </div>
@@ -37,14 +42,26 @@
       format="currency"
       class="column hide-sm hide-md hide-lg"
     />
+    <div v-if="migratable" class="column hide-sm hide-md hide-lg">
+      <router-link :to="{ name: 'migrate', params: { id: pool.id } }">
+        <button
+          class="button-migrate"
+          :class="{ primary: canMigrate }"
+          v-if="canMigrate"
+        >
+          V2 Migrate
+        </button>
+      </router-link>
+    </div>
   </UiTableTr>
 </template>
 
 <script>
 import { getPoolLiquidity } from '@/helpers/price';
+import { getNewPool } from '@/helpers/migration';
 
 export default {
-  props: ['pool'],
+  props: ['pool', 'migratable'],
   computed: {
     poolLiquidity() {
       return getPoolLiquidity(this.pool, this.price.values);
@@ -53,7 +70,22 @@ export default {
       const poolShares = this.subgraph.poolShares[this.pool.id];
       if (!this.pool.finalized || !poolShares) return 0;
       return (this.poolLiquidity / this.pool.totalShares) * poolShares;
+    },
+    canMigrate() {
+      const newPool = getNewPool(this.pool.id);
+      return !!newPool;
     }
   }
 };
 </script>
+
+<style scoped>
+.button-migrate {
+  padding: 2px 4px;
+  color: white;
+  font-weight: bold;
+  background: linear-gradient(270deg, #f0f 0%, #00f 100%);
+  border: none;
+  border-radius: 5px;
+}
+</style>

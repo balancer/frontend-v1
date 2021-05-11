@@ -17,10 +17,20 @@
           class="column hide-sm hide-md hide-lg"
         />
         <div v-text="$t('volume24')" class="column hide-sm hide-md hide-lg" />
+        <div
+          v-if="migratable"
+          v-text="$t('migrate')"
+          class="column hide-sm hide-md hide-lg"
+        />
       </UiTableTh>
       <div v-infinite-scroll="loadMore" infinite-scroll-distance="10">
         <div v-if="pools.length > 0">
-          <ListPool v-for="(pool, i) in pools" :key="i" :pool="pool" />
+          <ListPool
+            v-for="(pool, i) in pools"
+            :key="i"
+            :pool="pool"
+            :migratable="migratable"
+          />
         </div>
         <UiTableTr v-else-if="!loading">
           <div v-text="$t('emptyState')" />
@@ -33,7 +43,8 @@
             'column hide-sm hide-md',
             'column',
             'column hide-sm hide-md hide-lg',
-            'column hide-sm hide-md hide-lg'
+            'column hide-sm hide-md hide-lg',
+            migratable ? 'column hide-sm hide-md hide-lg' : null
           ]"
           :height="29"
         />
@@ -47,7 +58,7 @@ import { mapActions } from 'vuex';
 import { formatFilters, ITEMS_PER_PAGE } from '@/helpers/utils';
 
 export default {
-  props: ['query', 'title'],
+  props: ['query', 'title', 'migratable'],
   data() {
     return {
       loading: false,
