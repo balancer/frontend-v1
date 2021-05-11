@@ -250,8 +250,8 @@ export default {
 
       const poolTokens = this.poolTokens
         ? bnum(this.poolTokens)
-            .div('1e18')
-            .toNumber()
+          .div('1e18')
+          .toNumber()
         : 0;
       const future = (poolSharesFrom + poolTokens) / (totalShares + poolTokens);
       return {
