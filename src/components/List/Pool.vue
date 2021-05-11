@@ -1,7 +1,7 @@
 <template>
   <UiTableTr
     :to="{
-      name: migratable && canMigrate ? 'migrate' : 'pool',
+      name: 'pool',
       params: { id: pool.id }
     }"
   >
@@ -43,13 +43,15 @@
       class="column hide-sm hide-md hide-lg"
     />
     <div v-if="migratable" class="column hide-sm hide-md hide-lg">
-      <button
-        class="button-migrate"
-        :class="{ primary: canMigrate }"
-        v-if="canMigrate"
-      >
-        V2 Migrate
-      </button>
+      <router-link :to="{ name: 'migrate', params: { id: pool.id } }">
+        <button
+          class="button-migrate"
+          :class="{ primary: canMigrate }"
+          v-if="canMigrate"
+        >
+          V2 Migrate
+        </button>
+      </router-link>
     </div>
   </UiTableTr>
 </template>
