@@ -20,7 +20,7 @@
         <div
           v-if="migratable"
           v-text="$t('migrate')"
-          class="column hide-sm hide-md hide-lg"
+          class="column"
         />
       </UiTableTh>
       <div v-infinite-scroll="loadMore" infinite-scroll-distance="10">
@@ -44,7 +44,7 @@
             'column',
             'column hide-sm hide-md hide-lg',
             'column hide-sm hide-md hide-lg',
-            migratable ? 'column hide-sm hide-md hide-lg' : null
+            migratable ? 'column' : null
           ]"
           :height="29"
         />

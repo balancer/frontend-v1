@@ -42,7 +42,7 @@
       format="currency"
       class="column hide-sm hide-md hide-lg"
     />
-    <div v-if="migratable" class="column hide-sm hide-md hide-lg">
+    <div v-if="migratable" class="column">
       <router-link :to="{ name: 'migrate', params: { id: pool.id } }">
         <button
           class="button-migrate"
@@ -87,5 +87,12 @@ export default {
   background: linear-gradient(270deg, #f0f 0%, #00f 100%);
   border: none;
   border-radius: 5px;
+  margin-left: 8px;
+}
+
+@media only screen and (min-width: 600px) {
+  .button-migrate {
+    margin-left: 0
+  }
 }
 </style>
