@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@balancer-labs/assets": "github:balancer-labs/assets#master",
-    "@balancer-labs/sor2": "github:balancer-labs/balancer-sor#john/ui-694-sor-lido-add-static-route-refactor ",
+    "@balancer-labs/sor2": "github:balancer-labs/balancer-sor#john/rc03-package",
     "@ethersproject/abi": "5.0.1",
     "@ethersproject/address": "5.0.1",
     "@ethersproject/constants": "5.0.1",
