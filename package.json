@@ -13,7 +13,7 @@
     "generate-icons": "icon-font-generator src/assets/fonts/icons/*.svg -o src/assets/fonts --name iconfont --html false"
   },
   "dependencies": {
-    "@balancer-labs/assets": "github:balancer-labs/assets#master",
+    "@balancer-labs/assets": "github:balancer-labs/assets#a08a27c500f7d6f04a182ef18393fc2382951019",
     "@balancer-labs/sor2": "github:balancer-labs/balancer-sor#john/rc03-package",
     "@ethersproject/abi": "5.0.1",
     "@ethersproject/address": "5.0.1",
