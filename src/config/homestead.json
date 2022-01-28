@@ -4,7 +4,7 @@
   "defaultPrecision": 2,
   "rpcUrl": "https://mainnet.infura.io/v3/03f1a9a53dee4bd5a7d3dde58ce26442",
   "wsUrl": "wss://mainnet.infura.io/ws/v3/03f1a9a53dee4bd5a7d3dde58ce26442",
-  "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-beta",
+  "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer",
   "explorer": "https://etherscan.io",
   "exchangeUrl": "https://balancer.exchange",
   "addresses": {
