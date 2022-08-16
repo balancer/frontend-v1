@@ -170,7 +170,7 @@ const actions = {
     commit('LOGOUT');
   },
   initTokenMetadata: async ({ commit }) => {
-    const invalids = ['0xD46bA6D942050d489DBd938a2C909A5d5039A161'];
+    const invalids = ['0xD46bA6D942050d489DBd938a2C909A5d5039A161','0x79C75E2e8720B39e258F41c37cC4f309E0b0fF80'];
     const metadata = Object.fromEntries(
       Object.entries(config.tokens).map(tokenEntry => {
         const { decimals, symbol, name } = tokenEntry[1] as any;
@@ -381,13 +381,16 @@ const actions = {
     );
     const calls = [];
     const testToken = new Interface(abi.TestToken);
+    const invalids = ['0x79C75E2e8720B39e258F41c37cC4f309E0b0fF80']
     tokens.forEach(token => {
-      calls.push([
-        // @ts-ignore
-        token,
-        // @ts-ignore
-        testToken.encodeFunctionData('allowance', [address, spender])
-      ]);
+      if (!invalids.includes(token)) {
+        calls.push([
+          // @ts-ignore
+          token,
+          // @ts-ignore
+          testToken.encodeFunctionData('allowance', [address, spender])
+        ]);
+      }
     });
     promises.push(multi.aggregate(calls));
     const allowances: any = {};
