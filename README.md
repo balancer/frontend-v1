@@ -1,6 +1,6 @@
-# Balancer Pool Management
+# V1 Pool Frontend
 
-Pool management interface for users to add and remove liquidity to Balancer pools.
+For the current interface please see [https://github.com/balancer-labs/frontend-v2](https://github.com/balancer-labs/frontend-v2)
 
 ## Project setup
 ```
