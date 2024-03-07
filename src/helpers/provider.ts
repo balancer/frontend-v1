@@ -6,6 +6,6 @@ const provider = new JsonRpcProvider(config.rpcUrl);
 export default provider;
 
 export function getLoggingProvider(network: string) {
-  const alchemyKey = 'cQGZUiTLRCFsQS7kbRxPJK4eH4fTTu88';
+  const alchemyKey = 'KjFKFD1iyGgsEesE0xOovzJKkVd_Jn19';
   return new AlchemyProvider(network, alchemyKey);
 }
