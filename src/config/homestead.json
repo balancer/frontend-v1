@@ -2,9 +2,9 @@
   "network": "homestead",
   "chainId": 1,
   "defaultPrecision": 2,
-  "rpcUrl": "https://mainnet.infura.io/v3/03f1a9a53dee4bd5a7d3dde58ce26442",
-  "wsUrl": "wss://mainnet.infura.io/ws/v3/03f1a9a53dee4bd5a7d3dde58ce26442",
-  "subgraphUrl": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer",
+  "rpcUrl": "https://eth.llamarpc.com",
+  "wsUrl": "wss://eth.drpc.org",
+  "subgraphUrl": "https://subgraph-v1.balancer.workers.dev",
   "explorer": "https://etherscan.io",
   "exchangeUrl": "https://balancer.exchange",
   "addresses": {
