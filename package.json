@@ -50,7 +50,6 @@
     "typescript": "3.9.3",
     "vue": "2.6.11",
     "vue-autofocus-directive": "1.0.4",
-    "vue-cli-plugin-express": "1.0.2",
     "vue-cli-plugin-webpack-bundle-analyzer": "2.0.0",
     "vue-i18n": "8.18.1",
     "vue-infinite-scroll": "2.0.2",
